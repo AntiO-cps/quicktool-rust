@@ -18,6 +18,8 @@ cargo run --release
 
 数据默认写入 `%APPDATA%/QuickTool-Rust`。测试可用 `QUICKTOOL_RUST_DATA_DIR` 指定隔离数据目录。原版 QuickTool 数据暂不自动导入。
 
+显式导入旧设置与历史：`QuickTool.exe --import-from OLD_DIR --import-to NEW_DIR`。目标目录必须不存在；旧目录只读。原文件备份、坏记录及错误报告保存在新目录。退出码 `0` 表示成功，`3` 表示导入完成但有错误记录，`2` 表示失败。使用 `QuickTool.exe --data-dir NEW_DIR` 运行导入后的数据。
+
 ## 验证
 
 ```powershell
@@ -33,7 +35,7 @@ cargo clippy --all-targets -- -D warnings
 
 [像素基准](docs/pixel-benchmark.json)：同一输入与滤镜参数，1,048,576 像素，预热 3 次、采样 7 次。当前中位耗时 JS 88.93 ms，Rust Release 54.80 ms（约 1.62 倍），结果校验一致。此结果仅说明像素计算性能，不能代表整机启动、内存、搜索或拖拽性能。
 
-[应用基准](docs/app-benchmark.json)：同机三轮隔离采样，启动中位数 2.445 s → 0.699 s，空闲工作集约 855 MiB → 194 MiB。启动计时从应用入口开始，不包括 OS 创建进程；原版内存未包含外部辅助进程。多数查询 CPU 重建更快，但首次 Unicode 查询仍较慢，且不同渲染器的布局耗时不能直接视为同等交互延迟。大目录索引与拖拽帧耗时尚未验证。
+[应用基准](docs/app-benchmark.json)：最新同机三轮隔离采样，启动中位数 3.465 s → 0.842 s，空闲工作集约 847 MiB → 234 MiB。启动计时从应用入口开始，不包括 OS 创建进程；原版内存未包含外部辅助进程。Unicode 已改只读索引，避免首次解析大型 JSON。不同渲染器的布局耗时不能直接视为同等交互延迟；样本存在波动，大目录索引与拖拽帧耗时尚未验证。
 
 ## 状态
 

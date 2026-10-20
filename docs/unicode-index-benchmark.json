@@ -1,0 +1,8 @@
+{
+  "before_json_ms": 255.5583,
+  "measured_at": "2026-10-21T01:10:28+08:00",
+  "named_entries": 143668,
+  "operation": "first 0xFF query CPU rebuild",
+  "after_readonly_index_ms": 9.2195,
+  "comparison": "Every original name/category plus 120 output fixtures verified; complete query rebuild includes other tools and is not a microbenchmark."
+}

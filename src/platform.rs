@@ -546,8 +546,9 @@ pub struct ClipboardEntry {
 }
 #[cfg(windows)]
 pub use native_extra::{
-    apply_window_style, clipboard_image, clipboard_inspect, configure_glow, copy_bytes, copy_image,
-    copy_text, find_window, place_companion_window, save_file_dialog,
+    apply_window_style, clipboard_image, clipboard_inspect, configure_glow, configure_popup,
+    configure_tooltip, copy_bytes, copy_image, copy_text, find_window, place_companion_window,
+    save_file_dialog,
 };
 #[cfg(not(windows))]
 pub fn copy_text(_: &str) -> Result<(), String> {
@@ -585,6 +586,78 @@ mod native_extra {
         }
         let hwnd = unsafe { FindWindowW(null(), wide(title).as_ptr()) };
         (!hwnd.is_null()).then_some(hwnd as isize)
+    }
+    /// Nonactivating owned popup; preserve the viewport's supplied rectangle.
+    pub fn configure_popup(
+        title: &str,
+        owner: isize,
+        visible: bool,
+        topmost: bool,
+    ) -> Result<(), String> {
+        configure_owned_popup(title, owner, visible, topmost, false)
+    }
+    /// Click-through nonactivating tooltip above its owner; preserve supplied bounds.
+    pub fn configure_tooltip(
+        title: &str,
+        owner: isize,
+        visible: bool,
+        topmost: bool,
+    ) -> Result<(), String> {
+        configure_owned_popup(title, owner, visible, topmost, true)
+    }
+    fn configure_owned_popup(
+        title: &str,
+        owner: isize,
+        visible: bool,
+        topmost: bool,
+        click_through: bool,
+    ) -> Result<(), String> {
+        unsafe {
+            let popup = find_window(title).ok_or("弹出窗口尚未创建")? as HWND;
+            let owner = owner as HWND;
+            let (mut a, mut b) = (0, 0);
+            GetWindowThreadProcessId(owner, &mut a);
+            GetWindowThreadProcessId(popup, &mut b);
+            if a != windows_sys::Win32::System::Threading::GetCurrentProcessId()
+                || a != b
+                || owner == popup
+            {
+                return Err("弹出窗口必须属于当前应用".into());
+            }
+            let style = GetWindowLongPtrW(popup, GWL_EXSTYLE) as u32;
+            let desired = (style | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW)
+                & !(WS_EX_APPWINDOW | WS_EX_TRANSPARENT);
+            let desired = if click_through {
+                desired | WS_EX_TRANSPARENT
+            } else {
+                desired
+            };
+            if style != desired {
+                SetWindowLongPtrW(popup, GWL_EXSTYLE, desired as isize);
+            }
+            SetWindowLongPtrW(popup, GWLP_HWNDPARENT, owner as isize);
+            if !visible || IsWindowVisible(owner) == 0 || IsIconic(owner) != 0 {
+                ShowWindow(popup, SW_HIDE);
+                return Ok(());
+            }
+            if SetWindowPos(
+                popup,
+                if topmost {
+                    HWND_TOPMOST
+                } else {
+                    HWND_NOTOPMOST
+                },
+                0,
+                0,
+                0,
+                0,
+                SWP_NOACTIVATE | SWP_NOSIZE | SWP_NOMOVE | SWP_SHOWWINDOW | SWP_NOOWNERZORDER,
+            ) == 0
+            {
+                return Err(std::io::Error::last_os_error().to_string());
+            }
+            Ok(())
+        }
     }
     /// Set passthrough/z-order for the Glow viewport without changing its bounds.
     pub fn configure_glow(

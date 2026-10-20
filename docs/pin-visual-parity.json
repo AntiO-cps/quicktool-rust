@@ -1,0 +1,36 @@
+{
+  "image": {
+    "pixels": 120000,
+    "maeRGBA": [
+      0.3789416666666667,
+      0.38165,
+      0.4024083333333333,
+      0.0
+    ],
+    "differentPixels": 77737
+  },
+  "toolbar": {
+    "pixels": 20000,
+    "maeRGBA": [
+      3.0525,
+      3.09275,
+      3.289,
+      0.0962
+    ],
+    "differentPixels": 2837
+  },
+  "panBackground": {
+    "original-pin-image.png": [
+      38,
+      62,
+      92,
+      255
+    ],
+    "pin-image-reviewed.png": [
+      38,
+      62,
+      92,
+      255
+    ]
+  }
+}

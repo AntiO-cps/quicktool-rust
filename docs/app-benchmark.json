@@ -1,5 +1,5 @@
 {
-  "measured_at": "2026-10-20T15:22:03.009Z",
+  "measured_at": "2026-10-20T17:08:05.266Z",
   "platform": "win32",
   "architecture": "x64",
   "cpu": "AMD Ryzen 9 7940H w/ Radeon 780M Graphics     ",
@@ -15,120 +15,120 @@
   "metrics": {
     "startup_ms": {
       "rust_samples": [
-        603.4064999999999,
-        1183.2070999999999,
-        698.6954
+        629.6422,
+        842.3446,
+        1122.5890000000002
       ],
       "original_samples": [
-        3303.0983,
-        2444.6648,
-        1557.3688000000002
+        3464.6464,
+        3416.3841,
+        3748.0521
       ],
-      "rust_median": 698.6954,
-      "original_median": 2444.6648,
-      "reduction_percent": 71.4195827583397
+      "rust_median": 842.3446,
+      "original_median": 3464.6464,
+      "reduction_percent": 75.6874294588908
     },
     "working_set_bytes": {
       "rust_samples": [
-        226873344,
-        203563008,
-        203796480
+        203808768,
+        337162240,
+        245075968
       ],
       "original_samples": [
-        901181440,
-        896819200,
-        894476288
+        899166208,
+        888483840,
+        872361984
       ],
-      "rust_median": 203796480,
-      "original_median": 896819200,
-      "reduction_percent": 77.27563370632564
+      "rust_median": 245075968,
+      "original_median": 888483840,
+      "reduction_percent": 72.4163842979969
     },
     "private_bytes": {
       "rust_samples": [
-        189063168,
-        175972352,
-        175497216
+        176328704,
+        298967040,
+        207548416
       ],
       "original_samples": [
-        687779840,
-        693022720,
-        693563392
+        681611264,
+        692215808,
+        675774464
       ],
-      "rust_median": 175972352,
-      "original_median": 693022720,
-      "reduction_percent": 74.60799669020952
+      "rust_median": 207548416,
+      "original_median": 681611264,
+      "reduction_percent": 69.55032480214412
     }
   },
   "queries": [
     {
       "query": "0xFF",
-      "rust_rebuild_ms_median": 255.5583,
-      "original_rebuild_ms_median": 72.39999997615814,
-      "rust_layout_ms_median": 282.2495,
-      "original_layout_ms_median": 76.30000001192093
+      "rust_rebuild_ms_median": 9.2195,
+      "original_rebuild_ms_median": 93.60000002384186,
+      "rust_layout_ms_median": 21.3271,
+      "original_layout_ms_median": 98.80000001192093
     },
     {
       "query": "100cm",
-      "rust_rebuild_ms_median": 0.42069999999999996,
-      "original_rebuild_ms_median": 14.199999988079071,
-      "rust_layout_ms_median": 34.5041,
-      "original_layout_ms_median": 22.19999998807907
+      "rust_rebuild_ms_median": 1.6891,
+      "original_rebuild_ms_median": 15.600000023841858,
+      "rust_layout_ms_median": 18.195200000000003,
+      "original_layout_ms_median": 19.900000035762787
     },
     {
       "query": "#7c3aed",
-      "rust_rebuild_ms_median": 0.5216,
-      "original_rebuild_ms_median": 17,
-      "rust_layout_ms_median": 30.7584,
-      "original_layout_ms_median": 22.400000035762787
+      "rust_rebuild_ms_median": 1.8550000000000002,
+      "original_rebuild_ms_median": 14.899999976158142,
+      "rust_layout_ms_median": 51.1986,
+      "original_layout_ms_median": 23.100000023841858
     },
     {
       "query": "/时间 2026-10-20 12:34:56",
-      "rust_rebuild_ms_median": 0.1129,
-      "original_rebuild_ms_median": 8.5,
-      "rust_layout_ms_median": 16.054599999999997,
-      "original_layout_ms_median": 13
+      "rust_rebuild_ms_median": 0.0869,
+      "original_rebuild_ms_median": 14.299999952316284,
+      "rust_layout_ms_median": 6.7752,
+      "original_layout_ms_median": 19.19999998807907
     },
     {
       "query": "/json {\"a\":1}",
-      "rust_rebuild_ms_median": 0.063,
-      "original_rebuild_ms_median": 3.5,
-      "rust_layout_ms_median": 43.475699999999996,
-      "original_layout_ms_median": 7.200000047683716
+      "rust_rebuild_ms_median": 0.0507,
+      "original_rebuild_ms_median": 4.200000047683716,
+      "rust_layout_ms_median": 11.3609,
+      "original_layout_ms_median": 6.700000047683716
     },
     {
       "query": "/base64 Rust 性能",
-      "rust_rebuild_ms_median": 0.0896,
-      "original_rebuild_ms_median": 5.300000011920929,
-      "rust_layout_ms_median": 34.2067,
-      "original_layout_ms_median": 7.100000023841858
+      "rust_rebuild_ms_median": 0.046,
+      "original_rebuild_ms_median": 7.5,
+      "rust_layout_ms_median": 16.874299999999998,
+      "original_layout_ms_median": 10.5
     },
     {
       "query": "/国家 CN",
-      "rust_rebuild_ms_median": 0.30160000000000003,
-      "original_rebuild_ms_median": 19.599999964237213,
-      "rust_layout_ms_median": 41.031,
-      "original_layout_ms_median": 25.19999998807907
+      "rust_rebuild_ms_median": 0.3417,
+      "original_rebuild_ms_median": 30.30000001192093,
+      "rust_layout_ms_median": 57.8665,
+      "original_layout_ms_median": 36.90000003576279
     },
     {
       "query": "/大小写 QuickTool Rust",
-      "rust_rebuild_ms_median": 0.0633,
-      "original_rebuild_ms_median": 7.600000023841858,
-      "rust_layout_ms_median": 31.2942,
-      "original_layout_ms_median": 11
+      "rust_rebuild_ms_median": 0.0245,
+      "original_rebuild_ms_median": 10.399999976158142,
+      "rust_layout_ms_median": 44.212799999999994,
+      "original_layout_ms_median": 15.600000023841858
     },
     {
       "query": "/unicode U+00FF",
-      "rust_rebuild_ms_median": 0.10969999999999999,
-      "original_rebuild_ms_median": 200.60000002384186,
-      "rust_layout_ms_median": 25.0306,
-      "original_layout_ms_median": 203.10000002384186
+      "rust_rebuild_ms_median": 0.0675,
+      "original_rebuild_ms_median": 378,
+      "rust_layout_ms_median": 57.329499999999996,
+      "original_layout_ms_median": 384.69999998807907
     },
     {
       "query": "/帮助",
-      "rust_rebuild_ms_median": 1.2348999999999999,
-      "original_rebuild_ms_median": 45,
-      "rust_layout_ms_median": 32.114,
-      "original_layout_ms_median": 57
+      "rust_rebuild_ms_median": 0.1202,
+      "original_rebuild_ms_median": 60.39999997615814,
+      "rust_layout_ms_median": 57.1906,
+      "original_layout_ms_median": 78.19999998807907
     }
   ],
   "limits": [

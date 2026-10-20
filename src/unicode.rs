@@ -4,51 +4,47 @@ use crate::{
 };
 use serde_json::Value;
 use std::sync::OnceLock;
-fn metadata() -> &'static Value {
-    static DATA: OnceLock<Value> = OnceLock::new();
-    DATA.get_or_init(|| {
-        serde_json::from_str(include_str!("../assets/data/unicode-meta.json")).unwrap()
-    })
+// Read-only generated data: no first-query JSON parsing or per-character heap
+// allocations. Rows retain the original JavaScript enumeration for name search.
+const INDEX_BYTES: &[u8] = include_bytes!("../assets/unicode-index.bin");
+fn word(offset: usize) -> usize {
+    u32::from_le_bytes(INDEX_BYTES[offset..offset + 4].try_into().unwrap()) as usize
 }
 struct Row {
-    hex: &'static str,
     name: &'static str,
     category: &'static str,
     cp: u32,
 }
-fn index() -> &'static Vec<Row> {
-    static INDEX: OnceLock<Vec<Row>> = OnceLock::new();
-    INDEX.get_or_init(|| {
-        let mut rows: Vec<_> = metadata()["meta"]
-            .as_object()
-            .unwrap()
-            .iter()
-            .filter_map(|(hex, value)| {
-                let name = value[0].as_str()?;
-                if name.is_empty() {
-                    return None;
-                }
-                Some(Row {
-                    hex,
-                    name,
-                    category: value[1].as_str().unwrap_or("Cn"),
-                    cp: u32::from_str_radix(hex, 16).ok()?,
-                })
-            })
-            .collect();
-        let key = |hex: &str| {
-            hex.parse::<u32>()
-                .ok()
-                .filter(|n| n.to_string() == hex && *n < u32::MAX)
-        };
-        rows.sort_by(|a, b| match (key(a.hex), key(b.hex)) {
-            (Some(a), Some(b)) => a.cmp(&b),
-            (Some(_), None) => std::cmp::Ordering::Less,
-            (None, Some(_)) => std::cmp::Ordering::Greater,
-            _ => std::cmp::Ordering::Equal,
-        });
-        rows
-    })
+fn row(index: usize) -> Row {
+    let at = 16 + index * 16;
+    let start = word(12) + word(at + 4);
+    let length = word(at + 8);
+    Row {
+        cp: word(at) as u32,
+        name: std::str::from_utf8(&INDEX_BYTES[start..start + length]).unwrap(),
+        category: std::str::from_utf8(&INDEX_BYTES[at + 12..at + 14]).unwrap(),
+    }
+}
+fn index() -> impl Iterator<Item = Row> {
+    (0..word(4)).map(row)
+}
+/// Original Unicode name and general category without loading the JSON dataset.
+pub fn character_metadata(cp: u32) -> Option<(&'static str, &'static str)> {
+    let base = word(8);
+    let (mut low, mut high) = (0, word(4));
+    while low < high {
+        let middle = low + (high - low) / 2;
+        let at = base + middle * 8;
+        match (word(at) as u32).cmp(&cp) {
+            std::cmp::Ordering::Less => low = middle + 1,
+            std::cmp::Ordering::Greater => high = middle,
+            std::cmp::Ordering::Equal => {
+                let result = row(word(at + 4));
+                return Some((result.name, result.category));
+            }
+        }
+    }
+    None
 }
 fn filter(row: &Row, kind: &str) -> bool {
     let cp = row.cp;
@@ -108,7 +104,7 @@ pub fn name_search(q: &str, kind: &str) -> Vec<ResultItem> {
     };
     let mut found = Vec::new();
     for row in index() {
-        if !filter(row, kind) || !terms.iter().any(|t| row.name.contains(t)) {
+        if !filter(&row, kind) || !terms.iter().any(|t| row.name.contains(t)) {
             continue;
         }
         let Some(ch) = char::from_u32(row.cp) else {
@@ -178,9 +174,8 @@ pub fn results(q: &str, kind: &str) -> Result<Vec<ResultItem>, String> {
         } else {
             "<unnamed>".into()
         };
-        let name = metadata()["meta"][&hex][0]
-            .as_str()
-            .filter(|s| !s.is_empty())
+        let name = character_metadata(cp)
+            .map(|(name, _)| name)
             .unwrap_or(&default);
         let utf8 = ch
             .to_string()

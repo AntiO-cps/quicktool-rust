@@ -196,6 +196,56 @@ fn adjustable_backdrop_tracks_owner_and_releases_window() {
             ],
             [-31990, -32000, 180, 150]
         );
+        platform::configure_popup(&title_text, hwnd as isize, true, true).unwrap();
+        let popup_style = GetWindowLongW(companion, GWL_EXSTYLE) as u32;
+        assert_eq!(
+            popup_style & (WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW),
+            WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW
+        );
+        assert_eq!(popup_style & (WS_EX_APPWINDOW | WS_EX_TRANSPARENT), 0);
+        assert_eq!(GetWindowLongPtrW(companion, GWLP_HWNDPARENT), hwnd as isize);
+        let mut popup_rect: windows_sys::Win32::Foundation::RECT = std::mem::zeroed();
+        GetWindowRect(companion, &mut popup_rect);
+        assert_eq!(
+            [
+                popup_rect.left,
+                popup_rect.top,
+                popup_rect.right,
+                popup_rect.bottom
+            ],
+            [rect.left, rect.top, rect.right, rect.bottom]
+        );
+        let foreground = GetForegroundWindow();
+        platform::configure_tooltip(&title_text, hwnd as isize, true, true).unwrap();
+        let tip_style = GetWindowLongW(companion, GWL_EXSTYLE) as u32;
+        assert_eq!(
+            tip_style & (WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_TRANSPARENT | WS_EX_TOPMOST),
+            WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_TRANSPARENT | WS_EX_TOPMOST
+        );
+        assert_eq!(tip_style & WS_EX_APPWINDOW, 0);
+        assert_eq!(GetWindowLongPtrW(companion, GWLP_HWNDPARENT), hwnd as isize);
+        GetWindowRect(companion, &mut popup_rect);
+        assert_eq!(
+            [
+                popup_rect.left,
+                popup_rect.top,
+                popup_rect.right,
+                popup_rect.bottom
+            ],
+            [rect.left, rect.top, rect.right, rect.bottom]
+        );
+        assert_eq!(GetForegroundWindow(), foreground);
+        assert!(platform::configure_tooltip(&title_text, 0, true, true).is_err());
+        platform::configure_tooltip(&title_text, hwnd as isize, false, true).unwrap();
+        assert_eq!(IsWindowVisible(companion), 0);
+        platform::configure_popup(&title_text, hwnd as isize, true, true).unwrap();
+        assert_eq!(
+            GetWindowLongW(companion, GWL_EXSTYLE) as u32 & WS_EX_TRANSPARENT,
+            0
+        );
+        assert!(platform::configure_popup(&title_text, 0, true, true).is_err());
+        platform::configure_popup(&title_text, hwnd as isize, false, true).unwrap();
+        assert_eq!(IsWindowVisible(companion), 0);
         platform::configure_glow(&title_text, hwnd as isize, false, true).unwrap();
         assert_eq!(IsWindowVisible(companion), 0);
         assert!(

@@ -20,6 +20,8 @@ pub struct HistoryItem {
     pub thumbnail: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub mode: Option<HistoryMode>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub image_asset: Option<String>,
 }
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -139,6 +141,14 @@ impl Store {
         }
     }
     pub fn default_root() -> PathBuf {
+        let mut args = std::env::args_os();
+        while let Some(arg) = args.next() {
+            if arg == "--data-dir" {
+                if let Some(directory) = args.next().filter(|value| !value.is_empty()) {
+                    return PathBuf::from(directory);
+                }
+            }
+        }
         std::env::var_os("QUICKTOOL_RUST_DATA_DIR")
             .map(PathBuf::from)
             .unwrap_or_else(|| {
@@ -237,6 +247,7 @@ impl Store {
                 pin_state: None,
                 thumbnail: None,
                 mode,
+                image_asset: None,
             },
         );
         let limit = self.settings["historyLimit"]
@@ -295,6 +306,96 @@ impl Store {
         }
         self.pin_worker.as_ref().unwrap().queue(update)
     }
+    /// Encode and write assets on the shared background worker.
+    #[allow(clippy::too_many_arguments)]
+    pub fn enqueue_image_with_mode(
+        &mut self,
+        input: &str,
+        tool: &str,
+        title: &str,
+        source: std::sync::Arc<image::RgbaImage>,
+        mode: Option<HistoryMode>,
+        wake: impl Fn() + Send + 'static,
+    ) -> io::Result<String> {
+        if self.history_blocked {
+            return Err(io::Error::other("历史源文件读取失败，禁止覆盖"));
+        }
+        let created = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_millis() as u64;
+        let mut random = [0u8; 8];
+        getrandom::fill(&mut random).map_err(|e| io::Error::other(e.to_string()))?;
+        let id = format!("{created}-{:x}", u64::from_le_bytes(random));
+        let item = HistoryItem {
+            id: id.clone(),
+            input: input.into(),
+            tool: tool.into(),
+            title: title.into(),
+            value: format!("图片 {} × {}", source.width(), source.height()),
+            pinned: false,
+            created,
+            pin_state: None,
+            thumbnail: None,
+            mode,
+            image_asset: None,
+        };
+        if self.pin_worker.is_none() {
+            let existing = self
+                .history
+                .iter()
+                .filter_map(|h| h.pin_state.as_ref())
+                .filter_map(|p| p.asset.as_ref().map(|a| (p.history_id.clone(), a.clone())))
+                .collect();
+            self.pin_worker = Some(crate::pin_storage::Worker::start(
+                self.root.clone(),
+                existing,
+                wake,
+            ));
+        }
+        self.pin_worker
+            .as_ref()
+            .unwrap()
+            .queue_image(item, source)?;
+        Ok(id)
+    }
+    fn apply_image(&mut self, item: HistoryItem) -> io::Result<()> {
+        let previous = self.history.clone();
+        let position = self
+            .history
+            .iter()
+            .position(|h| h.created <= item.created)
+            .unwrap_or(self.history.len());
+        self.history.insert(position, item);
+        let limit = self.settings["historyLimit"]
+            .as_f64()
+            .unwrap_or(500.)
+            .round()
+            .clamp(0., 10000.) as usize;
+        let mut count = 0;
+        self.history.retain(|h| {
+            if h.pinned {
+                true
+            } else {
+                count += 1;
+                count <= limit
+            }
+        });
+        if let Err(e) = self.save_history() {
+            self.history = previous;
+            return Err(e);
+        }
+        Ok(())
+    }
+    pub fn load_history_image(&self, id: &str) -> io::Result<image::RgbaImage> {
+        let asset = self
+            .history
+            .iter()
+            .find(|h| h.id == id)
+            .and_then(|h| h.image_asset.as_deref())
+            .ok_or_else(|| io::Error::other("图片历史原图不存在"))?;
+        crate::pin_storage::load_image(&self.root, asset)
+    }
     pub fn poll_pin_updates(&mut self) -> Vec<String> {
         let prepared = self
             .pin_worker
@@ -305,7 +406,11 @@ impl Store {
         for result in prepared {
             match result {
                 Ok(prepared) => {
-                    if let Err(e) = self.apply_pin(prepared) {
+                    let applied = match prepared {
+                        crate::pin_storage::Prepared::Pin(pin) => self.apply_pin(*pin),
+                        crate::pin_storage::Prepared::Image(item) => self.apply_image(*item),
+                    };
+                    if let Err(e) = applied {
                         errors.push(e.to_string());
                     }
                 }
@@ -358,6 +463,7 @@ impl Store {
             value,
             pinned,
             created: pin.created,
+            image_asset: None,
             pin_state: Some(pin),
             thumbnail: prepared.thumbnail,
             mode: Some(HistoryMode {

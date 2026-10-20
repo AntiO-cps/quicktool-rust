@@ -55,3 +55,4 @@ incremental = false
 
 [patch.crates-io]
 epaint = { path = "vendor/epaint" }
+eframe = { path = "vendor/eframe" }

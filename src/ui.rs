@@ -2,6 +2,8 @@
 mod attachments;
 #[path = "theme.rs"]
 mod glow;
+#[path = "widgets.rs"]
+mod widgets;
 use eframe::egui::{epaint::Shadow, *};
 use quicktool_rust::{
     core::ResultItem, index, pins::PinManager, platform, storage::Store, system, tools,
@@ -11,7 +13,27 @@ use std::{
     collections::HashMap,
     time::{Duration, Instant},
 };
+use widgets::NativeTooltip as _;
 const ACCENT: Color32 = Color32::from_rgb(155, 188, 255);
+type AttachmentLoad = Result<(attachments::Attachment, Option<Vec<ResultItem>>), String>;
+fn clipboard_has_image() -> bool {
+    #[cfg(windows)]
+    {
+        use windows_sys::Win32::System::DataExchange::{
+            IsClipboardFormatAvailable, RegisterClipboardFormatW,
+        };
+        let png = "PNG\0".encode_utf16().collect::<Vec<_>>();
+        unsafe {
+            IsClipboardFormatAvailable(8) != 0
+                || IsClipboardFormatAvailable(17) != 0
+                || IsClipboardFormatAvailable(RegisterClipboardFormatW(png.as_ptr())) != 0
+        }
+    }
+    #[cfg(not(windows))]
+    {
+        false
+    }
+}
 #[derive(Clone)]
 struct Row {
     score: f64,
@@ -79,6 +101,48 @@ fn help_description(id: &str) -> &str {
         "history" => "查看、恢复和管理历史",
         "settings" => "外观、快捷键与索引设置",
         _ => "选择命令后进入工具模式",
+    }
+}
+fn mode_entry(id: &str) -> bool {
+    matches!(
+        id,
+        "time"
+            | "json"
+            | "color"
+            | "case"
+            | "base64"
+            | "base"
+            | "url"
+            | "escape"
+            | "char"
+            | "mathchar"
+            | "greek"
+            | "bopomofo"
+            | "emoji"
+            | "width"
+            | "country"
+            | "pin"
+            | "clipboard"
+            | "run"
+            | "cd"
+            | "open"
+            | "winsettings"
+            | "cmd"
+            | "powershell"
+            | "terminal"
+            | "registry"
+            | "text"
+            | "unit"
+    )
+}
+fn help_group_index(id: &str) -> usize {
+    match id {
+        "calculator" | "time" | "color" | "base" | "unit" => 0,
+        "json" | "case" | "base64" | "url" | "escape" | "width" | "text" | "uuid" | "random" => 1,
+        "char" | "mathchar" | "greek" | "bopomofo" | "emoji" | "country" => 2,
+        "run" | "files" | "cd" | "open" | "registry" => 3,
+        "pin" | "pinwindow" | "clipboard" | "history" | "settings" => 4,
+        _ => 5,
     }
 }
 fn groups_contains(id: &str) -> bool {
@@ -150,39 +214,24 @@ fn now_date() -> String {
     )
 }
 fn setting_row(ui: &mut Ui, title: &str, description: &str, control: impl FnOnce(&mut Ui)) {
-    ui.add_space(8.);
+    ui.add_space(6.);
     ui.horizontal(|ui| {
         ui.vertical(|ui| {
             ui.set_width((ui.available_width() - 240.).max(120.));
             ui.label(
                 RichText::new(title)
-                    .font(FontId::new(12., FontFamily::Name("UiSetting".into())))
+                    .font(FontId::new(12.5, FontFamily::Name("UiSetting".into())))
                     .strong(),
             );
-            ui.label(RichText::new(description).size(10.).color(weak_color(ui)));
+            ui.label(RichText::new(description).size(10.5).color(weak_color(ui)));
         });
         ui.with_layout(Layout::right_to_left(Align::Center), control);
     });
-    ui.add_space(9.);
+    ui.add_space(5.);
     ui.separator();
 }
 fn select_setting(ui: &mut Ui, draft: &mut Value, key: &str, options: &[(&str, &str)]) {
-    let mut value = draft[key].as_str().unwrap_or(options[0].0).to_string();
-    ComboBox::from_id_salt(key)
-        .width(155.)
-        .selected_text(
-            options
-                .iter()
-                .find(|x| x.0 == value)
-                .map(|x| x.1)
-                .unwrap_or(&value),
-        )
-        .show_ui(ui, |ui| {
-            for (k, label) in options {
-                ui.selectable_value(&mut value, k.to_string(), *label);
-            }
-        });
-    draft[key] = value.into();
+    widgets::select(ui, draft, key, options);
 }
 fn keycap(ui: &mut Ui, text: &str) {
     let font = if text.is_ascii() {
@@ -241,6 +290,51 @@ fn selected_surface(ui: &Ui) -> Color32 {
         Color32::from_rgb(33, 39, 58)
     } else {
         Color32::from_rgb(222, 232, 249)
+    }
+}
+fn clip_text(text: &str, limit: usize) -> String {
+    let mut prefix = text.encode_utf16().take(limit + 1).collect::<Vec<_>>();
+    if prefix.len() <= limit {
+        return text.into();
+    }
+    prefix.truncate(limit.saturating_sub(1));
+    format!("{}…", String::from_utf16_lossy(&prefix))
+}
+fn country_candidates(query: &str) -> Vec<Value> {
+    let matches = quicktool_rust::countries::scored_matches(query, 5);
+    let threshold = matches
+        .first()
+        .map(|(_, score)| (score - 0.28).max(0.62))
+        .unwrap_or(1.);
+    matches
+        .into_iter()
+        .enumerate()
+        .filter(|(index, (_, score))| *index == 0 || *score >= threshold)
+        .take(4)
+        .map(|(_, (country, _))| country)
+        .collect()
+}
+fn country_completion(country: &Value, input: &str) -> String {
+    let query = input.trim();
+    let key = if query
+        .chars()
+        .any(|ch| ('\u{3400}'..='\u{9fff}').contains(&ch))
+    {
+        "nameZh"
+    } else if query.chars().all(|ch| ch.is_ascii_digit()) {
+        "numeric"
+    } else if query.len() == 2 && query.is_ascii() {
+        "alpha2"
+    } else if query.len() == 3 && query.is_ascii() {
+        "alpha3"
+    } else {
+        "nameEn"
+    };
+    let value = country[key].as_str().unwrap_or("");
+    if matches!(key, "alpha2" | "alpha3") && query == query.to_lowercase() {
+        value.to_lowercase()
+    } else {
+        value.replace('（', "(").replace('）', ")")
     }
 }
 
@@ -305,6 +399,8 @@ struct Probe {
     path: std::path::PathBuf,
     ready_at: Option<Instant>,
     startup_ms: f64,
+    ready_frame: u32,
+    idle_frames: Option<u32>,
     idle: Option<Value>,
     pending: Option<(String, Instant, f64)>,
     samples: Vec<Value>,
@@ -356,7 +452,10 @@ pub struct QuickTool {
     store: Store,
     input: String,
     attachment: Option<attachments::Attachment>,
+    attachment_job: Option<std::sync::mpsc::Receiver<AttachmentLoad>>,
+    attachment_results: Option<Vec<ResultItem>>,
     decoded_image: Option<attachments::Attachment>,
+    image_copy: Option<std::sync::mpsc::Receiver<Result<(), String>>>,
     mode: Option<String>,
     rows: Vec<Row>,
     selected: usize,
@@ -372,6 +471,7 @@ pub struct QuickTool {
     submode: Option<String>,
     completion_suppressed: Option<String>,
     recording_shortcut: bool,
+    recording_rect: Option<Rect>,
     shortcut_error: Option<String>,
     color_picker: bool,
     picker_color: [f32; 4],
@@ -380,6 +480,7 @@ pub struct QuickTool {
     toast: Option<(String, Instant)>,
     last_height: f32,
     result_height: f32,
+    result_scroll: f32,
     screenshot: Option<std::path::PathBuf>,
     screenshot_sent: bool,
     screenshot_requested: Option<Instant>,
@@ -395,6 +496,7 @@ pub struct QuickTool {
     backdrop_initialized: bool,
     glow: glow::Glow,
     main_visible: bool,
+    applied_topmost: Option<bool>,
     context: Context,
     file_index: Option<index::Index>,
     file_status: index::Status,
@@ -470,7 +572,13 @@ fn font_setup(ctx: &Context) {
             .unwrap()
             .push("segoe".into());
     }
-    for (name, weight) in [("UiMedium", 570.), ("UiSetting", 590.), ("UiStrong", 650.)] {
+    for (name, weight) in [
+        ("UiMedium", 570.),
+        ("UiSetting", 590.),
+        ("UiStrong", 650.),
+        ("UiHelp", 600.),
+        ("UiTag", 560.),
+    ] {
         let key = format!("misans-{weight}");
         fonts.font_data.insert(
             key.clone(),
@@ -507,9 +615,16 @@ fn font_setup(ctx: &Context) {
     fonts
         .families
         .insert(FontFamily::Name("MonoResult".into()), mono_fallback);
+    fonts.font_data.insert(
+        "pin-misans".into(),
+        std::sync::Arc::new(
+            FontData::from_static(include_bytes!("../assets/assets/fonts/MiSans-VF.ttf"))
+                .variation(*b"wght", 400.),
+        ),
+    );
     fonts.families.insert(
         FontFamily::Name("PinText".into()),
-        ["yahei", "segoe", "misans"]
+        ["pin-misans", "yahei", "segoe", "misans"]
             .into_iter()
             .filter(|name| fonts.font_data.contains_key(*name))
             .map(str::to_string)
@@ -520,7 +635,7 @@ fn font_setup(ctx: &Context) {
 fn icon_textures(ctx: &Context) -> HashMap<String, TextureHandle> {
     let mut map = HashMap::new();
     let data: Value = serde_json::from_str(include_str!("../assets/icons.json")).unwrap();
-    let builtin: Value = serde_json::from_str(include_str!("../assets/ui-icons.json")).unwrap();
+    let builtin: Value = serde_json::from_str(include_str!("ui_icons.json")).unwrap();
     for (key, value) in data["icons"]
         .as_object()
         .unwrap()
@@ -532,7 +647,7 @@ fn icon_textures(ctx: &Context) -> HashMap<String, TextureHandle> {
         };
         let svg = format!(
             "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>{}</svg>",
-            body.replace("currentColor", "#dce2ee")
+            body.replace("currentColor", "#ffffff")
         );
         let Ok(tree) = resvg::usvg::Tree::from_str(&svg, &Default::default()) else {
             continue;
@@ -591,7 +706,12 @@ impl QuickTool {
             .map(std::path::PathBuf::from);
         let unattended = screenshot.is_some()
             || metrics_path.is_some()
-            || std::env::args().any(|a| a == "--pin-screenshot" || a == "--pin-effects-screenshot");
+            || std::env::args().any(|a| {
+                a == "--pin-screenshot"
+                    || a == "--pin-effects-screenshot"
+                    || a == "--select-screenshot"
+                    || a == "--glow-screenshot"
+            });
         let (hotkey, hotkey_error) = if !unattended {
             let context = cc.egui_ctx.clone();
             match platform::hotkey(
@@ -615,7 +735,10 @@ impl QuickTool {
             store,
             input,
             attachment: None,
+            attachment_job: None,
+            attachment_results: None,
             decoded_image: None,
+            image_copy: None,
             mode: None,
             rows: vec![],
             selected: 0,
@@ -631,6 +754,7 @@ impl QuickTool {
             submode: None,
             completion_suppressed: None,
             recording_shortcut: false,
+            recording_rect: None,
             shortcut_error: None,
             color_picker: false,
             picker_color: [0.486, 0.227, 0.929, 1.],
@@ -639,6 +763,7 @@ impl QuickTool {
             toast: None,
             last_height: 84.,
             result_height: 220.,
+            result_scroll: 0.,
             screenshot: screenshot.clone(),
             screenshot_sent: false,
             screenshot_requested: None,
@@ -646,6 +771,8 @@ impl QuickTool {
                 path,
                 ready_at: None,
                 startup_ms: 0.,
+                ready_frame: 0,
+                idle_frames: None,
                 idle: None,
                 pending: None,
                 samples: vec![],
@@ -666,6 +793,7 @@ impl QuickTool {
             backdrop_initialized: false,
             glow: Default::default(),
             main_visible: true,
+            applied_topmost: None,
             context: cc.egui_ctx.clone(),
             file_index: None,
             file_status: Default::default(),
@@ -698,6 +826,26 @@ impl QuickTool {
             app.panel = match panel.as_str() {
                 "settings" => Panel::Settings,
                 "history" => Panel::History,
+                "color-picker" => {
+                    app.color_picker = true;
+                    if let Some(color) = quicktool_rust::colors::candidates(&app.input).first() {
+                        app.picker_color = [
+                            color.r as f32,
+                            color.g as f32,
+                            color.b as f32,
+                            color.a as f32,
+                        ];
+                    }
+                    Panel::None
+                }
+                "date-picker" => {
+                    app.date_picker = true;
+                    app.mode = Some("time".into());
+                    if !app.input.is_empty() {
+                        app.date_value = app.input.clone();
+                    }
+                    Panel::None
+                }
                 _ => Panel::None,
             };
         }
@@ -813,7 +961,13 @@ impl QuickTool {
     }
     fn icon_button(&self, ui: &mut Ui, key: &str, label: &str, active: bool) -> Response {
         let button = if let Some(t) = self.icons.get(key) {
-            Button::image(Image::new(t).fit_to_exact_size(vec2(19., 19.)))
+            Button::image(Image::new(t).fit_to_exact_size(vec2(19., 19.)).tint(
+                if ui.visuals().dark_mode {
+                    Color32::from_rgb(165, 173, 189)
+                } else {
+                    Color32::from_rgb(91, 102, 122)
+                },
+            ))
         } else {
             Button::new(label)
         };
@@ -827,10 +981,18 @@ impl QuickTool {
                     Color32::TRANSPARENT
                 }),
         )
-        .on_hover_text(label)
+        .native_tooltip(label)
     }
     fn set_attachment(&mut self, attachment: attachments::Attachment) {
-        let image = &attachment.rgba;
+        let prepared = Some(attachment.results());
+        self.set_attachment_ready(attachment, prepared);
+    }
+    fn set_attachment_ready(
+        &mut self,
+        attachment: attachments::Attachment,
+        prepared: Option<Vec<ResultItem>>,
+    ) {
+        let image = &attachment.thumbnail;
         self.icons.insert(
             "input-attachment".into(),
             self.context.load_texture(
@@ -843,13 +1005,50 @@ impl QuickTool {
             ),
         );
         self.attachment = Some(attachment);
+        self.attachment_results = prepared;
+        self.rows.clear();
         self.input.clear();
         self.focus = true;
         self.rebuild();
     }
+    fn load_attachment(
+        &mut self,
+        loader: impl FnOnce() -> Result<attachments::Attachment, String> + Send + 'static,
+    ) {
+        let prepare = self.mode.is_none() || self.mode.as_deref() == Some("base64");
+        let context = self.context.clone();
+        let (sender, receiver) = std::sync::mpsc::channel();
+        self.attachment_job = Some(receiver);
+        std::thread::spawn(move || {
+            let result = loader().map(|attachment| {
+                let results = prepare.then(|| attachment.results());
+                (attachment, results)
+            });
+            let _ = sender.send(result);
+            context.request_repaint();
+        });
+    }
     fn rebuild(&mut self) {
+        if self.attachment.is_some()
+            && ((self.mode.is_none() && !self.input.starts_with('/'))
+                || self.mode.as_deref() == Some("base64"))
+            && self.rows.len() == 2
+            && self.rows[0].item.title == "图片 → Base64"
+            && self.rows[1].item.title == "图片 → Data URL"
+        {
+            return;
+        }
         self.decoded_image = None;
         self.rebuild_inner();
+        if self.mode.is_none()
+            && !self.input.starts_with('/')
+            && self
+                .rows
+                .first()
+                .is_some_and(|row| row.tool == "country" && !row.command)
+        {
+            self.country_cache = country_candidates(&self.input);
+        }
         if self.attachment.is_some() || self.submode.as_deref() == Some("encode") {
             return;
         }
@@ -858,17 +1057,20 @@ impl QuickTool {
             .iter()
             .position(|row| row.tool == "base64" && !row.command)
         {
-            let input = if self.mode.as_deref() == Some("base64") {
-                parse_sub_arg("base64", &self.input).1
+            let (inline_sub, input) = if self.mode.as_deref() == Some("base64") {
+                parse_sub_arg("base64", &self.input)
             } else if let Some((_, args)) =
                 self.input.strip_prefix('/').and_then(|s| s.split_once(' '))
             {
-                parse_sub_arg("base64", args).1
+                parse_sub_arg("base64", args)
             } else {
-                self.input.as_str()
+                (None, self.input.as_str())
             };
+            if inline_sub == Some("encode") {
+                return;
+            }
             if let Ok(image) = attachments::Attachment::from_base64(input) {
-                let rgba = &image.rgba;
+                let rgba = &image.thumbnail;
                 self.icons.insert(
                     "decoded-image".into(),
                     self.context.load_texture(
@@ -881,7 +1083,7 @@ impl QuickTool {
                     ),
                 );
                 self.rows.insert(
-                    index + 1,
+                    index + usize::from(self.rows[index].item.title.contains("编码")),
                     Row {
                         score: self.rows[index].score,
                         tool: "base64".into(),
@@ -910,8 +1112,10 @@ impl QuickTool {
             if (self.mode.is_none() && !self.input.starts_with('/'))
                 || self.mode.as_deref() == Some("base64")
             {
-                self.rows = attachment
-                    .results()
+                self.rows = self
+                    .attachment_results
+                    .take()
+                    .unwrap_or_else(|| attachment.results())
                     .into_iter()
                     .map(|item| Row {
                         score: 1.2,
@@ -939,25 +1143,30 @@ impl QuickTool {
             return;
         }
         if let Some(id) = self.mode.clone() {
-            if self.input.is_empty()
-                && !id.starts_with("system:")
-                && subcommands(&id).is_empty()
-                && !matches!(
-                    id.as_str(),
-                    "uuid"
-                        | "random"
-                        | "clipboard"
-                        | "run"
-                        | "registry"
-                        | "pin"
-                        | "cd"
-                        | "help"
-                        | "emoji"
-                        | "greek"
-                        | "mathchar"
-                        | "bopomofo"
-                )
-            {
+            if self.input.is_empty() && !matches!(id.as_str(), "help" | "clipboard") {
+                self.rows = subcommands(&id)
+                    .into_iter()
+                    .map(|(sub, label, aliases)| Row {
+                        score: 0.98,
+                        tool: format!("@{sub}"),
+                        item: ResultItem::new(
+                            format!("/{}", aliases[0]),
+                            format!("固定为{label}模式"),
+                        ),
+                        command: true,
+                    })
+                    .collect();
+                let name = tools::commands()
+                    .iter()
+                    .find(|command| command.id == id)
+                    .map(|command| command.name.as_str())
+                    .unwrap_or(&id);
+                self.rows.push(Row {
+                    score: 0.6,
+                    tool: id.clone(),
+                    item: ResultItem::new(format!("{name} 模式"), "输入内容后立即处理"),
+                    command: false,
+                });
                 return;
             }
             let mut choices = Vec::new();
@@ -1012,7 +1221,21 @@ impl QuickTool {
                     choices.append(&mut self.rows);
                     self.rows = choices;
                 }
-                Err(e) => self.message(e),
+                Err(error) => {
+                    self.rows = vec![Row {
+                        score: 0.7,
+                        tool: id.clone(),
+                        item: ResultItem::new(
+                            tools::commands()
+                                .iter()
+                                .find(|command| command.id == id)
+                                .map(|command| command.name.as_str())
+                                .unwrap_or(&id),
+                            error,
+                        ),
+                        command: false,
+                    }];
+                }
             }
             return;
         }
@@ -1035,6 +1258,18 @@ impl QuickTool {
                     command: true,
                 })
                 .collect();
+            if self.rows.is_empty() {
+                self.rows = tools::commands()
+                    .iter()
+                    .take(7)
+                    .map(|command| Row {
+                        score: 0.5,
+                        tool: command.id.clone(),
+                        item: ResultItem::new(&command.name, format!("/{}", command.primary_alias)),
+                        command: true,
+                    })
+                    .collect();
+            }
             return;
         }
         if let Some(text) = self.input.strip_prefix('/') {
@@ -1062,10 +1297,79 @@ impl QuickTool {
                                 })
                                 .collect()
                         }
-                        Err(e) => self.message(e),
+                        Err(error) => {
+                            self.rows = vec![Row {
+                                score: 1.,
+                                tool: c.id.clone(),
+                                item: ResultItem::new(&c.name, error),
+                                command: false,
+                            }];
+                        }
                     }
                     return;
                 }
+            }
+            if tools::command(text).is_some_and(|command| command.id == "help") {
+                self.system_rows("help", "");
+                return;
+            }
+            if let Some(command) = tools::command(text) {
+                let id = command.id.clone();
+                if id.starts_with("system:") {
+                    self.system_rows(&id, "");
+                    return;
+                }
+                if mode_entry(&id) {
+                    self.rows = vec![Row {
+                        score: 1.1,
+                        tool: id,
+                        item: ResultItem::new(
+                            format!("进入 {} 模式", command.name),
+                            "Enter 固定为 Tag；Esc 退出",
+                        ),
+                        command: true,
+                    }];
+                    return;
+                }
+                if matches!(id.as_str(), "settings" | "history" | "pinwindow") {
+                    let (title, value) = match id.as_str() {
+                        "settings" => ("打开 QuickTool 设置", "调整外观和快捷键"),
+                        "history" => ("打开历史记录", "查看、恢复和复制历史"),
+                        _ => (
+                            if self.pinned {
+                                "取消钉住主窗口"
+                            } else {
+                                "钉住主窗口"
+                            },
+                            "切换主窗口钉住状态",
+                        ),
+                    };
+                    self.rows = vec![Row {
+                        score: 1.,
+                        tool: id,
+                        item: ResultItem::new(title, value),
+                        command: true,
+                    }];
+                    return;
+                }
+                self.rows = match self.execute_tool(&id, "") {
+                    Ok(items) => items
+                        .into_iter()
+                        .map(|item| Row {
+                            score: 1.,
+                            tool: id.clone(),
+                            item,
+                            command: false,
+                        })
+                        .collect(),
+                    Err(_) => vec![Row {
+                        score: 1.,
+                        tool: id,
+                        item: ResultItem::new(&command.name, "输入内容后立即处理"),
+                        command: false,
+                    }],
+                };
+                return;
             }
             let mut suggestions = tools::suggestions(text)
                 .into_iter()
@@ -1078,19 +1382,38 @@ impl QuickTool {
                     score,
                     tool: c.id.clone(),
                     item: ResultItem::new(
-                        &c.name,
                         format!(
                             "/{}",
                             tools::best_alias(c, text)
                                 .map(|(alias, _)| alias)
                                 .unwrap_or(&c.primary_alias)
                         ),
+                        &c.name,
                     ),
                     command: true,
                 })
                 .collect();
         } else {
             let mut candidates = tools::detect_scored(&self.input);
+            if let Some(score) = candidates
+                .iter()
+                .find(|(id, _, _)| id == "country")
+                .map(|(_, _, score)| *score)
+            {
+                candidates.retain(|(id, _, _)| id != "country");
+                candidates.extend(country_candidates(&self.input).into_iter().enumerate().map(
+                    |(index, country)| {
+                        (
+                            "country".to_string(),
+                            ResultItem::new(
+                                country["nameZh"].as_str().unwrap_or(""),
+                                country["alpha2"].as_str().unwrap_or(""),
+                            ),
+                            if index == 0 { score } else { 0.72 },
+                        )
+                    },
+                ));
+            }
             if let Some(score) = candidates
                 .iter()
                 .find(|(id, _, _)| id == "time")
@@ -1120,6 +1443,27 @@ impl QuickTool {
                     command: false,
                 })
                 .collect();
+            let command_rows = tools::suggestions(&self.input)
+                .into_iter()
+                .filter_map(|(command, score)| {
+                    let score = score + self.store.usage_boost(&command.id);
+                    if score < 0.60 {
+                        return None;
+                    }
+                    let alias = tools::best_alias(command, &self.input)
+                        .map(|(alias, _)| alias)
+                        .unwrap_or(&command.primary_alias);
+                    Some(Row {
+                        score: score - 0.06,
+                        tool: command.id.clone(),
+                        item: ResultItem::new(&command.name, format!("命令 /{alias}")),
+                        command: true,
+                    })
+                })
+                .collect::<Vec<_>>();
+            self.rows.extend(command_rows);
+            self.rows.sort_by(|a, b| b.score.total_cmp(&a.score));
+            self.rows.truncate(16);
             if self.screenshot.is_none()
                 && self.input.chars().any(char::is_alphabetic)
                 && self.input.chars().count() <= 128
@@ -1203,13 +1547,9 @@ impl QuickTool {
                 score: 1.1,
                 tool: id.into(),
                 item: ResultItem::new(
+                    &command.name,
                     if command.needs_arg && input.trim().is_empty() {
-                        "输入目标或参数后运行"
-                    } else {
-                        &command.name
-                    },
-                    if command.needs_arg && input.trim().is_empty() {
-                        String::new()
+                        "输入目标后运行".into()
                     } else if input.trim().is_empty() {
                         command.command.clone()
                     } else {
@@ -1221,6 +1561,48 @@ impl QuickTool {
             return true;
         }
         match id {
+            "help" => {
+                let mut commands = tools::commands()
+                    .iter()
+                    .filter(|command| command.id != "help")
+                    .filter_map(|command| {
+                        let score = if input.is_empty() {
+                            0.5
+                        } else {
+                            tools::best_alias(command, input)
+                                .map(|(_, score)| score)
+                                .unwrap_or(0.)
+                                .max(quicktool_rust::search::fuzzy(input, &command.name).score)
+                        };
+                        (input.is_empty() || score >= 0.58).then_some((command, score))
+                    })
+                    .collect::<Vec<_>>();
+                commands.sort_by(|(a, ascore), (b, bscore)| {
+                    help_group_index(&a.id)
+                        .cmp(&help_group_index(&b.id))
+                        .then_with(|| bscore.total_cmp(ascore))
+                });
+                self.rows = commands
+                    .into_iter()
+                    .map(|(command, score)| Row {
+                        score,
+                        tool: command.id.clone(),
+                        item: ResultItem::new(
+                            &command.name,
+                            format!(
+                                "/{}",
+                                if command.id == "time" {
+                                    "timestamp"
+                                } else {
+                                    &command.primary_alias
+                                }
+                            ),
+                        ),
+                        command: true,
+                    })
+                    .collect();
+                true
+            }
             "winsettings" => {
                 self.rows = tools::windows_settings_search(input, 32)
                     .into_iter()
@@ -1235,7 +1617,7 @@ impl QuickTool {
             }
 
             "country" => {
-                self.country_cache = tools::country_matches(input);
+                self.country_cache = country_candidates(input);
                 self.rows = self
                     .country_cache
                     .iter()
@@ -1686,7 +2068,7 @@ impl QuickTool {
                         continue;
                     }
                     self.files_pending = false;
-                    self.rows.retain(|r| r.tool != "files");
+                    self.rows.retain(|r| r.tool != "files" || r.command);
                     self.rows.extend(items.iter().map(|e| Row {
                         score: 0.99,
                         tool: "files".into(),
@@ -1711,8 +2093,24 @@ impl QuickTool {
         let Some(row) = self.rows.get(index).cloned() else {
             return;
         };
+        if !row.command && row.item.value == "输入内容后立即处理" {
+            return;
+        }
         let used_tool = row.tool.clone();
         if row.command {
+            if row.tool.starts_with("system:") {
+                if let Some(command) = tools::commands()
+                    .iter()
+                    .find(|command| command.id == row.tool)
+                {
+                    self.mode = None;
+                    self.submode = None;
+                    self.input = format!("/{} ", command.primary_alias);
+                    self.rebuild();
+                    self.focus = true;
+                }
+                return;
+            }
             if let Some(sub) = row.tool.strip_prefix('@') {
                 if let Some(id) = self.mode.clone() {
                     self.used(&id);
@@ -1741,7 +2139,7 @@ impl QuickTool {
             self.used(&used_tool);
         } else {
             if row.tool == "base64" && row.item.title.starts_with("Base64 → ") {
-                if let Some(image) = &self.decoded_image {
+                if let Some(image) = self.decoded_image.clone() {
                     let outcome = platform::copy_image(
                         image.rgba.width(),
                         image.rgba.height(),
@@ -1749,6 +2147,23 @@ impl QuickTool {
                     );
                     if outcome.is_err() {
                         ctx.copy_text(image.data_url());
+                    }
+                    let context = ctx.clone();
+                    if let Err(error) = self.store.enqueue_image_with_mode(
+                        &self.input,
+                        &row.tool,
+                        &row.item.title,
+                        image.rgba,
+                        self.mode
+                            .as_ref()
+                            .map(|id| quicktool_rust::storage::HistoryMode {
+                                tool_id: id.clone(),
+                                args: vec![],
+                                submode: self.submode.clone(),
+                            }),
+                        move || context.request_repaint(),
+                    ) {
+                        self.message(format!("保存图片历史失败：{error}"));
                     }
                     self.used("base64");
                     self.message(if outcome.is_ok() {
@@ -1759,12 +2174,13 @@ impl QuickTool {
                 }
                 return;
             }
-            if row.tool == "country" && self.mode.is_none() {
-                self.used("country");
-                self.mode = Some("country".into());
-                self.rebuild();
-                self.focus = true;
-                return;
+            if row.tool == "country" && index > 0 {
+                if let Some(country) = self.country_cache.get(index) {
+                    self.input = country_completion(country, &self.input);
+                    self.rebuild();
+                    self.focus = true;
+                    return;
+                }
             }
             if row.tool == "pin" {
                 let outcome = if let Some(image) = self.attachment.take() {
@@ -1794,7 +2210,12 @@ impl QuickTool {
                 return;
             }
             if row.tool.starts_with("system:") {
-                if row.item.value.is_empty() {
+                if row.item.value.is_empty() || row.item.value == "输入目标后运行" {
+                    if self.mode.is_none() {
+                        self.input = format!("{} ", self.input.trim_end());
+                        self.rebuild();
+                        self.focus = true;
+                    }
                     return;
                 }
                 if let Err(error) = system::run_shell("cmd", &row.item.value, None, false) {
@@ -1808,6 +2229,24 @@ impl QuickTool {
                         let _ = glass.update(false, self.pinned, true, 0., 0, 0.);
                     }
                     ctx.send_viewport_cmd(ViewportCommand::Visible(false));
+                }
+                let mode = self
+                    .mode
+                    .as_ref()
+                    .map(|id| quicktool_rust::storage::HistoryMode {
+                        tool_id: id.clone(),
+                        args: vec![],
+                        submode: self.submode.clone(),
+                    });
+                if let Err(error) = self.store.add_with_mode(
+                    &self.input,
+                    &row.tool,
+                    &row.item.title,
+                    &row.item.value,
+                    mode,
+                ) {
+                    self.message(format!("保存历史失败：{error}"));
+                    return;
                 }
                 self.message("已打开终端");
                 return;
@@ -1894,6 +2333,41 @@ impl QuickTool {
                     let _ = glass.update(false, self.pinned, true, 0., 0, 0.);
                 }
                 ctx.send_viewport_cmd(ViewportCommand::Visible(false));
+            }
+            let image_source = if row.tool == "clipboard"
+                && self
+                    .clipboard_entries
+                    .get(index)
+                    .is_some_and(|entry| entry.kind == "image")
+            {
+                self.clipboard_image
+                    .as_ref()
+                    .and_then(|(w, h, bytes)| image::RgbaImage::from_raw(*w, *h, bytes.clone()))
+                    .map(std::sync::Arc::new)
+            } else {
+                None
+            };
+            if let Some(source) = image_source {
+                let context = ctx.clone();
+                if let Err(error) = self.store.enqueue_image_with_mode(
+                    &self.input,
+                    &row.tool,
+                    &row.item.title,
+                    source,
+                    self.mode
+                        .as_ref()
+                        .map(|id| quicktool_rust::storage::HistoryMode {
+                            tool_id: id.clone(),
+                            args: vec![],
+                            submode: self.submode.clone(),
+                        }),
+                    move || context.request_repaint(),
+                ) {
+                    self.message(format!("保存图片历史失败：{error}"));
+                } else {
+                    self.message("图片已复制");
+                }
+                return;
             }
             if let Err(e) = self.store.add_with_mode(
                 &self.input,
@@ -2005,11 +2479,9 @@ impl QuickTool {
             }
         }
         if self.panel == Panel::None {
-            if ctx.input(|i| i.modifiers.ctrl && i.key_pressed(Key::V)) {
-                if let Ok(attachment) = attachments::Attachment::from_clipboard() {
-                    self.set_attachment(attachment);
-                    ctx.input_mut(|i| i.events.retain(|e| !matches!(e, Event::Paste(_))));
-                }
+            if ctx.input(|i| i.modifiers.ctrl && i.key_pressed(Key::V)) && clipboard_has_image() {
+                self.load_attachment(attachments::Attachment::from_clipboard);
+                ctx.input_mut(|i| i.events.retain(|e| !matches!(e, Event::Paste(_))));
             }
             if ctx.input_mut(|i| i.consume_key(Modifiers::CTRL | Modifiers::SHIFT, Key::P)) {
                 self.toggle_pin(ctx);
@@ -2043,10 +2515,10 @@ impl QuickTool {
             {
                 self.completion_suppressed = Some(self.input.clone());
             }
-            if self.completion().is_some()
+            if self.tab_completion().is_some()
                 && ctx.input_mut(|i| i.consume_key(Modifiers::NONE, Key::Tab))
             {
-                if let Some(completion) = self.completion() {
+                if let Some(completion) = self.tab_completion() {
                     self.input = completion;
                     self.completion_suppressed = Some(self.input.clone());
                     self.rebuild();
@@ -2057,6 +2529,30 @@ impl QuickTool {
                 self.activate(ctx, self.selected);
             }
         }
+    }
+    fn tab_completion(&self) -> Option<String> {
+        if self.showing_help()
+            || self.input.trim().is_empty()
+            || self.completion_suppressed.as_deref() == Some(&self.input)
+        {
+            return None;
+        }
+        if let Some(ghost) = self.completion() {
+            return Some(ghost);
+        }
+        let row = self.rows.get(self.selected)?;
+        if !row.command || row.tool.starts_with('@') || self.mode.is_some() {
+            return None;
+        }
+        let command = tools::commands()
+            .iter()
+            .find(|command| command.id == row.tool)?;
+        let token = self.input.trim_start_matches('/');
+        let alias = tools::best_alias(command, token)
+            .map(|(alias, _)| alias)
+            .unwrap_or(&command.primary_alias);
+        let full = format!("/{alias} ");
+        (full.trim() != self.input.trim()).then_some(full)
     }
     fn completion(&self) -> Option<String> {
         if self.completion_suppressed.as_deref() == Some(&self.input)
@@ -2079,11 +2575,160 @@ impl QuickTool {
             .find(|a| a.starts_with(token) && a.len() > token.len())
             .map(|a| format!("/{a}"))
     }
+    fn search_context(&mut self, ui: &Ui, response: &Response, ctx: &Context) {
+        use eframe::egui::text::{CCursor, CCursorRange};
+        let mut state = TextEdit::load_state(ctx, response.id).unwrap_or_default();
+        let range = state
+            .cursor
+            .char_range()
+            .unwrap_or_else(|| CCursorRange::one(CCursor::new(self.input.chars().count())));
+        let [start, end] = range.sorted();
+        let has_selection = start.index != end.index;
+        let action = widgets::context(
+            ui,
+            response,
+            "search-editor",
+            &[
+                ("undo", "撤销\tCtrl+Z", true),
+                ("redo", "重做\tCtrl+Y", true),
+                ("sep1", "", false),
+                ("cut", "剪切\tCtrl+X", has_selection),
+                ("copy", "复制\tCtrl+C", has_selection),
+                ("paste", "粘贴\tCtrl+V", true),
+                ("sep2", "", false),
+                ("all", "全选\tCtrl+A", true),
+            ],
+        );
+        let Some(action) = action else { return };
+        let before = self.input.clone();
+        let mut undoer = state.undoer();
+        undoer.feed_state(ctx.input(|input| input.time), &(range, self.input.clone()));
+        let selected = self
+            .input
+            .chars()
+            .skip(start.index)
+            .take(end.index - start.index)
+            .collect::<String>();
+        match action.as_str() {
+            "undo" | "redo" => {
+                let current = (range, self.input.clone());
+                let restored = if action == "undo" {
+                    undoer.undo(&current).cloned()
+                } else {
+                    undoer.redo(&current).cloned()
+                };
+                if let Some((range, text)) = restored {
+                    self.input = text;
+                    state.cursor.set_char_range(Some(range));
+                }
+            }
+            "copy" => ctx.copy_text(selected),
+            "cut" => {
+                ctx.copy_text(selected);
+                self.input.delete_char_range(start.index..end.index);
+                state.cursor.set_char_range(Some(CCursorRange::one(start)));
+            }
+            "paste" => match platform::clipboard_text() {
+                Ok(text) => {
+                    self.input.delete_char_range(start.index..end.index);
+                    let count = self.input.insert_text(&text, start.index);
+                    state
+                        .cursor
+                        .set_char_range(Some(CCursorRange::one(CCursor::new(start.index + count))));
+                }
+                Err(error) => self.message(error),
+            },
+            "all" => state.cursor.set_char_range(Some(CCursorRange::two(
+                CCursor::new(0),
+                CCursor::new(self.input.chars().count()),
+            ))),
+            _ => {}
+        }
+        state.set_undoer(undoer);
+        state.store(ctx, response.id);
+        self.focus = true;
+        if before != self.input {
+            self.rebuild();
+        }
+    }
+    fn mode_tag(&self, ui: &mut Ui, label: &str, icon: Option<&str>) -> bool {
+        let mut close = false;
+        Frame::new()
+            .fill(surface(ui, 0.02))
+            .stroke(Stroke::new(
+                1.,
+                if ui.visuals().dark_mode {
+                    Color32::from_rgb(42, 47, 60)
+                } else {
+                    Color32::from_rgb(215, 222, 235)
+                },
+            ))
+            .corner_radius(9)
+            .inner_margin(Margin {
+                left: 9,
+                right: 5,
+                top: 3,
+                bottom: 3,
+            })
+            .show(ui, |ui| {
+                ui.horizontal(|ui| {
+                    ui.spacing_mut().item_spacing.x = 5.;
+                    ui.set_min_height(22.);
+                    if let Some(texture) = icon.and_then(|icon| self.icons.get(icon)) {
+                        ui.add(
+                            Image::new(texture)
+                                .fit_to_exact_size(vec2(14., 14.))
+                                .tint(ACCENT),
+                        );
+                    }
+                    ui.label(
+                        RichText::new(label)
+                            .font(FontId::new(11.5, FontFamily::Name("UiTag".into())))
+                            .color(if ui.visuals().dark_mode {
+                                Color32::from_rgb(184, 192, 208)
+                            } else {
+                                Color32::from_rgb(71, 81, 101)
+                            }),
+                    );
+                    let button = if let Some(texture) = self.icons.get("mdi:close") {
+                        Button::image(
+                            Image::new(texture)
+                                .fit_to_exact_size(vec2(13., 13.))
+                                .tint(weak_color(ui)),
+                        )
+                    } else {
+                        Button::new("×")
+                    };
+                    close = ui
+                        .add_sized([20., 20.], button.frame(false))
+                        .native_tooltip(&format!("退出 {label}"))
+                        .clicked();
+                });
+            });
+        close
+    }
+    fn date_button(&self, ui: &mut Ui) -> Response {
+        let button = if let Some(texture) = self
+            .icons
+            .get("mdi:calendar-month-outline")
+            .or_else(|| self.icons.get("mdi:calendar-clock"))
+        {
+            Button::image(
+                Image::new(texture)
+                    .fit_to_exact_size(vec2(18., 18.))
+                    .tint(weak_color(ui)),
+            )
+        } else {
+            Button::new("▦")
+        };
+        ui.add_sized([30., 30.], button.corner_radius(8).fill(surface(ui, 0.045)))
+            .native_tooltip("选择日期和时间")
+    }
     fn topbar(&mut self, ui: &mut Ui, ctx: &Context) {
         ui.spacing_mut().item_spacing.x = 8.;
         ui.horizontal(|ui| {
             let width = (ui.available_width() - 150.).max(100.);
-            Frame::new()
+            let search_frame = Frame::new()
                 .fill(if ui.visuals().dark_mode {
                     Color32::from_rgb(23, 27, 37)
                 } else {
@@ -2105,16 +2750,15 @@ impl QuickTool {
                     ui.horizontal_centered(|ui| {
                         self.icon(ui, "mdi:magnify", 20.);
                         if let Some(mode) = self.mode.clone() {
-                            if let Some(c) = tools::commands().iter().find(|c| c.id == mode) {
-                                Frame::new()
-                                    .fill(selected_surface(ui))
-                                    .corner_radius(7)
-                                    .inner_margin(Margin::symmetric(7, 4))
-                                    .show(ui, |ui| {
-                                        ui.label(
-                                            RichText::new(&c.primary_alias).size(12.).color(ACCENT),
-                                        );
-                                    });
+                            if let Some(command) =
+                                tools::commands().iter().find(|command| command.id == mode)
+                            {
+                                if self.mode_tag(ui, &command.name, Some(&command.icon)) {
+                                    self.mode = None;
+                                    self.submode = None;
+                                    self.rebuild();
+                                    self.focus = true;
+                                }
                             }
                         }
                         if let Some(attachment) = &self.attachment {
@@ -2132,7 +2776,7 @@ impl QuickTool {
                                         ui.add(
                                             Label::new(RichText::new(name).size(10.)).truncate(),
                                         );
-                                        if ui.small_button("×").on_hover_text("移除图片").clicked()
+                                        if ui.small_button("×").native_tooltip("移除图片").clicked()
                                         {
                                             remove = true;
                                         }
@@ -2144,13 +2788,25 @@ impl QuickTool {
                                 self.focus = true;
                             }
                         }
-                        if let Some(sub) = &self.submode {
-                            ui.label(RichText::new(sub_label(sub)).size(11.).color(ACCENT));
+                        if let Some(sub) = self.submode.clone() {
+                            if self.mode_tag(ui, sub_label(&sub), None) {
+                                self.submode = None;
+                                self.rebuild();
+                                self.focus = true;
+                            }
                         }
                         let completion = self.completion();
-                        let date = self.mode.as_deref() == Some("time");
-                        let reserve = if completion.is_some() { 32. } else { 0. }
-                            + if date { 28. } else { 0. };
+                        let show_tab = self.tab_completion().is_some();
+                        let date = self.mode.as_deref() == Some("time")
+                            || (self.mode.is_none()
+                                && (self.input.starts_with("/时间")
+                                    || self.input.starts_with("/time")
+                                    || quicktool_rust::dates::parse(
+                                        &self.input,
+                                        self.store.settings["dateOrder"].as_str().unwrap_or("YMD"),
+                                    )
+                                    .is_some()));
+                        let reserve = if show_tab { 32. } else { 0. } + if date { 30. } else { 0. };
                         let w = (ui.available_width() - reserve).max(25.);
                         let r = ui.add_sized(
                             [w, 32.],
@@ -2158,7 +2814,9 @@ impl QuickTool {
                                 .id(Id::new("quicktool-search"))
                                 .font(FontId::proportional(16.))
                                 .frame(false)
-                                .hint_text("输入命令、文本或表达式…"),
+                                .hint_text(
+                                    RichText::new("输入命令、文本或表达式…").color(weak_color(ui)),
+                                ),
                         );
                         if let Some(full) = completion {
                             let prefix = ui
@@ -2179,17 +2837,35 @@ impl QuickTool {
                                 FontId::proportional(16.),
                                 Color32::from_white_alpha(65),
                             );
-                            ui.add(Label::new(
-                                RichText::new("Tab").size(10.).color(weak_color(ui)),
-                            ));
                         }
-                        if date
-                            && ui
-                                .small_button("▦")
-                                .on_hover_text("选择日期和时间")
-                                .clicked()
-                        {
+                        if date && self.date_button(ui).clicked() {
                             self.date_picker = !self.date_picker;
+                            let raw = if self.input.starts_with('/') {
+                                self.input
+                                    .split_once(' ')
+                                    .map(|(_, args)| args)
+                                    .unwrap_or(&self.input)
+                            } else {
+                                &self.input
+                            };
+                            if let Some(parsed) = quicktool_rust::dates::parse(
+                                raw,
+                                self.store.settings["dateOrder"].as_str().unwrap_or("YMD"),
+                            ) {
+                                let d = parsed.date;
+                                self.date_value = format!(
+                                    "{:04}-{:02}-{:02} {:02}:{:02}:{:02}",
+                                    d.year(),
+                                    d.month() as u8,
+                                    d.day(),
+                                    d.hour(),
+                                    d.minute(),
+                                    d.second()
+                                );
+                            }
+                        }
+                        if show_tab {
+                            keycap(ui, "Tab");
                         }
                         if self.focus {
                             r.request_focus();
@@ -2199,19 +2875,24 @@ impl QuickTool {
                             self.completion_suppressed = None;
                             self.rebuild();
                         }
-                        r.context_menu(|ui| {
-                            if ui.button("复制输入").clicked() {
-                                ctx.copy_text(self.input.clone());
-                                ui.close_menu();
-                            }
-                            if ui.button("清空输入").clicked() {
-                                self.input.clear();
-                                self.rebuild();
-                                ui.close_menu();
-                            }
-                        });
+                        self.search_context(ui, &r, ctx);
                     });
                 });
+            if ctx.memory(|memory| memory.has_focus(Id::new("quicktool-search"))) {
+                ui.painter().rect_stroke(
+                    search_frame.response.rect.expand(2.),
+                    CornerRadius::same(16),
+                    Stroke::new(
+                        3.,
+                        if ui.visuals().dark_mode {
+                            Color32::from_rgb(28, 33, 46)
+                        } else {
+                            Color32::from_rgb(229, 235, 248)
+                        },
+                    ),
+                    StrokeKind::Outside,
+                );
+            }
             if self
                 .icon_button(
                     ui,
@@ -2239,7 +2920,10 @@ impl QuickTool {
         });
     }
     fn results(&mut self, ui: &mut Ui, ctx: &Context) {
+        ui.spacing_mut().item_spacing.y = 3.;
         ui.horizontal(|ui| {
+            ui.set_max_width(ui.available_width() - 7.);
+            ui.add_space(7.);
             ui.spacing_mut().item_spacing.x = 5.;
             for (i, (label, icon)) in [
                 ("全部", "mdi:view-grid-outline"),
@@ -2294,9 +2978,10 @@ impl QuickTool {
                 keycap(ui, "Ctrl");
             });
         });
-        ui.add_space(4.);
         ui.separator();
         ui.horizontal(|ui| {
+            ui.set_max_width(ui.available_width() - 7.);
+            ui.add_space(7.);
             ui.label(
                 RichText::new(if let Some(id) = &self.mode {
                     tools::commands()
@@ -2304,8 +2989,14 @@ impl QuickTool {
                         .find(|c| c.id == *id)
                         .map(|c| format!("{} 模式", c.name))
                         .unwrap_or_else(|| "工具模式".into())
-                } else {
+                } else if self.input.trim().is_empty() {
+                    "最近使用".into()
+                } else if self.input.starts_with('/') {
+                    "命令候选".into()
+                } else if self.visible_indices().len() > 1 {
                     format!("已筛选 {} 个高相关结果", self.visible_indices().len())
+                } else {
+                    "最佳匹配".into()
                 })
                 .size(11.)
                 .color(weak_color(ui)),
@@ -2319,24 +3010,38 @@ impl QuickTool {
                 keycap(ui, "↑↓");
             });
         });
-        ui.add_space(3.);
         ui.separator();
         if let Some(query) = self.country_query() {
-            self.country_cards(ui, ctx, &query);
+            let rect = ui.available_rect_before_wrap().shrink2(vec2(7., 0.));
+            ui.scope_builder(UiBuilder::new().max_rect(rect), |ui| {
+                self.country_cards(ui, ctx, &query)
+            });
             return;
         }
-        if self.mode.as_deref() == Some("help") {
+        if self.showing_help() {
             self.help_cards(ui);
             return;
         }
         let visible = self.visible_indices();
         let body_top = ui.cursor().top();
+        ui.visuals_mut().widgets.inactive.bg_fill = Color32::from_rgb(54, 57, 66);
+        ui.visuals_mut().widgets.hovered.bg_fill = Color32::from_rgb(69, 73, 84);
+        ui.visuals_mut().widgets.active.bg_fill = Color32::from_rgb(85, 91, 105);
         let output = ScrollArea::vertical()
             .max_height(478.)
+            .vertical_scroll_offset(
+                if self.last_height < 150. && self.tab == 0 && !self.input.trim().is_empty() {
+                    37.
+                } else {
+                    self.result_scroll
+                },
+            )
+            .scroll_bar_visibility(eframe::egui::scroll_area::ScrollBarVisibility::AlwaysVisible)
             .auto_shrink([false, true])
             .show(ui, |ui| {
                 let mut action = None;
                 let mut context_action = None;
+                let mut pin_image = None;
                 let mut color_action = None;
                 if visible.is_empty() {
                     ui.add_space(30.);
@@ -2354,22 +3059,32 @@ impl QuickTool {
                         );
                     });
                 }
-                if self.tab == 0 && !self.input.trim().is_empty() && !visible.is_empty() {
-                    ui.add_space(7.);
-                    ui.horizontal(|ui| {
-                        self.icon(ui, "mdi:star-outline", 12.);
-                        ui.label(RichText::new("最佳匹配").size(10.).color(weak_color(ui)));
-                    });
-                    ui.add_space(4.);
+                ui.spacing_mut().item_spacing.y = 0.;
+                if self.tab == 0 && !self.input.trim().is_empty() {
+                    ui.add_space(9.);
+                    ui.allocate_ui_with_layout(
+                        vec2(ui.available_width(), 28.),
+                        Layout::left_to_right(Align::Center),
+                        |ui| {
+                            ui.add_space(12.);
+                            self.icon(ui, "mdi:star-outline", 14.);
+                            ui.label(
+                                RichText::new("最佳匹配")
+                                    .font(FontId::new(10., FontFamily::Name("UiStrong".into())))
+                                    .color(weak_color(ui)),
+                            );
+                        },
+                    );
                 }
                 for (n, &index) in visible.iter().enumerate() {
                     if self.tab == 0
+                        && !self.input.trim().is_empty()
                         && n > 0
                         && (n == 1
                             || is_launch(&self.rows[visible[n - 1]].tool)
                                 != is_launch(&self.rows[index].tool))
                     {
-                        ui.add_space(8.);
+                        ui.add_space(11.);
                         ui.horizontal(|ui| {
                             let launch = is_launch(&self.rows[index].tool);
                             self.icon(
@@ -2387,7 +3102,7 @@ impl QuickTool {
                                     .color(weak_color(ui)),
                             );
                         });
-                        ui.add_space(5.);
+                        ui.add_space(8.);
                     }
                     let mut swatch_rect = None;
                     let row = &self.rows[index];
@@ -2414,7 +3129,8 @@ impl QuickTool {
                         .corner_radius(13)
                         .inner_margin(Margin::symmetric(11, 8))
                         .show(ui, |ui| {
-                            ui.set_min_height(42.);
+                            ui.set_min_height(44.);
+                            ui.add_space(4.);
                             ui.set_width(ui.available_width());
                             ui.horizontal(|ui| {
                                 Frame::new()
@@ -2446,19 +3162,29 @@ impl QuickTool {
                                                 );
                                             }
                                         } else {
-                                            self.icon(
-                                                ui,
-                                                command
-                                                    .map(|c| c.icon.as_str())
-                                                    .unwrap_or("mdi:information-outline"),
-                                                18.,
-                                            );
+                                            let icon = command
+                                                .map(|c| c.icon.as_str())
+                                                .unwrap_or("mdi:information-outline");
+                                            if selected {
+                                                if let Some(texture) = self.icons.get(icon) {
+                                                    ui.add(
+                                                        Image::new(texture)
+                                                            .fit_to_exact_size(vec2(18., 18.))
+                                                            .tint(Color32::from_rgb(155, 164, 255)),
+                                                    );
+                                                } else {
+                                                    self.icon(ui, icon, 18.);
+                                                }
+                                            } else {
+                                                self.icon(ui, icon, 18.);
+                                            }
                                         }
                                     });
                                 ui.add_space(4.);
                                 ui.vertical(|ui| {
                                     ui.set_max_width(ui.available_width() - 38.);
                                     let action = row.command
+                                        || row.item.value == "输入内容后立即处理"
                                         || (is_launch(&row.tool)
                                             && !row.item.title.starts_with("复制"));
                                     let primary = if action {
@@ -2466,6 +3192,7 @@ impl QuickTool {
                                     } else {
                                         &row.item.value
                                     };
+                                    let primary = clip_text(primary, 96);
                                     ui.horizontal(|ui| {
                                         if row.tool == "color" {
                                             if let Some(color) =
@@ -2492,14 +3219,14 @@ impl QuickTool {
                                         }
                                         ui.add(
                                             Label::new(if action {
-                                                RichText::new(primary)
+                                                RichText::new(&primary)
                                                     .font(FontId::new(
-                                                        13.5,
+                                                        14.5,
                                                         FontFamily::Name("UiStrong".into()),
                                                     ))
                                                     .strong()
                                             } else {
-                                                RichText::new(primary)
+                                                RichText::new(&primary)
                                                     .font(FontId::new(
                                                         14.,
                                                         FontFamily::Name("MonoResult".into()),
@@ -2525,11 +3252,14 @@ impl QuickTool {
                                     };
                                     ui.add(
                                         Label::new(
-                                            RichText::new(format!(
-                                                "{}{}{}",
-                                                secondary,
-                                                if command.is_some() { " · " } else { "" },
-                                                command.map(|c| c.name.as_str()).unwrap_or("")
+                                            RichText::new(clip_text(
+                                                &format!(
+                                                    "{}{}{}",
+                                                    secondary,
+                                                    if command.is_some() { " · " } else { "" },
+                                                    command.map(|c| c.name.as_str()).unwrap_or("")
+                                                ),
+                                                110,
                                             ))
                                             .size(11.)
                                             .color(weak_color(ui)),
@@ -2568,25 +3298,43 @@ impl QuickTool {
                             action = Some(index);
                         }
                     }
-                    r.context_menu(|ui| {
-                        if ui.button("复制结果").clicked() {
-                            ctx.copy_text(row.item.value.clone());
-                            ui.close_menu();
+                    let context_key = format!("result:{index}");
+                    let menu = widgets::context(
+                        ui,
+                        &r,
+                        &context_key,
+                        &[
+                            ("copy", "复制结果", true),
+                            ("pin", "钉住结果", true),
+                            ("picker", "打开 Color Picker", row.tool == "color"),
+                        ],
+                    );
+                    if let Some(menu) = menu {
+                        match menu.as_str() {
+                            "copy" => {
+                                if row.tool == "base64" && row.item.title.starts_with("Base64 → ")
+                                {
+                                    action = Some(index);
+                                } else {
+                                    ctx.copy_text(row.item.value.clone());
+                                }
+                            }
+                            "pin" => {
+                                if row.tool == "base64" && row.item.title.starts_with("Base64 → ")
+                                {
+                                    pin_image =
+                                        self.decoded_image.as_ref().map(|image| image.rgba.clone());
+                                } else {
+                                    context_action = Some(row.item.value.clone());
+                                }
+                            }
+                            "picker" => self.color_picker = true,
+                            _ => {}
                         }
-                        if ui.button("钉住结果").clicked() {
-                            context_action = Some(row.item.value.clone());
-                            ui.close_menu();
-                        }
-                        if row.tool == "color" && ui.button("打开 Color Picker").clicked() {
-                            self.color_picker = true;
-                            ui.close_menu();
-                        }
-                    });
-                    if selected
-                        && ctx
-                            .input(|i| i.key_pressed(Key::ArrowDown) || i.key_pressed(Key::ArrowUp))
-                    {
-                        r.scroll_to_me(Some(Align::Center));
+                    }
+
+                    if selected {
+                        r.scroll_to_me(None);
                     }
                 }
                 if let Some(color) = color_action {
@@ -2601,13 +3349,32 @@ impl QuickTool {
                 if let Some(text) = context_action {
                     self.pins.create_text(text);
                 }
+                if let Some(image) = pin_image {
+                    if let Err(error) = self.pins.create_image(
+                        image.width(),
+                        image.height(),
+                        image.as_raw().clone(),
+                    ) {
+                        self.message(error);
+                    }
+                }
                 if let Some(index) = action {
                     self.activate(ctx, index);
                 }
             });
+        self.result_scroll = output.state.offset.y;
         self.result_height = (body_top + output.content_size.y.min(478.) + 14.).clamp(220., 642.);
     }
     fn country_query(&self) -> Option<String> {
+        if self.mode.is_none()
+            && !self.input.starts_with('/')
+            && self
+                .rows
+                .first()
+                .is_some_and(|row| row.tool == "country" && !row.command)
+        {
+            return Some(self.input.clone());
+        }
         if self.mode.as_deref() == Some("country") {
             return Some(self.input.clone());
         }
@@ -2623,160 +3390,269 @@ impl QuickTool {
             ui.label(RichText::new("输入国家名称、代码或区号").color(weak_color(ui)));
             return;
         }
-        ScrollArea::vertical().max_height(478.).show(ui, |ui| {
-            for (index, country) in countries.iter().enumerate() {
-                let alpha = country["alpha2"].as_str().unwrap_or("");
-                let key = format!("flag:{alpha}");
-                let path = quicktool_rust::resources::asset("assets/flags/svg")
-                    .join(format!("{}.svg", alpha.to_lowercase()));
-                let svg = std::fs::read(&path).unwrap_or_default();
-                if !self.icons.contains_key(&key) {
-                    if let Some((w, h, rgba)) = render_svg(&svg, 200.) {
-                        self.icons.insert(
-                            key.clone(),
-                            ctx.load_texture(
-                                &key,
-                                ColorImage::from_rgba_unmultiplied([w as usize, h as usize], &rgba),
-                                TextureOptions::LINEAR,
-                            ),
-                        );
-                    }
+        let output = ScrollArea::vertical()
+            .max_height(478.)
+            .vertical_scroll_offset(self.result_scroll)
+            .scroll_bar_visibility(eframe::egui::scroll_area::ScrollBarVisibility::AlwaysVisible)
+            .show(ui, |ui| {
+                let global = self.tab == 0 && !self.input.trim().is_empty();
+                if global {
+                    ui.add_space(14.);
+                    ui.horizontal(|ui| {
+                        self.icon(ui, "mdi:star-outline", 12.);
+                        ui.label(RichText::new("最佳匹配").size(10.).color(weak_color(ui)));
+                    });
+                    ui.add_space(5.);
                 }
-                Frame::new()
-                    .fill(surface(ui, 0.035))
-                    .stroke(Stroke::new(
-                        1.,
-                        if index == self.selected {
-                            Color32::from_rgba_unmultiplied(155, 188, 255, 70)
-                        } else {
-                            Color32::from_white_alpha(23)
-                        },
-                    ))
-                    .corner_radius(15)
-                    .inner_margin(12)
-                    .show(ui, |ui| {
-                        ui.set_width(ui.available_width());
-                        ui.horizontal(|ui| {
-                            if let Some(texture) = self.icons.get(&key) {
-                                ui.add(Image::new(texture).fit_to_exact_size(vec2(68., 46.)));
-                            }
-                            ui.add_space(6.);
-                            ui.vertical(|ui| {
-                                ui.label(
-                                    RichText::new(country["nameZh"].as_str().unwrap_or(""))
-                                        .font(FontId::new(16., FontFamily::Name("UiStrong".into())))
-                                        .strong(),
-                                );
-                                ui.label(
-                                    RichText::new(country["nameEn"].as_str().unwrap_or(""))
+                for (index, country) in countries.iter().enumerate() {
+                    if index > 0 {
+                        if global && index == 1 {
+                            ui.add_space(8.);
+                            ui.horizontal(|ui| {
+                                self.icon(ui, "mdi:wrench-outline", 12.);
+                                ui.label(RichText::new("工具").size(10.).color(weak_color(ui)));
+                            });
+                        }
+                        let response = ui
+                            .horizontal(|ui| {
+                                self.icon(ui, "mdi:earth", 28.);
+                                ui.vertical(|ui| {
+                                    ui.label(
+                                        RichText::new(format!(
+                                            "{} {}",
+                                            country["alpha2"].as_str().unwrap_or(""),
+                                            country["nameZh"].as_str().unwrap_or("")
+                                        ))
+                                        .font(
+                                            FontId::new(14.5, FontFamily::Name("UiStrong".into())),
+                                        ),
+                                    );
+                                    ui.label(
+                                        RichText::new(format!(
+                                            "{} · {} · 国家 / 地区代码",
+                                            country["alpha2"].as_str().unwrap_or(""),
+                                            country["alpha3"].as_str().unwrap_or("")
+                                        ))
                                         .size(11.)
                                         .color(weak_color(ui)),
-                                );
-                            });
-                            ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                                keycap(ui, alpha);
-                            });
-                        });
-                        ui.add_space(8.);
-                        ui.separator();
-                        let calling = country["callingCodes"]
-                            .as_array()
-                            .map(|xs| {
-                                xs.iter()
-                                    .filter_map(Value::as_str)
-                                    .map(|x| format!("+{}", x.trim_start_matches('+')))
-                                    .collect::<Vec<_>>()
-                                    .join(" / ")
+                                    );
+                                });
                             })
-                            .unwrap_or_default();
-                        let tlds = country["tlds"]
-                            .as_array()
-                            .map(|xs| {
-                                xs.iter()
-                                    .filter_map(Value::as_str)
-                                    .collect::<Vec<_>>()
-                                    .join(" / ")
-                            })
-                            .unwrap_or_default();
-                        let fields = [
-                            ("ISO 2", alpha),
-                            ("ISO 3", country["alpha3"].as_str().unwrap_or("")),
-                            ("Numeric", country["numeric"].as_str().unwrap_or("")),
-                            ("IOC", country["ioc"].as_str().unwrap_or("")),
-                            ("FIFA", country["fifa"].as_str().unwrap_or("")),
-                            ("ITU", country["itu"].as_str().unwrap_or("")),
-                            ("Calling", &calling),
-                            ("ccTLD", &tlds),
-                        ];
-                        let field_width = (ui.available_width() - 8.) / 2.;
-                        Grid::new(("country", alpha))
-                            .num_columns(2)
-                            .spacing(vec2(4., 4.))
-                            .show(ui, |ui| {
-                                for (i, (label, value)) in fields.iter().enumerate() {
-                                    let width = field_width;
-                                    let r = Frame::new()
-                                        .fill(Color32::from_rgba_unmultiplied(17, 20, 27, 120))
-                                        .inner_margin(Margin::symmetric(9, 9))
+                            .response;
+                        if ui
+                            .interact(
+                                response.rect,
+                                ui.id().with(("country-secondary", index)),
+                                Sense::click(),
+                            )
+                            .clicked()
+                        {
+                            self.input = country_completion(country, &self.input);
+                            self.focus = true;
+                            self.rebuild();
+                        }
+                        continue;
+                    }
+                    let alpha = country["alpha2"].as_str().unwrap_or("");
+                    let key = format!("flag:{alpha}");
+                    if !self.icons.contains_key(&key) {
+                        let path = quicktool_rust::resources::asset("assets/flags/svg")
+                            .join(format!("{}.svg", alpha.to_lowercase()));
+                        let svg = std::fs::read(&path).unwrap_or_default();
+                        if let Some((w, h, rgba)) = render_svg(&svg, 200.) {
+                            self.icons.insert(
+                                key.clone(),
+                                ctx.load_texture(
+                                    &key,
+                                    ColorImage::from_rgba_unmultiplied(
+                                        [w as usize, h as usize],
+                                        &rgba,
+                                    ),
+                                    TextureOptions::LINEAR,
+                                ),
+                            );
+                        }
+                    }
+                    Frame::new()
+                        .fill(if ui.visuals().dark_mode {
+                            Color32::from_rgb(24, 28, 39)
+                        } else {
+                            Color32::from_rgb(248, 250, 255)
+                        })
+                        .stroke(Stroke::new(
+                            1.,
+                            if index == self.selected {
+                                Color32::from_rgb(43, 48, 65)
+                            } else {
+                                Color32::from_white_alpha(23)
+                            },
+                        ))
+                        .corner_radius(15)
+                        .inner_margin(12)
+                        .show(ui, |ui| {
+                            ui.set_width(ui.available_width());
+                            ui.horizontal(|ui| {
+                                if let Some(texture) = self.icons.get(&key) {
+                                    ui.add(Image::new(texture).fit_to_exact_size(vec2(68., 46.)));
+                                }
+                                ui.add_space(6.);
+                                ui.vertical(|ui| {
+                                    ui.label(
+                                        RichText::new(country["nameZh"].as_str().unwrap_or(""))
+                                            .font(FontId::new(
+                                                16.,
+                                                FontFamily::Name("UiStrong".into()),
+                                            ))
+                                            .strong(),
+                                    );
+                                    ui.label(
+                                        RichText::new(country["nameEn"].as_str().unwrap_or(""))
+                                            .size(11.)
+                                            .color(weak_color(ui)),
+                                    );
+                                });
+                                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                                    Frame::new()
+                                        .fill(selected_surface(ui))
+                                        .stroke(Stroke::new(1., Color32::from_rgb(48, 57, 79)))
+                                        .corner_radius(8)
+                                        .inner_margin(Margin::symmetric(8, 5))
                                         .show(ui, |ui| {
-                                            ui.set_width(width - 20.);
-                                            ui.horizontal(|ui| {
-                                                ui.label(
-                                                    RichText::new(*label)
-                                                        .size(9.5)
-                                                        .color(weak_color(ui)),
-                                                );
-                                                ui.add_space(12.);
-                                                ui.label(
-                                                    RichText::new(*value).monospace().size(11.),
-                                                );
-                                            });
-                                        })
-                                        .response;
-                                    if ui
-                                        .interact(
-                                            r.rect,
-                                            ui.id().with((alpha, label)),
-                                            Sense::click(),
+                                            ui.label(
+                                                RichText::new(alpha)
+                                                    .font(FontId::new(
+                                                        11.,
+                                                        FontFamily::Name("MonoResult".into()),
+                                                    ))
+                                                    .color(ACCENT),
+                                            );
+                                        });
+                                });
+                            });
+                            ui.add_space(8.);
+                            ui.separator();
+                            let calling = country["callingCodes"]
+                                .as_array()
+                                .map(|xs| {
+                                    xs.iter()
+                                        .filter_map(Value::as_str)
+                                        .map(|x| format!("+{}", x.trim_start_matches('+')))
+                                        .collect::<Vec<_>>()
+                                        .join(" / ")
+                                })
+                                .unwrap_or_default();
+                            let tlds = country["tlds"]
+                                .as_array()
+                                .map(|xs| {
+                                    xs.iter()
+                                        .filter_map(Value::as_str)
+                                        .collect::<Vec<_>>()
+                                        .join(" / ")
+                                })
+                                .unwrap_or_default();
+                            let fields = [
+                                ("ISO 2", alpha),
+                                ("ISO 3", country["alpha3"].as_str().unwrap_or("")),
+                                ("Numeric", country["numeric"].as_str().unwrap_or("")),
+                                ("IOC", country["ioc"].as_str().unwrap_or("")),
+                                ("FIFA", country["fifa"].as_str().unwrap_or("")),
+                                ("ITU", country["itu"].as_str().unwrap_or("")),
+                                ("Calling", &calling),
+                                ("ccTLD", &tlds),
+                            ];
+                            let (allocated, _) = ui.allocate_exact_size(
+                                vec2(ui.available_width(), 159.),
+                                Sense::hover(),
+                            );
+                            let region = allocated.expand2(vec2(12., 0.));
+                            let half = (region.width() - 1.) / 2.;
+                            for (index, (label, value)) in fields.iter().enumerate() {
+                                let min = region.min
+                                    + vec2(
+                                        (index % 2) as f32 * (half + 1.),
+                                        (index / 2) as f32 * 40.,
+                                    );
+                                let rect = Rect::from_min_size(min, vec2(half, 39.));
+                                let response = ui
+                                    .interact(rect, ui.id().with((alpha, label)), Sense::click())
+                                    .native_tooltip("点击复制");
+                                ui.painter().rect_filled(
+                                    rect,
+                                    0.,
+                                    if response.hovered() {
+                                        surface(ui, 0.075)
+                                    } else {
+                                        if ui.visuals().dark_mode {
+                                            Color32::from_rgb(25, 29, 40)
+                                        } else {
+                                            Color32::from_rgb(246, 249, 255)
+                                        }
+                                    },
+                                );
+                                ui.painter().text(
+                                    rect.left_center() + vec2(10., 0.),
+                                    Align2::LEFT_CENTER,
+                                    *label,
+                                    FontId::proportional(9.5),
+                                    weak_color(ui),
+                                );
+                                let value_rect = Rect::from_min_max(
+                                    rect.min + vec2(85., 0.),
+                                    rect.max - vec2(40., 0.),
+                                );
+                                ui.painter().with_clip_rect(value_rect).text(
+                                    value_rect.left_center(),
+                                    Align2::LEFT_CENTER,
+                                    *value,
+                                    FontId::monospace(11.),
+                                    ui.visuals().text_color(),
+                                );
+                                if let Some(texture) = self.icons.get("mdi:content-copy") {
+                                    ui.painter().image(
+                                        texture.id(),
+                                        Rect::from_center_size(
+                                            rect.right_center() - vec2(21., 0.),
+                                            vec2(14., 14.),
+                                        ),
+                                        Rect::from_min_max(Pos2::ZERO, pos2(1., 1.)),
+                                        weak_color(ui),
+                                    );
+                                }
+                                if response.clicked() {
+                                    ctx.copy_text(value.to_string());
+                                    self.message("已复制");
+                                }
+                            }
+                            ui.add_space(1.);
+                            ui.horizontal(|ui| {
+                                for (kind, label, icon) in [
+                                    ("svg", "复制 SVG", "mdi:content-copy"),
+                                    ("png", "复制 PNG", "mdi:content-copy"),
+                                    ("emoji", "复制 Emoji", "mdi:flag-outline"),
+                                ] {
+                                    let button = if let Some(texture) = self.icons.get(icon) {
+                                        Button::image_and_text(
+                                            Image::new(texture)
+                                                .fit_to_exact_size(vec2(14., 14.))
+                                                .tint(weak_color(ui)),
+                                            RichText::new(label).size(10.),
                                         )
-                                        .on_hover_text("点击复制")
-                                        .clicked()
-                                    {
-                                        ctx.copy_text(value.to_string());
-                                        self.message("已复制");
-                                    }
-                                    if i % 2 == 1 {
-                                        ui.end_row();
+                                    } else {
+                                        Button::new(RichText::new(label).size(10.))
+                                    };
+                                    if ui.add(button.min_size(vec2(80., 28.))).clicked() {
+                                        match system::copy_flag(alpha, kind) {
+                                            Ok(()) => self.message(format!("{label} 已复制")),
+                                            Err(error) => self.message(error),
+                                        }
                                     }
                                 }
                             });
-                        ui.add_space(7.);
-                        ui.horizontal(|ui| {
-                            if ui.button(RichText::new("复制 SVG").size(10.)).clicked() {
-                                if let Err(e) = platform::copy_bytes("image/svg+xml", &svg) {
-                                    self.message(e)
-                                } else {
-                                    self.message("已复制 SVG");
-                                }
-                            }
-                            if ui.button(RichText::new("复制 PNG").size(10.)).clicked() {
-                                if let Some((w, h, rgba)) = render_svg(&svg, 1000.) {
-                                    if let Err(e) = platform::copy_image(w, h, &rgba) {
-                                        self.message(e)
-                                    } else {
-                                        self.message("已复制 PNG");
-                                    }
-                                }
-                            }
-                            if ui.button(RichText::new("复制 Emoji").size(10.)).clicked() {
-                                ctx.copy_text(country["flagEmoji"].as_str().unwrap_or("").into());
-                                self.message("已复制 Emoji");
-                            }
                         });
-                    });
-                ui.add_space(10.);
-            }
-        });
+                    ui.add_space(10.);
+                }
+            });
+        self.result_scroll = output.state.offset.y;
     }
     fn help_cards(&mut self, ui: &mut Ui) {
         let groups = [
@@ -2810,147 +3686,158 @@ impl QuickTool {
             ("系统与网络", "mdi:console", vec![]),
         ];
         let mut choose = None;
-        ScrollArea::vertical().max_height(478.).show(ui, |ui| {
-            for (title, icon, ids) in groups {
-                let commands = tools::commands()
-                    .iter()
-                    .filter(|c| {
-                        if ids.is_empty() {
-                            !matches!(c.id.as_str(), "help") && !groups_contains(&c.id)
-                        } else {
-                            ids.contains(&c.id.as_str())
-                        }
-                    })
-                    .filter(|c| {
-                        self.input.is_empty()
-                            || quicktool_rust::search::fuzzy(&self.input, &c.name).success
-                            || c.aliases
-                                .iter()
-                                .any(|a| quicktool_rust::search::fuzzy(&self.input, a).success)
-                    })
-                    .collect::<Vec<_>>();
-                if commands.is_empty() {
-                    continue;
-                }
-                Frame::new()
-                    .fill(surface(ui, 0.025))
-                    .stroke(Stroke::new(
-                        1.,
-                        if ui.visuals().dark_mode {
-                            Color32::from_rgb(40, 45, 56)
-                        } else {
-                            Color32::from_gray(215)
-                        },
-                    ))
-                    .corner_radius(16)
-                    .inner_margin(16)
-                    .show(ui, |ui| {
-                        ui.set_width(ui.available_width());
-                        ui.horizontal(|ui| {
-                            self.icon(ui, icon, 20.);
-                            ui.label(
-                                RichText::new(title)
-                                    .font(FontId::new(13., FontFamily::Name("UiStrong".into())))
-                                    .strong(),
-                            );
-                            ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+        let output = ScrollArea::vertical()
+            .max_height(478.)
+            .vertical_scroll_offset(self.result_scroll)
+            .show(ui, |ui| {
+                ui.add_space(7.);
+                for (title, icon, ids) in groups {
+                    let commands=self.rows.iter().filter(|row|self.tab==0||(self.tab==1&&is_launch(&row.tool))||(self.tab==2&&!is_launch(&row.tool))).filter_map(|row|tools::commands().iter().find(|command|command.id==row.tool)).filter(|command|if ids.is_empty(){!groups_contains(&command.id)}else{ids.contains(&command.id.as_str())}).collect::<Vec<_>>();
+                    if commands.is_empty() {
+                        continue;
+                    }
+                    Frame::new()
+                        .fill(surface(ui, 0.025))
+                        .stroke(Stroke::new(
+                            1.,
+                            if ui.visuals().dark_mode {
+                                Color32::from_rgb(40, 45, 56)
+                            } else {
+                                Color32::from_gray(215)
+                            },
+                        ))
+                        .corner_radius(16)
+                        .inner_margin(16)
+                        .show(ui, |ui| {
+                            ui.set_width(ui.available_width());
+                            ui.horizontal(|ui| {
+                                self.icon(ui, icon, 20.);
                                 ui.label(
-                                    RichText::new(format!("{} 项", commands.len()))
-                                        .size(11.)
-                                        .color(weak_color(ui)),
+                                    RichText::new(title)
+                                        .font(FontId::new(13., FontFamily::Name("UiStrong".into())))
+                                        .strong(),
                                 );
+                                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                                    ui.label(
+                                        RichText::new(format!("{} 项", commands.len()))
+                                            .size(11.)
+                                            .color(weak_color(ui)),
+                                    );
+                                });
                             });
+                            ui.add_space(9.);
+                            let width = (ui.available_width() - 8.) / 2.;
+                            for pair in commands.chunks(2) {
+                                ui.horizontal_top(|ui| {
+                                    for c in pair {
+                                        let selected=self.rows.get(self.selected).is_some_and(|row|row.tool==c.id);
+                                        let r = Frame::new()
+                                            .fill(surface(ui, 0.025))
+                                            .stroke(Stroke::new(
+                                                1.,
+                                                if selected {ACCENT} else if ui.visuals().dark_mode {
+                                                    Color32::from_rgb(37, 42, 52)
+                                                } else {
+                                                    Color32::from_gray(225)
+                                                },
+                                            ))
+                                            .corner_radius(10)
+                                            .inner_margin(12)
+                                            .show(ui, |ui| {
+                                                ui.set_width(width - 26.);
+                                                ui.horizontal(|ui| {
+                                                    let (icon_rect,_)=ui.allocate_exact_size(vec2(28.,28.),Sense::hover());
+                                                    if let Some(texture)=self.icons.get(&c.icon){ui.painter().image(texture.id(),Rect::from_center_size(icon_rect.center(),vec2(20.,20.)),Rect::from_min_max(Pos2::ZERO,pos2(1.,1.)),ACCENT);}
+                                                    ui.add_space(2.);
+                                                    ui.vertical(|ui| {
+                                                        ui.set_max_width((width - 92.).max(100.));
+                                                        ui.horizontal(|ui| {
+                                                            ui.label(RichText::new(&c.name).font(
+                                                                FontId::new(
+                                                                    12.,
+                                                                    FontFamily::Name(
+                                                                        "UiHelp".into(),
+                                                                    ),
+                                                                ),
+                                                            ));
+                                                            ui.label(
+                                                                RichText::new(format!(
+                                                                    "/{}",
+                                                                    if c.id == "time" {
+                                                                        "timestamp"
+                                                                    } else {
+                                                                        &c.primary_alias
+                                                                    }
+                                                                ))
+                                                                .monospace()
+                                                                .size(10.5)
+                                                                .color(ACCENT),
+                                                            );
+                                                        });
+                                                        ui.add(
+                                                            Label::new(
+                                                                RichText::new(help_description(
+                                                                    &c.id,
+                                                                ))
+                                                                .size(10.5)
+                                                                .color(weak_color(ui)),
+                                                            )
+                                                            .truncate(),
+                                                        );
+                                                        ui.add(
+                                                            Label::new(
+                                                                RichText::new(
+                                                                    c.aliases
+                                                                        .iter()
+                                                                        .filter(|alias|alias.as_str()!=(if c.id=="time"{"timestamp"}else{&c.primary_alias})&&alias.chars().any(|ch|('\u{3400}'..='\u{9fff}').contains(&ch))).take(3)
+                                                                        .cloned()
+                                                                        .collect::<Vec<_>>()
+                                                                        .join(" · "),
+                                                                )
+                                                                .size(10.)
+                                                                .color(weak_color(ui)),
+                                                            )
+                                                            .truncate(),
+                                                        );
+                                                    });
+                                                });
+                                            })
+                                            .response;
+                                        if let Some(texture)=self.icons.get("mdi:chevron-right") {ui.painter().image(texture.id(),Rect::from_center_size(r.rect.right_center()-vec2(20.,0.),vec2(14.,14.)),Rect::from_min_max(Pos2::ZERO,pos2(1.,1.)),weak_color(ui));}
+                                        if selected && self.selected > 0 {r.scroll_to_me(None);}
+                                        if ui
+                                            .interact(
+                                                r.rect,
+                                                ui.id().with(("help", &c.id)),
+                                                Sense::click(),
+                                            )
+                                            .clicked()
+                                        {
+                                            choose = Some(c.id.clone());
+                                        }
+                                    }
+                                });
+                                ui.add_space(8.);
+                            }
                         });
-                        ui.add_space(9.);
-                        let width = (ui.available_width() - 8.) / 2.;
-                        Grid::new(("help-group", title))
-                            .num_columns(2)
-                            .spacing(vec2(8., 8.))
-                            .show(ui, |ui| {
-                                for (index, c) in commands.iter().enumerate() {
-                                    let r = Frame::new()
-                                        .fill(surface(ui, 0.025))
-                                        .stroke(Stroke::new(
-                                            1.,
-                                            if ui.visuals().dark_mode {
-                                                Color32::from_rgb(37, 42, 52)
-                                            } else {
-                                                Color32::from_gray(225)
-                                            },
-                                        ))
-                                        .corner_radius(10)
-                                        .inner_margin(10)
-                                        .show(ui, |ui| {
-                                            ui.set_width(width - 22.);
-                                            ui.set_min_height(54.);
-                                            ui.horizontal(|ui| {
-                                                self.icon(ui, &c.icon, 16.);
-                                                ui.label(
-                                                    RichText::new(&c.name)
-                                                        .font(FontId::new(
-                                                            12.,
-                                                            FontFamily::Name("UiStrong".into()),
-                                                        ))
-                                                        .strong(),
-                                                );
-                                            });
-                                            ui.label(
-                                                RichText::new(format!(
-                                                    "/{}",
-                                                    if c.id == "time" {
-                                                        "timestamp"
-                                                    } else {
-                                                        &c.primary_alias
-                                                    }
-                                                ))
-                                                .monospace()
-                                                .size(11.)
-                                                .color(ACCENT),
-                                            );
-                                            ui.add(
-                                                Label::new(
-                                                    RichText::new(help_description(&c.id))
-                                                        .size(10.)
-                                                        .color(weak_color(ui)),
-                                                )
-                                                .truncate(),
-                                            );
-                                        })
-                                        .response;
-                                    if ui
-                                        .interact(
-                                            r.rect,
-                                            ui.id().with(("help", &c.id)),
-                                            Sense::click(),
-                                        )
-                                        .clicked()
-                                    {
-                                        choose = Some(c.id.clone());
-                                    }
-                                    if index % 2 == 1 {
-                                        ui.end_row();
-                                    }
-                                }
-                            });
-                    });
-                ui.add_space(12.);
-            }
-        });
+                    ui.add_space(12.);
+                }
+            });
+        self.result_scroll = output.state.offset.y;
         if let Some(id) = choose {
-            self.used(&id);
-            if id == "settings" {
-                self.panel = Panel::Settings;
-                self.draft = self.store.settings.clone();
-            } else if id == "history" {
-                self.panel = Panel::History;
-            } else {
-                self.mode = Some(id);
-                self.submode = None;
-                self.input.clear();
-                self.rebuild();
+            if let Some(index) = self.rows.iter().position(|row| row.tool == id) {
+                let context = ui.ctx().clone();
+                self.activate(&context, index);
             }
-            self.focus = true;
         }
+    }
+    fn showing_help(&self) -> bool {
+        self.mode.as_deref() == Some("help")
+            || (self.mode.is_none()
+                && self.input.strip_prefix('/').is_some_and(|query| {
+                    tools::command(query.split_once(' ').map(|(head, _)| head).unwrap_or(query))
+                        .is_some_and(|command| command.id == "help")
+                }))
     }
     fn visible_indices(&self) -> Vec<usize> {
         let mut visible = self
@@ -2976,6 +3863,9 @@ impl QuickTool {
                 .filter(|(rank, index)| *rank < 2 || self.rows[*index].score >= threshold)
                 .map(|(_, index)| index)
                 .collect();
+        }
+        if self.showing_help() {
+            return visible;
         }
         visible.truncate(if self.tab == 0 { 11 } else { 14 });
         if self.tab == 0 && visible.len() > 1 {
@@ -3014,6 +3904,7 @@ impl QuickTool {
             .max_height(available)
             .auto_shrink([false, false])
             .show(ui, |ui| {
+                ui.add_space(8.);
                 setting_row(
                     ui,
                     "全局快捷键",
@@ -3027,10 +3918,10 @@ impl QuickTool {
                                 .unwrap_or("Alt+Space")
                                 .replace('+', " + ")
                         };
-                        if ui
-                            .add_sized([220., 38.], Button::new(RichText::new(label).monospace()))
-                            .clicked()
-                        {
+                        let recorder = ui
+                            .add_sized([220., 38.], Button::new(RichText::new(label).monospace()));
+                        self.recording_rect = Some(recorder.rect);
+                        if recorder.clicked() {
                             self.hotkey = None;
                             self.registered_shortcut.clear();
                             self.recording_shortcut = true;
@@ -3076,7 +3967,10 @@ impl QuickTool {
                     |ui| {
                         let mut v = self.draft["historyLimit"].as_u64().unwrap_or(500);
                         if ui
-                            .add(DragValue::new(&mut v).range(50..=5000).speed(50))
+                            .add_sized(
+                                [90., 34.],
+                                DragValue::new(&mut v).range(50..=5000).speed(50),
+                            )
                             .changed()
                         {
                             self.draft["historyLimit"] = v.into();
@@ -3336,6 +4230,25 @@ impl QuickTool {
         if !self.recording_shortcut {
             return;
         }
+        let lost_focus = ctx.input(|input| {
+            input.viewport().focused == Some(false)
+                || (input.pointer.any_pressed()
+                    && input.pointer.interact_pos().is_some_and(|point| {
+                        self.recording_rect
+                            .is_some_and(|rect| !rect.contains(point))
+                    }))
+        });
+        if lost_focus {
+            self.recording_shortcut = false;
+            let previous = self.draft["globalShortcut"]
+                .as_str()
+                .unwrap_or("Alt+Space")
+                .to_string();
+            if let Err(error) = self.shortcut_preview(&previous) {
+                self.shortcut_error = Some(error);
+            }
+            return;
+        }
         for event in ctx.input(|i| i.events.clone()) {
             if let Event::Key {
                 key,
@@ -3434,24 +4347,154 @@ impl QuickTool {
     }
     fn pickers(&mut self, ctx: &Context) {
         if self.color_picker {
-            let mut open = true;
+            let previous = self.picker_color;
+            let mut edited = false;
+            let color = quicktool_rust::colors::Color::new(
+                previous[0] as f64,
+                previous[1] as f64,
+                previous[2] as f64,
+                previous[3] as f64,
+            );
+            let formats = quicktool_rust::colors::formats(color);
             Window::new("Color Picker")
-                .open(&mut open)
+                .title_bar(false)
                 .resizable(false)
+                .collapsible(false)
+                .fixed_pos(pos2(438., 68.))
+                .fixed_size(vec2(360., 470.))
+                .frame(
+                    Frame::new()
+                        .fill(if ctx.style().visuals.dark_mode {
+                            Color32::from_rgb(20, 24, 34)
+                        } else {
+                            Color32::from_rgb(249, 251, 255)
+                        })
+                        .corner_radius(16)
+                        .stroke(Stroke::new(1., Color32::from_rgb(49, 55, 72)))
+                        .inner_margin(8),
+                )
                 .show(ctx, |ui| {
-                    ui.color_edit_button_rgba_unmultiplied(&mut self.picker_color);
-                    let [r, g, b, a] = self.picker_color.map(|v| (v * 255.).round() as u8);
-                    for text in [
-                        format!("#{r:02X}{g:02X}{b:02X}"),
-                        format!("rgb({r}, {g}, {b})"),
-                        format!("rgba({r}, {g}, {b}, {:.2})", a as f32 / 255.),
-                    ] {
-                        if ui.button(&text).clicked() {
-                            ctx.copy_text(text);
+                    ui.horizontal(|ui| {
+                        let (rect, _) = ui.allocate_exact_size(vec2(20., 20.), Sense::hover());
+                        ui.painter().rect_filled(
+                            rect,
+                            CornerRadius::same(5),
+                            Color32::from_rgba_unmultiplied(
+                                (previous[0] * 255.) as u8,
+                                (previous[1] * 255.) as u8,
+                                (previous[2] * 255.) as u8,
+                                (previous[3] * 255.) as u8,
+                            ),
+                        );
+                        ui.label(
+                            RichText::new("Color Picker")
+                                .font(FontId::new(12.5, FontFamily::Name("UiStrong".into()))),
+                        );
+                        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                            if ui
+                                .add_sized([28., 28.], Button::new("×").frame(false))
+                                .clicked()
+                            {
+                                self.color_picker = false;
+                                self.focus = true;
+                            }
+                        });
+                    });
+                    ui.separator();
+                    ui.horizontal(|ui| {
+                        let mut swatch = Color32::from_rgb(
+                            (self.picker_color[0] * 255.).round() as u8,
+                            (self.picker_color[1] * 255.).round() as u8,
+                            (self.picker_color[2] * 255.).round() as u8,
+                        );
+                        if eframe::egui::color_picker::color_edit_button_srgba(
+                            ui,
+                            &mut swatch,
+                            eframe::egui::color_picker::Alpha::Opaque,
+                        )
+                        .changed()
+                        {
+                            self.picker_color[0] = swatch.r() as f32 / 255.;
+                            self.picker_color[1] = swatch.g() as f32 / 255.;
+                            self.picker_color[2] = swatch.b() as f32 / 255.;
+                            edited = true;
                         }
-                    }
+                        ui.label(RichText::new("颜色").size(11.));
+                        ui.label(RichText::new("Alpha").size(10.5).color(weak_color(ui)));
+                        let mut alpha = (self.picker_color[3] * 100.).round() as u32;
+                        ui.spacing_mut().slider_width = 120.;
+                        if ui
+                            .add(Slider::new(&mut alpha, 0..=100).show_value(false))
+                            .changed()
+                        {
+                            self.picker_color[3] = alpha as f32 / 100.;
+                            edited = true;
+                        }
+                        ui.label(RichText::new(format!("{alpha}%")).size(10.5));
+                    });
+                    ui.separator();
+                    ScrollArea::vertical().max_height(330.).show(ui, |ui| {
+                        ui.spacing_mut().item_spacing.y = 0.;
+                        for format in formats.into_iter().take(14) {
+                            let (rect, response) = ui.allocate_exact_size(
+                                vec2(ui.available_width(), 34.),
+                                Sense::click(),
+                            );
+                            if response.hovered() {
+                                ui.painter().rect_filled(
+                                    rect,
+                                    CornerRadius::same(9),
+                                    surface(ui, 0.075),
+                                );
+                            }
+                            ui.painter().text(
+                                rect.left_center() + vec2(8., 0.),
+                                Align2::LEFT_CENTER,
+                                &format.title,
+                                FontId::proportional(10.5),
+                                weak_color(ui),
+                            );
+                            let value_rect = Rect::from_min_max(
+                                rect.min + vec2(113., 0.),
+                                rect.max - vec2(28., 0.),
+                            );
+                            ui.painter().with_clip_rect(value_rect).text(
+                                value_rect.left_center(),
+                                Align2::LEFT_CENTER,
+                                &format.value,
+                                FontId::monospace(10.5),
+                                ui.visuals().text_color(),
+                            );
+                            if let Some(texture) = self.icons.get("mdi:content-copy") {
+                                let icon_rect = Rect::from_center_size(
+                                    rect.right_center() - vec2(12., 0.),
+                                    vec2(14., 14.),
+                                );
+                                ui.painter().image(
+                                    texture.id(),
+                                    icon_rect,
+                                    Rect::from_min_max(Pos2::ZERO, pos2(1., 1.)),
+                                    weak_color(ui),
+                                );
+                            }
+                            if response.clicked() {
+                                ctx.copy_text(format.value);
+                                self.message(format!("{} 已复制", format.title));
+                            }
+                        }
+                    });
                 });
-            self.color_picker = open;
+            if edited {
+                let c = self.picker_color;
+                let color = quicktool_rust::colors::Color::new(
+                    c[0] as f64,
+                    c[1] as f64,
+                    c[2] as f64,
+                    c[3] as f64,
+                );
+                self.input = color.hex(c[3] < 0.999);
+                self.rebuild();
+            }
         }
         if self.date_picker {
             let mut open = true;
@@ -3555,9 +4598,19 @@ impl QuickTool {
         let Some(mut probe) = self.probe.take() else {
             return;
         };
-        ctx.request_repaint_after(Duration::from_millis(16));
+        if let Some(ready) = probe.ready_at {
+            let elapsed = ready.elapsed();
+            ctx.request_repaint_after(if elapsed < Duration::from_secs(5) {
+                Duration::from_secs(5) - elapsed
+            } else {
+                Duration::from_millis(16)
+            });
+        } else {
+            ctx.request_repaint_after(Duration::from_millis(16));
+        }
         if self.frames >= 5 && probe.ready_at.is_none() {
             probe.ready_at = Some(Instant::now());
+            probe.ready_frame = self.frames;
             probe.startup_ms = crate::PROCESS_STARTED
                 .get()
                 .map(|start| start.elapsed().as_secs_f64() * 1000.)
@@ -3569,6 +4622,7 @@ impl QuickTool {
         {
             if probe.idle.is_none() {
                 probe.idle = Some(process_memory());
+                probe.idle_frames = Some(self.frames.saturating_sub(probe.ready_frame));
             }
             if probe.pending.as_ref().is_some_and(|(_, start, _)| {
                 (self.last_height - target_height).abs() < 1.0
@@ -3600,7 +4654,7 @@ impl QuickTool {
                     let rebuild = start.elapsed().as_secs_f64() * 1000.;
                     probe.pending = Some((query.to_string(), start, rebuild));
                 } else {
-                    let value = serde_json::json!({"version":env!("CARGO_PKG_VERSION"),"pid":std::process::id(),"profile":if cfg!(debug_assertions){"debug"}else{"release"},"dpi":ctx.pixels_per_point(),"first_stable_frame_ms":probe.startup_ms,"idle_seconds":5,"idle_memory":probe.idle,"query_samples":probe.samples,"measurement":"query_to_stable_layout includes resize animation and CPU UI layout; excludes OS display presentation; idle memory includes native glow/backdrop"});
+                    let value = serde_json::json!({"version":env!("CARGO_PKG_VERSION"),"pid":std::process::id(),"profile":if cfg!(debug_assertions){"debug"}else{"release"},"dpi":ctx.pixels_per_point(),"first_stable_frame_ms":probe.startup_ms,"idle_seconds":5,"idle_memory":probe.idle,"idle_root_frames":probe.idle_frames,"query_samples":probe.samples,"measurement":"query_to_stable_layout includes resize animation and CPU UI layout; excludes OS display presentation; idle memory includes native glow/backdrop"});
                     match serde_json::to_vec_pretty(&value)
                         .map_err(std::io::Error::other)
                         .and_then(|bytes| {
@@ -3650,6 +4704,7 @@ impl QuickTool {
         let mut restore = None;
         let mut restore_pin = None;
         let mut copy_pin = None;
+        let mut copy_image = None;
         if self.store.history.is_empty() {
             ui.add_space(40.);
             ui.vertical_centered(|ui| {
@@ -3662,7 +4717,9 @@ impl QuickTool {
         }
         for item in &self.store.history {
             let key = format!("history-thumb:{}", item.id);
-            if item.pin_state.is_some() && !self.icons.contains_key(&key) {
+            if (item.pin_state.is_some() || item.image_asset.is_some())
+                && !self.icons.contains_key(&key)
+            {
                 if let Some(path) = self.store.thumbnail_path(&item.id) {
                     if let Ok(image) = image::open(path) {
                         let image = image.to_rgba8();
@@ -3696,10 +4753,21 @@ impl QuickTool {
                             .strong(),
                     );
                     ui.add(
-                        Label::new(RichText::new(&item.input).size(10.).color(weak_color(ui)))
-                            .truncate(),
+                        Label::new(
+                            RichText::new(clip_text(&item.input, 110))
+                                .size(10.)
+                                .color(weak_color(ui)),
+                        )
+                        .truncate(),
                     );
-                    ui.add(Label::new(RichText::new(&item.value).size(12.).monospace()).truncate());
+                    ui.add(
+                        Label::new(
+                            RichText::new(clip_text(&item.value, 96))
+                                .size(12.)
+                                .monospace(),
+                        )
+                        .truncate(),
+                    );
                     ui.horizontal(|ui| {
                         if ui.small_button("恢复").clicked() {
                             if item.pin_state.is_some() {
@@ -3716,6 +4784,8 @@ impl QuickTool {
                         if ui.small_button("复制").clicked() {
                             if item.pin_state.is_some() {
                                 copy_pin = Some(item.id.clone());
+                            } else if item.image_asset.is_some() {
+                                copy_image = Some(item.id.clone());
                             } else {
                                 ctx.copy_text(item.value.clone());
                             }
@@ -3776,6 +4846,29 @@ impl QuickTool {
                 Err(error) => self.message(format!("复制 Pin 失败：{error}")),
             }
         }
+        if let Some(id) = copy_image {
+            if let Some(asset) = self
+                .store
+                .history
+                .iter()
+                .find(|item| item.id == id)
+                .and_then(|item| item.image_asset.clone())
+            {
+                let root = self.store.root.clone();
+                let context = ctx.clone();
+                let (sender, receiver) = std::sync::mpsc::channel();
+                self.image_copy = Some(receiver);
+                std::thread::spawn(move || {
+                    let outcome = quicktool_rust::pin_storage::load_image(&root, &asset)
+                        .map_err(|error| error.to_string())
+                        .and_then(|image| {
+                            platform::copy_image(image.width(), image.height(), image.as_raw())
+                        });
+                    let _ = sender.send(outcome);
+                    context.request_repaint();
+                });
+            }
+        }
         if let Some((input, tool, value, mode)) = restore {
             if matches!(tool.as_str(), "files" | "cd") && !std::path::Path::new(&value).exists() {
                 self.message("该历史目标已失效或不存在");
@@ -3820,6 +4913,20 @@ impl eframe::App for QuickTool {
         [0., 0., 0., 0.]
     }
     fn update(&mut self, ctx: &Context, frame: &mut eframe::Frame) {
+        if self.screenshot.is_some() {
+            ctx.request_repaint_after(Duration::from_millis(16));
+        }
+        if let Some(outcome) = self
+            .image_copy
+            .as_ref()
+            .and_then(|receiver| receiver.try_recv().ok())
+        {
+            self.image_copy = None;
+            match outcome {
+                Ok(()) => self.message("图片已复制"),
+                Err(error) => self.message(format!("复制图片失败：{error}")),
+            }
+        }
         self.frames += 1;
         let tray_events = self
             .tray
@@ -3844,21 +4951,34 @@ impl eframe::App for QuickTool {
                 }
             }
         }
-        let drops = ctx.input(|i| i.raw.dropped_files.clone());
-        if self.panel == Panel::None {
-            for file in drops {
-                let result = if let Some(path) = file.path {
-                    attachments::Attachment::from_path(&path)
-                } else if let Some(bytes) = file.bytes {
-                    attachments::Attachment::from_bytes(file.name, &bytes)
-                } else {
-                    continue;
-                };
-                if let Ok(attachment) = result {
-                    self.set_attachment(attachment);
-                    break;
-                }
+        if let Some(result) = self
+            .attachment_job
+            .as_ref()
+            .and_then(|receiver| receiver.try_recv().ok())
+        {
+            self.attachment_job = None;
+            match result {
+                Ok((attachment, results)) => self.set_attachment_ready(attachment, results),
+                Err(error) => self.message(format!("打开图片失败：{error}")),
             }
+        }
+        let drops = ctx.input(|input| input.raw.dropped_files.clone());
+        if self.panel == Panel::None && !drops.is_empty() {
+            self.load_attachment(move || {
+                for file in drops {
+                    let result = if let Some(path) = file.path {
+                        attachments::Attachment::from_path(&path)
+                    } else if let Some(bytes) = file.bytes {
+                        attachments::Attachment::from_bytes(file.name, &bytes)
+                    } else {
+                        continue;
+                    };
+                    if result.is_ok() {
+                        return result;
+                    }
+                }
+                Err("未找到可识别图片".into())
+            });
         }
         self.poll_files();
         self.poll_system();
@@ -3920,12 +5040,22 @@ impl eframe::App for QuickTool {
         } else {
             self.store.settings.clone()
         };
+        ctx.request_repaint_after(Duration::from_secs(1));
         if self.theme_polled.elapsed() >= Duration::from_secs(1) {
             self.system_dark = system::dark_theme();
             self.theme_polled = Instant::now();
         }
         let light =
             visual["theme"] == "light" || (visual["theme"] == "system" && !self.system_dark);
+        let effective_topmost = self.pinned || visual["summonAlwaysOnTop"] == true;
+        if self.applied_topmost != Some(effective_topmost) {
+            ctx.send_viewport_cmd(ViewportCommand::WindowLevel(if effective_topmost {
+                WindowLevel::AlwaysOnTop
+            } else {
+                WindowLevel::Normal
+            }));
+            self.applied_topmost = Some(effective_topmost);
+        }
         let opacity = visual["glassOpacity"].as_f64().unwrap_or(0.78) as f32;
         let blur = visual["blurStrength"].as_u64().unwrap_or(28) as u32;
         #[cfg(windows)]
@@ -4026,7 +5156,7 @@ impl eframe::App for QuickTool {
         };
         ctx.set_visuals(visuals);
         self.record_shortcut(ctx);
-        if !self.recording_shortcut {
+        if !self.recording_shortcut && !widgets::is_open(ctx) {
             self.keyboard(ctx);
         }
         let expanded =
@@ -4039,6 +5169,9 @@ impl eframe::App for QuickTool {
         let mut height = 84.;
         ctx.style_mut(|style| {
             style.spacing.item_spacing = vec2(8., 5.);
+            style.spacing.scroll.floating = false;
+            style.spacing.scroll.foreground_color = false;
+            style.spacing.scroll.bar_width = 6.;
             style.spacing.interact_size.y = 18.;
             style.spacing.button_padding = vec2(8., 5.);
             style.animation_time = if visual["reduceMotion"] == true {
@@ -4060,11 +5193,15 @@ impl eframe::App for QuickTool {
                             Color32::from_rgb(45, 51, 65)
                         },
                     ))
-                    .inner_margin(Margin {
-                        left: 14,
-                        right: 14,
-                        top: 16,
-                        bottom: 10,
+                    .inner_margin(if self.panel == Panel::None {
+                        Margin {
+                            left: 14,
+                            right: 14,
+                            top: 16,
+                            bottom: 10,
+                        }
+                    } else {
+                        Margin::same(10)
                     }),
             )
             .show(ctx, |ui| {
@@ -4098,7 +5235,7 @@ impl eframe::App for QuickTool {
                                     },
                                 ))
                                 .corner_radius(16)
-                                .inner_margin(14)
+                                .inner_margin(Margin::symmetric(18, 14))
                                 .show(ui, |ui| self.settings(ui));
                         }
                         Panel::History => {
@@ -4117,23 +5254,25 @@ impl eframe::App for QuickTool {
                                     },
                                 ))
                                 .corner_radius(16)
-                                .inner_margin(14)
+                                .inner_margin(Margin::symmetric(18, 14))
                                 .show(ui, |ui| self.history(ui, ctx));
                         }
                     }
                     height = match self.panel {
-                        Panel::None
-                            if self.country_query().is_some()
-                                || self.mode.as_deref() == Some("help") =>
-                        {
-                            642.
-                        }
+                        Panel::None if self.country_query().is_some() => 576.,
+                        Panel::None if self.showing_help() => 642.,
                         Panel::None => self.result_height,
                         Panel::Settings => 642.,
                         Panel::History => 560.,
                     };
                 }
             });
+        if self.main_visible {
+            widgets::show(ctx, self.glow.owner, effective_topmost);
+        } else {
+            widgets::close(ctx);
+        }
+        widgets::show_tooltip(ctx, self.glow.owner, effective_topmost, self.main_visible);
         let animated = ctx.animate_value_with_time(
             Id::new("main-height"),
             height,

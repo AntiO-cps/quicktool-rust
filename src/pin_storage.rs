@@ -12,14 +12,19 @@ pub struct PreparedPin {
     pub record: PinRecord,
     pub thumbnail: Option<String>,
 }
+pub enum Prepared {
+    Pin(Box<PreparedPin>),
+    Image(Box<crate::storage::HistoryItem>),
+}
 enum Job {
+    Image(Box<crate::storage::HistoryItem>, std::sync::Arc<RgbaImage>),
     Prepare(Box<PinHistoryUpdate>),
     Barrier(std::sync::mpsc::Sender<()>),
     Stop,
 }
 pub struct Worker {
     requests: std::sync::mpsc::Sender<Job>,
-    pub responses: std::sync::mpsc::Receiver<io::Result<PreparedPin>>,
+    pub responses: std::sync::mpsc::Receiver<io::Result<Prepared>>,
     thread: Option<std::thread::JoinHandle<()>>,
 }
 impl Worker {
@@ -46,6 +51,20 @@ impl Worker {
                                 assets.insert(prepared.record.history_id.clone(), asset.clone());
                             }
                         }
+                        if done
+                            .send(result.map(|pin| Prepared::Pin(Box::new(pin))))
+                            .is_err()
+                        {
+                            break;
+                        }
+                        wake();
+                    }
+                    Job::Image(mut item, source) => {
+                        let result = prepare_image(&root, &source).map(|asset| {
+                            item.image_asset = Some(asset.clone());
+                            item.thumbnail = Some(asset);
+                            Prepared::Image(item)
+                        });
                         if done.send(result).is_err() {
                             break;
                         }
@@ -68,6 +87,15 @@ impl Worker {
         self.requests
             .send(Job::Prepare(Box::new(update)))
             .map_err(|_| io::Error::other("Pin 保存服务已停止"))
+    }
+    pub fn queue_image(
+        &self,
+        item: crate::storage::HistoryItem,
+        source: std::sync::Arc<RgbaImage>,
+    ) -> io::Result<()> {
+        self.requests
+            .send(Job::Image(Box::new(item), source))
+            .map_err(|_| io::Error::other("图片历史保存服务已停止"))
     }
     pub fn flush(&self) -> io::Result<()> {
         let (tx, rx) = std::sync::mpsc::channel();
@@ -134,21 +162,38 @@ pub fn prepare(
                 .source
                 .as_ref()
                 .ok_or_else(|| io::Error::other("缺少 Pin 原图"))?;
-            let bytes = png(source)?;
-            let hash = format!("{:x}", Sha256::digest(&bytes));
-            let asset = format!("asset:{hash}");
-            let path = asset_path(root, &asset, false)?;
-            if !path.exists() {
-                atomic_write(&path, &bytes)?
-            }
-            let small = image::imageops::thumbnail(source.as_ref(), 96, 64);
-            atomic_write(&asset_path(root, &asset, true)?, &png(&small)?)?;
-            asset
+            prepare_image(root, source)?
         };
         record.asset = Some(asset.clone());
         thumbnail = Some(asset);
     }
     Ok(PreparedPin { record, thumbnail })
+}
+/// Shared content-addressed storage for Pin and ordinary image history.
+pub fn prepare_image(root: &Path, source: &RgbaImage) -> io::Result<String> {
+    if source.width() == 0
+        || source.height() == 0
+        || source.width() as u64 * source.height() as u64 > 16_000_000
+    {
+        return Err(io::Error::other("图片尺寸无效或超过1600万像素"));
+    }
+    let bytes = png(source)?;
+    let asset = format!("asset:{:x}", Sha256::digest(&bytes));
+    let path = asset_path(root, &asset, false)?;
+    if path.exists() {
+        // Preserve damaged originals instead of silently replacing them.
+        if std::fs::read(&path)? != bytes {
+            return Err(io::Error::other("原图校验失败，已保留文件"));
+        }
+    } else {
+        atomic_write(&path, &bytes)?;
+    }
+    let thumbnail = asset_path(root, &asset, true)?;
+    if !thumbnail.exists() {
+        let small = image::imageops::thumbnail(source, 96, 64);
+        atomic_write(&thumbnail, &png(&small)?)?;
+    }
+    Ok(asset)
 }
 pub fn load_image(root: &Path, asset: &str) -> io::Result<RgbaImage> {
     let path = asset_path(root, asset, false)?;

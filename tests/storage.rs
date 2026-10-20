@@ -107,3 +107,16 @@ fn history_restores_mode_and_subcommand() {
     assert_eq!(mode.args[0]["label"], "编码");
     cleanup(&root);
 }
+
+#[test]
+fn legacy_history_without_image_asset_remains_readable() {
+    let root = root();
+    std::fs::create_dir_all(&root).unwrap();
+    atomic_write(&root.join("history.json"), br#"[{"id":"legacy","input":"hello","tool":"text","title":"legacy","value":"hello","pinned":false,"created":1}]"#).unwrap();
+    let store = Store::open(root.clone());
+    assert!(store.load_errors.is_empty());
+    assert!(store.history[0].image_asset.is_none());
+    assert!(store.load_history_image("legacy").is_err());
+    assert_eq!(store.history[0].value, "hello");
+    cleanup(&root);
+}

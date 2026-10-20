@@ -8,8 +8,9 @@ use std::{path::Path, sync::Arc};
 pub struct Attachment {
     pub name: String,
     pub mime: String,
-    pub bytes: Vec<u8>,
+    pub bytes: Arc<[u8]>,
     pub rgba: Arc<RgbaImage>,
+    pub thumbnail: Arc<RgbaImage>,
 }
 impl Attachment {
     pub fn from_base64(input: &str) -> Result<Self, String> {
@@ -68,7 +69,8 @@ impl Attachment {
         Ok(Self {
             name: "剪贴板图片".into(),
             mime: "image/png".into(),
-            bytes,
+            bytes: bytes.into(),
+            thumbnail: Arc::new(image::imageops::thumbnail(&rgba, 128, 96)),
             rgba: Arc::new(rgba),
         })
     }
@@ -139,7 +141,8 @@ impl Attachment {
         Ok(Self {
             name: name.into(),
             mime: mime.into(),
-            bytes: bytes.to_vec(),
+            bytes: Arc::from(bytes),
+            thumbnail: Arc::new(image::imageops::thumbnail(&rgba, 128, 96)),
             rgba: Arc::new(rgba),
         })
     }
@@ -167,7 +170,11 @@ mod tests {
             .write_image(rgba.as_raw(), 2, 1, image::ExtendedColorType::Rgba8)
             .unwrap();
         let attachment = Attachment::from_bytes("sample.png", &png).unwrap();
-        assert_eq!(attachment.bytes, png);
+        assert_eq!(attachment.bytes.as_ref(), png.as_slice());
+        let cloned = attachment.clone();
+        assert!(Arc::ptr_eq(&attachment.bytes, &cloned.bytes));
+        assert!(Arc::ptr_eq(&attachment.rgba, &cloned.rgba));
+        assert!(Arc::ptr_eq(&attachment.thumbnail, &cloned.thumbnail));
         assert_eq!(attachment.rgba.as_ref(), &rgba);
         let results = attachment.results();
         assert_eq!(results.len(), 2);
@@ -184,7 +191,7 @@ mod tests {
         let p = attachment.rgba.get_pixel(0, 0);
         assert_eq!(p[0], 255);
         assert!(p[3].abs_diff(128) <= 1);
-        assert_eq!(attachment.bytes, input);
+        assert_eq!(attachment.bytes.as_ref(), input.as_slice());
     }
     #[test]
     fn invalid_images_are_errors() {
@@ -202,7 +209,7 @@ mod tests {
             format!("data:image/svg+xml;base64,\n{encoded}\n"),
         ] {
             let a = Attachment::from_base64(&text).unwrap();
-            assert_eq!(a.bytes, svg);
+            assert_eq!(a.bytes.as_ref(), svg.as_slice());
             assert_eq!(a.rgba.dimensions(), (2, 2));
             assert_eq!(a.mime, "image/svg+xml");
         }

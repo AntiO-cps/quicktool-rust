@@ -1,8 +1,12 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+mod cli;
 mod ui;
 pub static PROCESS_STARTED: std::sync::OnceLock<std::time::Instant> = std::sync::OnceLock::new();
 fn main() -> eframe::Result {
     let _ = PROCESS_STARTED.set(std::time::Instant::now());
+    if let Some(code) = cli::run_import(&std::env::args_os().collect::<Vec<_>>()) {
+        std::process::exit(code);
+    }
     if std::env::args().any(|a| a == "--version") {
         println!("QuickTool Rust {}", env!("CARGO_PKG_VERSION"));
         return Ok(());

@@ -249,6 +249,11 @@ struct Pin {
     initial_text: String,
     source: Option<Arc<RgbaImage>>,
     size: Vec2,
+    annotation_width: f32,
+    resize_finished: bool,
+    resize_target: Option<Vec2>,
+    default_blur: f32,
+    default_opacity: f32,
     open: bool,
     effects: bool,
     editing: bool,
@@ -320,6 +325,11 @@ impl Pin {
             initial_text: text,
             source: source.map(Arc::new),
             size,
+            annotation_width: size.x,
+            resize_finished: false,
+            resize_target: None,
+            default_blur: 28.,
+            default_opacity: 0.78,
             open: true,
             effects: false,
             editing: false,
@@ -374,13 +384,67 @@ impl Pin {
         };
         if let Some(state) = state {
             self.size = vec2(state.width, state.height);
+            self.annotation_width = state.width;
+            self.resize_finished = false;
+            self.resize_target = None;
             self.restore_size = true;
             self.state = state;
             self.draft = None;
             self.drag = None;
+            self.text_editor = None;
+            self.text_editor_focus = false;
+            self.radius_editor = None;
             self.selected = None;
             self.original = false;
         }
+    }
+    fn clear_annotations(&mut self) {
+        self.state.annotations.clear();
+        self.selected = None;
+        self.drag = None;
+        self.draft = None;
+        self.text_editor = None;
+        self.text_editor_focus = false;
+        self.radius_editor = None;
+        self.record(None);
+    }
+    fn set_content_size(&mut self, size: Vec2) {
+        if self.image()
+            && size.x > 0.
+            && self.annotation_width > 0.
+            && (size.x - self.annotation_width).abs() > 0.001
+        {
+            let ratio = self.annotation_width / size.x;
+            for annotation in &mut self.state.annotations {
+                annotation.stroke = (annotation.stroke * ratio).clamp(0.00001, 0.5);
+            }
+            if let Some(annotation) = &mut self.draft {
+                annotation.stroke = (annotation.stroke * ratio).clamp(0.00001, 0.5);
+            }
+            if let Some(annotation) = &mut self.text_editor {
+                annotation.stroke = (annotation.stroke * ratio).clamp(0.00001, 0.5);
+            }
+        }
+        self.annotation_width = size.x;
+        self.size = size;
+        self.state.radius = self
+            .state
+            .radius
+            .min((size.min_elem() / 2.).floor().max(0.));
+    }
+    fn reset_text_effects(&mut self) {
+        self.state.font_size = 15.;
+        self.state.background = if self.light {
+            [248, 250, 255]
+        } else {
+            [25, 28, 37]
+        };
+        self.state.foreground = None;
+        self.state.blur = self.default_blur;
+        self.state.opacity = self.default_opacity;
+        self.state.auto_background = true;
+        self.state.auto_blur = true;
+        self.state.auto_opacity = true;
     }
     fn image(&self) -> bool {
         self.source.is_some()
@@ -617,8 +681,21 @@ impl Pin {
     }
     fn show(&mut self, ctx: &egui::Context) {
         self.popup_open = false;
+        if self.image()
+            && self.state.radius == 0.
+            && !self.filters_changed()
+            && self.state.annotations.is_empty()
+        {
+            self.original = false;
+            self.compare_started = None;
+        }
         if let Some(rect) = ctx.input(|i| i.viewport().outer_rect) {
             self.position = Some([rect.left(), rect.top()]);
+        }
+        if !ctx.input(|i| i.viewport().focused.unwrap_or(true)) {
+            if let Some((_, prior)) = self.compare_started.take() {
+                self.original = prior;
+            }
         }
         self.update_move(ctx);
         self.apply_native_style(ctx);
@@ -705,7 +782,19 @@ impl Pin {
         let bounds = ctx.screen_rect();
         let bottom = if self.editing { 56. } else { 8. };
         let card = Rect::from_min_max(bounds.min + vec2(8., 8.), bounds.max - vec2(8., bottom));
-        self.size = card.size();
+        self.set_content_size(card.size());
+        if self.resize_finished {
+            if self
+                .resize_target
+                .is_none_or(|target| (self.size - target).abs().max_elem() < 2.)
+            {
+                self.record(Some("resize"));
+                self.resize_finished = false;
+                self.resize_target = None;
+            } else {
+                ctx.request_repaint_after(std::time::Duration::from_millis(8));
+            }
+        }
         egui::CentralPanel::default()
             .frame(egui::Frame::NONE.fill(Color32::TRANSPARENT))
             .show(ctx, |ui| {
@@ -763,6 +852,8 @@ impl Pin {
                             };
                             let response = ui.add(
                                 egui::TextEdit::multiline(&mut self.state.text)
+                                    .id(Id::new((self.id, "text")))
+                                    .margin(Vec2::ZERO)
                                     .font(font.clone())
                                     .layouter(&mut layouter)
                                     .text_color(fg)
@@ -794,9 +885,7 @@ impl Pin {
                     }
                 }
             });
-        let hovered = ctx.input(|i| i.pointer.hover_pos().is_some())
-            || ctx.wants_keyboard_input()
-            || self.effects;
+        let hovered = ctx.input(|i| i.pointer.hover_pos().is_some()) || ctx.wants_keyboard_input();
         if hovered {
             egui::Area::new(Id::new((self.id, "buttons")))
                 .fixed_pos(pos2(card.right() - 110., card.top() + 8.))
@@ -804,7 +893,11 @@ impl Pin {
                 .show(ctx, |ui| {
                     ui.spacing_mut().item_spacing.x = 6.;
                     ui.horizontal(|ui| {
-                        if self.image() {
+                        if self.image()
+                            && (self.state.radius > 0.
+                                || self.filters_changed()
+                                || !self.state.annotations.is_empty())
+                        {
                             let r = ui
                                 .button(if self.original { "效果" } else { "原图" })
                                 .on_hover_text("按住查看原图；单击切换");
@@ -832,8 +925,9 @@ impl Pin {
                             } else if r.clicked() {
                                 self.original = !self.original;
                             }
-                        } else if pin_icon_button(ui, "restore", "重置为初始文字", false, true)
-                            .clicked()
+                        } else if !self.image()
+                            && pin_icon_button(ui, "restore", "重置为初始文字", false, true)
+                                .clicked()
                         {
                             self.state.text = self.initial_text.clone();
                             self.record(None);
@@ -965,16 +1059,59 @@ impl Pin {
         self.popup_open |= ctx.memory(|memory| memory.any_popup_open());
         self.capture_viewport(ctx, false);
     }
+    fn text_selection(&self, ctx: &egui::Context) -> std::ops::Range<usize> {
+        let count = self.state.text.chars().count();
+        egui::text_edit::TextEditState::load(ctx, Id::new((self.id, "text")))
+            .and_then(|state| state.cursor.char_range())
+            .map(|range| {
+                let [start, end] = range.sorted();
+                start.index.min(count)..end.index.min(count)
+            })
+            .unwrap_or(count..count)
+    }
+    fn select_text(&self, ctx: &egui::Context, range: std::ops::Range<usize>) {
+        let id = Id::new((self.id, "text"));
+        let mut state = egui::text_edit::TextEditState::load(ctx, id).unwrap_or_default();
+        state
+            .cursor
+            .set_char_range(Some(egui::text::CCursorRange::two(
+                egui::text::CCursor::new(range.start),
+                egui::text::CCursor::new(range.end),
+            )));
+        state.store(ctx, id);
+        ctx.memory_mut(|memory| memory.request_focus(id));
+    }
+    fn replace_text_selection(&mut self, ctx: &egui::Context, replacement: &str) {
+        use egui::TextBuffer;
+        let range = self.text_selection(ctx);
+        let start = range.start;
+        self.state.text.delete_char_range(range);
+        let count = self.state.text.insert_text(replacement, start);
+        self.select_text(ctx, start + count..start + count);
+        self.record(Some("text"));
+    }
+    fn filters_changed(&self) -> bool {
+        let f = self.state.filters;
+        f.brightness != 0.
+            || f.contrast != 0.
+            || f.saturation != 0.
+            || f.exposure != 0.
+            || f.hue != 0.
+            || f.colorize
+    }
     fn context_menu(&mut self, ui: &mut egui::Ui, ctx: &egui::Context) {
         if ui
-            .add_enabled(self.history.can_undo(), egui::Button::new("撤回    Ctrl+Z"))
+            .add_enabled(self.history.can_undo(), egui::Button::new("撤回 · Ctrl+Z"))
             .clicked()
         {
             self.undo(false);
             ui.close_menu();
         }
         if ui
-            .add_enabled(self.history.can_redo(), egui::Button::new("重做    Ctrl+Y"))
+            .add_enabled(
+                self.history.can_redo(),
+                egui::Button::new("重做 · Ctrl+Shift+Z"),
+            )
             .clicked()
         {
             self.undo(true);
@@ -982,24 +1119,7 @@ impl Pin {
         }
         ui.separator();
         if self.image() {
-            if ui
-                .button(if self.editing {
-                    "结束标注"
-                } else {
-                    "图片标注"
-                })
-                .clicked()
-            {
-                self.commit_text();
-                self.editing = !self.editing;
-                self.selected = None;
-                ui.close_menu();
-            }
-            if ui.button("复制处理后的图片").clicked() {
-                self.export(ctx, "png", true);
-                ui.close_menu();
-            }
-            if ui.button("复制原图").clicked() {
+            if ui.button("复制处理前图片").clicked() {
                 if let Some(im) = &self.source {
                     self.status = crate::platform::copy_image(im.width(), im.height(), im.as_raw())
                         .map(|_| "已复制原图".into())
@@ -1007,35 +1127,62 @@ impl Pin {
                 }
                 ui.close_menu();
             }
-            for (name, extension) in [("导出 PNG", "png"), ("导出分层 PSD", "psd")] {
+            if ui.button("复制处理后图片").clicked() {
+                self.export(ctx, "png", true);
+                ui.close_menu();
+            }
+            if ui.button("图片调整").clicked() {
+                self.effects = true;
+                self.editing = true;
+                ui.close_menu();
+            }
+            for (name, extension) in [("导出 PNG…", "png"), ("导出 PSD…", "psd")] {
                 if ui.button(name).clicked() {
                     self.export(ctx, extension, false);
                     ui.close_menu();
                 }
             }
-        } else if ui.button("复制文字").clicked() {
-            self.status = crate::platform::copy_text(&self.state.text)
-                .map(|_| "已复制文字".into())
-                .unwrap_or_else(|e| e);
-            ui.close_menu();
-        }
-        if ui
-            .button(if self.image() {
-                "图片调整"
-            } else {
-                "文字调整"
-            })
-            .clicked()
-        {
-            self.effects = !self.effects;
-            if self.image() {
-                self.editing = self.effects;
+        } else {
+            use egui::TextBuffer;
+            let selection = self.text_selection(ctx);
+            if ui.button("复制").clicked() {
+                let text = if selection.is_empty() {
+                    &self.state.text
+                } else {
+                    self.state.text.char_range(selection.clone())
+                };
+                self.status = crate::platform::copy_text(text)
+                    .map(|_| "已复制文字".into())
+                    .unwrap_or_else(|e| e);
+                ui.close_menu();
             }
-            ui.close_menu();
-        }
-        if ui.button("关闭").clicked() {
-            self.open = false;
-            ui.close_menu();
+            if ui.button("编辑文字").clicked() {
+                self.select_text(ctx, selection.clone());
+                ui.close_menu();
+            }
+            if ui.button("全选").clicked() {
+                self.select_text(ctx, 0..self.state.text.chars().count());
+                ui.close_menu();
+            }
+            if ui.button("剪切").clicked() {
+                if !selection.is_empty() {
+                    match crate::platform::copy_text(self.state.text.char_range(selection)) {
+                        Ok(()) => self.replace_text_selection(ctx, ""),
+                        Err(error) => self.status = error,
+                    }
+                }
+                ui.close_menu();
+            }
+            if ui.button("粘贴").clicked() {
+                match crate::platform::clipboard_text() {
+                    Ok(text) => self.replace_text_selection(
+                        ctx,
+                        &text.replace("\r\n", "\n").replace('\r', "\n"),
+                    ),
+                    Err(error) => self.status = error,
+                }
+                ui.close_menu();
+            }
         }
     }
     fn zoom_text(&mut self, factor: f32) {
@@ -1047,56 +1194,64 @@ impl Pin {
             .fixed_pos(pos2(8., card.bottom() + 8.))
             .order(egui::Order::Foreground)
             .show(ctx, |ui| {
-                egui::Frame::popup(ui.style())
-                    .corner_radius(10.)
-                    .show(ui, |ui| {
-                        ui.spacing_mut().item_spacing.x = 3.;
-                        ui.horizontal(|ui| {
-                            for tool in [
-                                Tool::Pan,
-                                Tool::Rect,
-                                Tool::Arrow,
-                                Tool::Pen,
-                                Tool::Text,
-                                Tool::Number,
-                                Tool::Mosaic,
-                                Tool::Highlight,
-                            ] {
-                                let active = self.tool == tool
-                                    || (tool == Tool::Rect
-                                        && matches!(self.tool, Tool::Ellipse | Tool::Line));
-                                let symbol = match tool {
-                                    Tool::Pan => "cursor-move",
-                                    Tool::Rect => match self.tool {
-                                        Tool::Ellipse => "ellipse-outline",
-                                        Tool::Line => "vector-line",
-                                        _ => "rectangle-outline",
-                                    },
-                                    Tool::Arrow => "arrow-top-right",
-                                    Tool::Pen => "draw",
-                                    Tool::Text => "format-text",
-                                    Tool::Number => "numeric-1-circle-outline",
-                                    Tool::Mosaic => "checkerboard",
-                                    Tool::Highlight => "marker",
-                                    _ => "rectangle-outline",
-                                };
-                                if pin_icon_button(ui, symbol, tool.label(), active, false)
-                                    .clicked()
-                                {
-                                    self.commit_text();
-                                    self.tool = tool;
-                                    self.selected = None;
-                                }
-                            }
-                            if pin_icon_button(ui, "delete-outline", "清空全部标注", false, false)
-                                .clicked()
-                            {
-                                self.state.annotations.clear();
-                                self.selected = None;
-                                self.record(None);
-                            }
-                        });
-                    });
+                let bar =
+                    Rect::from_min_size(pos2(8., card.bottom() + 8.), vec2(card.width(), 40.));
+                let bg = if self.light {
+                    Color32::from_rgb(248, 250, 255)
+                } else {
+                    Color32::from_rgb(36, 41, 54)
+                };
+                ui.painter().rect_filled(bar, 10., bg);
+                ui.painter().rect_stroke(
+                    bar,
+                    10.,
+                    Stroke::new(1., pin_border(self.light)),
+                    egui::StrokeKind::Inside,
+                );
+                ui.set_min_size(vec2(card.width(), 40.));
+                ui.add_space(6.5);
+                ui.spacing_mut().item_spacing.x = 3.;
+                ui.horizontal(|ui| {
+                    ui.add_space(((card.width() - 258.) / 2.).max(6.));
+                    for tool in [
+                        Tool::Pan,
+                        Tool::Rect,
+                        Tool::Arrow,
+                        Tool::Pen,
+                        Tool::Text,
+                        Tool::Number,
+                        Tool::Mosaic,
+                        Tool::Highlight,
+                    ] {
+                        let active = self.tool == tool
+                            || (tool == Tool::Rect
+                                && matches!(self.tool, Tool::Ellipse | Tool::Line));
+                        let symbol = match tool {
+                            Tool::Pan => "cursor-move",
+                            Tool::Rect => match self.tool {
+                                Tool::Ellipse => "ellipse-outline",
+                                Tool::Line => "vector-line",
+                                _ => "rectangle-outline",
+                            },
+                            Tool::Arrow => "arrow-top-right",
+                            Tool::Pen => "draw",
+                            Tool::Text => "format-text",
+                            Tool::Number => "numeric-1-circle-outline",
+                            Tool::Mosaic => "checkerboard",
+                            Tool::Highlight => "marker",
+                            _ => "rectangle-outline",
+                        };
+                        if pin_icon_button(ui, symbol, tool.label(), active, false).clicked() {
+                            self.commit_text();
+                            self.tool = tool;
+                            self.selected = None;
+                        }
+                    }
+                    if pin_icon_button(ui, "delete-outline", "清空全部标注", false, false).clicked()
+                    {
+                        self.clear_annotations();
+                    }
+                });
             });
         let selected = self
             .selected
@@ -1110,81 +1265,99 @@ impl Pin {
         }
         let before = serde_json::to_string(&a).unwrap_or_default();
         egui::Area::new(Id::new((self.id, "annotation-options")))
-            .anchor(Align2::CENTER_BOTTOM, vec2(0., -104.))
+            .anchor(Align2::CENTER_BOTTOM, vec2(0., -56.))
             .order(egui::Order::Foreground)
             .show(ctx, |ui| {
-                egui::Frame::popup(ui.style()).show(ui, |ui| {
-                    ui.horizontal_wrapped(|ui| {
-                        if matches!(a.tool, Tool::Rect | Tool::Ellipse | Tool::Line) {
-                            egui::ComboBox::from_id_salt("shape")
-                                .selected_text(a.tool.label())
-                                .width(62.)
-                                .show_ui(ui, |ui| {
-                                    for tool in [Tool::Rect, Tool::Ellipse, Tool::Line] {
-                                        ui.selectable_value(&mut a.tool, tool, tool.label());
-                                    }
-                                });
-                        }
-                        if a.tool != Tool::Mosaic {
-                            ui.color_edit_button_srgb(&mut a.color);
-                        }
-                        if matches!(
-                            a.tool,
-                            Tool::Rect
-                                | Tool::Ellipse
-                                | Tool::Line
-                                | Tool::Arrow
-                                | Tool::Pen
-                                | Tool::Mosaic
-                        ) {
-                            let mosaic = a.tool == Tool::Mosaic;
-                            ui.label(if mosaic { "像素块" } else { "线宽" });
-                            let divisor = if mosaic { 4. } else { 1. };
-                            let mut width = a.stroke * card.width() * divisor;
-                            ui.add(
-                                egui::DragValue::new(&mut width)
-                                    .range(if mosaic { 6.0..=128.0 } else { 1.0..=32.0 })
-                                    .speed(1.),
-                            );
-                            a.stroke = width / card.width() / divisor;
-                        }
-                        if matches!(a.tool, Tool::Text | Tool::Number) {
-                            ui.label("字号");
-                            let mut size = a.font_size * card.width();
-                            ui.add(egui::DragValue::new(&mut size).range(10.0..=96.0).speed(1.));
-                            a.font_size = size / card.width();
-                        }
-                        if a.tool == Tool::Number {
-                            let mut manual = a.text_color.is_some();
-                            if ui.checkbox(&mut manual, "自选文字色").changed() {
-                                a.text_color = if manual { Some([255, 255, 255]) } else { None };
+                egui::Frame::new()
+                    .fill(if self.light {
+                        Color32::from_rgb(248, 250, 255)
+                    } else {
+                        Color32::from_rgb(36, 41, 54)
+                    })
+                    .stroke(Stroke::new(1., pin_border(self.light)))
+                    .corner_radius(7.)
+                    .inner_margin(egui::Margin::symmetric(8, 6))
+                    .show(ui, |ui| {
+                        ui.set_max_width((ctx.screen_rect().width() - 40.).max(1.));
+                        ui.style_mut().override_font_id = Some(FontId::proportional(10.));
+                        ui.spacing_mut().interact_size.y = 25.;
+                        ui.horizontal_wrapped(|ui| {
+                            if matches!(a.tool, Tool::Rect | Tool::Ellipse | Tool::Line) {
+                                egui::ComboBox::from_id_salt("shape")
+                                    .selected_text(a.tool.label())
+                                    .width(62.)
+                                    .show_ui(ui, |ui| {
+                                        for tool in [Tool::Rect, Tool::Ellipse, Tool::Line] {
+                                            ui.selectable_value(&mut a.tool, tool, tool.label());
+                                        }
+                                    });
                             }
-                            if let Some(c) = &mut a.text_color {
-                                ui.color_edit_button_srgb(c);
+                            if a.tool != Tool::Mosaic {
+                                ui.color_edit_button_srgb(&mut a.color);
                             }
-                        }
-                        if matches!(a.tool, Tool::Rect | Tool::Mosaic | Tool::Highlight) {
-                            ui.label("圆角");
-                            let max = if selected.is_some() {
-                                (a.rect().width() * card.width())
-                                    .min(a.rect().height() * card.height())
-                                    / 2.
-                            } else {
-                                card.size().min_elem() / 2.
-                            };
-                            let mut radius = a.radius * card.width();
-                            ui.add(egui::DragValue::new(&mut radius).range(0.0..=max).speed(1.));
-                            a.radius = radius / card.width();
-                        }
-                        if a.tool == Tool::Highlight {
-                            ui.label("压暗");
-                            ui.add(
-                                egui::Slider::new(&mut a.opacity, 0.0..=1.0)
-                                    .custom_formatter(|v, _| format!("{}%", (v * 100.).round())),
-                            );
-                        }
+                            if matches!(
+                                a.tool,
+                                Tool::Rect
+                                    | Tool::Ellipse
+                                    | Tool::Line
+                                    | Tool::Arrow
+                                    | Tool::Pen
+                                    | Tool::Mosaic
+                            ) {
+                                let mosaic = a.tool == Tool::Mosaic;
+                                ui.label(if mosaic { "像素块" } else { "线宽" });
+                                let divisor = if mosaic { 4. } else { 1. };
+                                let mut width = a.stroke * card.width() * divisor;
+                                ui.add(
+                                    egui::DragValue::new(&mut width)
+                                        .range(if mosaic { 6.0..=128.0 } else { 1.0..=32.0 })
+                                        .speed(1.),
+                                );
+                                a.stroke = width / card.width() / divisor;
+                            }
+                            if matches!(a.tool, Tool::Text | Tool::Number) {
+                                ui.label("字号");
+                                let mut size = a.font_size * card.width();
+                                ui.add(
+                                    egui::DragValue::new(&mut size).range(10.0..=96.0).speed(1.),
+                                );
+                                a.font_size = size / card.width();
+                            }
+                            if a.tool == Tool::Number {
+                                let mut manual = a.text_color.is_some();
+                                if ui.checkbox(&mut manual, "自选文字色").changed() {
+                                    a.text_color =
+                                        if manual { Some([255, 255, 255]) } else { None };
+                                }
+                                if let Some(c) = &mut a.text_color {
+                                    ui.color_edit_button_srgb(c);
+                                }
+                            }
+                            if matches!(a.tool, Tool::Rect | Tool::Mosaic | Tool::Highlight) {
+                                ui.label("圆角");
+                                let max = if selected.is_some() {
+                                    (a.rect().width() * card.width())
+                                        .min(a.rect().height() * card.height())
+                                        / 2.
+                                } else {
+                                    card.size().min_elem() / 2.
+                                };
+                                let mut radius = a.radius * card.width();
+                                ui.add(
+                                    egui::DragValue::new(&mut radius).range(0.0..=max).speed(1.),
+                                );
+                                a.radius = radius / card.width();
+                            }
+                            if a.tool == Tool::Highlight {
+                                ui.label("压暗");
+                                ui.add(
+                                    egui::Slider::new(&mut a.opacity, 0.0..=1.0).custom_formatter(
+                                        |v, _| format!("{}%", (v * 100.).round()),
+                                    ),
+                                );
+                            }
+                        });
                     });
-                });
             });
         if before != serde_json::to_string(&a).unwrap_or_default() {
             if selected.as_ref().is_none_or(|old| old.tool != a.tool) {
@@ -1491,7 +1664,9 @@ impl Pin {
             .with_active(false)
             .with_always_on_top();
         ctx.show_viewport_immediate(id, builder, |ctx, _| {
-            if ctx.input(|i| i.viewport().close_requested() || i.key_pressed(Key::Escape)) {
+            if ctx.input(|i| i.viewport().close_requested())
+                || (!ctx.wants_keyboard_input() && ctx.input(|i| i.key_pressed(Key::Escape)))
+            {
                 self.effects = false;
                 self.editing = false;
             }
@@ -1518,17 +1693,41 @@ impl Pin {
                         .stroke(Stroke::new(
                             1.,
                             if light {
-                                Color32::from_rgba_unmultiplied(53, 91, 164, 61)
+                                pin_border(true)
                             } else {
-                                Color32::from_rgba_unmultiplied(162, 184, 240, 71)
+                                pin_border(self.light)
                             },
                         ))
                         .corner_radius(14.)
                         .inner_margin(16.)
                         .show(ui, |ui| {
+                            ui.style_mut().override_font_id = Some(FontId::proportional(12.));
+                            ui.visuals_mut().override_text_color = Some(if light {
+                                Color32::from_rgb(36, 42, 56)
+                            } else {
+                                Color32::from_rgb(245, 247, 255)
+                            });
+                            ui.spacing_mut().interact_size = vec2(24., 24.);
+                            let widgets = &mut ui.visuals_mut().widgets;
+                            for visuals in [
+                                &mut widgets.inactive,
+                                &mut widgets.hovered,
+                                &mut widgets.active,
+                            ] {
+                                visuals.weak_bg_fill = Color32::TRANSPARENT;
+                                visuals.bg_fill = Color32::TRANSPARENT;
+                                visuals.bg_stroke = Stroke::new(
+                                    1.,
+                                    if light {
+                                        pin_border(true)
+                                    } else {
+                                        pin_border(self.light)
+                                    },
+                                );
+                            }
                             ui.set_min_size(panel_size - vec2(48., 48.));
                             ui.set_max_width(212.);
-                            ui.spacing_mut().item_spacing = vec2(6., 8.);
+                            ui.spacing_mut().item_spacing = vec2(6., 4.);
                             ui.spacing_mut().slider_width = 212.;
                             ui.horizontal(|ui| {
                                 ui.label(egui::RichText::new(title).size(12.).strong());
@@ -1546,20 +1745,20 @@ impl Pin {
                                             if image {
                                                 self.state.filters = Filters::default();
                                             } else {
-                                                self.state.font_size = 15.;
-                                                self.state.background = [25, 28, 37];
-                                                self.state.foreground = None;
-                                                self.state.opacity = 0.78;
-                                                self.state.blur = 28.;
-                                                self.state.auto_background = true;
-                                                self.state.auto_blur = true;
-                                                self.state.auto_opacity = true;
+                                                self.reset_text_effects();
                                             }
                                         }
                                     },
                                 );
                             });
                             ui.separator();
+                            ui.add_space(6.);
+                            ui.data_mut(|data| {
+                                data.insert_temp(
+                                    Id::new("pin-effect-hue"),
+                                    self.state.filters.hue as f32,
+                                )
+                            });
                             if image {
                                 slider(
                                     ui,
@@ -1603,97 +1802,138 @@ impl Pin {
                                     -3.0..=3.0,
                                     0.,
                                 );
-                                ui.horizontal(|ui| {
-                                    ui.label(egui::RichText::new("色相").size(12.));
-                                    ui.with_layout(
-                                        egui::Layout::right_to_left(egui::Align::Center),
-                                        |ui| {
-                                            ui.checkbox(&mut self.state.filters.colorize, "着色");
-                                        },
-                                    );
-                                });
                                 let mut hue = if self.state.filters.colorize {
                                     self.state.filters.hue.rem_euclid(360.)
                                 } else {
                                     self.state.filters.hue
                                 };
-                                ui.add(
-                                    egui::Slider::new(
-                                        &mut hue,
-                                        if self.state.filters.colorize {
-                                            0.0..=359.0
-                                        } else {
-                                            -180.0..=180.0
-                                        },
-                                    )
-                                    .show_value(true)
-                                    .suffix("°"),
+                                let range = if self.state.filters.colorize {
+                                    0.0..=359.0
+                                } else {
+                                    -180.0..=180.0
+                                };
+                                effect_control_inner(
+                                    ui,
+                                    "色相",
+                                    &mut hue,
+                                    range,
+                                    0.,
+                                    "°",
+                                    Some(&mut self.state.filters.colorize),
                                 );
                                 self.state.filters.hue = if hue > 180. { hue - 360. } else { hue };
-                                ui.label(egui::RichText::new("圆角").size(12.));
-                                let r = ui.add(
-                                    egui::Slider::new(
-                                        &mut self.state.radius,
-                                        0.0..=self.size.min_elem() / 2.,
-                                    )
-                                    .suffix(" px"),
+                                let mut radius = self.state.radius as f64;
+                                effect_control(
+                                    ui,
+                                    "圆角",
+                                    &mut radius,
+                                    0.0..=self.size.min_elem() as f64 / 2.,
+                                    0.,
+                                    " px",
                                 );
-                                if r.double_clicked() {
-                                    self.state.radius = 0.;
-                                }
+                                self.state.radius = radius as f32;
                             } else {
+                                ui.add_space(3.);
                                 ui.label(egui::RichText::new("字号").size(12.));
+                                ui.add_space(3.);
                                 ui.horizontal(|ui| {
-                                    if ui.small_button("−").clicked() {
+                                    ui.spacing_mut().item_spacing.x = 8.;
+                                    if ui.add_sized([32., 30.], egui::Button::new("−")).clicked()
+                                    {
                                         self.state.font_size =
                                             font_step(self.state.font_size, false);
                                     }
-                                    ui.add(
-                                        egui::DragValue::new(&mut self.state.font_size)
-                                            .range(8.0..=96.0)
-                                            .speed(0.1),
-                                    );
-                                    egui::ComboBox::from_id_salt("font-presets")
-                                        .selected_text("⌄")
-                                        .width(20.)
-                                        .show_ui(ui, |ui| {
-                                            for n in [
-                                                8., 9., 10., 11., 12., 14., 16., 18., 20., 24.,
-                                                28., 32., 36., 40., 44., 48., 54., 60., 66., 72.,
-                                                80., 88., 96.,
-                                            ] {
-                                                ui.selectable_value(
-                                                    &mut self.state.font_size,
-                                                    n,
-                                                    format!("{n} px"),
-                                                );
-                                            }
+                                    egui::Frame::new()
+                                        .stroke(ui.visuals().widgets.inactive.bg_stroke)
+                                        .corner_radius(6.)
+                                        .show(ui, |ui| {
+                                            ui.spacing_mut().item_spacing.x = 0.;
+                                            ui.horizontal(|ui| {
+                                                let font_response =
+                                                    font_size_input(ui, &mut self.state.font_size);
+                                                let popup_id = ui
+                                                    .make_persistent_id(Id::new("font-presets"))
+                                                    .with("popup");
+                                                if font_response.has_focus()
+                                                    && ui.input(|i| {
+                                                        i.modifiers.alt
+                                                            && i.key_pressed(Key::ArrowDown)
+                                                    })
+                                                {
+                                                    ui.memory_mut(|memory| {
+                                                        memory.open_popup(popup_id)
+                                                    });
+                                                }
+                                                egui::ComboBox::from_id_salt("font-presets")
+                                                    .selected_text("")
+                                                    .width(20.)
+                                                    .icon(|ui, rect, visuals, _, _| {
+                                                        let center = rect.center();
+                                                        let stroke =
+                                                            Stroke::new(1., visuals.text_color());
+                                                        ui.painter().line_segment(
+                                                            [
+                                                                center + vec2(-3., -1.),
+                                                                center + vec2(0., 2.),
+                                                            ],
+                                                            stroke,
+                                                        );
+                                                        ui.painter().line_segment(
+                                                            [
+                                                                center + vec2(0., 2.),
+                                                                center + vec2(3., -1.),
+                                                            ],
+                                                            stroke,
+                                                        );
+                                                    })
+                                                    .show_ui(ui, |ui| {
+                                                        for n in [
+                                                            8., 9., 10., 11., 12., 14., 16., 18.,
+                                                            20., 24., 28., 32., 36., 40., 44., 48.,
+                                                            54., 60., 66., 72., 80., 88., 96.,
+                                                        ] {
+                                                            ui.selectable_value(
+                                                                &mut self.state.font_size,
+                                                                n,
+                                                                format!("{n} px"),
+                                                            );
+                                                        }
+                                                    });
+                                            });
                                         });
-                                    if ui.small_button("+").clicked() {
+                                    if ui.add_sized([32., 30.], egui::Button::new("+")).clicked() {
                                         self.state.font_size =
                                             font_step(self.state.font_size, true);
                                     }
                                 });
+                                ui.add_space(2.);
+                                ui.label(egui::RichText::new("背景颜色").size(12.));
+                                ui.add_space(-4.);
+                                egui::Frame::new()
+                                    .stroke(ui.visuals().widgets.inactive.bg_stroke)
+                                    .corner_radius(6.)
+                                    .inner_margin(4.)
+                                    .show(ui, |ui| {
+                                        ui.spacing_mut().interact_size =
+                                            vec2(ui.available_width(), 22.);
+                                        ui.color_edit_button_srgb(&mut self.state.background);
+                                    });
+                                ui.add_space(4.);
+                                ui.label(egui::RichText::new("文字颜色").size(12.));
+                                ui.add_space(4.);
                                 ui.horizontal(|ui| {
-                                    ui.label(egui::RichText::new("背景颜色").size(12.));
-                                    ui.with_layout(
-                                        egui::Layout::right_to_left(egui::Align::Center),
-                                        |ui| {
-                                            ui.color_edit_button_srgb(&mut self.state.background);
-                                        },
-                                    );
-                                });
-                                ui.horizontal(|ui| {
-                                    ui.label(egui::RichText::new("文字颜色").size(12.));
                                     let mut manual = self.state.foreground.is_some();
                                     let before = manual;
+                                    let width =
+                                        ui.available_width() - if manual { 48. } else { 0. };
                                     egui::ComboBox::from_id_salt("text-color-mode")
                                         .selected_text(if manual {
                                             "自选颜色"
                                         } else {
                                             "自动黑白"
                                         })
-                                        .width(90.)
+                                        .width(width)
+                                        .height(26.)
                                         .show_ui(ui, |ui| {
                                             ui.selectable_value(&mut manual, false, "自动黑白");
                                             ui.selectable_value(&mut manual, true, "自选颜色");
@@ -1706,23 +1946,26 @@ impl Pin {
                                         ui.color_edit_button_srgb(c);
                                     }
                                 });
-                                ui.label(egui::RichText::new("背景模糊").size(12.));
-                                ui.add(
-                                    egui::Slider::new(&mut self.state.blur, 0.0..=48.0).integer(),
+                                ui.add_space(4.);
+                                let mut blur = self.state.blur as f64;
+                                effect_control(ui, "背景模糊", &mut blur, 0.0..=48., 28., "");
+                                self.state.blur = blur as f32;
+                                let mut transparency = (100. - self.state.opacity * 100.) as f64;
+                                effect_control(
+                                    ui,
+                                    "透明度",
+                                    &mut transparency,
+                                    0.0..=100.,
+                                    22.,
+                                    "%",
                                 );
-                                let mut transparency = 100. - self.state.opacity * 100.;
-                                ui.label(egui::RichText::new("透明度").size(12.));
-                                ui.add(
-                                    egui::Slider::new(&mut transparency, 0.0..=100.0)
-                                        .suffix("%")
-                                        .integer(),
-                                );
-                                self.state.opacity = 1. - transparency / 100.;
+                                self.state.opacity = 1. - transparency as f32 / 100.;
                             }
                         });
                 });
             self.capture_viewport(ctx, true);
-            self.popup_open |= ctx.memory(|memory| memory.any_popup_open());
+            self.popup_open |=
+                ctx.memory(|memory| memory.any_popup_open()) || ctx.wants_keyboard_input();
         });
         if !reset {
             if previous.0 != self.state.background {
@@ -1903,10 +2146,10 @@ impl Pin {
                         SWP_NOZORDER | SWP_NOACTIVATE,
                     );
                 }
-                self.size = vec2(
+                self.resize_target = Some(vec2(
                     next.width() - 16.,
                     next.height() - if self.editing { 64. } else { 16. },
-                );
+                ));
             } else {
                 let delta = if shift {
                     geometry::direction(delta)
@@ -1928,7 +2171,7 @@ impl Pin {
             if unsafe { GetAsyncKeyState(VK_LBUTTON as i32) } >= 0 {
                 self.window_move = None;
                 if resizing {
-                    self.record(Some("resize"));
+                    self.resize_finished = true;
                 }
             } else {
                 ctx.request_repaint_after(std::time::Duration::from_millis(8));
@@ -2079,6 +2322,49 @@ fn pin_work_area(id: u64, dpi: f32) -> Option<Rect> {
     }
     None
 }
+fn font_size_input(ui: &mut egui::Ui, value: &mut f32) -> egui::Response {
+    let id = ui.make_persistent_id("pin-font-size-input");
+    let editing = ui.memory(|memory| memory.has_focus(id));
+    let mut text = if editing {
+        ui.data(|data| data.get_temp::<String>(id))
+            .unwrap_or_else(|| value.to_string())
+    } else {
+        value.to_string()
+    };
+    let response = ui.add_sized(
+        [75., 28.],
+        egui::TextEdit::singleline(&mut text)
+            .id(id)
+            .frame(false)
+            .font(FontId::new(12., egui::FontFamily::Name("Jura".into())))
+            .vertical_align(egui::Align::Center)
+            .margin(vec2(3., 3.)),
+    );
+    let enter = response.has_focus() && ui.input(|input| input.key_pressed(Key::Enter));
+    if response.lost_focus() || enter {
+        if let Ok(parsed) = text.parse::<f32>() {
+            if parsed.is_finite() {
+                *value = parsed.clamp(8., 96.);
+            }
+        }
+        if enter {
+            ui.memory_mut(|memory| memory.surrender_focus(id));
+        }
+        ui.data_mut(|data| data.remove::<String>(id));
+    } else if response.has_focus() {
+        ui.data_mut(|data| data.insert_temp(id, text));
+    }
+    response
+}
+fn pin_border(light: bool) -> Color32 {
+    // CSS composites these borders on the opaque control background in sRGB.
+    // Precompositing preserves that color through the native renderer and window compositor.
+    if light {
+        Color32::from_rgb(201, 212, 233)
+    } else {
+        Color32::from_rgb(71, 81, 106)
+    }
+}
 fn pin_icon_button(
     ui: &mut egui::Ui,
     name: &str,
@@ -2093,10 +2379,25 @@ fn pin_icon_button(
         if let Some(map)=source.as_object(){for(name,icon)in map{let Some(body)=icon["body"].as_str()else{continue;};let svg=format!("<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'>{}</svg>",body.replace("currentColor","#ffffff"));if let Ok(tree)=resvg::usvg::Tree::from_str(&svg,&Default::default()){if let Some(mut pm)=resvg::tiny_skia::Pixmap::new(48,48){resvg::render(&tree,resvg::tiny_skia::Transform::from_scale(2.,2.),&mut pm.as_mut());let image=egui::ColorImage::from_rgba_premultiplied([48,48],pm.data());icons.insert(name.clone(),ui.ctx().load_texture(format!("pin-icon-{name}"),image,egui::TextureOptions::LINEAR));}}}}
         let icons=Arc::new(icons);ui.ctx().data_mut(|data|data.insert_temp(cache_id,icons.clone()));icons
     });
-    let (rect, response) = ui.allocate_exact_size(vec2(28., 28.), Sense::click());
-    let text = ui.visuals().text_color();
+    let (rect, response) = ui.allocate_exact_size(
+        if framed {
+            vec2(28., 28.)
+        } else {
+            vec2(26., 27.)
+        },
+        Sense::click(),
+    );
+    let text = if ui.visuals().dark_mode {
+        Color32::from_rgb(245, 247, 255)
+    } else {
+        Color32::from_rgb(36, 42, 56)
+    };
     let bg = if selected || response.hovered() {
-        Color32::from_rgba_unmultiplied(50, 155, 255, 48)
+        if ui.visuals().dark_mode {
+            Color32::from_rgb(38, 62, 92)
+        } else {
+            Color32::from_rgb(211, 232, 255)
+        }
     } else if framed {
         if ui.visuals().dark_mode {
             Color32::from_rgb(36, 41, 54)
@@ -2112,7 +2413,7 @@ fn pin_icon_button(
         ui.painter().rect_stroke(
             rect,
             8,
-            Stroke::new(1., Color32::from_rgba_unmultiplied(162, 184, 240, 71)),
+            Stroke::new(1., pin_border(!ui.visuals().dark_mode)),
             egui::StrokeKind::Inside,
         );
     }
@@ -2150,11 +2451,236 @@ fn slider(
     range: std::ops::RangeInclusive<f64>,
     reset: f64,
 ) {
-    ui.label(label);
-    if ui.add(egui::Slider::new(value, range)).double_clicked() {
-        *value = reset;
-    }
+    effect_control(
+        ui,
+        label,
+        value,
+        range,
+        reset,
+        if label == "曝光" {
+            " EV"
+        } else if label == "饱和度" {
+            "%"
+        } else {
+            ""
+        },
+    );
 }
+fn effect_control(
+    ui: &mut egui::Ui,
+    label: &str,
+    value: &mut f64,
+    range: std::ops::RangeInclusive<f64>,
+    reset: f64,
+    suffix: &str,
+) {
+    effect_control_inner(ui, label, value, range, reset, suffix, None);
+}
+fn effect_control_inner(
+    ui: &mut egui::Ui,
+    label: &str,
+    value: &mut f64,
+    range: std::ops::RangeInclusive<f64>,
+    reset: f64,
+    suffix: &str,
+    mut tint: Option<&mut bool>,
+) {
+    ui.scope(|ui| {
+        ui.spacing_mut().item_spacing.y = 0.;
+        ui.horizontal(|ui| {
+            let heading = ui
+                .add(egui::Label::new(egui::RichText::new(label).size(12.)).sense(Sense::click()));
+            if heading.double_clicked() && label != "背景模糊" && label != "透明度" {
+                *value = reset;
+                if let Some(tint) = tint.as_deref_mut() {
+                    *tint = false;
+                }
+            }
+            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                ui.spacing_mut().interact_size = vec2(0., 18.);
+                ui.spacing_mut().button_padding = Vec2::ZERO;
+                if let Some(tint) = tint {
+                    ui.checkbox(tint, "着色");
+                }
+                ui.style_mut().override_font_id =
+                    Some(FontId::new(11., egui::FontFamily::Name("Jura".into())));
+                let widgets = &mut ui.visuals_mut().widgets;
+                widgets.inactive.bg_stroke = Stroke::NONE;
+                widgets.hovered.bg_stroke = Stroke::NONE;
+                widgets.active.bg_stroke = Stroke::NONE;
+                if label == "背景模糊" || label == "透明度" {
+                    if label == "背景模糊" && *value == 0. {
+                        ui.label(egui::RichText::new("关闭").font(FontId::proportional(11.)));
+                    } else {
+                        ui.label(format!("{value:.0}{suffix}"));
+                    }
+                } else {
+                    let mut shown = if label == "对比度" && *value < 0. {
+                        *value / 2.
+                    } else {
+                        *value
+                    };
+                    let display_range = if label == "对比度" {
+                        -50.0..=100.0
+                    } else {
+                        range.clone()
+                    };
+                    let r = ui.add(
+                        egui::DragValue::new(&mut shown)
+                            .update_while_editing(false)
+                            .range(display_range)
+                            .speed(if label == "曝光" {
+                                0.1
+                            } else if label == "对比度" {
+                                0.5
+                            } else {
+                                1.
+                            })
+                            .suffix(suffix)
+                            .custom_formatter(|value, _| {
+                                if value.fract().abs() < 0.001 {
+                                    format!("{value:.0}")
+                                } else {
+                                    format!("{value:.1}")
+                                }
+                            }),
+                    );
+                    if r.changed() {
+                        *value = if label == "对比度" && shown < 0. {
+                            shown * 2.
+                        } else {
+                            shown
+                        };
+                    }
+                }
+            });
+        });
+        ui.spacing_mut().slider_width = ui.available_width();
+        let min = *range.start();
+        let max = *range.end();
+        let response = ui.add_sized(
+            [ui.available_width(), 24.],
+            egui::Slider::new(value, range)
+                .show_value(false)
+                .step_by(if label == "曝光" { 0.1 } else { 1. }),
+        );
+        // Keep egui's keyboard, pointer and accessibility handling; draw the original gradient rail and circular thumb.
+        let rail = Rect::from_center_size(
+            response.rect.center(),
+            vec2((response.rect.width() - 6.).max(1.), 8.),
+        );
+        let stops: Vec<Color32> = match label {
+            "色相" => vec![
+                Color32::CYAN,
+                Color32::BLUE,
+                Color32::MAGENTA,
+                Color32::RED,
+                Color32::YELLOW,
+                Color32::GREEN,
+                Color32::CYAN,
+            ],
+            "饱和度" => vec![
+                Color32::from_gray(146),
+                Color32::from(egui::ecolor::Hsva::new(
+                    ui.data(|data| {
+                        data.get_temp::<f32>(Id::new("pin-effect-hue"))
+                            .unwrap_or(0.)
+                    })
+                    .rem_euclid(360.)
+                        / 360.,
+                    1.,
+                    1.,
+                    1.,
+                )),
+            ],
+            "圆角" => vec![
+                Color32::from_rgb(83, 103, 127),
+                Color32::from_rgb(170, 187, 216),
+            ],
+            _ => vec![Color32::from_rgb(23, 25, 30), Color32::WHITE],
+        };
+        let painter = ui.painter();
+        for i in 0..128 {
+            let position = i as f32 / 127. * (stops.len() - 1) as f32;
+            let low = (position.floor() as usize).min(stops.len() - 2);
+            let t = (position - low as f32).min(1.);
+            let left = stops[low].to_array();
+            let right = stops[low + 1].to_array();
+            let rgb = std::array::from_fn::<_, 3, _>(|c| {
+                (left[c] as f32 * (1. - t) + right[c] as f32 * t).round() as u8
+            });
+            let r = Rect::from_min_max(
+                pos2(rail.left() + rail.width() * i as f32 / 128., rail.top()),
+                pos2(
+                    rail.left() + rail.width() * (i + 1) as f32 / 128.,
+                    rail.bottom(),
+                ),
+            );
+            let edge = (r.center().x - rail.left()).min(rail.right() - r.center().x);
+            let half = if edge < 4. {
+                (16. - (4. - edge).powi(2)).max(0.).sqrt()
+            } else {
+                4.
+            };
+            let rounded = Rect::from_min_max(
+                pos2(r.left(), rail.center().y - half),
+                pos2(r.right(), rail.center().y + half),
+            );
+            if label == "对比度" {
+                let t = i as f32 / 127.;
+                let upper = (119. * (1. - t) + 36. * t).round() as u8;
+                let lower = (146. * (1. - t) + 255. * t).round() as u8;
+                painter.rect_filled(
+                    Rect::from_min_max(rounded.min, pos2(rounded.right(), rail.center().y)),
+                    0.,
+                    Color32::from_gray(upper),
+                );
+                painter.rect_filled(
+                    Rect::from_min_max(pos2(rounded.left(), rail.center().y), rounded.max),
+                    0.,
+                    Color32::from_gray(lower),
+                );
+            } else {
+                painter.rect_filled(rounded, 0., Color32::from_rgb(rgb[0], rgb[1], rgb[2]));
+            }
+        }
+        painter.rect_stroke(
+            rail,
+            4.,
+            Stroke::new(1., Color32::from_rgba_unmultiplied(128, 128, 128, 53)),
+            egui::StrokeKind::Inside,
+        );
+        let fraction = if max > min {
+            ((*value - min) / (max - min)).clamp(0., 1.) as f32
+        } else {
+            0.
+        };
+        let center = pos2(
+            response.rect.left() + 7. + fraction * (response.rect.width() - 14.),
+            rail.center().y,
+        );
+        painter.circle_filled(center, 8., Color32::from_rgb(113, 132, 184));
+        painter.circle_filled(center, 7., ui.visuals().panel_fill);
+        painter.circle_filled(center, 5., Color32::from_rgb(244, 246, 252));
+        if label == "对比度" {
+            let (rect, _) = ui.allocate_exact_size(vec2(ui.available_width(), 14.), Sense::hover());
+            for (position, align, text) in [
+                (rect.left_center(), Align2::LEFT_CENTER, "柔和"),
+                (rect.center(), Align2::CENTER_CENTER, "0"),
+                (rect.right_center(), Align2::RIGHT_CENTER, "鲜明"),
+            ] {
+                ui.painter().text(
+                    position,
+                    align,
+                    text,
+                    FontId::proportional(9.),
+                    ui.visuals().weak_text_color(),
+                );
+            }
+        }
+    });
+}
+
 fn font_step(current: f32, increase: bool) -> f32 {
     const STEPS: [f32; 23] = [
         8., 9., 10., 11., 12., 14., 16., 18., 20., 24., 28., 32., 36., 40., 44., 48., 54., 60.,
@@ -2212,6 +2738,8 @@ impl PinManager {
     pub fn configure(&mut self, light: bool, blur: f32, opacity: f32) {
         for pin in &mut self.pins {
             pin.light = light;
+            pin.default_blur = blur.clamp(0., 48.);
+            pin.default_opacity = opacity.clamp(0., 1.);
             if pin.state.auto_background {
                 pin.state.background = if light { [248, 250, 255] } else { [25, 28, 37] };
             }
@@ -2296,8 +2824,8 @@ impl PinManager {
             auto_background: record.style_automatic.unwrap_or([false; 3])[0],
             auto_blur: record.style_automatic.unwrap_or([false; 3])[1],
             auto_opacity: record.style_automatic.unwrap_or([false; 3])[2],
-            width: record.width.clamp(200., 2384.),
-            height: record.height.clamp(120., 1984.),
+            width: record.width.round().clamp(300., 1600.),
+            height: record.height.round().clamp(100., 1400.),
         };
         pin.next_annotation = pin
             .state
@@ -2312,9 +2840,10 @@ impl PinManager {
         pin.asset = record.asset;
         pin.created = record.created;
         pin.size = vec2(
-            record.width.clamp(200., 2384.),
-            record.height.clamp(120., 1984.),
+            record.width.round().clamp(300., 1600.),
+            record.height.round().clamp(100., 1400.),
         );
+        pin.annotation_width = pin.size.x;
         pin.position = record.position;
         self.pins.push(pin);
         Ok(())
@@ -2555,5 +3084,96 @@ mod tests {
         assert_eq!(q.drain_history_updates().len(), 1);
         q.flush_history();
         assert!(q.drain_history_updates().is_empty());
+    }
+    #[test]
+    fn clear_cancels_pending_annotation_edits() {
+        let mut p = Pin::new(1, String::new(), Some(RgbaImage::new(200, 100)));
+        let a = p.defaults.make(1, Tool::Text, pos2(0.2, 0.3), 300.);
+        p.state.annotations.push(a.clone());
+        p.selected = Some(1);
+        p.draft = Some(a.clone());
+        p.drag = Some(Drag::New(a.clone()));
+        p.text_editor = Some(a);
+        p.text_editor_focus = true;
+        p.radius_editor = Some(1);
+        p.clear_annotations();
+        p.commit_text();
+        assert!(p.state.annotations.is_empty());
+        assert!(p.selected.is_none() && p.draft.is_none() && p.drag.is_none());
+        assert!(p.text_editor.is_none() && p.radius_editor.is_none());
+        assert!(!p.text_editor_focus);
+    }
+    #[test]
+    fn image_resize_preserves_screen_stroke_and_mosaic_block_size() {
+        let mut p = Pin::new(1, String::new(), Some(RgbaImage::new(300, 200)));
+        for (id, tool, width) in [(1, Tool::Line, 3.), (2, Tool::Mosaic, 12.)] {
+            let mut a = p.defaults.make(id, tool, pos2(0.2, 0.3), 300.);
+            a.stroke = width / 300.;
+            p.state.annotations.push(a);
+        }
+        p.record(None);
+        let original = p.state.annotations.clone();
+        p.set_content_size(vec2(800., 400.));
+        p.record(Some("resize"));
+        for (a, width) in p.state.annotations.iter().zip([3., 12.]) {
+            assert!((a.stroke * 800. - width).abs() < 0.0001);
+        }
+        assert_eq!(p.state.annotations[0].font_size, original[0].font_size);
+        assert_eq!(p.state.annotations[0].radius, original[0].radius);
+        p.undo(false);
+        assert_eq!(p.size.x, 300.);
+        assert_eq!(p.state.annotations[0].stroke, original[0].stroke);
+        p.set_content_size(p.size);
+        p.undo(true);
+        assert_eq!(p.size.x, 800.);
+        assert!((p.state.annotations[0].stroke * 800. - 3.).abs() < 0.0001);
+    }
+    #[test]
+    fn text_selection_replace_handles_unicode_and_cursor() {
+        use egui::TextBuffer;
+        let ctx = egui::Context::default();
+        let mut p = Pin::new(1, "A中😀B".into(), None);
+        p.select_text(&ctx, 1..3);
+        assert_eq!(p.state.text.char_range(p.text_selection(&ctx)), "中😀");
+        p.replace_text_selection(&ctx, "好");
+        assert_eq!(p.state.text, "A好B");
+        assert_eq!(p.text_selection(&ctx), 2..2);
+        p.replace_text_selection(&ctx, "插入");
+        assert_eq!(p.state.text, "A好插入B");
+        assert_eq!(p.text_selection(&ctx), 4..4);
+        p.select_text(&ctx, 0..p.state.text.chars().count());
+        p.replace_text_selection(&ctx, "");
+        assert_eq!(p.state.text, "");
+    }
+    #[test]
+    fn restore_uses_original_saved_size_limits_and_rounding() {
+        let mut manager = PinManager::new();
+        manager.create_text("x".into());
+        let mut record = manager.pins[0].history_record();
+        record.width = 12.;
+        record.height = 3000.;
+        let mut restored = PinManager::new();
+        restored.restore(record.clone(), None).unwrap();
+        assert_eq!(restored.pins[0].size, vec2(300., 1400.));
+        record.history_id.push('2');
+        record.width = 500.6;
+        record.height = 100.2;
+        restored.restore(record, None).unwrap();
+        assert_eq!(restored.pins[1].size, vec2(501., 100.));
+    }
+    #[test]
+    fn text_effect_reset_immediately_uses_current_global_defaults() {
+        let mut manager = PinManager::new();
+        manager.create_text("x".into());
+        manager.configure(true, 9., 0.46);
+        let p = &mut manager.pins[0];
+        p.state.blur = 48.;
+        p.state.opacity = 0.99;
+        p.state.background = [0, 0, 0];
+        p.reset_text_effects();
+        assert_eq!(p.state.background, [248, 250, 255]);
+        assert_eq!(p.state.blur, 9.);
+        assert_eq!(p.state.opacity, 0.46);
+        assert!(p.state.auto_background && p.state.auto_blur && p.state.auto_opacity);
     }
 }

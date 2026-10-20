@@ -1,27 +1,44 @@
 //! The launcher glow is a separate, non-activating native viewport.
 //! Geometry stays outside the rounded panel, so the panel interior is a true cutout.
 use eframe::egui::*;
-use std::time::Duration;
+use std::{
+    sync::{
+        Arc, Mutex,
+        atomic::{AtomicBool, AtomicU32, Ordering},
+    },
+    time::Duration,
+};
 
 pub struct Glow {
-    contours: Vec<Vec<Pos2>>,
-    alpha: Vec<[f32; 3]>,
+    contours: Arc<Vec<Vec<Pos2>>>,
+    alpha: Arc<Vec<[f32; 3]>>,
     panel_size: Vec2,
     created: bool,
     pub owner: isize,
     pub error: Option<String>,
-    warned: bool,
+    native_status: Arc<Mutex<(Option<String>, bool)>>,
+    qa_path: Option<std::path::PathBuf>,
+    qa_frames: Arc<AtomicU32>,
+    qa_sent: Arc<AtomicBool>,
+    qa_done: Arc<AtomicBool>,
 }
 impl Default for Glow {
     fn default() -> Self {
         Self {
-            contours: vec![],
-            alpha: vec![],
+            contours: Arc::new(vec![]),
+            alpha: Arc::new(vec![]),
             panel_size: Vec2::ZERO,
             created: false,
             owner: 0,
             error: None,
-            warned: false,
+            native_status: Arc::new(Mutex::new((None, false))),
+            qa_path: std::env::args()
+                .skip_while(|arg| arg != "--glow-screenshot")
+                .nth(1)
+                .map(std::path::PathBuf::from),
+            qa_frames: Arc::new(AtomicU32::new(0)),
+            qa_sent: Arc::new(AtomicBool::new(false)),
+            qa_done: Arc::new(AtomicBool::new(false)),
         }
     }
 }
@@ -87,16 +104,16 @@ fn orbit_color(point: Pos2, center: Pos2, phase: f32) -> [f32; 4] {
 impl Glow {
     fn rebuild(&mut self, size: Vec2) {
         self.panel_size = size;
-        self.contours.clear();
-        self.alpha.clear();
+        Arc::make_mut(&mut self.contours).clear();
+        Arc::make_mut(&mut self.alpha).clear();
         // Extra half-pixel contours preserve the crisp 2px rim; the wider bands
         // use smooth Gaussian coverage, without filtering a full desktop bitmap.
         for d in [
             0., 0.5, 1., 1.5, 2., 3., 4., 6., 8., 10., 14., 18., 24., 32., 44., 60., 80., 110.,
             140., 160.,
         ] {
-            self.contours.push(contour(size, d));
-            self.alpha.push([
+            Arc::make_mut(&mut self.contours).push(contour(size, d));
+            Arc::make_mut(&mut self.alpha).push([
                 ring_alpha(d, 8., 18.),
                 ring_alpha(d, 8., 38.),
                 ring_alpha(d, 2., 1.) + 0.9 * ring_alpha(d, 2., 8.),
@@ -112,6 +129,11 @@ impl Glow {
         strength: f32,
         reduce_motion: bool,
     ) {
+        if let Ok(mut status) = self.native_status.lock() {
+            if let Some(error) = status.0.take() {
+                self.error = Some(error);
+            }
+        }
         let visible = visible && strength > 0.;
         if !visible && !self.created {
             return;
@@ -141,7 +163,15 @@ impl Glow {
                 WindowLevel::Normal
             });
         self.created = true;
-        ctx.show_viewport_immediate(id, builder, |glow_ctx, _| {
+        let contours = self.contours.clone();
+        let alpha = self.alpha.clone();
+        let native_status = self.native_status.clone();
+        let owner = self.owner;
+        let qa_path = self.qa_path.clone();
+        let qa_frames = self.qa_frames.clone();
+        let qa_sent = self.qa_sent.clone();
+        let qa_done = self.qa_done.clone();
+        ctx.show_viewport_deferred(id, builder, move |glow_ctx, _| {
             glow_ctx.send_viewport_cmd(ViewportCommand::Visible(visible));
             if !visible {
                 return;
@@ -159,11 +189,11 @@ impl Glow {
                 (2, 24., 0.8),
             ] {
                 let mut mesh = Mesh::default();
-                for (band, points) in self.contours.iter().enumerate() {
+                for (band, points) in contours.iter().enumerate() {
                     for point in points {
                         let color = orbit_color(*point, center, time / seconds);
                         let alpha =
-                            (self.alpha[band][layer] * opacity * strength * color[3]).clamp(0., 1.);
+                            (alpha[band][layer] * opacity * strength * color[3]).clamp(0., 1.);
                         mesh.colored_vertex(
                             *point,
                             Color32::from_rgba_unmultiplied(
@@ -175,8 +205,8 @@ impl Glow {
                         );
                     }
                 }
-                let count = self.contours[0].len() as u32;
-                for band in 0..self.contours.len() - 1 {
+                let count = contours[0].len() as u32;
+                for band in 0..contours.len() - 1 {
                     for point in 0..count {
                         let next = (point + 1) % count;
                         let a = band as u32 * count + point;
@@ -192,30 +222,83 @@ impl Glow {
             if !reduce_motion {
                 glow_ctx.request_repaint_after(Duration::from_millis(33));
             }
-        });
-        #[cfg(windows)]
-        if self.owner != 0 {
-            let result =
-                quicktool_rust::platform::configure_glow(TITLE, self.owner, visible, topmost);
-            if let Err(error) = result {
-                if !self.warned {
-                    self.error = Some(error);
-                    self.warned = true;
+            if let Some(path) = &qa_path {
+                glow_ctx.request_repaint_after(Duration::from_millis(16));
+                let frame = qa_frames.fetch_add(1, Ordering::Relaxed);
+                if frame >= 10 && !qa_sent.swap(true, Ordering::Relaxed) {
+                    glow_ctx.send_viewport_cmd(ViewportCommand::Screenshot(Default::default()));
                 }
-            } else {
-                self.warned = false;
-                if let Some(window) = quicktool_rust::platform::find_window(TITLE) {
-                    let _ = quicktool_rust::platform::place_companion_window(
-                        self.owner,
-                        window,
-                        (MARGIN * ctx.pixels_per_point()).round() as i32,
-                        visible,
-                        topmost,
-                        true,
-                    );
+                let screenshot = glow_ctx.input(|input| {
+                    input.events.iter().find_map(|event| {
+                        if let Event::Screenshot { image, .. } = event {
+                            Some(image.clone())
+                        } else {
+                            None
+                        }
+                    })
+                });
+                if let Some(image) = screenshot {
+                    let bytes = image
+                        .pixels
+                        .iter()
+                        .flat_map(|color| color.to_srgba_unmultiplied())
+                        .collect::<Vec<_>>();
+                    if let Some(parent) = path.parent() {
+                        if let Err(error) = std::fs::create_dir_all(parent) {
+                            eprintln!("glow screenshot directory: {error}");
+                        }
+                    }
+                    if let Err(error) = image::save_buffer(
+                        path,
+                        &bytes,
+                        image.width() as u32,
+                        image.height() as u32,
+                        image::ColorType::Rgba8,
+                    ) {
+                        eprintln!("glow screenshot: {error}");
+                    }
+                    qa_done.store(true, Ordering::Relaxed);
+                    glow_ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
+                }
+                if frame > 900 && !qa_done.swap(true, Ordering::Relaxed) {
+                    eprintln!("glow screenshot timed out: {}", path.display());
+                    glow_ctx.send_viewport_cmd_to(ViewportId::ROOT, ViewportCommand::Close);
                 }
             }
-        }
+            #[cfg(windows)]
+            if owner != 0 {
+                let result =
+                    quicktool_rust::platform::configure_glow(TITLE, owner, visible, topmost)
+                        .and_then(|_| {
+                            if let Some(window) = quicktool_rust::platform::find_window(TITLE) {
+                                quicktool_rust::platform::place_companion_window(
+                                    owner,
+                                    window,
+                                    (MARGIN * glow_ctx.pixels_per_point()).round() as i32,
+                                    visible,
+                                    topmost,
+                                    true,
+                                )
+                            } else {
+                                Ok(())
+                            }
+                        });
+                if let Ok(mut status) = native_status.lock() {
+                    match result {
+                        Err(error) => {
+                            if !status.1 {
+                                status.0 = Some(error);
+                                glow_ctx.request_repaint_of(ViewportId::ROOT);
+                            }
+                            status.1 = true;
+                        }
+                        Ok(()) => status.1 = false,
+                    }
+                }
+            }
+            #[cfg(not(windows))]
+            let _ = (&native_status, owner);
+        });
     }
 }
 
@@ -232,7 +315,7 @@ mod tests {
             pos2(MARGIN + size.x - 8., MARGIN + size.y),
         );
         let inner = inner.shrink(0.001);
-        for points in &glow.contours {
+        for points in glow.contours.iter() {
             for point in points {
                 assert!(
                     !(point.x > inner.left()

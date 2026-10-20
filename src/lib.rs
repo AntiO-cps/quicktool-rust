@@ -7,6 +7,7 @@ pub mod countries;
 pub mod dates;
 pub mod file_providers;
 pub mod geometry;
+pub mod import_legacy;
 pub mod index;
 pub mod json;
 pub mod numbers;

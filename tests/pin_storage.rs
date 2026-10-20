@@ -292,3 +292,110 @@ fn an_async_asset_error_does_not_replace_existing_history() {
     assert_eq!(store.load_pin(&id).unwrap().0.text, "保留这条记录");
     assert_eq!(store.history.len(), 1);
 }
+
+#[test]
+fn ordinary_image_history_roundtrip_flush_and_pin_dedup() {
+    use quicktool_rust::storage::HistoryMode;
+    let root = TestRoot::new();
+    let mut store = Store::open(root.0.clone());
+    let update = image_update();
+    let source = update.source.as_ref().unwrap().clone();
+    let expected = source.as_ref().clone();
+    store.upsert_pin(&update).unwrap();
+    let wake = Arc::new(AtomicUsize::new(0));
+    let signal = wake.clone();
+    let id = store
+        .enqueue_image_with_mode(
+            "image-input",
+            "base64",
+            "image title",
+            source.clone(),
+            Some(HistoryMode {
+                tool_id: "base64".into(),
+                submode: Some("decode".into()),
+                args: vec![],
+            }),
+            move || {
+                signal.fetch_add(1, Ordering::SeqCst);
+            },
+        )
+        .unwrap();
+    let second = store
+        .enqueue_image_with_mode("second", "clipboard", "same image", source, None, || {})
+        .unwrap();
+    assert!(store.flush_pin_updates().is_empty());
+    assert_eq!(wake.load(Ordering::SeqCst), 2);
+    assert_eq!(store.load_history_image(&id).unwrap(), expected);
+    assert_eq!(store.load_history_image(&second).unwrap(), expected);
+    assert_eq!(
+        std::fs::read_dir(root.0.join("image-assets"))
+            .unwrap()
+            .count(),
+        2
+    );
+    let item = store.history.iter().find(|h| h.id == id).unwrap();
+    assert_eq!(
+        item.mode.as_ref().unwrap().submode.as_deref(),
+        Some("decode")
+    );
+    assert!(item.pin_state.is_none());
+    assert!(store.thumbnail_path(&id).unwrap().is_file());
+    let asset = item.image_asset.clone().unwrap();
+    assert_eq!(
+        Some(asset),
+        store.load_pin(&update.record.history_id).unwrap().0.asset
+    );
+    drop(store);
+    let restored = Store::open(root.0.clone());
+    assert_eq!(restored.load_history_image(&id).unwrap(), expected);
+    assert!(
+        !std::fs::read_to_string(root.0.join("history.json"))
+            .unwrap()
+            .contains("data:image")
+    );
+}
+
+#[test]
+fn ordinary_image_failure_preserves_history_and_damaged_original() {
+    let root = TestRoot::new();
+    let mut store = Store::open(root.0.clone());
+    store
+        .add("keep", "text", "keep", "original history")
+        .unwrap();
+    let saved = std::fs::read(root.0.join("history.json")).unwrap();
+    let source = image_update().source.unwrap();
+    let asset = pin_storage::prepare_image(&root.0, &source).unwrap();
+    let path = pin_storage::asset_path(&root.0, &asset, false).unwrap();
+    std::fs::write(&path, b"corrupted").unwrap();
+    store
+        .enqueue_image_with_mode("image", "clipboard", "image", source, None, || {})
+        .unwrap();
+    assert_eq!(store.flush_pin_updates().len(), 1);
+    assert_eq!(store.history.len(), 1);
+    assert_eq!(std::fs::read(root.0.join("history.json")).unwrap(), saved);
+    assert_eq!(std::fs::read(&path).unwrap(), b"corrupted");
+    assert!(pin_storage::load_image(&root.0, &asset).is_err());
+}
+
+#[test]
+fn ordinary_image_history_write_failure_rolls_back_memory() {
+    let root = TestRoot::new();
+    let mut store = Store::open(root.0.clone());
+    store.add("keep", "text", "keep", "original").unwrap();
+    std::fs::remove_file(root.0.join("history.json")).unwrap();
+    std::fs::create_dir(root.0.join("history.json")).unwrap();
+    store
+        .enqueue_image_with_mode(
+            "image",
+            "clipboard",
+            "image",
+            image_update().source.unwrap(),
+            None,
+            || {},
+        )
+        .unwrap();
+    assert_eq!(store.flush_pin_updates().len(), 1);
+    assert_eq!(store.history.len(), 1);
+    assert_eq!(store.history[0].value, "original");
+    assert!(root.0.join("history.json").is_dir());
+}
