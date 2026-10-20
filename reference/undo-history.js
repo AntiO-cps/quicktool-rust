@@ -1,0 +1,9 @@
+class UndoHistory {
+ constructor(initial,limit=100,budget=8*1024*1024){this.frames=[structuredClone(initial)];this.index=0;this.limit=limit;this.budget=budget;this.lastKey=null;this.lastTime=0;this.currentEncoded=JSON.stringify(initial);this.sizes=[this.currentEncoded.length*4];this.totalBytes=this.sizes[0];}
+ record(value,key=null,now=Date.now()){const encoded=JSON.stringify(value);if(encoded===this.currentEncoded)return false;const merge=this.index>0&&this.index===this.frames.length-1&&key&&key===this.lastKey&&now-this.lastTime<700;this.frames.splice(this.index+1);for(const size of this.sizes.splice(this.index+1))this.totalBytes-=size;const size=encoded.length*4;if(merge){this.totalBytes-=this.sizes[this.index];this.frames[this.index]=structuredClone(value);this.sizes[this.index]=size;}else{this.frames.push(structuredClone(value));this.sizes.push(size);this.index++;}this.totalBytes+=size;while(this.frames.length>1&&(this.frames.length>this.limit||this.totalBytes>this.budget)){this.frames.shift();this.totalBytes-=this.sizes.shift();this.index--;}this.currentEncoded=encoded;this.lastKey=key;this.lastTime=now;return true;}
+ replace(value){this.currentEncoded=JSON.stringify(value);this.totalBytes-=this.sizes[this.index];this.frames[this.index]=structuredClone(value);this.sizes[this.index]=this.currentEncoded.length*4;this.totalBytes+=this.sizes[this.index];}
+ undo(){if(!this.index)return null;this.lastKey=null;this.index--;this.currentEncoded=JSON.stringify(this.frames[this.index]);return structuredClone(this.frames[this.index]);}
+ redo(){if(this.index===this.frames.length-1)return null;this.lastKey=null;this.index++;this.currentEncoded=JSON.stringify(this.frames[this.index]);return structuredClone(this.frames[this.index]);}
+ get canUndo(){return this.index>0;}get canRedo(){return this.index<this.frames.length-1;}
+}
+module.exports=UndoHistory;

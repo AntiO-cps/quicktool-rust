@@ -1,0 +1,471 @@
+[
+  {
+    "input": "0xFF",
+    "groups": [
+      {
+        "id": "char",
+        "score": 0.96
+      },
+      {
+        "id": "base",
+        "score": 0.93
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "0Xff",
+    "groups": [
+      {
+        "id": "char",
+        "score": 0.96
+      },
+      {
+        "id": "base",
+        "score": 0.93
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "-0b10",
+    "groups": [
+      {
+        "id": "base",
+        "score": 0.93
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "16:ff",
+    "groups": [
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "123",
+    "groups": []
+  },
+  {
+    "input": "20260120",
+    "groups": [
+      {
+        "id": "time",
+        "score": 0.94
+      },
+      {
+        "id": "color",
+        "score": 0.93
+      }
+    ]
+  },
+  {
+    "input": "260120",
+    "groups": [
+      {
+        "id": "time",
+        "score": 0.94
+      },
+      {
+        "id": "color",
+        "score": 0.93
+      }
+    ]
+  },
+  {
+    "input": "2026-01-20",
+    "groups": [
+      {
+        "id": "time",
+        "score": 0.94
+      }
+    ]
+  },
+  {
+    "input": "2026/1/5",
+    "groups": [
+      {
+        "id": "time",
+        "score": 0.94
+      }
+    ]
+  },
+  {
+    "input": "1700000000",
+    "groups": [
+      {
+        "id": "time",
+        "score": 0.9
+      }
+    ]
+  },
+  {
+    "input": "10 km to mi",
+    "groups": [
+      {
+        "id": "unit",
+        "score": 0.94
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "1 GB",
+    "groups": [
+      {
+        "id": "unit",
+        "score": 0.8
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "10 KM TO MI",
+    "groups": [
+      {
+        "id": "unit",
+        "score": 0.94
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "sqrt(9)",
+    "groups": [
+      {
+        "id": "calculator",
+        "score": 0.96
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "2pi",
+    "groups": [
+      {
+        "id": "calculator",
+        "score": 0.96
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "1+2",
+    "groups": [
+      {
+        "id": "calculator",
+        "score": 0.96
+      }
+    ]
+  },
+  {
+    "input": "-2",
+    "groups": []
+  },
+  {
+    "input": "hello",
+    "groups": [
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "CN",
+    "groups": [
+      {
+        "id": "country",
+        "score": 0.99
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "China",
+    "groups": [
+      {
+        "id": "country",
+        "score": 0.86
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "中国",
+    "groups": [
+      {
+        "id": "country",
+        "score": 0.86
+      }
+    ]
+  },
+  {
+    "input": "+86",
+    "groups": [
+      {
+        "id": "country",
+        "score": 0.99
+      }
+    ]
+  },
+  {
+    "input": ".cn",
+    "groups": [
+      {
+        "id": "country",
+        "score": 0.99
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "aGVsbG8=",
+    "groups": [
+      {
+        "id": "base64",
+        "score": 0.72
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "hello world",
+    "groups": [
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "http://x.test/a",
+    "groups": [
+      {
+        "id": "url",
+        "score": 0.66
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "%E4%B8%AD",
+    "groups": [
+      {
+        "id": "escape",
+        "score": 0.9
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "\\u4E2D",
+    "groups": [
+      {
+        "id": "char",
+        "score": 0.96
+      },
+      {
+        "id": "escape",
+        "score": 0.9
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "U+1F600",
+    "groups": [
+      {
+        "id": "char",
+        "score": 0.96
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "\\u{1F600}",
+    "groups": [
+      {
+        "id": "char",
+        "score": 0.96
+      },
+      {
+        "id": "escape",
+        "score": 0.9
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "ＡＢＣ",
+    "groups": [
+      {
+        "id": "width",
+        "score": 0.92
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "true",
+    "groups": [
+      {
+        "id": "json",
+        "score": 0.97
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "null",
+    "groups": [
+      {
+        "id": "json",
+        "score": 0.97
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "\"hello\"",
+    "groups": [
+      {
+        "id": "json",
+        "score": 0.97
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "{\"a\":1}",
+    "groups": [
+      {
+        "id": "json",
+        "score": 0.97
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "[1,2]",
+    "groups": [
+      {
+        "id": "json",
+        "score": 0.97
+      }
+    ]
+  },
+  {
+    "input": "a\nb",
+    "groups": [
+      {
+        "id": "text",
+        "score": 0.36
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "",
+    "groups": []
+  },
+  {
+    "input": "&amp;",
+    "groups": [
+      {
+        "id": "escape",
+        "score": 0.9
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  },
+  {
+    "input": "#7c3aed",
+    "groups": [
+      {
+        "id": "color",
+        "score": 0.98
+      },
+      {
+        "id": "case",
+        "score": 0.28
+      }
+    ]
+  }
+]

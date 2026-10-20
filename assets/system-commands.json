@@ -1,0 +1,153 @@
+[
+  {
+    "id": "ipconfig",
+    "name": "网络配置 / ipconfig",
+    "command": "ipconfig",
+    "aliases": [
+      "ipconfig",
+      "网络配置",
+      "网络信息",
+      "ip配置",
+      "wangluopeizhi",
+      "wangluoxinxi",
+      "wlpz",
+      "wlxx"
+    ]
+  },
+  {
+    "id": "ping",
+    "name": "Ping 网络测试",
+    "command": "ping",
+    "needsArg": true,
+    "aliases": [
+      "ping",
+      "网络测试",
+      "连通性",
+      "延迟测试",
+      "wangluoceshi",
+      "liantongxing",
+      "wlcs"
+    ]
+  },
+  {
+    "id": "nslookup",
+    "name": "DNS 查询 / nslookup",
+    "command": "nslookup",
+    "needsArg": true,
+    "aliases": [
+      "nslookup",
+      "dns查询",
+      "域名查询",
+      "DNS",
+      "yumingchaxun",
+      "ymcx"
+    ]
+  },
+  {
+    "id": "tracert",
+    "name": "路由追踪 / tracert",
+    "command": "tracert",
+    "needsArg": true,
+    "aliases": [
+      "tracert",
+      "路由追踪",
+      "路由跟踪",
+      "luyouzhuizong",
+      "lyzz"
+    ]
+  },
+  {
+    "id": "netstat",
+    "name": "网络连接 / netstat",
+    "command": "netstat",
+    "aliases": [
+      "netstat",
+      "网络连接",
+      "端口连接",
+      "wangluolianjie",
+      "wllj"
+    ]
+  },
+  {
+    "id": "regedit",
+    "name": "注册表编辑器",
+    "command": "regedit",
+    "aliases": [
+      "regedit",
+      "注册表",
+      "注册表编辑器",
+      "zhucebiao",
+      "zcbbjq",
+      "zcb"
+    ]
+  },
+  {
+    "id": "taskmgr",
+    "name": "任务管理器",
+    "command": "taskmgr",
+    "aliases": [
+      "taskmgr",
+      "任务管理器",
+      "renwuguanliqi",
+      "rwg",
+      "rwg lq",
+      "rwglq"
+    ]
+  },
+  {
+    "id": "services",
+    "name": "Windows 服务",
+    "command": "services.msc",
+    "aliases": [
+      "services",
+      "服务",
+      "系统服务",
+      "fuwu",
+      "xtfw"
+    ]
+  },
+  {
+    "id": "devmgmt",
+    "name": "设备管理器",
+    "command": "devmgmt.msc",
+    "aliases": [
+      "devmgmt",
+      "设备管理器",
+      "shebeiguanliqi",
+      "sbglq"
+    ]
+  },
+  {
+    "id": "diskmgmt",
+    "name": "磁盘管理",
+    "command": "diskmgmt.msc",
+    "aliases": [
+      "diskmgmt",
+      "磁盘管理",
+      "cipanguanli",
+      "cpgl"
+    ]
+  },
+  {
+    "id": "eventvwr",
+    "name": "事件查看器",
+    "command": "eventvwr.msc",
+    "aliases": [
+      "eventvwr",
+      "事件查看器",
+      "shijianchakanqi",
+      "sjckq"
+    ]
+  },
+  {
+    "id": "control",
+    "name": "控制面板",
+    "command": "control",
+    "aliases": [
+      "control",
+      "控制面板",
+      "kongzhimianban",
+      "kzmb"
+    ]
+  }
+]

@@ -1,0 +1,9 @@
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+const root=path.resolve(__dirname,'..'),source=fs.readFileSync(path.resolve(root,'../src/renderer.js'),'utf8');
+const Core=require('../reference/core-utils.js'),DateParser=require('../reference/date-parser.js');
+const dummy=()=>[{title:'fixture',value:'fixture'}];
+const context={Core,DateParser,settings:{dateOrder:'YMD'},countries:Core.countryIndex(require('../assets/data/countries.json')),cssColors:require('../assets/data/css-colors.json'),parseDateInput:q=>DateParser.parse(q,'YMD'),calcExpr:q=>Core.calculateExpression(q,'en-US'),dateResults:dummy,colorToolResults:dummy,caseResults:dummy,base64ToolResults:dummy,base64Decode:q=>{try{return new TextDecoder('utf-8',{fatal:true}).decode(Buffer.from(atob(q),'latin1'))}catch{return null}},unicodeResults:dummy,countryResults:dummy,textResults:dummy,helpResults:dummy};
+vm.runInNewContext(source.slice(source.indexOf('function parseDateInput('),source.indexOf('function customTimeFormatLines('))+source.slice(source.indexOf('const tools=['),source.indexOf('\n];',source.indexOf('const tools=['))+3)+';globalThis.tools=tools;',context);
+const inputs=['0xFF','0Xff','-0b10','16:ff','123','20260120','260120','2026-01-20','2026/1/5','1700000000','10 km to mi','1 GB','10 KM TO MI','sqrt(9)','2pi','1+2','-2','hello','CN','China','中国','+86','.cn','aGVsbG8=','hello world','http://x.test/a','%E4%B8%AD','\\u4E2D','U+1F600','\\u{1F600}','ＡＢＣ','true','null','"hello"','{"a":1}','[1,2]','a\nb','', '&amp;', '#7c3aed'];
+const cases=inputs.map(input=>({input,groups:context.tools.flatMap(tool=>{try{const hit=tool.detect?.(input);return hit?[{id:tool.id,score:hit.score}]:[]}catch{return[]}}).sort((a,b)=>b.score-a.score)}));
+fs.writeFileSync(path.join(root,'tests/detection-oracle.json'),JSON.stringify(cases,null,2));console.log(`Captured ${cases.length} detection cases`);

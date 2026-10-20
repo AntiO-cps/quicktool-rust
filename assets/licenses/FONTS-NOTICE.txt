@@ -1,0 +1,6 @@
+QuickTool uses unmodified MiSans Global variable fonts provided by Xiaomi and Jura by The Jura Project Authors.
+MiSans embedded use: https://hyperos.mi.com/font/en/faq/
+MiSans license: MiSans-License.pdf
+Jura license: Jura-OFL.txt
+The fonts are bundled exclusively as application assets, not sold or distributed as a separate font product.
+JetBrains Mono VF: https://github.com/JetBrains/JetBrainsMono — SIL Open Font License 1.1 (JetBrainsMono-OFL.txt).

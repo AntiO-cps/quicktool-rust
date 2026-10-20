@@ -1,0 +1,87 @@
+{
+  "积分": [
+    "INTEGRAL"
+  ],
+  "求和": [
+    "SUMMATION"
+  ],
+  "乘积": [
+    "PRODUCT"
+  ],
+  "无穷": [
+    "INFINITY"
+  ],
+  "约等于": [
+    "ALMOST EQUAL",
+    "APPROXIMATELY EQUAL"
+  ],
+  "不等于": [
+    "NOT EQUAL"
+  ],
+  "恒等于": [
+    "IDENTICAL TO"
+  ],
+  "小于等于": [
+    "LESS-THAN OR EQUAL"
+  ],
+  "大于等于": [
+    "GREATER-THAN OR EQUAL"
+  ],
+  "乘号": [
+    "MULTIPLICATION SIGN"
+  ],
+  "除号": [
+    "DIVISION SIGN"
+  ],
+  "正负": [
+    "PLUS-MINUS"
+  ],
+  "度数": [
+    "DEGREE SIGN"
+  ],
+  "千分号": [
+    "PER MILLE"
+  ],
+  "箭头": [
+    "ARROW"
+  ],
+  "爱心": [
+    "HEART"
+  ],
+  "星星": [
+    "STAR"
+  ],
+  "注音": [
+    "BOPOMOFO"
+  ],
+  "阿尔法": [
+    "ALPHA"
+  ],
+  "贝塔": [
+    "BETA"
+  ],
+  "伽马": [
+    "GAMMA"
+  ],
+  "德尔塔": [
+    "DELTA"
+  ],
+  "欧米伽": [
+    "OMEGA"
+  ],
+  "派": [
+    "PI"
+  ],
+  "西格玛": [
+    "SIGMA"
+  ],
+  "拉姆达": [
+    "LAMBDA"
+  ],
+  "缪": [
+    "MU"
+  ],
+  "希腊": [
+    "GREEK"
+  ]
+}

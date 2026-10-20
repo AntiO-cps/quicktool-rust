@@ -1,0 +1,12 @@
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+const root=path.resolve(__dirname,'..'),source=fs.readFileSync(path.resolve(root,'../src/renderer.js'),'utf8'),C=require('../reference/core-utils.js');
+const context={module:{exports:{}},Core:C};vm.runInNewContext(source.slice(source.indexOf('function titleCase('),source.indexOf('function calcExpr('))+';module.exports={caseResults,textResults};',context);
+const cases=[];function add(operation,input,fn){try{cases.push({operation,input,result:fn(input)});}catch{cases.push({operation,input,error:true});}}
+for(const input of ['Hello WORLD','hello_world-42 test','élan déjà VU','Straße ß AÉ','中文 English 123','a\tb\nc\r\nd','\n A  A \t B \n\nA\r\n', '', 'a\na\nA\ná\nä\n','1\n10\n2\n','🙂HELLO','fooBarBAZ','e\u0301LAN']){add('case',input,context.module.exports.caseResults);add('text',input,context.module.exports.textResults);}
+for(const input of ['&amp;&#x4E2D;','&unknown;','&QUOT;hello&#39;','%20','%E4%B8%AD','bad%zz','中 & <tag> "x" \'y\'','\\u4E2D','\\uD83D\\uDE00','\\u{1F600}','\\U0001F600','\\n\\t\\"\\\\','', 'a"','"a"'])add('escape',input,C.escapeResults);
+for(const input of ['{"z":1,"a":2,"2":"b","1":"a","01":"c"}','{"b":[1,true,null,{"d":2,"c":3}]}','{"n":9007199254740993,"x":1e21,"tiny":1e-7,"large":1e400,"z":-0}','[]','0','"中😀"','bad','{"a":1,"b":2,"a":3}'])add('json',input,s=>{const o=JSON.parse(s);return[{title:'格式化 JSON',value:JSON.stringify(o,null,2)},{title:'压缩 JSON',value:JSON.stringify(o)}];});
+function decode(s){try{return new TextDecoder('utf-8',{fatal:true}).decode(Buffer.from(atob(s),'latin1'))}catch{return null}}
+for(const input of ['hello','aGVsbG8=','aGVsbG8','5Lit5paH','a G V s b G 8 =','bad!','/w==','','🙂'])add('base64',input,s=>[{title:'Base64 编码',value:Buffer.from(s).toString('base64')},{title:'Base64 解码',value:decode(s)||'（无法作为 UTF-8 文本解码）'}]);
+const countries=C.countryIndex(require('../assets/data/countries.json'));for(const query of ['CN','CHN','156','中国','China','中华人民共和国','GBR','TPE','刚果金','Congo','243','+86','.cn','Republic','a','United','Korea','cote','island','不存在'])add('country',query,q=>C.findCountries(countries,q,8).map(m=>({alpha2:m.country.alpha2,score:m.score})));
+for(const input of ['0x+FF','0b+10','2:2','-+42','1.','0xFF','1_000','2 : 1010'])add('base',input,C.baseResults);
+fs.writeFileSync(path.join(root,'tests/tools-oracle.json'),JSON.stringify(cases,null,2));console.log(`Captured ${cases.length} original tool cases`);

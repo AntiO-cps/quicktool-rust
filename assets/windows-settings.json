@@ -1,0 +1,338 @@
+[
+  {
+    "name": "Windows 设置主页",
+    "command": "ms-settings:",
+    "aliases": [
+      "设置",
+      "系统设置",
+      "windows设置",
+      "settings",
+      "xitongshezhi",
+      "xtsz"
+    ]
+  },
+  {
+    "name": "显示设置",
+    "command": "ms-settings:display",
+    "aliases": [
+      "显示",
+      "显示器",
+      "屏幕",
+      "分辨率",
+      "缩放",
+      "display",
+      "xianshi"
+    ]
+  },
+  {
+    "name": "声音设置",
+    "command": "ms-settings:sound",
+    "aliases": [
+      "声音",
+      "音频",
+      "音量",
+      "sound",
+      "audio",
+      "shengyin"
+    ]
+  },
+  {
+    "name": "通知",
+    "command": "ms-settings:notifications",
+    "aliases": [
+      "通知",
+      "通知设置",
+      "notifications",
+      "tongzhi"
+    ]
+  },
+  {
+    "name": "电源和电池",
+    "command": "ms-settings:powersleep",
+    "aliases": [
+      "电源",
+      "电池",
+      "睡眠",
+      "power",
+      "battery",
+      "dianyuan"
+    ]
+  },
+  {
+    "name": "存储",
+    "command": "ms-settings:storagesense",
+    "aliases": [
+      "存储",
+      "磁盘空间",
+      "storage",
+      "cunchu"
+    ]
+  },
+  {
+    "name": "蓝牙和设备",
+    "command": "ms-settings:bluetooth",
+    "aliases": [
+      "蓝牙",
+      "设备",
+      "bluetooth",
+      "devices",
+      "lanya"
+    ]
+  },
+  {
+    "name": "打印机和扫描仪",
+    "command": "ms-settings:printers",
+    "aliases": [
+      "打印机",
+      "扫描仪",
+      "printer",
+      "scanner",
+      "dayinji"
+    ]
+  },
+  {
+    "name": "鼠标",
+    "command": "ms-settings:mousetouchpad",
+    "aliases": [
+      "鼠标",
+      "mouse",
+      "shubiao"
+    ]
+  },
+  {
+    "name": "触摸板",
+    "command": "ms-settings:devices-touchpad",
+    "aliases": [
+      "触摸板",
+      "touchpad",
+      "chumoban"
+    ]
+  },
+  {
+    "name": "输入 / 键盘",
+    "command": "ms-settings:typing",
+    "aliases": [
+      "输入",
+      "键盘",
+      "打字",
+      "typing",
+      "keyboard",
+      "jianpan"
+    ]
+  },
+  {
+    "name": "网络状态",
+    "command": "ms-settings:network-status",
+    "aliases": [
+      "网络",
+      "网络状态",
+      "internet",
+      "network",
+      "wangluo"
+    ]
+  },
+  {
+    "name": "Wi-Fi",
+    "command": "ms-settings:network-wifi",
+    "aliases": [
+      "wifi",
+      "wi-fi",
+      "无线网络",
+      "wlan",
+      "wuxian"
+    ]
+  },
+  {
+    "name": "以太网",
+    "command": "ms-settings:network-ethernet",
+    "aliases": [
+      "以太网",
+      "ethernet",
+      "有线网络",
+      "yitaiwang"
+    ]
+  },
+  {
+    "name": "VPN",
+    "command": "ms-settings:network-vpn",
+    "aliases": [
+      "vpn",
+      "虚拟专用网络"
+    ]
+  },
+  {
+    "name": "已安装的应用",
+    "command": "ms-settings:appsfeatures",
+    "aliases": [
+      "应用",
+      "已安装应用",
+      "卸载程序",
+      "apps",
+      "uninstall",
+      "yingyong"
+    ]
+  },
+  {
+    "name": "默认应用",
+    "command": "ms-settings:defaultapps",
+    "aliases": [
+      "默认应用",
+      "默认程序",
+      "default apps",
+      "morenzhiyingyong"
+    ]
+  },
+  {
+    "name": "启动应用",
+    "command": "ms-settings:startupapps",
+    "aliases": [
+      "启动应用",
+      "开机启动",
+      "startup apps",
+      "qidongyingyong"
+    ]
+  },
+  {
+    "name": "可选功能",
+    "command": "ms-settings:optionalfeatures",
+    "aliases": [
+      "可选功能",
+      "windows功能",
+      "optional features",
+      "kexuangongneng"
+    ]
+  },
+  {
+    "name": "账户信息",
+    "command": "ms-settings:yourinfo",
+    "aliases": [
+      "账户",
+      "账户信息",
+      "account",
+      "your info",
+      "zhanghu"
+    ]
+  },
+  {
+    "name": "登录选项",
+    "command": "ms-settings:signinoptions",
+    "aliases": [
+      "登录选项",
+      "windows hello",
+      "signin",
+      "denglu"
+    ]
+  },
+  {
+    "name": "日期和时间",
+    "command": "ms-settings:dateandtime",
+    "aliases": [
+      "日期时间",
+      "时区",
+      "date time",
+      "timezone",
+      "shiqu"
+    ]
+  },
+  {
+    "name": "语言和区域",
+    "command": "ms-settings:regionlanguage",
+    "aliases": [
+      "语言",
+      "区域",
+      "language",
+      "region",
+      "yuyan"
+    ]
+  },
+  {
+    "name": "剪贴板设置",
+    "command": "ms-settings:clipboard",
+    "aliases": [
+      "剪贴板设置",
+      "剪贴板历史",
+      "clipboard settings",
+      "jiantieban"
+    ]
+  },
+  {
+    "name": "任务栏",
+    "command": "ms-settings:taskbar",
+    "aliases": [
+      "任务栏",
+      "taskbar",
+      "renwulan"
+    ]
+  },
+  {
+    "name": "个性化",
+    "command": "ms-settings:personalization",
+    "aliases": [
+      "个性化",
+      "壁纸",
+      "personalization",
+      "gexinghua"
+    ]
+  },
+  {
+    "name": "主题",
+    "command": "ms-settings:themes",
+    "aliases": [
+      "主题",
+      "windows主题",
+      "themes",
+      "zhuti"
+    ]
+  },
+  {
+    "name": "Windows 更新",
+    "command": "ms-settings:windowsupdate",
+    "aliases": [
+      "windows更新",
+      "系统更新",
+      "update",
+      "windows update",
+      "gengxin"
+    ]
+  },
+  {
+    "name": "激活",
+    "command": "ms-settings:activation",
+    "aliases": [
+      "激活",
+      "windows激活",
+      "activation",
+      "jihuo"
+    ]
+  },
+  {
+    "name": "恢复",
+    "command": "ms-settings:recovery",
+    "aliases": [
+      "恢复",
+      "重置电脑",
+      "recovery",
+      "reset pc",
+      "huifu"
+    ]
+  },
+  {
+    "name": "隐私",
+    "command": "ms-settings:privacy",
+    "aliases": [
+      "隐私",
+      "privacy",
+      "yinsi"
+    ]
+  },
+  {
+    "name": "开发者选项",
+    "command": "ms-settings:developers",
+    "aliases": [
+      "开发者",
+      "开发者选项",
+      "developer",
+      "kaifazhe"
+    ]
+  }
+]

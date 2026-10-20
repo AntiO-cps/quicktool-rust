@@ -1,0 +1,953 @@
+[
+  {
+    "operation": "baseResults",
+    "args": [
+      "0xFF"
+    ],
+    "result": [
+      {
+        "title": "二进制 BIN",
+        "value": "0b11111111"
+      },
+      {
+        "title": "八进制 OCT",
+        "value": "0o377"
+      },
+      {
+        "title": "十进制 DEC",
+        "value": "255"
+      },
+      {
+        "title": "十六进制 HEX",
+        "value": "0xFF"
+      }
+    ]
+  },
+  {
+    "operation": "baseResults",
+    "args": [
+      "2:1010"
+    ],
+    "result": [
+      {
+        "title": "二进制 BIN",
+        "value": "0b1010"
+      },
+      {
+        "title": "八进制 OCT",
+        "value": "0o12"
+      },
+      {
+        "title": "十进制 DEC",
+        "value": "10"
+      },
+      {
+        "title": "十六进制 HEX",
+        "value": "0xA"
+      }
+    ]
+  },
+  {
+    "operation": "baseResults",
+    "args": [
+      "-0b100"
+    ],
+    "result": [
+      {
+        "title": "二进制 BIN",
+        "value": "-0b100"
+      },
+      {
+        "title": "八进制 OCT",
+        "value": "-0o4"
+      },
+      {
+        "title": "十进制 DEC",
+        "value": "-4"
+      },
+      {
+        "title": "十六进制 HEX",
+        "value": "-0x4"
+      }
+    ]
+  },
+  {
+    "operation": "baseResults",
+    "args": [
+      "0"
+    ],
+    "result": [
+      {
+        "title": "二进制 BIN",
+        "value": "0b0"
+      },
+      {
+        "title": "八进制 OCT",
+        "value": "0o0"
+      },
+      {
+        "title": "十进制 DEC",
+        "value": "0"
+      },
+      {
+        "title": "十六进制 HEX",
+        "value": "0x0"
+      }
+    ]
+  },
+  {
+    "operation": "baseResults",
+    "args": [
+      "16:ff"
+    ],
+    "result": [
+      {
+        "title": "二进制 BIN",
+        "value": "0b11111111"
+      },
+      {
+        "title": "八进制 OCT",
+        "value": "0o377"
+      },
+      {
+        "title": "十进制 DEC",
+        "value": "255"
+      },
+      {
+        "title": "十六进制 HEX",
+        "value": "0xFF"
+      }
+    ]
+  },
+  {
+    "operation": "baseResults",
+    "args": [
+      "1_000"
+    ],
+    "result": [
+      {
+        "title": "二进制 BIN",
+        "value": "0b1111101000"
+      },
+      {
+        "title": "八进制 OCT",
+        "value": "0o1750"
+      },
+      {
+        "title": "十进制 DEC",
+        "value": "1000"
+      },
+      {
+        "title": "十六进制 HEX",
+        "value": "0x3E8"
+      }
+    ]
+  },
+  {
+    "operation": "baseResults",
+    "args": [
+      "+42"
+    ],
+    "result": [
+      {
+        "title": "二进制 BIN",
+        "value": "0b101010"
+      },
+      {
+        "title": "八进制 OCT",
+        "value": "0o52"
+      },
+      {
+        "title": "十进制 DEC",
+        "value": "42"
+      },
+      {
+        "title": "十六进制 HEX",
+        "value": "0x2A"
+      }
+    ]
+  },
+  {
+    "operation": "baseResults",
+    "args": [
+      "2 : 1010"
+    ],
+    "result": [
+      {
+        "title": "二进制 BIN",
+        "value": "0b1010"
+      },
+      {
+        "title": "八进制 OCT",
+        "value": "0o12"
+      },
+      {
+        "title": "十进制 DEC",
+        "value": "10"
+      },
+      {
+        "title": "十六进制 HEX",
+        "value": "0xA"
+      }
+    ]
+  },
+  {
+    "operation": "baseResults",
+    "args": [
+      "9999999999999999999999999999999999"
+    ],
+    "result": [
+      {
+        "title": "二进制 BIN",
+        "value": "0b11110110100001001101111101010110110000111110000000011011110001101100011100110001111111111111111111111111111111111"
+      },
+      {
+        "title": "八进制 OCT",
+        "value": "0o36641157526607600336154346177777777777"
+      },
+      {
+        "title": "十进制 DEC",
+        "value": "9999999999999999999999999999999999"
+      },
+      {
+        "title": "十六进制 HEX",
+        "value": "0x1ED09BEAD87C0378D8E63FFFFFFFF"
+      }
+    ]
+  },
+  {
+    "operation": "baseResults",
+    "args": [
+      "xyz"
+    ],
+    "error": true
+  },
+  {
+    "operation": "baseResults",
+    "args": [
+      "0x"
+    ],
+    "error": true
+  },
+  {
+    "operation": "baseResults",
+    "args": [
+      "-"
+    ],
+    "error": true
+  },
+  {
+    "operation": "baseResults",
+    "args": [
+      "2:2"
+    ],
+    "error": true
+  },
+  {
+    "operation": "toFullWidth",
+    "args": [
+      "ＡＢＣ１２３！　"
+    ],
+    "result": "ＡＢＣ１２３！　"
+  },
+  {
+    "operation": "toHalfWidth",
+    "args": [
+      "ＡＢＣ１２３！　"
+    ],
+    "result": "ABC123! "
+  },
+  {
+    "operation": "percentEncode",
+    "args": [
+      "ＡＢＣ１２３！　"
+    ],
+    "result": "%EF%BC%A1%EF%BC%A2%EF%BC%A3%EF%BC%91%EF%BC%92%EF%BC%93%EF%BC%81%E3%80%80"
+  },
+  {
+    "operation": "percentDecode",
+    "args": [
+      "ＡＢＣ１２３！　"
+    ],
+    "result": "ＡＢＣ１２３！　"
+  },
+  {
+    "operation": "unicodeEscapeEncode",
+    "args": [
+      "ＡＢＣ１２３！　"
+    ],
+    "result": "\\uFF21\\uFF22\\uFF23\\uFF11\\uFF12\\uFF13\\uFF01\\u3000"
+  },
+  {
+    "operation": "htmlEncode",
+    "args": [
+      "ＡＢＣ１２３！　"
+    ],
+    "result": "ＡＢＣ１２３！　"
+  },
+  {
+    "operation": "toFullWidth",
+    "args": [
+      "ABC 123!"
+    ],
+    "result": "ＡＢＣ　１２３！"
+  },
+  {
+    "operation": "toHalfWidth",
+    "args": [
+      "ABC 123!"
+    ],
+    "result": "ABC 123!"
+  },
+  {
+    "operation": "percentEncode",
+    "args": [
+      "ABC 123!"
+    ],
+    "result": "ABC%20123!"
+  },
+  {
+    "operation": "percentDecode",
+    "args": [
+      "ABC 123!"
+    ],
+    "result": "ABC 123!"
+  },
+  {
+    "operation": "unicodeEscapeEncode",
+    "args": [
+      "ABC 123!"
+    ],
+    "result": "\\u0041\\u0042\\u0043\\u0020\\u0031\\u0032\\u0033\\u0021"
+  },
+  {
+    "operation": "htmlEncode",
+    "args": [
+      "ABC 123!"
+    ],
+    "result": "ABC 123!"
+  },
+  {
+    "operation": "toFullWidth",
+    "args": [
+      "中😀&<>\"'"
+    ],
+    "result": "中😀＆＜＞＂＇"
+  },
+  {
+    "operation": "toHalfWidth",
+    "args": [
+      "中😀&<>\"'"
+    ],
+    "result": "中😀&<>\"'"
+  },
+  {
+    "operation": "percentEncode",
+    "args": [
+      "中😀&<>\"'"
+    ],
+    "result": "%E4%B8%AD%F0%9F%98%80%26%3C%3E%22'"
+  },
+  {
+    "operation": "percentDecode",
+    "args": [
+      "中😀&<>\"'"
+    ],
+    "result": "中😀&<>\"'"
+  },
+  {
+    "operation": "unicodeEscapeEncode",
+    "args": [
+      "中😀&<>\"'"
+    ],
+    "result": "\\u4E2D\\u{1F600}\\u0026\\u003C\\u003E\\u0022\\u0027"
+  },
+  {
+    "operation": "htmlEncode",
+    "args": [
+      "中😀&<>\"'"
+    ],
+    "result": "中😀&amp;&lt;&gt;&quot;&#39;"
+  },
+  {
+    "operation": "toFullWidth",
+    "args": [
+      ""
+    ],
+    "result": ""
+  },
+  {
+    "operation": "toHalfWidth",
+    "args": [
+      ""
+    ],
+    "result": ""
+  },
+  {
+    "operation": "percentEncode",
+    "args": [
+      ""
+    ],
+    "result": ""
+  },
+  {
+    "operation": "percentDecode",
+    "args": [
+      ""
+    ],
+    "result": ""
+  },
+  {
+    "operation": "unicodeEscapeEncode",
+    "args": [
+      ""
+    ],
+    "result": ""
+  },
+  {
+    "operation": "htmlEncode",
+    "args": [
+      ""
+    ],
+    "result": ""
+  },
+  {
+    "operation": "toFullWidth",
+    "args": [
+      "\\u4E2D"
+    ],
+    "result": "＼ｕ４Ｅ２Ｄ"
+  },
+  {
+    "operation": "toHalfWidth",
+    "args": [
+      "\\u4E2D"
+    ],
+    "result": "\\u4E2D"
+  },
+  {
+    "operation": "percentEncode",
+    "args": [
+      "\\u4E2D"
+    ],
+    "result": "%5Cu4E2D"
+  },
+  {
+    "operation": "percentDecode",
+    "args": [
+      "\\u4E2D"
+    ],
+    "result": "\\u4E2D"
+  },
+  {
+    "operation": "unicodeEscapeEncode",
+    "args": [
+      "\\u4E2D"
+    ],
+    "result": "\\u005C\\u0075\\u0034\\u0045\\u0032\\u0044"
+  },
+  {
+    "operation": "htmlEncode",
+    "args": [
+      "\\u4E2D"
+    ],
+    "result": "\\u4E2D"
+  },
+  {
+    "operation": "toFullWidth",
+    "args": [
+      "%E4%B8%AD"
+    ],
+    "result": "％Ｅ４％Ｂ８％ＡＤ"
+  },
+  {
+    "operation": "toHalfWidth",
+    "args": [
+      "%E4%B8%AD"
+    ],
+    "result": "%E4%B8%AD"
+  },
+  {
+    "operation": "percentEncode",
+    "args": [
+      "%E4%B8%AD"
+    ],
+    "result": "%25E4%25B8%25AD"
+  },
+  {
+    "operation": "percentDecode",
+    "args": [
+      "%E4%B8%AD"
+    ],
+    "result": "中"
+  },
+  {
+    "operation": "unicodeEscapeEncode",
+    "args": [
+      "%E4%B8%AD"
+    ],
+    "result": "\\u0025\\u0045\\u0034\\u0025\\u0042\\u0038\\u0025\\u0041\\u0044"
+  },
+  {
+    "operation": "htmlEncode",
+    "args": [
+      "%E4%B8%AD"
+    ],
+    "result": "%E4%B8%AD"
+  },
+  {
+    "operation": "fuzzySearch",
+    "args": [
+      "visual",
+      "Visual"
+    ],
+    "result": {
+      "success": true,
+      "score": 1,
+      "indexes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "operation": "fuzzySearch",
+    "args": [
+      "vis",
+      "Visual Studio Code"
+    ],
+    "result": {
+      "success": true,
+      "score": 0.975,
+      "indexes": [
+        0,
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "operation": "fuzzySearch",
+    "args": [
+      "vsc",
+      "Visual Studio Code"
+    ],
+    "result": {
+      "success": true,
+      "score": 0.6657692307692308,
+      "indexes": [
+        0,
+        2,
+        14
+      ]
+    }
+  },
+  {
+    "operation": "fuzzySearch",
+    "args": [
+      "zzz",
+      "Visual Studio Code"
+    ],
+    "result": {
+      "success": false,
+      "score": 0,
+      "indexes": []
+    }
+  },
+  {
+    "operation": "fuzzySearch",
+    "args": [
+      "cafe",
+      "Café"
+    ],
+    "result": {
+      "success": true,
+      "score": 1,
+      "indexes": [
+        0,
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "operation": "fuzzySearch",
+    "args": [
+      "中",
+      "中国"
+    ],
+    "result": {
+      "success": true,
+      "score": 1,
+      "indexes": [
+        0
+      ]
+    }
+  },
+  {
+    "operation": "fuzzySearch",
+    "args": [
+      "foo bar",
+      "foo bar baz"
+    ],
+    "result": {
+      "success": true,
+      "score": 0.955,
+      "indexes": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6
+      ]
+    }
+  },
+  {
+    "operation": "fuzzySearch",
+    "args": [
+      "😀",
+      "😀x"
+    ],
+    "result": {
+      "success": true,
+      "score": 1,
+      "indexes": [
+        0,
+        1
+      ]
+    }
+  },
+  {
+    "operation": "fuzzySearch",
+    "args": [
+      "ft",
+      "Foo-test"
+    ],
+    "result": {
+      "success": true,
+      "score": 0.725,
+      "indexes": [
+        0,
+        4
+      ]
+    }
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "2(1+2)",
+      "en-US"
+    ],
+    "result": 6
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "(2+3)(3+4)",
+      "en-US"
+    ],
+    "result": 35
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "2pi",
+      "en-US"
+    ],
+    "result": 6.283185307179586
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "sqrt(9)+max(2,5)",
+      "en-US"
+    ],
+    "result": 8
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "1,000.5+0.5",
+      "en-US"
+    ],
+    "result": 1001
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "5!",
+      "en-US"
+    ],
+    "result": 120
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "3!+2",
+      "en-US"
+    ],
+    "result": 8
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "(2+3)!",
+      "en-US"
+    ],
+    "result": 120
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "5!^2",
+      "en-US"
+    ],
+    "result": 14400
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "0!",
+      "en-US"
+    ],
+    "result": 1
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "-4!",
+      "en-US"
+    ],
+    "result": -24
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "2.5!",
+      "en-US"
+    ],
+    "error": true
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "171!",
+      "en-US"
+    ],
+    "error": true
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "2^3^2",
+      "en-US"
+    ],
+    "result": 512
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "-2^2",
+      "en-US"
+    ],
+    "result": 4
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "sin(pi/2)",
+      "en-US"
+    ],
+    "result": 1
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "1/0",
+      "en-US"
+    ],
+    "error": true
+  },
+  {
+    "operation": "calculateExpression",
+    "args": [
+      "1,5+2,5",
+      "de-DE"
+    ],
+    "result": 4
+  },
+  {
+    "operation": "unitResults",
+    "args": [
+      "10 km to mi"
+    ],
+    "result": [
+      {
+        "title": "km → mi",
+        "value": "6.21371192237 mi"
+      }
+    ]
+  },
+  {
+    "operation": "unitResults",
+    "args": [
+      "32 F to C"
+    ],
+    "result": [
+      {
+        "title": "°F → °C",
+        "value": "0 °C"
+      }
+    ]
+  },
+  {
+    "operation": "unitResults",
+    "args": [
+      "1 GB"
+    ],
+    "result": [
+      {
+        "title": "GB → bit",
+        "value": "8000000000 bit"
+      },
+      {
+        "title": "GB → B",
+        "value": "1000000000 B"
+      },
+      {
+        "title": "GB → KB",
+        "value": "1000000 KB"
+      },
+      {
+        "title": "GB → KiB",
+        "value": "976562.5 KiB"
+      },
+      {
+        "title": "GB → MB",
+        "value": "1000 MB"
+      },
+      {
+        "title": "GB → MiB",
+        "value": "953.674316406 MiB"
+      },
+      {
+        "title": "GB → GiB",
+        "value": "0.931322574615 GiB"
+      },
+      {
+        "title": "GB → TB",
+        "value": "0.001 TB"
+      }
+    ]
+  },
+  {
+    "operation": "unitResults",
+    "args": [
+      "1 kg to g"
+    ],
+    "result": [
+      {
+        "title": "kg → g",
+        "value": "1000 g"
+      }
+    ]
+  },
+  {
+    "operation": "unitResults",
+    "args": [
+      "1 m² to ft²"
+    ],
+    "result": [
+      {
+        "title": "m² → ft²",
+        "value": "10.7639104167 ft²"
+      }
+    ]
+  },
+  {
+    "operation": "unitResults",
+    "args": [
+      "1 rad to deg"
+    ],
+    "result": [
+      {
+        "title": "rad → deg",
+        "value": "57.2957795131 deg"
+      }
+    ]
+  },
+  {
+    "operation": "unitResults",
+    "args": [
+      "100 C"
+    ],
+    "result": [
+      {
+        "title": "°C → °F",
+        "value": "212 °F"
+      },
+      {
+        "title": "°C → K",
+        "value": "373.15 K"
+      }
+    ]
+  },
+  {
+    "operation": "unitResults",
+    "args": [
+      "1 kWh to J"
+    ],
+    "result": [
+      {
+        "title": "kWh → J",
+        "value": "3600000 J"
+      }
+    ]
+  },
+  {
+    "operation": "unitResults",
+    "args": [
+      "1 ms"
+    ],
+    "result": [
+      {
+        "title": "ms → s",
+        "value": "0.001 s"
+      },
+      {
+        "title": "ms → min",
+        "value": "0.0000166666666667 min"
+      },
+      {
+        "title": "ms → h",
+        "value": "2.77777778e-7 h"
+      },
+      {
+        "title": "ms → d",
+        "value": "1.15740741e-8 d"
+      },
+      {
+        "title": "ms → wk",
+        "value": "1.65343915e-9 wk"
+      }
+    ]
+  },
+  {
+    "operation": "unitResults",
+    "args": [
+      "2.5e3 mm to m"
+    ],
+    "result": [
+      {
+        "title": "mm → m",
+        "value": "2.5 m"
+      }
+    ]
+  }
+]

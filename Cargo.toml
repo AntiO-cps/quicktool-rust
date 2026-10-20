@@ -1,0 +1,57 @@
+[package]
+name = "quicktool-rust"
+default-run = "quicktool-rust"
+version = "0.6.0-alpha.32"
+edition = "2024"
+rust-version = "1.85"
+description = "Native Rust rewrite of QuickTool"
+publish = false
+
+[dependencies]
+eframe = { version = "=0.31.1", default-features = false, features = ["glow", "default_fonts", "x11", "wayland"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order", "arbitrary_precision"] }
+ryu-js = "1"
+ttf-parser = "=0.25.1"
+rustybuzz = "=0.20.1"
+unicode-bidi = "=0.3.18"
+unicode-script = "=0.5.8"
+sha2 = "0.10"
+icu_collator = "=2.1.1"
+icu_locale = "=2.1.1"
+base64 = "0.22"
+unicode-normalization = "0.1"
+num-bigint = "0.4"
+num-traits = "0.2"
+time = { version = "0.3", features = ["formatting", "parsing", "local-offset", "macros"] }
+png = "0.17"
+walkdir = "2"
+resvg = "=0.45.1"
+getrandom = "0.3"
+image = { version = "=0.25.9", default-features = false, features = ["png", "jpeg", "gif", "webp", "bmp", "ico"] }
+raw-window-handle = "0.6"
+regex-lite = "0.1"
+rusqlite = { version = "0.32", features = ["bundled"] }
+notify = "8"
+
+[target.'cfg(windows)'.dependencies]
+windows-core = "0.58"
+windows = { version = "0.58", features = ["implement", "System", "Win32_System_WinRT_Graphics_Direct2D", "Foundation", "Foundation_Collections", "Foundation_Numerics", "Graphics_Effects", "UI_Composition", "UI_Composition_Desktop", "Win32_System_WinRT_Composition", "Win32_System_WinRT", "Win32_System_Com", "Win32_System_Ole", "Win32_System_Variant", "Win32_UI_WindowsAndMessaging", "Win32_Graphics_Dwm"] }
+windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging", "Win32_UI_Input_KeyboardAndMouse", "Win32_Graphics_Dwm", "Win32_System_DataExchange", "Win32_System_Memory", "Win32_System_Registry", "Win32_UI_Shell", "Win32_System_Com", "Win32_System_Threading", "Win32_System_StationsAndDesktops", "Win32_Graphics_Gdi", "Win32_UI_Shell_Common", "Win32_Storage_FileSystem", "Win32_Security", "Win32_System_LibraryLoader", "Win32_System_SystemServices", "Win32_UI_Controls_Dialogs"] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+panic = "abort"
+strip = "debuginfo"
+
+[profile.dev]
+debug = 0
+incremental = false
+
+[profile.test]
+debug = 0
+incremental = false
+
+[patch.crates-io]
+epaint = { path = "vendor/epaint" }

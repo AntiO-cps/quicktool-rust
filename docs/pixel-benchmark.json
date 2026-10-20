@@ -1,0 +1,35 @@
+{
+  "measuredAt": "2026-10-19T17:17:08.337Z",
+  "scope": "CPU RGBA filter pipeline only; does not establish whole-app performance",
+  "pixels": 1048576,
+  "javascript": {
+    "runtime": "v22.14.0",
+    "samplesMs": [
+      86.90739999999994,
+      87.33979999999997,
+      87.61669999999992,
+      88.92759999999998,
+      89.86470000000008,
+      90.2926,
+      91.19429999999988
+    ],
+    "medianMs": 88.92759999999998,
+    "checksum": 617566179
+  },
+  "rust": {
+    "checksum": 617566179,
+    "medianMs": 54.8031,
+    "pixels": 1048576,
+    "profile": "release",
+    "samplesMs": [
+      49.6316,
+      51.948,
+      52.682100000000005,
+      54.8031,
+      55.7565,
+      57.442,
+      57.603500000000004
+    ]
+  },
+  "speedup": 1.6226746297198513
+}

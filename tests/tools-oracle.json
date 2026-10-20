@@ -1,0 +1,1939 @@
+[
+  {
+    "operation": "case",
+    "input": "Hello WORLD",
+    "result": [
+      {
+        "title": "全大写",
+        "value": "HELLO WORLD"
+      },
+      {
+        "title": "全小写",
+        "value": "hello world"
+      },
+      {
+        "title": "首字母大写",
+        "value": "Hello World"
+      },
+      {
+        "title": "Sentence case",
+        "value": "Hello world"
+      },
+      {
+        "title": "大小写反转",
+        "value": "hELLO world"
+      },
+      {
+        "title": "camelCase",
+        "value": "helloWorld"
+      },
+      {
+        "title": "PascalCase",
+        "value": "HelloWorld"
+      },
+      {
+        "title": "snake_case",
+        "value": "hello_world"
+      },
+      {
+        "title": "kebab-case",
+        "value": "hello-world"
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "Hello WORLD",
+    "result": [
+      {
+        "title": "Trim",
+        "value": "Hello WORLD"
+      },
+      {
+        "title": "合并多余空格",
+        "value": "Hello WORLD"
+      },
+      {
+        "title": "删除空行",
+        "value": "Hello WORLD"
+      },
+      {
+        "title": "行去重",
+        "value": "Hello WORLD"
+      },
+      {
+        "title": "行排序",
+        "value": "Hello WORLD"
+      },
+      {
+        "title": "统计",
+        "value": "字符 11 · 行 1 · 单词 2"
+      }
+    ]
+  },
+  {
+    "operation": "case",
+    "input": "hello_world-42 test",
+    "result": [
+      {
+        "title": "全大写",
+        "value": "HELLO_WORLD-42 TEST"
+      },
+      {
+        "title": "全小写",
+        "value": "hello_world-42 test"
+      },
+      {
+        "title": "首字母大写",
+        "value": "Hello_world-42 Test"
+      },
+      {
+        "title": "Sentence case",
+        "value": "Hello_world-42 test"
+      },
+      {
+        "title": "大小写反转",
+        "value": "HELLO_WORLD-42 TEST"
+      },
+      {
+        "title": "camelCase",
+        "value": "helloWorld42Test"
+      },
+      {
+        "title": "PascalCase",
+        "value": "HelloWorld42Test"
+      },
+      {
+        "title": "snake_case",
+        "value": "hello_world_42_test"
+      },
+      {
+        "title": "kebab-case",
+        "value": "hello-world-42-test"
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "hello_world-42 test",
+    "result": [
+      {
+        "title": "Trim",
+        "value": "hello_world-42 test"
+      },
+      {
+        "title": "合并多余空格",
+        "value": "hello_world-42 test"
+      },
+      {
+        "title": "删除空行",
+        "value": "hello_world-42 test"
+      },
+      {
+        "title": "行去重",
+        "value": "hello_world-42 test"
+      },
+      {
+        "title": "行排序",
+        "value": "hello_world-42 test"
+      },
+      {
+        "title": "统计",
+        "value": "字符 19 · 行 1 · 单词 2"
+      }
+    ]
+  },
+  {
+    "operation": "case",
+    "input": "élan déjà VU",
+    "result": [
+      {
+        "title": "全大写",
+        "value": "ÉLAN DÉJÀ VU"
+      },
+      {
+        "title": "全小写",
+        "value": "élan déjà vu"
+      },
+      {
+        "title": "首字母大写",
+        "value": "éLan DÉJÀ Vu"
+      },
+      {
+        "title": "Sentence case",
+        "value": "Élan déjà vu"
+      },
+      {
+        "title": "大小写反转",
+        "value": "ÉLAN DÉJÀ vu"
+      },
+      {
+        "title": "camelCase",
+        "value": "élanDéjàVu"
+      },
+      {
+        "title": "PascalCase",
+        "value": "ÉlanDéjàVu"
+      },
+      {
+        "title": "snake_case",
+        "value": "élan_déjà_vu"
+      },
+      {
+        "title": "kebab-case",
+        "value": "élan-déjà-vu"
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "élan déjà VU",
+    "result": [
+      {
+        "title": "Trim",
+        "value": "élan déjà VU"
+      },
+      {
+        "title": "合并多余空格",
+        "value": "élan déjà VU"
+      },
+      {
+        "title": "删除空行",
+        "value": "élan déjà VU"
+      },
+      {
+        "title": "行去重",
+        "value": "élan déjà VU"
+      },
+      {
+        "title": "行排序",
+        "value": "élan déjà VU"
+      },
+      {
+        "title": "统计",
+        "value": "字符 12 · 行 1 · 单词 3"
+      }
+    ]
+  },
+  {
+    "operation": "case",
+    "input": "Straße ß AÉ",
+    "result": [
+      {
+        "title": "全大写",
+        "value": "STRASSE SS AÉ"
+      },
+      {
+        "title": "全小写",
+        "value": "straße ß aé"
+      },
+      {
+        "title": "首字母大写",
+        "value": "StraSSE ß AÉ"
+      },
+      {
+        "title": "Sentence case",
+        "value": "Straße ß aé"
+      },
+      {
+        "title": "大小写反转",
+        "value": "sTRASSE SS aé"
+      },
+      {
+        "title": "camelCase",
+        "value": "straßeSSAé"
+      },
+      {
+        "title": "PascalCase",
+        "value": "StraßeSSAé"
+      },
+      {
+        "title": "snake_case",
+        "value": "straße_ß_aé"
+      },
+      {
+        "title": "kebab-case",
+        "value": "straße-ß-aé"
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "Straße ß AÉ",
+    "result": [
+      {
+        "title": "Trim",
+        "value": "Straße ß AÉ"
+      },
+      {
+        "title": "合并多余空格",
+        "value": "Straße ß AÉ"
+      },
+      {
+        "title": "删除空行",
+        "value": "Straße ß AÉ"
+      },
+      {
+        "title": "行去重",
+        "value": "Straße ß AÉ"
+      },
+      {
+        "title": "行排序",
+        "value": "Straße ß AÉ"
+      },
+      {
+        "title": "统计",
+        "value": "字符 11 · 行 1 · 单词 3"
+      }
+    ]
+  },
+  {
+    "operation": "case",
+    "input": "中文 English 123",
+    "result": [
+      {
+        "title": "全大写",
+        "value": "中文 ENGLISH 123"
+      },
+      {
+        "title": "全小写",
+        "value": "中文 english 123"
+      },
+      {
+        "title": "首字母大写",
+        "value": "中文 English 123"
+      },
+      {
+        "title": "Sentence case",
+        "value": "中文 english 123"
+      },
+      {
+        "title": "大小写反转",
+        "value": "中文 eNGLISH 123"
+      },
+      {
+        "title": "camelCase",
+        "value": "中文English123"
+      },
+      {
+        "title": "PascalCase",
+        "value": "中文English123"
+      },
+      {
+        "title": "snake_case",
+        "value": "中文_english_123"
+      },
+      {
+        "title": "kebab-case",
+        "value": "中文-english-123"
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "中文 English 123",
+    "result": [
+      {
+        "title": "Trim",
+        "value": "中文 English 123"
+      },
+      {
+        "title": "合并多余空格",
+        "value": "中文 English 123"
+      },
+      {
+        "title": "删除空行",
+        "value": "中文 English 123"
+      },
+      {
+        "title": "行去重",
+        "value": "中文 English 123"
+      },
+      {
+        "title": "行排序",
+        "value": "中文 English 123"
+      },
+      {
+        "title": "统计",
+        "value": "字符 14 · 行 1 · 单词 3"
+      }
+    ]
+  },
+  {
+    "operation": "case",
+    "input": "a\tb\nc\r\nd",
+    "result": [
+      {
+        "title": "全大写",
+        "value": "A\tB\nC\r\nD"
+      },
+      {
+        "title": "全小写",
+        "value": "a\tb\nc\r\nd"
+      },
+      {
+        "title": "首字母大写",
+        "value": "A\tB\nC\r\nD"
+      },
+      {
+        "title": "Sentence case",
+        "value": "A\tb\nc\r\nd"
+      },
+      {
+        "title": "大小写反转",
+        "value": "A\tB\nC\r\nD"
+      },
+      {
+        "title": "camelCase",
+        "value": "aBCD"
+      },
+      {
+        "title": "PascalCase",
+        "value": "ABCD"
+      },
+      {
+        "title": "snake_case",
+        "value": "a_b_c_d"
+      },
+      {
+        "title": "kebab-case",
+        "value": "a-b-c-d"
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "a\tb\nc\r\nd",
+    "result": [
+      {
+        "title": "Trim",
+        "value": "a\tb\nc\r\nd"
+      },
+      {
+        "title": "合并多余空格",
+        "value": "a b\nc\r\nd"
+      },
+      {
+        "title": "删除空行",
+        "value": "a\tb\nc\nd"
+      },
+      {
+        "title": "行去重",
+        "value": "a\tb\nc\nd"
+      },
+      {
+        "title": "行排序",
+        "value": "a\tb\nc\nd"
+      },
+      {
+        "title": "统计",
+        "value": "字符 8 · 行 3 · 单词 4"
+      }
+    ]
+  },
+  {
+    "operation": "case",
+    "input": "\n A  A \t B \n\nA\r\n",
+    "result": [
+      {
+        "title": "全大写",
+        "value": "\n A  A \t B \n\nA\r\n"
+      },
+      {
+        "title": "全小写",
+        "value": "\n a  a \t b \n\na\r\n"
+      },
+      {
+        "title": "首字母大写",
+        "value": "\n A  A \t B \n\nA\r\n"
+      },
+      {
+        "title": "Sentence case",
+        "value": "\n a  a \t b \n\na\r\n"
+      },
+      {
+        "title": "大小写反转",
+        "value": "\n a  a \t b \n\na\r\n"
+      },
+      {
+        "title": "camelCase",
+        "value": "aABA"
+      },
+      {
+        "title": "PascalCase",
+        "value": "AABA"
+      },
+      {
+        "title": "snake_case",
+        "value": "a_a_b_a"
+      },
+      {
+        "title": "kebab-case",
+        "value": "a-a-b-a"
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "\n A  A \t B \n\nA\r\n",
+    "result": [
+      {
+        "title": "Trim",
+        "value": "A  A \t B \n\nA"
+      },
+      {
+        "title": "合并多余空格",
+        "value": "A A B \n\nA"
+      },
+      {
+        "title": "删除空行",
+        "value": " A  A \t B \nA"
+      },
+      {
+        "title": "行去重",
+        "value": "\n A  A \t B \nA"
+      },
+      {
+        "title": "行排序",
+        "value": "\n\n\n A  A \t B \nA"
+      },
+      {
+        "title": "统计",
+        "value": "字符 16 · 行 5 · 单词 4"
+      }
+    ]
+  },
+  {
+    "operation": "case",
+    "input": "",
+    "result": [
+      {
+        "title": "全大写",
+        "value": ""
+      },
+      {
+        "title": "全小写",
+        "value": ""
+      },
+      {
+        "title": "首字母大写",
+        "value": ""
+      },
+      {
+        "title": "Sentence case",
+        "value": ""
+      },
+      {
+        "title": "大小写反转",
+        "value": ""
+      },
+      {
+        "title": "camelCase",
+        "value": ""
+      },
+      {
+        "title": "PascalCase",
+        "value": ""
+      },
+      {
+        "title": "snake_case",
+        "value": ""
+      },
+      {
+        "title": "kebab-case",
+        "value": ""
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "",
+    "result": [
+      {
+        "title": "Trim",
+        "value": ""
+      },
+      {
+        "title": "合并多余空格",
+        "value": ""
+      },
+      {
+        "title": "删除空行",
+        "value": ""
+      },
+      {
+        "title": "行去重",
+        "value": ""
+      },
+      {
+        "title": "行排序",
+        "value": ""
+      },
+      {
+        "title": "统计",
+        "value": "字符 0 · 行 1 · 单词 0"
+      }
+    ]
+  },
+  {
+    "operation": "case",
+    "input": "a\na\nA\ná\nä\n",
+    "result": [
+      {
+        "title": "全大写",
+        "value": "A\nA\nA\nÁ\nÄ\n"
+      },
+      {
+        "title": "全小写",
+        "value": "a\na\na\ná\nä\n"
+      },
+      {
+        "title": "首字母大写",
+        "value": "A\nA\nA\ná\nä\n"
+      },
+      {
+        "title": "Sentence case",
+        "value": "A\na\na\ná\nä\n"
+      },
+      {
+        "title": "大小写反转",
+        "value": "A\nA\na\nÁ\nÄ\n"
+      },
+      {
+        "title": "camelCase",
+        "value": "aAAÁÄ"
+      },
+      {
+        "title": "PascalCase",
+        "value": "AAAÁÄ"
+      },
+      {
+        "title": "snake_case",
+        "value": "a_a_a_á_ä"
+      },
+      {
+        "title": "kebab-case",
+        "value": "a-a-a-á-ä"
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "a\na\nA\ná\nä\n",
+    "result": [
+      {
+        "title": "Trim",
+        "value": "a\na\nA\ná\nä"
+      },
+      {
+        "title": "合并多余空格",
+        "value": "a\na\nA\ná\nä"
+      },
+      {
+        "title": "删除空行",
+        "value": "a\na\nA\ná\nä"
+      },
+      {
+        "title": "行去重",
+        "value": "a\nA\ná\nä\n"
+      },
+      {
+        "title": "行排序",
+        "value": "\ná\na\na\nA\nä"
+      },
+      {
+        "title": "统计",
+        "value": "字符 10 · 行 6 · 单词 5"
+      }
+    ]
+  },
+  {
+    "operation": "case",
+    "input": "1\n10\n2\n",
+    "result": [
+      {
+        "title": "全大写",
+        "value": "1\n10\n2\n"
+      },
+      {
+        "title": "全小写",
+        "value": "1\n10\n2\n"
+      },
+      {
+        "title": "首字母大写",
+        "value": "1\n10\n2\n"
+      },
+      {
+        "title": "Sentence case",
+        "value": "1\n10\n2\n"
+      },
+      {
+        "title": "大小写反转",
+        "value": "1\n10\n2\n"
+      },
+      {
+        "title": "camelCase",
+        "value": "1102"
+      },
+      {
+        "title": "PascalCase",
+        "value": "1102"
+      },
+      {
+        "title": "snake_case",
+        "value": "1_10_2"
+      },
+      {
+        "title": "kebab-case",
+        "value": "1-10-2"
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "1\n10\n2\n",
+    "result": [
+      {
+        "title": "Trim",
+        "value": "1\n10\n2"
+      },
+      {
+        "title": "合并多余空格",
+        "value": "1\n10\n2"
+      },
+      {
+        "title": "删除空行",
+        "value": "1\n10\n2"
+      },
+      {
+        "title": "行去重",
+        "value": "1\n10\n2\n"
+      },
+      {
+        "title": "行排序",
+        "value": "\n1\n10\n2"
+      },
+      {
+        "title": "统计",
+        "value": "字符 7 · 行 4 · 单词 3"
+      }
+    ]
+  },
+  {
+    "operation": "case",
+    "input": "🙂HELLO",
+    "result": [
+      {
+        "title": "全大写",
+        "value": "🙂HELLO"
+      },
+      {
+        "title": "全小写",
+        "value": "🙂hello"
+      },
+      {
+        "title": "首字母大写",
+        "value": "🙂Hello"
+      },
+      {
+        "title": "Sentence case",
+        "value": "🙂hello"
+      },
+      {
+        "title": "大小写反转",
+        "value": "🙂hello"
+      },
+      {
+        "title": "camelCase",
+        "value": "hello"
+      },
+      {
+        "title": "PascalCase",
+        "value": "Hello"
+      },
+      {
+        "title": "snake_case",
+        "value": "hello"
+      },
+      {
+        "title": "kebab-case",
+        "value": "hello"
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "🙂HELLO",
+    "result": [
+      {
+        "title": "Trim",
+        "value": "🙂HELLO"
+      },
+      {
+        "title": "合并多余空格",
+        "value": "🙂HELLO"
+      },
+      {
+        "title": "删除空行",
+        "value": "🙂HELLO"
+      },
+      {
+        "title": "行去重",
+        "value": "🙂HELLO"
+      },
+      {
+        "title": "行排序",
+        "value": "🙂HELLO"
+      },
+      {
+        "title": "统计",
+        "value": "字符 7 · 行 1 · 单词 1"
+      }
+    ]
+  },
+  {
+    "operation": "case",
+    "input": "fooBarBAZ",
+    "result": [
+      {
+        "title": "全大写",
+        "value": "FOOBARBAZ"
+      },
+      {
+        "title": "全小写",
+        "value": "foobarbaz"
+      },
+      {
+        "title": "首字母大写",
+        "value": "Foobarbaz"
+      },
+      {
+        "title": "Sentence case",
+        "value": "Foobarbaz"
+      },
+      {
+        "title": "大小写反转",
+        "value": "FOObARbaz"
+      },
+      {
+        "title": "camelCase",
+        "value": "foobarbaz"
+      },
+      {
+        "title": "PascalCase",
+        "value": "Foobarbaz"
+      },
+      {
+        "title": "snake_case",
+        "value": "foobarbaz"
+      },
+      {
+        "title": "kebab-case",
+        "value": "foobarbaz"
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "fooBarBAZ",
+    "result": [
+      {
+        "title": "Trim",
+        "value": "fooBarBAZ"
+      },
+      {
+        "title": "合并多余空格",
+        "value": "fooBarBAZ"
+      },
+      {
+        "title": "删除空行",
+        "value": "fooBarBAZ"
+      },
+      {
+        "title": "行去重",
+        "value": "fooBarBAZ"
+      },
+      {
+        "title": "行排序",
+        "value": "fooBarBAZ"
+      },
+      {
+        "title": "统计",
+        "value": "字符 9 · 行 1 · 单词 1"
+      }
+    ]
+  },
+  {
+    "operation": "case",
+    "input": "éLAN",
+    "result": [
+      {
+        "title": "全大写",
+        "value": "ÉLAN"
+      },
+      {
+        "title": "全小写",
+        "value": "élan"
+      },
+      {
+        "title": "首字母大写",
+        "value": "ÉLan"
+      },
+      {
+        "title": "Sentence case",
+        "value": "Élan"
+      },
+      {
+        "title": "大小写反转",
+        "value": "Élan"
+      },
+      {
+        "title": "camelCase",
+        "value": "eLan"
+      },
+      {
+        "title": "PascalCase",
+        "value": "ELan"
+      },
+      {
+        "title": "snake_case",
+        "value": "e_lan"
+      },
+      {
+        "title": "kebab-case",
+        "value": "e-lan"
+      }
+    ]
+  },
+  {
+    "operation": "text",
+    "input": "éLAN",
+    "result": [
+      {
+        "title": "Trim",
+        "value": "éLAN"
+      },
+      {
+        "title": "合并多余空格",
+        "value": "éLAN"
+      },
+      {
+        "title": "删除空行",
+        "value": "éLAN"
+      },
+      {
+        "title": "行去重",
+        "value": "éLAN"
+      },
+      {
+        "title": "行排序",
+        "value": "éLAN"
+      },
+      {
+        "title": "统计",
+        "value": "字符 5 · 行 1 · 单词 1"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "&amp;&#x4E2D;",
+    "result": [
+      {
+        "title": "HTML 实体解码",
+        "value": "&中"
+      },
+      {
+        "title": "百分号 / URL 编码",
+        "value": "%26amp%3B%26%23x4E2D%3B"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u0026\\u0061\\u006D\\u0070\\u003B\\u0026\\u0023\\u0078\\u0034\\u0045\\u0032\\u0044\\u003B"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "&amp;amp;&amp;#x4E2D;"
+      },
+      {
+        "title": "JSON 字符串转义",
+        "value": "&amp;&#x4E2D;"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "&unknown;",
+    "result": [
+      {
+        "title": "HTML 实体解码",
+        "value": "&unknown;"
+      },
+      {
+        "title": "百分号 / URL 编码",
+        "value": "%26unknown%3B"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u0026\\u0075\\u006E\\u006B\\u006E\\u006F\\u0077\\u006E\\u003B"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "&amp;unknown;"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "&QUOT;hello&#39;",
+    "result": [
+      {
+        "title": "HTML 实体解码",
+        "value": "\"hello'"
+      },
+      {
+        "title": "百分号 / URL 编码",
+        "value": "%26QUOT%3Bhello%26%2339%3B"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u0026\\u0051\\u0055\\u004F\\u0054\\u003B\\u0068\\u0065\\u006C\\u006C\\u006F\\u0026\\u0023\\u0033\\u0039\\u003B"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "&amp;QUOT;hello&amp;#39;"
+      },
+      {
+        "title": "JSON 字符串转义",
+        "value": "&QUOT;hello&#39;"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "%20",
+    "result": [
+      {
+        "title": "百分号 / URL 解码",
+        "value": " "
+      },
+      {
+        "title": "百分号 / URL 编码",
+        "value": "%2520"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u0025\\u0032\\u0030"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "%20"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "%E4%B8%AD",
+    "result": [
+      {
+        "title": "百分号 / URL 解码",
+        "value": "中"
+      },
+      {
+        "title": "百分号 / URL 编码",
+        "value": "%25E4%25B8%25AD"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u0025\\u0045\\u0034\\u0025\\u0042\\u0038\\u0025\\u0041\\u0044"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "%E4%B8%AD"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "bad%zz",
+    "result": [
+      {
+        "title": "百分号 / URL 编码",
+        "value": "bad%25zz"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u0062\\u0061\\u0064\\u0025\\u007A\\u007A"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "bad%zz"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "中 & <tag> \"x\" 'y'",
+    "result": [
+      {
+        "title": "百分号 / URL 编码",
+        "value": "%E4%B8%AD%20%26%20%3Ctag%3E%20%22x%22%20'y'"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u4E2D\\u0020\\u0026\\u0020\\u003C\\u0074\\u0061\\u0067\\u003E\\u0020\\u0022\\u0078\\u0022\\u0020\\u0027\\u0079\\u0027"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "中 &amp; &lt;tag&gt; &quot;x&quot; &#39;y&#39;"
+      },
+      {
+        "title": "JSON 字符串转义",
+        "value": "中 & <tag> \\\"x\\\" 'y'"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "\\u4E2D",
+    "result": [
+      {
+        "title": "Unicode 转义解码",
+        "value": "中"
+      },
+      {
+        "title": "百分号 / URL 编码",
+        "value": "%5Cu4E2D"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u005C\\u0075\\u0034\\u0045\\u0032\\u0044"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "\\u4E2D"
+      },
+      {
+        "title": "JSON 字符串转义",
+        "value": "\\\\u4E2D"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "\\uD83D\\uDE00",
+    "result": [
+      {
+        "title": "Unicode 转义解码",
+        "value": "😀"
+      },
+      {
+        "title": "百分号 / URL 编码",
+        "value": "%5CuD83D%5CuDE00"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u005C\\u0075\\u0044\\u0038\\u0033\\u0044\\u005C\\u0075\\u0044\\u0045\\u0030\\u0030"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "\\uD83D\\uDE00"
+      },
+      {
+        "title": "JSON 字符串转义",
+        "value": "\\\\uD83D\\\\uDE00"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "\\u{1F600}",
+    "result": [
+      {
+        "title": "Unicode 转义解码",
+        "value": "😀"
+      },
+      {
+        "title": "百分号 / URL 编码",
+        "value": "%5Cu%7B1F600%7D"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u005C\\u0075\\u007B\\u0031\\u0046\\u0036\\u0030\\u0030\\u007D"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "JSON 字符串转义",
+        "value": "\\\\u{1F600}"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "\\U0001F600",
+    "result": [
+      {
+        "title": "Unicode 转义解码",
+        "value": "😀"
+      },
+      {
+        "title": "百分号 / URL 编码",
+        "value": "%5CU0001F600"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u005C\\u0055\\u0030\\u0030\\u0030\\u0031\\u0046\\u0036\\u0030\\u0030"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "\\U0001F600"
+      },
+      {
+        "title": "JSON 字符串转义",
+        "value": "\\\\U0001F600"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "\\n\\t\\\"\\\\",
+    "result": [
+      {
+        "title": "百分号 / URL 编码",
+        "value": "%5Cn%5Ct%5C%22%5C%5C"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u005C\\u006E\\u005C\\u0074\\u005C\\u0022\\u005C\\u005C"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "\\n\\t\\&quot;\\\\"
+      },
+      {
+        "title": "JSON 字符串转义",
+        "value": "\\\\n\\\\t\\\\\\\"\\\\\\\\"
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "",
+    "result": [
+      {
+        "title": "百分号 / URL 编码",
+        "value": ""
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "a\"",
+    "result": [
+      {
+        "title": "百分号 / URL 编码",
+        "value": "a%22"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u0061\\u0022"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "a&quot;"
+      },
+      {
+        "title": "JSON 字符串转义",
+        "value": "a\\\""
+      }
+    ]
+  },
+  {
+    "operation": "escape",
+    "input": "\"a\"",
+    "result": [
+      {
+        "title": "百分号 / URL 编码",
+        "value": "%22a%22"
+      },
+      {
+        "title": "Unicode 转义编码",
+        "value": "\\u0022\\u0061\\u0022"
+      },
+      {
+        "title": "HTML 实体编码",
+        "value": "&quot;a&quot;"
+      },
+      {
+        "title": "JSON 字符串转义",
+        "value": "\\\"a\\\""
+      }
+    ]
+  },
+  {
+    "operation": "json",
+    "input": "{\"z\":1,\"a\":2,\"2\":\"b\",\"1\":\"a\",\"01\":\"c\"}",
+    "result": [
+      {
+        "title": "格式化 JSON",
+        "value": "{\n  \"1\": \"a\",\n  \"2\": \"b\",\n  \"z\": 1,\n  \"a\": 2,\n  \"01\": \"c\"\n}"
+      },
+      {
+        "title": "压缩 JSON",
+        "value": "{\"1\":\"a\",\"2\":\"b\",\"z\":1,\"a\":2,\"01\":\"c\"}"
+      }
+    ]
+  },
+  {
+    "operation": "json",
+    "input": "{\"b\":[1,true,null,{\"d\":2,\"c\":3}]}",
+    "result": [
+      {
+        "title": "格式化 JSON",
+        "value": "{\n  \"b\": [\n    1,\n    true,\n    null,\n    {\n      \"d\": 2,\n      \"c\": 3\n    }\n  ]\n}"
+      },
+      {
+        "title": "压缩 JSON",
+        "value": "{\"b\":[1,true,null,{\"d\":2,\"c\":3}]}"
+      }
+    ]
+  },
+  {
+    "operation": "json",
+    "input": "{\"n\":9007199254740993,\"x\":1e21,\"tiny\":1e-7,\"large\":1e400,\"z\":-0}",
+    "result": [
+      {
+        "title": "格式化 JSON",
+        "value": "{\n  \"n\": 9007199254740992,\n  \"x\": 1e+21,\n  \"tiny\": 1e-7,\n  \"large\": null,\n  \"z\": 0\n}"
+      },
+      {
+        "title": "压缩 JSON",
+        "value": "{\"n\":9007199254740992,\"x\":1e+21,\"tiny\":1e-7,\"large\":null,\"z\":0}"
+      }
+    ]
+  },
+  {
+    "operation": "json",
+    "input": "[]",
+    "result": [
+      {
+        "title": "格式化 JSON",
+        "value": "[]"
+      },
+      {
+        "title": "压缩 JSON",
+        "value": "[]"
+      }
+    ]
+  },
+  {
+    "operation": "json",
+    "input": "0",
+    "result": [
+      {
+        "title": "格式化 JSON",
+        "value": "0"
+      },
+      {
+        "title": "压缩 JSON",
+        "value": "0"
+      }
+    ]
+  },
+  {
+    "operation": "json",
+    "input": "\"中😀\"",
+    "result": [
+      {
+        "title": "格式化 JSON",
+        "value": "\"中😀\""
+      },
+      {
+        "title": "压缩 JSON",
+        "value": "\"中😀\""
+      }
+    ]
+  },
+  {
+    "operation": "json",
+    "input": "bad",
+    "error": true
+  },
+  {
+    "operation": "json",
+    "input": "{\"a\":1,\"b\":2,\"a\":3}",
+    "result": [
+      {
+        "title": "格式化 JSON",
+        "value": "{\n  \"a\": 3,\n  \"b\": 2\n}"
+      },
+      {
+        "title": "压缩 JSON",
+        "value": "{\"a\":3,\"b\":2}"
+      }
+    ]
+  },
+  {
+    "operation": "base64",
+    "input": "hello",
+    "result": [
+      {
+        "title": "Base64 编码",
+        "value": "aGVsbG8="
+      },
+      {
+        "title": "Base64 解码",
+        "value": "（无法作为 UTF-8 文本解码）"
+      }
+    ]
+  },
+  {
+    "operation": "base64",
+    "input": "aGVsbG8=",
+    "result": [
+      {
+        "title": "Base64 编码",
+        "value": "YUdWc2JHOD0="
+      },
+      {
+        "title": "Base64 解码",
+        "value": "hello"
+      }
+    ]
+  },
+  {
+    "operation": "base64",
+    "input": "aGVsbG8",
+    "result": [
+      {
+        "title": "Base64 编码",
+        "value": "YUdWc2JHOA=="
+      },
+      {
+        "title": "Base64 解码",
+        "value": "hello"
+      }
+    ]
+  },
+  {
+    "operation": "base64",
+    "input": "5Lit5paH",
+    "result": [
+      {
+        "title": "Base64 编码",
+        "value": "NUxpdDVwYUg="
+      },
+      {
+        "title": "Base64 解码",
+        "value": "中文"
+      }
+    ]
+  },
+  {
+    "operation": "base64",
+    "input": "a G V s b G 8 =",
+    "result": [
+      {
+        "title": "Base64 编码",
+        "value": "YSBHIFYgcyBiIEcgOCA9"
+      },
+      {
+        "title": "Base64 解码",
+        "value": "hello"
+      }
+    ]
+  },
+  {
+    "operation": "base64",
+    "input": "bad!",
+    "result": [
+      {
+        "title": "Base64 编码",
+        "value": "YmFkIQ=="
+      },
+      {
+        "title": "Base64 解码",
+        "value": "（无法作为 UTF-8 文本解码）"
+      }
+    ]
+  },
+  {
+    "operation": "base64",
+    "input": "/w==",
+    "result": [
+      {
+        "title": "Base64 编码",
+        "value": "L3c9PQ=="
+      },
+      {
+        "title": "Base64 解码",
+        "value": "（无法作为 UTF-8 文本解码）"
+      }
+    ]
+  },
+  {
+    "operation": "base64",
+    "input": "",
+    "result": [
+      {
+        "title": "Base64 编码",
+        "value": ""
+      },
+      {
+        "title": "Base64 解码",
+        "value": "（无法作为 UTF-8 文本解码）"
+      }
+    ]
+  },
+  {
+    "operation": "base64",
+    "input": "🙂",
+    "result": [
+      {
+        "title": "Base64 编码",
+        "value": "8J+Zgg=="
+      },
+      {
+        "title": "Base64 解码",
+        "value": "（无法作为 UTF-8 文本解码）"
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "CN",
+    "result": [
+      {
+        "alpha2": "CN",
+        "score": 1
+      },
+      {
+        "alpha2": "PN",
+        "score": 0.72
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "CHN",
+    "result": [
+      {
+        "alpha2": "CN",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "156",
+    "result": [
+      {
+        "alpha2": "CN",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "中国",
+    "result": [
+      {
+        "alpha2": "CN",
+        "score": 1
+      },
+      {
+        "alpha2": "HK",
+        "score": 0.896
+      },
+      {
+        "alpha2": "MO",
+        "score": 0.896
+      },
+      {
+        "alpha2": "TW",
+        "score": 0.896
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "China",
+    "result": [
+      {
+        "alpha2": "CN",
+        "score": 1
+      },
+      {
+        "alpha2": "HK",
+        "score": 0.72
+      },
+      {
+        "alpha2": "MO",
+        "score": 0.72
+      },
+      {
+        "alpha2": "TW",
+        "score": 0.72
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "中华人民共和国",
+    "result": [
+      {
+        "alpha2": "CN",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "GBR",
+    "result": [
+      {
+        "alpha2": "GB",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "TPE",
+    "result": [
+      {
+        "alpha2": "TW",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "刚果金",
+    "result": [
+      {
+        "alpha2": "CD",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "Congo",
+    "result": [
+      {
+        "alpha2": "CG",
+        "score": 1
+      },
+      {
+        "alpha2": "CD",
+        "score": 0.884
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "243",
+    "result": [
+      {
+        "alpha2": "CD",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "+86",
+    "result": [
+      {
+        "alpha2": "CN",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": ".cn",
+    "result": [
+      {
+        "alpha2": "CN",
+        "score": 1
+      },
+      {
+        "alpha2": "PN",
+        "score": 0.72
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "Republic",
+    "result": [
+      {
+        "alpha2": "TD",
+        "score": 0.888
+      },
+      {
+        "alpha2": "CU",
+        "score": 0.888
+      },
+      {
+        "alpha2": "FJ",
+        "score": 0.888
+      },
+      {
+        "alpha2": "IQ",
+        "score": 0.888
+      },
+      {
+        "alpha2": "ML",
+        "score": 0.888
+      },
+      {
+        "alpha2": "PE",
+        "score": 0.888
+      },
+      {
+        "alpha2": "BJ",
+        "score": 0.886
+      },
+      {
+        "alpha2": "CL",
+        "score": 0.886
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "a",
+    "result": [
+      {
+        "alpha2": "AF",
+        "score": 0.898
+      },
+      {
+        "alpha2": "AX",
+        "score": 0.898
+      },
+      {
+        "alpha2": "AL",
+        "score": 0.898
+      },
+      {
+        "alpha2": "AS",
+        "score": 0.898
+      },
+      {
+        "alpha2": "AD",
+        "score": 0.898
+      },
+      {
+        "alpha2": "AO",
+        "score": 0.898
+      },
+      {
+        "alpha2": "AI",
+        "score": 0.898
+      },
+      {
+        "alpha2": "AQ",
+        "score": 0.898
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "United",
+    "result": [
+      {
+        "alpha2": "US",
+        "score": 0.888
+      },
+      {
+        "alpha2": "GB",
+        "score": 0.886
+      },
+      {
+        "alpha2": "AE",
+        "score": 0.876
+      },
+      {
+        "alpha2": "MX",
+        "score": 0.874
+      },
+      {
+        "alpha2": "TZ",
+        "score": 0.864
+      },
+      {
+        "alpha2": "UM",
+        "score": 0.848
+      },
+      {
+        "alpha2": "VI",
+        "score": 0.72
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "Korea",
+    "result": [
+      {
+        "alpha2": "KR",
+        "score": 0.88
+      },
+      {
+        "alpha2": "KP",
+        "score": 0.846
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "cote",
+    "result": [
+      {
+        "alpha2": "CI",
+        "score": 0.886
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "island",
+    "result": [
+      {
+        "alpha2": "IS",
+        "score": 1
+      },
+      {
+        "alpha2": "AX",
+        "score": 0.72
+      },
+      {
+        "alpha2": "BM",
+        "score": 0.72
+      },
+      {
+        "alpha2": "BV",
+        "score": 0.72
+      },
+      {
+        "alpha2": "KY",
+        "score": 0.72
+      },
+      {
+        "alpha2": "CX",
+        "score": 0.72
+      },
+      {
+        "alpha2": "CC",
+        "score": 0.72
+      },
+      {
+        "alpha2": "CK",
+        "score": 0.72
+      }
+    ]
+  },
+  {
+    "operation": "country",
+    "input": "不存在",
+    "result": []
+  },
+  {
+    "operation": "base",
+    "input": "0x+FF",
+    "error": true
+  },
+  {
+    "operation": "base",
+    "input": "0b+10",
+    "error": true
+  },
+  {
+    "operation": "base",
+    "input": "2:2",
+    "error": true
+  },
+  {
+    "operation": "base",
+    "input": "-+42",
+    "error": true
+  },
+  {
+    "operation": "base",
+    "input": "1.",
+    "error": true
+  },
+  {
+    "operation": "base",
+    "input": "0xFF",
+    "result": [
+      {
+        "title": "二进制 BIN",
+        "value": "0b11111111"
+      },
+      {
+        "title": "八进制 OCT",
+        "value": "0o377"
+      },
+      {
+        "title": "十进制 DEC",
+        "value": "255"
+      },
+      {
+        "title": "十六进制 HEX",
+        "value": "0xFF"
+      }
+    ]
+  },
+  {
+    "operation": "base",
+    "input": "1_000",
+    "result": [
+      {
+        "title": "二进制 BIN",
+        "value": "0b1111101000"
+      },
+      {
+        "title": "八进制 OCT",
+        "value": "0o1750"
+      },
+      {
+        "title": "十进制 DEC",
+        "value": "1000"
+      },
+      {
+        "title": "十六进制 HEX",
+        "value": "0x3E8"
+      }
+    ]
+  },
+  {
+    "operation": "base",
+    "input": "2 : 1010",
+    "result": [
+      {
+        "title": "二进制 BIN",
+        "value": "0b1010"
+      },
+      {
+        "title": "八进制 OCT",
+        "value": "0o12"
+      },
+      {
+        "title": "十进制 DEC",
+        "value": "10"
+      },
+      {
+        "title": "十六进制 HEX",
+        "value": "0xA"
+      }
+    ]
+  }
+]

@@ -1,0 +1,2296 @@
+[
+  {
+    "input": "#1",
+    "colors": [
+      {
+        "color": {
+          "r": 0.06666666666666667,
+          "g": 0.06666666666666667,
+          "b": 0.06666666666666667,
+          "a": 1
+        },
+        "hex": "#111111FF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#111111"
+          },
+          {
+            "title": "HEXA",
+            "value": "#111111FF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(17, 17, 17)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(17, 17, 17, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(0 0% 6.67%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(0 0% 6.67%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(0 0% 6.67%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(0 6.67% 93.33%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(0% 0% 0% 93.33%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(0.5328 0.5605 0.6103)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(5.063 0 0)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(5.063 0 158.199)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.17764 0 0)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.17764 0 89.876)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.06667 0.06667 0.06666)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 17 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 17 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 30.6 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 17 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.06667 · U 0 · V 0"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "#12",
+    "colors": [
+      {
+        "color": {
+          "r": 0.07058823529411765,
+          "g": 0.07058823529411765,
+          "b": 0.07058823529411765,
+          "a": 1
+        },
+        "hex": "#121212FF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#121212"
+          },
+          {
+            "title": "HEXA",
+            "value": "#121212FF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(18, 18, 18)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(18, 18, 18, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(0 0% 7.06%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(0 0% 7.06%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(0 0% 7.06%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(0 7.06% 92.94%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(0% 0% 0% 92.94%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(0.5749 0.6049 0.6586)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(5.464 0 0)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(5.464 0 158.199)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.1822 0 0)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.1822 0 89.876)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.07059 0.07059 0.07058)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 18 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 18 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 31.46 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 18 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.07059 · U 0 · V 0"
+          }
+        ]
+      },
+      {
+        "color": {
+          "r": 0.06666666666666667,
+          "g": 0.06666666666666667,
+          "b": 0.06666666666666667,
+          "a": 0.13333333333333333
+        },
+        "hex": "#11111122",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#111111"
+          },
+          {
+            "title": "HEXA",
+            "value": "#11111122"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(17, 17, 17)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(17, 17, 17, 0.133)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(0 0% 6.67% / 0.133)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(0 0% 6.67% / 0.133)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(0 0% 6.67% / 0.133)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(0 6.67% 93.33% / 0.133)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(0% 0% 0% 93.33% / 0.133)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(0.5328 0.5605 0.6103 / 0.133)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(5.063 0 0 / 0.133)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(5.063 0 158.199 / 0.133)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.17764 0 0 / 0.133)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.17764 0 89.876 / 0.133)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.06667 0.06667 0.06666 / 0.133)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 17 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 17 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 30.6 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 17 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.06667 · U 0 · V 0"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "#123",
+    "colors": [
+      {
+        "color": {
+          "r": 0.06666666666666667,
+          "g": 0.13333333333333333,
+          "b": 0.2,
+          "a": 1
+        },
+        "hex": "#112233FF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#112233"
+          },
+          {
+            "title": "HEXA",
+            "value": "#112233FF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(17, 34, 51)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(17, 34, 51, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(210 50% 13.33%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(210 66.67% 20%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(210 50% 13.33%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(210 6.67% 80%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(66.67% 33.33% 0% 80%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(1.4005 1.5021 3.3475)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(12.622 -0.789 -13.306)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(12.622 13.33 266.609)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.24619 -0.0138 -0.03738)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.24619 0.03985 249.732)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.08198 0.13163 0.19441)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 30.86 · Cb 139.37 · Cr 118.12"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 31.61 · Cb 138.45 · Cr 118.72"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 43.15 · Cb 137.18 · Cr 119.85"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 30.54 · Cb 138.87 · Cr 118.82"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.121 · U 0.03888 · V -0.04767"
+          }
+        ]
+      },
+      {
+        "color": {
+          "r": 0.07058823529411765,
+          "g": 0.19215686274509805,
+          "b": 0.13725490196078433,
+          "a": 1
+        },
+        "hex": "#123123FF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#123123"
+          },
+          {
+            "title": "HEXA",
+            "value": "#123123FF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(18, 49, 35)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(18, 49, 35, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(152.9 46.27% 13.14%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(152.9 63.27% 19.22%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(153.2 47.06% 13.33%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(152.9 7.06% 80.78%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(63.27% 0% 28.57% 80.78%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(1.651 2.4464 1.975)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(17.675 -15.658 5.511)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(17.675 16.6 160.611)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.28476 -0.04322 0.0141)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.28476 0.04546 161.933)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.10258 0.18939 0.14111)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 38.13 · Cb 126.23 · Cr 113.64"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 41.4 · Cb 124.55 · Cr 113.14"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 51.55 · Cb 124.97 · Cr 114.95"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 40.03 · Cb 125.33 · Cr 113.06"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.14955 · U -0.00605 · V -0.06927"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "#1234",
+    "colors": [
+      {
+        "color": {
+          "r": 0.06666666666666667,
+          "g": 0.13333333333333333,
+          "b": 0.2,
+          "a": 0.26666666666666666
+        },
+        "hex": "#11223344",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#112233"
+          },
+          {
+            "title": "HEXA",
+            "value": "#11223344"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(17, 34, 51)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(17, 34, 51, 0.267)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(210 50% 13.33% / 0.267)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(210 66.67% 20% / 0.267)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(210 50% 13.33% / 0.267)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(210 6.67% 80% / 0.267)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(66.67% 33.33% 0% 80% / 0.267)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(1.4005 1.5021 3.3475 / 0.267)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(12.622 -0.789 -13.306 / 0.267)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(12.622 13.33 266.609 / 0.267)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.24619 -0.0138 -0.03738 / 0.267)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.24619 0.03985 249.732 / 0.267)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.08198 0.13163 0.19441 / 0.267)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 30.86 · Cb 139.37 · Cr 118.12"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 31.61 · Cb 138.45 · Cr 118.72"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 43.15 · Cb 137.18 · Cr 119.85"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 30.54 · Cb 138.87 · Cr 118.82"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.121 · U 0.03888 · V -0.04767"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "#7c3aed",
+    "colors": [
+      {
+        "color": {
+          "r": 0.48627450980392156,
+          "g": 0.22745098039215686,
+          "b": 0.9294117647058824,
+          "a": 1
+        },
+        "hex": "#7C3AEDFF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#7C3AED"
+          },
+          {
+            "title": "HEXA",
+            "value": "#7C3AEDFF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(124, 58, 237)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(124, 58, 237, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(262.12 83.26% 57.84%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(262.12 75.53% 92.94%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(261.38 58.47% 54.77%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(262.12 22.75% 7.06%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(47.68% 75.53% 0% 7.06%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(25.107 13.4248 81.3727)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(43.396 64.797 -79.089)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(43.396 102.244 309.327)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.54134 0.09638 -0.22697)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.54134 0.24659 293.009)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.45327 0.24165 0.89493)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 98.14 · Cb 206.36 · Cr 146.45"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 84.96 · Cb 209.94 · Cr 152.79"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 88.96 · Cb 199.98 · Cr 149.78"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 85.95 · Cb 208.28 · Cr 153.8"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.38486 · U 0.26798 · V 0.08897"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "#000000",
+    "colors": [
+      {
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 1
+        },
+        "hex": "#000000FF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#000000"
+          },
+          {
+            "title": "HEXA",
+            "value": "#000000FF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(0, 0, 0)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(0, 0, 0, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(0 0% 0%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(0 0% 0%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(0 0% 0%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(0 0% 100%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(0% 0% 0% 100%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(0 0 0)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(0 0 0)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(0 0 0)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0 0 0)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0 0 0)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0 0 0)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 0 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 0 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 16 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 0 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0 · U 0 · V 0"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "#ffffff",
+    "colors": [
+      {
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "hex": "#FFFFFFFF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#FFFFFF"
+          },
+          {
+            "title": "HEXA",
+            "value": "#FFFFFFFF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(255, 255, 255)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(255, 255, 255, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(0 0% 100%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(0 0% 100%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(0 0% 100%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(0 100% 0%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(0% 0% 0% 0%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(95.047 100 108.883)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(100 0 0)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(100 0 158.199)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(1 0 0)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(1 0 89.876)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 1 0.99999 0.9999)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 255 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 255 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 235 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 255 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 1 · U 0.00001 · V 0"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "#00223377",
+    "colors": [
+      {
+        "color": {
+          "r": 0,
+          "g": 0.13333333333333333,
+          "b": 0.2,
+          "a": 0.4666666666666667
+        },
+        "hex": "#00223377",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#002233"
+          },
+          {
+            "title": "HEXA",
+            "value": "#00223377"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(0, 34, 51)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(0, 34, 51, 0.467)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(200 100% 10% / 0.467)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(200 100% 20% / 0.467)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(199.11 100% 11.11% / 0.467)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(200 0% 80% / 0.467)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(100% 33.33% 0% 80% / 0.467)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(1.1693 1.3829 3.3366 / 0.467)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(11.843 -4.589 -14.58 / 0.467)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(11.843 15.286 252.528 / 0.467)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.23784 -0.02894 -0.04133 / 0.467)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.23784 0.05045 234.998 / 0.467)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.03669 0.1307 0.19409 / 0.467)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 25.77 · Cb 142.24 · Cr 109.62"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 28 · Cb 140.4 · Cr 110.22"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 40.05 · Cb 138.89 · Cr 112.38"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 26.08 · Cb 141.25 · Cr 110.32"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.10107 · U 0.04869 · V -0.08867"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "red",
+    "colors": [
+      {
+        "color": {
+          "r": 1,
+          "g": 0,
+          "b": 0,
+          "a": 1
+        },
+        "hex": "#FF0000FF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#FF0000"
+          },
+          {
+            "title": "HEXA",
+            "value": "#FF0000FF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(255, 0, 0)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(255, 0, 0, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(0 100% 50%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(0 100% 100%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(0 100% 33.33%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(0 0% 0%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(0% 100% 100% 0%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(41.2456 21.2673 1.9334)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(53.241 80.092 67.203)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(53.241 104.552 39.999)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.62796 0.22486 0.12585)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.62796 0.25768 29.234)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.91755 0.2003 0.13857)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 76.24 · Cb 84.97 · Cr 255.5"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 54.21 · Cb 98.78 · Cr 255.5"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 62.56 · Cb 102.34 · Cr 240"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 66.99 · Cb 92.39 · Cr 255.5"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.299 · U -0.14713 · V 0.615"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "transparent",
+    "colors": [
+      {
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 0
+        },
+        "hex": "#00000000",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#000000"
+          },
+          {
+            "title": "HEXA",
+            "value": "#00000000"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(0, 0, 0)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(0, 0, 0, 0)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(0 0% 0% / 0)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(0 0% 0% / 0)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(0 0% 0% / 0)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(0 0% 100% / 0)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(0% 0% 0% 100% / 0)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(0 0 0 / 0)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(0 0 0 / 0)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(0 0 0 / 0)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0 0 0 / 0)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0 0 0 / 0)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0 0 0 / 0)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 0 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 0 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 16 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 0 · Cb 128 · Cr 128"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0 · U 0 · V 0"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "rgb(255 0 0 / 50%)",
+    "colors": [
+      {
+        "color": {
+          "r": 1,
+          "g": 0,
+          "b": 0,
+          "a": 0.5
+        },
+        "hex": "#FF000080",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#FF0000"
+          },
+          {
+            "title": "HEXA",
+            "value": "#FF000080"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(255, 0, 0)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(255, 0, 0, 0.5)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(0 100% 50% / 0.5)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(0 100% 100% / 0.5)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(0 100% 33.33% / 0.5)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(0 0% 0% / 0.5)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(0% 100% 100% 0% / 0.5)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(41.2456 21.2673 1.9334 / 0.5)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(53.241 80.092 67.203 / 0.5)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(53.241 104.552 39.999 / 0.5)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.62796 0.22486 0.12585 / 0.5)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.62796 0.25768 29.234 / 0.5)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.91755 0.2003 0.13857 / 0.5)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 76.24 · Cb 84.97 · Cr 255.5"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 54.21 · Cb 98.78 · Cr 255.5"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 62.56 · Cb 102.34 · Cr 240"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 66.99 · Cb 92.39 · Cr 255.5"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.299 · U -0.14713 · V 0.615"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "rgba(12,34,56,.8)",
+    "colors": [
+      {
+        "color": {
+          "r": 0.047058823529411764,
+          "g": 0.13333333333333333,
+          "b": 0.2196078431372549,
+          "a": 0.8
+        },
+        "hex": "#0C2238CC",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#0C2238"
+          },
+          {
+            "title": "HEXA",
+            "value": "#0C2238CC"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(12, 34, 56)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(12, 34, 56, 0.8)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(210 64.71% 13.33% / 0.8)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(210 78.57% 21.96% / 0.8)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(210 64.71% 13.33% / 0.8)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(210 4.71% 78.04% / 0.8)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(78.57% 39.29% 0% 78.04% / 0.8)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(1.4372 1.5076 3.9559 / 0.8)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(12.656 0.123 -16.833 / 0.8)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(12.656 16.834 270.417 / 0.8)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.24672 -0.0168 -0.04771 / 0.8)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.24672 0.05058 250.603 / 0.8)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.06898 0.13131 0.21276 / 0.8)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 29.93 · Cb 142.71 · Cr 115.21"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 30.91 · Cb 141.52 · Cr 115.99"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 42.55 · Cb 139.88 · Cr 117.45"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 29.53 · Cb 142.07 · Cr 116.12"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.11737 · U 0.05031 · V -0.06169"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "hsl(220 40% 50%)",
+    "colors": [
+      {
+        "color": {
+          "r": 0.30000000000000004,
+          "g": 0.4333333333333331,
+          "b": 0.7,
+          "a": 1
+        },
+        "hex": "#4D6EB3FF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#4D6EB3"
+          },
+          {
+            "title": "HEXA",
+            "value": "#4D6EB3FF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(77, 110, 179)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(77, 110, 179, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(220 40% 50%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(220 57.14% 70%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(220.89 37.21% 47.78%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(220 30% 30%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(57.14% 38.1% 0% 30%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(16.7338 16.0503 44.5907)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(47.04 8.509 -39.832)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(47.04 40.731 282.059)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.54617 -0.01377 -0.11286)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.54617 0.11369 263.044)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.32858 0.4297 0.68031)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 108.09 · Cb 167.74 · Cr 105.47"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 108.18 · Cb 165.9 · Cr 107.88"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 108.91 · Cb 161.29 · Cr 110.33"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 105.6 · Cb 166.75 · Cr 108.27"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.42387 · U 0.13589 · V -0.10867"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "hsv(120 80% 60%)",
+    "colors": [
+      {
+        "color": {
+          "r": 0.12,
+          "g": 0.6,
+          "b": 0.12,
+          "a": 1
+        },
+        "hex": "#1F991FFF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#1F991F"
+          },
+          {
+            "title": "HEXA",
+            "value": "#1F991FFF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(31, 153, 31)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(31, 153, 31, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(120 66.67% 36%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(120 80% 60%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(120 57.14% 28%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(120 12% 40%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(80% 0% 80% 40%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(12.1856 23.163 5.0973)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(55.24 -54.948 50.746)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(55.24 74.796 137.277)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.59619 -0.14914 0.11332)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.59619 0.18731 142.772)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.28831 0.59123 0.20753)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 102.45 · Cb 87.45 · Cr 76.75"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 118.14 · Cb 80.82 · Cr 72.41"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 117.46 · Cb 86.56 · Cr 79.17"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 113.59 · Cb 83.89 · Cr 71.72"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.40176 · U -0.13865 · V -0.2472"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "hsi(0 100% 33.333%)",
+    "colors": [
+      {
+        "color": {
+          "r": 0.9999899999999997,
+          "g": 2.220446049250313e-16,
+          "b": 0,
+          "a": 1
+        },
+        "hex": "#FF0000FF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#FF0000"
+          },
+          {
+            "title": "HEXA",
+            "value": "#FF0000FF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(255, 0, 0)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(255, 0, 0, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(0 100% 50%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(0 100% 100%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(0 100% 33.33%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(0 0% 0%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(0% 100% 100% 0%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(41.2447 21.2668 1.9333)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(53.24 80.092 67.203)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(53.24 104.551 39.999)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.62795 0.22486 0.12585)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.62795 0.25768 29.234)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.91754 0.2003 0.13857)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 76.24 · Cb 84.97 · Cr 255.5"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 54.21 · Cb 98.78 · Cr 255.5"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 62.56 · Cb 102.34 · Cr 240"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 66.99 · Cb 92.39 · Cr 255.5"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.299 · U -0.14713 · V 0.61499"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "yuv(0.299 -0.14713 0.615)",
+    "colors": [
+      {
+        "color": {
+          "r": 0.9999954499999999,
+          "g": 0,
+          "b": 0.000015655700000005712,
+          "a": 1
+        },
+        "hex": "#FF0000FF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#FF0000"
+          },
+          {
+            "title": "HEXA",
+            "value": "#FF0000FF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(255, 0, 0)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(255, 0, 0, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(360 100% 50%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(360 100% 100%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(360 100% 33.33%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(360 0% 0%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(0% 100% 100% 0%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(41.2452 21.2671 1.9335)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(53.241 80.092 67.202)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(53.241 104.551 39.999)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.62795 0.22486 0.12584)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.62795 0.25768 29.234)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.91755 0.2003 0.13858)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 76.25 · Cb 84.97 · Cr 255.5"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 54.21 · Cb 98.79 · Cr 255.5"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 62.56 · Cb 102.34 · Cr 240"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 66.99 · Cb 92.4 · Cr 255.5"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.299 · U -0.14712 · V 0.615"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "color(display-p3 1 0 0 / .5)",
+    "colors": [
+      {
+        "color": {
+          "r": 1,
+          "g": 0,
+          "b": 0,
+          "a": 0.5
+        },
+        "hex": "#FF000080",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#FF0000"
+          },
+          {
+            "title": "HEXA",
+            "value": "#FF000080"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(255, 0, 0)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(255, 0, 0, 0.5)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(0 100% 50% / 0.5)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(0 100% 100% / 0.5)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(0 100% 33.33% / 0.5)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(0 0% 0% / 0.5)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(0% 100% 100% 0% / 0.5)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(41.2456 21.2673 1.9334 / 0.5)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(53.241 80.092 67.203 / 0.5)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(53.241 104.552 39.999 / 0.5)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.62796 0.22486 0.12585 / 0.5)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.62796 0.25768 29.234 / 0.5)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.91755 0.2003 0.13857 / 0.5)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 76.24 · Cb 84.97 · Cr 255.5"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 54.21 · Cb 98.78 · Cr 255.5"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 62.56 · Cb 102.34 · Cr 240"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 66.99 · Cb 92.39 · Cr 255.5"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.299 · U -0.14713 · V 0.615"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "ycbcr709(0.5 0.5 0.5)",
+    "colors": [
+      {
+        "color": {
+          "r": 0,
+          "g": 0.32968505724437425,
+          "b": 0,
+          "a": 1
+        },
+        "hex": "#005400FF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#005400"
+          },
+          {
+            "title": "HEXA",
+            "value": "#005400FF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(0, 84, 0)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(0, 84, 0, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(120 100% 16.48%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(120 100% 32.97%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(120 100% 10.99%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(120 0% 67.03%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(100% 0% 100% 67.03%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(3.1755 6.351 1.0585)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(30.281 -38.451 37.111)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(30.281 53.438 136.016)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.38656 -0.10435 0.08008)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.38656 0.13154 142.495)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.1322 0.32431 0.07382)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 49.35 · Cb 100.15 · Cr 92.8"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 60.13 · Cb 95.6 · Cr 89.82"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 67.64 · Cb 99.54 · Cr 94.46"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 57 · Cb 97.7 · Cr 89.35"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.19353 · U -0.09523 · V -0.16978"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "lab(40 10 -20)",
+    "colors": [
+      {
+        "color": {
+          "r": 0.36720180511860795,
+          "g": 0.35411711485875286,
+          "b": 0.4973396517915956,
+          "a": 1
+        },
+        "hex": "#5E5A7FFF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#5E5A7F"
+          },
+          {
+            "title": "HEXA",
+            "value": "#5E5A7FFF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(94, 90, 127)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(94, 90, 127, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(245.48 16.82% 42.57%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(245.48 28.8% 49.73%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(244.74 12.83% 40.62%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(245.48 35.41% 50.27%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(26.17% 28.8% 0% 50.27%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(12.0786 11.251 21.549)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(40 10 -20)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(40 22.361 296.565)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.48655 0.01818 -0.05522)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.48655 0.05813 288.22)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.36494 0.35456 0.48672)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 95.46 · Cb 145.7 · Cr 126.7"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 93.65 · Cb 145.88 · Cr 127.99"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 96.43 · Cb 143.71 · Cr 127.99"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 93.34 · Cb 145.79 · Cr 128.2"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.37436 · U 0.06052 · V -0.00628"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "oklch(.6 .2 140)",
+    "colors": [
+      {
+        "color": {
+          "r": 0.1544155901889469,
+          "g": 0.6051474984156289,
+          "b": 0,
+          "a": 1
+        },
+        "hex": "#279A00FF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#279A00"
+          },
+          {
+            "title": "HEXA",
+            "value": "#279A00FF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(39, 154, 0)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(39, 154, 0, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(104.69 100% 30.26%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(104.69 100% 60.51%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(105.79 100% 25.32%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(104.69 0% 39.49%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(74.48% 0% 100% 39.49%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(12.4576 23.6518 3.9087)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(55.738 -55.232 57.709)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(55.738 79.88 133.744)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.60047 -0.15132 0.12429)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.60047 0.19582 140.601)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.30273 0.59651 0.16744)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 102.35 · Cb 70.24 · Cr 83.08"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 118.74 · Cb 64.01 · Cr 77.61"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 117.97 · Cb 71.79 · Cr 83.73"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 114.97 · Cb 66.89 · Cr 76.74"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.40139 · U -0.19752 · V -0.21668"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "xyz(20 30 40)",
+    "colors": [
+      {
+        "color": {
+          "r": 0,
+          "g": 0.6542455499140191,
+          "b": 0.6443685318118682,
+          "a": 1
+        },
+        "hex": "#00A7A4FF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#00A7A4"
+          },
+          {
+            "title": "HEXA",
+            "value": "#00A7A4FF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(0, 167, 164)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(0, 167, 164, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(179.09 100% 32.71%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(179.09 100% 65.42%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(179.25 100% 43.29%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(179.09 0% 34.58%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(100% 0% 1.51% 34.58%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(20.5141 30.2651 40.0241)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(61.882 -35.778 -8.989)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(61.882 36.89 194.103)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.65808 -0.10992 -0.0251)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.65808 0.11275 192.862)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.29014 0.64433 0.64003)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 116.66 · Cb 154.89 · Cr 44.79"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 131.18 · Cb 145.86 · Cr 44.7"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 128.66 · Cb 143.68 · Cr 54.83"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 122.86 · Cb 150.04 · Cr 44.68"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.4575 · U 0.09196 · V -0.40137"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "input": "cmyk(10% 20% 30% 40%)",
+    "colors": [
+      {
+        "color": {
+          "r": 0.54,
+          "g": 0.48,
+          "b": 0.42,
+          "a": 1
+        },
+        "hex": "#8A7A6BFF",
+        "formats": [
+          {
+            "title": "HEX",
+            "value": "#8A7A6B"
+          },
+          {
+            "title": "HEXA",
+            "value": "#8A7A6BFF"
+          },
+          {
+            "title": "RGB",
+            "value": "rgb(138, 122, 107)"
+          },
+          {
+            "title": "RGBA",
+            "value": "rgba(138, 122, 107, 1)"
+          },
+          {
+            "title": "HSL",
+            "value": "hsl(30 12.5% 48%)"
+          },
+          {
+            "title": "HSV / HSB",
+            "value": "hsv(30 22.22% 54%)"
+          },
+          {
+            "title": "HSI",
+            "value": "hsi(30 12.5% 48%)"
+          },
+          {
+            "title": "HWB",
+            "value": "hwb(30 42% 46%)"
+          },
+          {
+            "title": "CMYK",
+            "value": "cmyk(0% 11.11% 22.22% 46%)"
+          },
+          {
+            "title": "CIE XYZ D65",
+            "value": "xyz(20.0996 20.4594 16.8249)"
+          },
+          {
+            "title": "CIE Lab D65",
+            "value": "lab(52.353 3.264 10.526)"
+          },
+          {
+            "title": "CIE LCH D65",
+            "value": "lch(52.353 11.021 72.772)"
+          },
+          {
+            "title": "OKLab",
+            "value": "oklab(0.5905 0.01143 0.02719)"
+          },
+          {
+            "title": "OKLCH",
+            "value": "oklch(0.5905 0.0295 67.203)"
+          },
+          {
+            "title": "Display-P3",
+            "value": "color(display-p3 0.53 0.48214 0.42704)"
+          },
+          {
+            "title": "YCbCr BT.601 Full",
+            "value": "Y 125.23 · Cb 117.77 · Cr 136.89"
+          },
+          {
+            "title": "YCbCr BT.709 Full",
+            "value": "Y 124.55 · Cb 118.6 · Cr 136.35"
+          },
+          {
+            "title": "YCbCr BT.709 Limited",
+            "value": "Y 122.96 · Cb 119.74 · Cr 135.34"
+          },
+          {
+            "title": "YCbCr BT.2020 Full",
+            "value": "Y 125.51 · Cb 118.21 · Cr 136.27"
+          },
+          {
+            "title": "YUV BT.601",
+            "value": "Y 0.4911 · U -0.03498 · V 0.0429"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,966 @@
+[
+  {
+    "input": "2026年1月20日",
+    "order": "YMD",
+    "result": {
+      "millis": 1768838400000,
+      "format": "年/月/日",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026年1月20日",
+    "order": "YDM",
+    "result": {
+      "millis": 1768838400000,
+      "format": "年/月/日",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026年1月20日",
+    "order": "DMY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "年/月/日",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026年1月20日",
+    "order": "MDY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "年/月/日",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2020年",
+    "order": "YMD",
+    "result": {
+      "millis": 1577808000000,
+      "format": "年/月/日",
+      "precision": "year",
+      "recognized": "2020-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2020年",
+    "order": "YDM",
+    "result": {
+      "millis": 1577808000000,
+      "format": "年/月/日",
+      "precision": "year",
+      "recognized": "2020-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2020年",
+    "order": "DMY",
+    "result": {
+      "millis": 1577808000000,
+      "format": "年/月/日",
+      "precision": "year",
+      "recognized": "2020-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2020年",
+    "order": "MDY",
+    "result": {
+      "millis": 1577808000000,
+      "format": "年/月/日",
+      "precision": "year",
+      "recognized": "2020-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "jan 2026",
+    "order": "YMD",
+    "result": {
+      "millis": 1767196800000,
+      "format": "月份名称 YYYY",
+      "precision": "month",
+      "recognized": "2026-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "jan 2026",
+    "order": "YDM",
+    "result": {
+      "millis": 1767196800000,
+      "format": "月份名称 YYYY",
+      "precision": "month",
+      "recognized": "2026-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "jan 2026",
+    "order": "DMY",
+    "result": {
+      "millis": 1767196800000,
+      "format": "月份名称 YYYY",
+      "precision": "month",
+      "recognized": "2026-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "jan 2026",
+    "order": "MDY",
+    "result": {
+      "millis": 1767196800000,
+      "format": "月份名称 YYYY",
+      "precision": "month",
+      "recognized": "2026-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "Jan/2026",
+    "order": "YMD",
+    "result": {
+      "millis": 1767196800000,
+      "format": "月份名称 YYYY",
+      "precision": "month",
+      "recognized": "2026-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "Jan/2026",
+    "order": "YDM",
+    "result": {
+      "millis": 1767196800000,
+      "format": "月份名称 YYYY",
+      "precision": "month",
+      "recognized": "2026-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "Jan/2026",
+    "order": "DMY",
+    "result": {
+      "millis": 1767196800000,
+      "format": "月份名称 YYYY",
+      "precision": "month",
+      "recognized": "2026-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "Jan/2026",
+    "order": "MDY",
+    "result": {
+      "millis": 1767196800000,
+      "format": "月份名称 YYYY",
+      "precision": "month",
+      "recognized": "2026-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026/Jan/20",
+    "order": "YMD",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026/Jan/20",
+    "order": "YDM",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026/Jan/20",
+    "order": "DMY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026/Jan/20",
+    "order": "MDY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 января 2026",
+    "order": "YMD",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 января 2026",
+    "order": "YDM",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 января 2026",
+    "order": "DMY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 января 2026",
+    "order": "MDY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026-20-01",
+    "order": "YMD",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYY-DD-MM",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026-20-01",
+    "order": "YDM",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYY-DD-MM",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026-20-01",
+    "order": "DMY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYY-DD-MM",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026-20-01",
+    "order": "MDY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYY-DD-MM",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "26-01-20",
+    "order": "YMD",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YY-MM-DD",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": [
+        "2020-01-26 00:00:00"
+      ]
+    }
+  },
+  {
+    "input": "26-01-20",
+    "order": "YDM",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YY-MM-DD",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": [
+        "2020-01-26 00:00:00"
+      ]
+    }
+  },
+  {
+    "input": "26-01-20",
+    "order": "DMY",
+    "result": {
+      "millis": 1579968000000,
+      "format": "DD-MM-YY",
+      "precision": "day",
+      "recognized": "2020-01-26 00:00:00",
+      "alternatives": [
+        "2026-01-20 00:00:00"
+      ]
+    }
+  },
+  {
+    "input": "26-01-20",
+    "order": "MDY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YY-MM-DD",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": [
+        "2020-01-26 00:00:00"
+      ]
+    }
+  },
+  {
+    "input": "2026/20/01",
+    "order": "YMD",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYY/DD/MM",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026/20/01",
+    "order": "YDM",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYY/DD/MM",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026/20/01",
+    "order": "DMY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYY/DD/MM",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026/20/01",
+    "order": "MDY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYY/DD/MM",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 janvier 2026",
+    "order": "YMD",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 janvier 2026",
+    "order": "YDM",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 janvier 2026",
+    "order": "DMY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 janvier 2026",
+    "order": "MDY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 Januar 2026",
+    "order": "YMD",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 Januar 2026",
+    "order": "YDM",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 Januar 2026",
+    "order": "DMY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 Januar 2026",
+    "order": "MDY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 de marzo de 2026",
+    "order": "YMD",
+    "result": {
+      "millis": 1773936000000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-03-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 de marzo de 2026",
+    "order": "YDM",
+    "result": {
+      "millis": 1773936000000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-03-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 de marzo de 2026",
+    "order": "DMY",
+    "result": {
+      "millis": 1773936000000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-03-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20 de marzo de 2026",
+    "order": "MDY",
+    "result": {
+      "millis": 1773936000000,
+      "format": "本地化月份日期",
+      "precision": "day",
+      "recognized": "2026-03-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026년 1월 20일",
+    "order": "YMD",
+    "result": {
+      "millis": 1768838400000,
+      "format": "年/月/日",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026년 1월 20일",
+    "order": "YDM",
+    "result": {
+      "millis": 1768838400000,
+      "format": "年/月/日",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026년 1월 20일",
+    "order": "DMY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "年/月/日",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026년 1월 20일",
+    "order": "MDY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "年/月/日",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "٢٠٢٦/٢٠/٠١",
+    "order": "YMD",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYY/DD/MM",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "٢٠٢٦/٢٠/٠١",
+    "order": "YDM",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYY/DD/MM",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "٢٠٢٦/٢٠/٠١",
+    "order": "DMY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYY/DD/MM",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "٢٠٢٦/٢٠/٠١",
+    "order": "MDY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYY/DD/MM",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2024-02-29",
+    "order": "YMD",
+    "result": {
+      "millis": 1709136000000,
+      "format": "YYYY-MM-DD",
+      "precision": "day",
+      "recognized": "2024-02-29 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2024-02-29",
+    "order": "YDM",
+    "result": {
+      "millis": 1709136000000,
+      "format": "YYYY-MM-DD",
+      "precision": "day",
+      "recognized": "2024-02-29 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2024-02-29",
+    "order": "DMY",
+    "result": {
+      "millis": 1709136000000,
+      "format": "YYYY-MM-DD",
+      "precision": "day",
+      "recognized": "2024-02-29 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2024-02-29",
+    "order": "MDY",
+    "result": {
+      "millis": 1709136000000,
+      "format": "YYYY-MM-DD",
+      "precision": "day",
+      "recognized": "2024-02-29 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026年2月29日",
+    "order": "YMD",
+    "result": null
+  },
+  {
+    "input": "2026年2月29日",
+    "order": "YDM",
+    "result": null
+  },
+  {
+    "input": "2026年2月29日",
+    "order": "DMY",
+    "result": null
+  },
+  {
+    "input": "2026年2月29日",
+    "order": "MDY",
+    "result": null
+  },
+  {
+    "input": "2026-13-32",
+    "order": "YMD",
+    "result": null
+  },
+  {
+    "input": "2026-13-32",
+    "order": "YDM",
+    "result": null
+  },
+  {
+    "input": "2026-13-32",
+    "order": "DMY",
+    "result": null
+  },
+  {
+    "input": "2026-13-32",
+    "order": "MDY",
+    "result": null
+  },
+  {
+    "input": "2026-01-20 25:00",
+    "order": "YMD",
+    "result": null
+  },
+  {
+    "input": "2026-01-20 25:00",
+    "order": "YDM",
+    "result": null
+  },
+  {
+    "input": "2026-01-20 25:00",
+    "order": "DMY",
+    "result": null
+  },
+  {
+    "input": "2026-01-20 25:00",
+    "order": "MDY",
+    "result": null
+  },
+  {
+    "input": "2026-02-30T12:00Z",
+    "order": "YMD",
+    "result": null
+  },
+  {
+    "input": "2026-02-30T12:00Z",
+    "order": "YDM",
+    "result": null
+  },
+  {
+    "input": "2026-02-30T12:00Z",
+    "order": "DMY",
+    "result": null
+  },
+  {
+    "input": "2026-02-30T12:00Z",
+    "order": "MDY",
+    "result": null
+  },
+  {
+    "input": "https://jan2026.com",
+    "order": "YMD",
+    "result": null
+  },
+  {
+    "input": "https://jan2026.com",
+    "order": "YDM",
+    "result": null
+  },
+  {
+    "input": "https://jan2026.com",
+    "order": "DMY",
+    "result": null
+  },
+  {
+    "input": "https://jan2026.com",
+    "order": "MDY",
+    "result": null
+  },
+  {
+    "input": "jan 2026@test.com",
+    "order": "YMD",
+    "result": null
+  },
+  {
+    "input": "jan 2026@test.com",
+    "order": "YDM",
+    "result": null
+  },
+  {
+    "input": "jan 2026@test.com",
+    "order": "DMY",
+    "result": null
+  },
+  {
+    "input": "jan 2026@test.com",
+    "order": "MDY",
+    "result": null
+  },
+  {
+    "input": "2026-01-20T12:00:00+08:00",
+    "order": "YMD",
+    "result": {
+      "millis": 1768881600000,
+      "format": "ISO 8601",
+      "precision": "second",
+      "recognized": "2026-01-20 12:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026-01-20T12:00:00+08:00",
+    "order": "YDM",
+    "result": {
+      "millis": 1768881600000,
+      "format": "ISO 8601",
+      "precision": "second",
+      "recognized": "2026-01-20 12:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026-01-20T12:00:00+08:00",
+    "order": "DMY",
+    "result": {
+      "millis": 1768881600000,
+      "format": "ISO 8601",
+      "precision": "second",
+      "recognized": "2026-01-20 12:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026-01-20T12:00:00+08:00",
+    "order": "MDY",
+    "result": {
+      "millis": 1768881600000,
+      "format": "ISO 8601",
+      "precision": "second",
+      "recognized": "2026-01-20 12:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20260120",
+    "order": "YMD",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYYMMDD",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20260120",
+    "order": "YDM",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYYMMDD",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20260120",
+    "order": "DMY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYYMMDD",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "20260120",
+    "order": "MDY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYYYMMDD",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "260120",
+    "order": "YMD",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYMMDD",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "260120",
+    "order": "YDM",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYMMDD",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "260120",
+    "order": "DMY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYMMDD",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "260120",
+    "order": "MDY",
+    "result": {
+      "millis": 1768838400000,
+      "format": "YYMMDD",
+      "precision": "day",
+      "recognized": "2026-01-20 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026-01",
+    "order": "YMD",
+    "result": {
+      "millis": 1767196800000,
+      "format": "YYYY-MM",
+      "precision": "month",
+      "recognized": "2026-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026-01",
+    "order": "YDM",
+    "result": {
+      "millis": 1767196800000,
+      "format": "YYYY-MM",
+      "precision": "month",
+      "recognized": "2026-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026-01",
+    "order": "DMY",
+    "result": {
+      "millis": 1767196800000,
+      "format": "YYYY-MM",
+      "precision": "month",
+      "recognized": "2026-01-01 00:00:00",
+      "alternatives": []
+    }
+  },
+  {
+    "input": "2026-01",
+    "order": "MDY",
+    "result": {
+      "millis": 1767196800000,
+      "format": "YYYY-MM",
+      "precision": "month",
+      "recognized": "2026-01-01 00:00:00",
+      "alternatives": []
+    }
+  }
+]

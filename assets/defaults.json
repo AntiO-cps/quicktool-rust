@@ -1,0 +1,19 @@
+{
+  "globalShortcut": "Alt+Space",
+  "hideOnBlur": true,
+  "summonAlwaysOnTop": true,
+  "historyLimit": 500,
+  "defaultTimezone": "system",
+  "defaultTerminal": "cmd",
+  "reduceMotion": false,
+  "glassOpacity": 0.78,
+  "dateOrder": "YMD",
+  "blurStrength": 28,
+  "glowStrength": 0.88,
+  "theme": "system",
+  "timeCustomFormats": "Local compact=YYYY-MM-DD HH:mm:ss\nUTC compact=UTC:YYYY-MM-DD HH:mm:ss\nISO week=YYYY-WW",
+  "fileSearchGlobal": true,
+  "fileSearchProvider": "auto",
+  "fileIndexRoots": "",
+  "fileIndexExcludes": ".git\nnode_modules\n.qa\n$Recycle.Bin\nSystem Volume Information"
+}

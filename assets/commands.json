@@ -1,0 +1,789 @@
+[
+  {
+    "id": "calculator",
+    "name": "计算器",
+    "icon": "mdi:calculator-variant",
+    "primaryAlias": "计算",
+    "aliases": [
+      "计算",
+      "计算器",
+      "jisuan",
+      "jisuanqi",
+      "js",
+      "jsq",
+      "calc",
+      "calculator"
+    ]
+  },
+  {
+    "id": "time",
+    "name": "日期 / 时间戳",
+    "icon": "mdi:calendar-clock",
+    "primaryAlias": "timestamp",
+    "aliases": [
+      "timestamp",
+      "时间",
+      "时间戳",
+      "日期",
+      "时间转换",
+      "日期转换",
+      "ole date",
+      "excel date",
+      "周数",
+      "自定义时间格式",
+      "shijian",
+      "shijianchuo",
+      "shijianzhuanhuan",
+      "riqi",
+      "riqizhuanhuan",
+      "sj",
+      "sjc",
+      "rq",
+      "time",
+      "date"
+    ]
+  },
+  {
+    "id": "json",
+    "name": "JSON 工具",
+    "icon": "mdi:code-json",
+    "primaryAlias": "json",
+    "aliases": [
+      "json",
+      "json工具",
+      "json格式化",
+      "格式化json",
+      "json压缩",
+      "geshihuajson",
+      "jsonformat",
+      "jsonformatter"
+    ]
+  },
+  {
+    "id": "color",
+    "name": "颜色转换",
+    "icon": "mdi:format-color-fill",
+    "primaryAlias": "颜色",
+    "aliases": [
+      "颜色",
+      "颜色转换",
+      "色值",
+      "取色",
+      "yanse",
+      "yansezhuanhuan",
+      "sezhi",
+      "quse",
+      "ys",
+      "yszh",
+      "color",
+      "hex",
+      "hexa",
+      "rgb",
+      "rgba",
+      "hsl",
+      "hsla",
+      "hsv",
+      "hsb",
+      "hsi",
+      "hwb",
+      "cmyk",
+      "lab",
+      "lch",
+      "oklab",
+      "oklch",
+      "yuv",
+      "ycbcr"
+    ]
+  },
+  {
+    "id": "case",
+    "name": "大小写转换",
+    "icon": "mdi:format-letter-case",
+    "primaryAlias": "大小写",
+    "aliases": [
+      "大小写",
+      "大小写转换",
+      "首字母",
+      "首字母大写",
+      "daxiaoxie",
+      "daxiaoxiezhuanhuan",
+      "dxxzh",
+      "shouzimu",
+      "shouzimudaxie",
+      "szm",
+      "case",
+      "uppercase",
+      "lowercase"
+    ]
+  },
+  {
+    "id": "base64",
+    "name": "Base64",
+    "icon": "mdi:code-string",
+    "primaryAlias": "base64",
+    "aliases": [
+      "base64",
+      "b64",
+      "base64编码",
+      "base64解码",
+      "base64bianma",
+      "base64jiema"
+    ]
+  },
+  {
+    "id": "url",
+    "name": "URL 编解码",
+    "icon": "mdi:link-variant",
+    "primaryAlias": "url",
+    "aliases": [
+      "url",
+      "网址",
+      "链接",
+      "url编码",
+      "url解码",
+      "wangzhi",
+      "lianjie",
+      "wz",
+      "lj",
+      "encodeuri",
+      "decodeuri"
+    ]
+  },
+  {
+    "id": "escape",
+    "name": "转义 / 编码转换",
+    "icon": "mdi:code-braces",
+    "primaryAlias": "转义",
+    "aliases": [
+      "转义",
+      "转义转换",
+      "编码转换",
+      "zhuanyi",
+      "zhuanyizhuanhuan",
+      "bianmazhuanhuan",
+      "zy",
+      "bmzh",
+      "escape",
+      "encode",
+      "decode"
+    ]
+  },
+  {
+    "id": "base",
+    "name": "进制转换",
+    "icon": "mdi:numeric-2-box-multiple-outline",
+    "primaryAlias": "进制",
+    "aliases": [
+      "进制",
+      "进制转换",
+      "二进制",
+      "八进制",
+      "十进制",
+      "十六进制",
+      "jinzhi",
+      "jinzhizhuanhuan",
+      "jzzh",
+      "base",
+      "radix",
+      "hex",
+      "binary",
+      "octal",
+      "decimal"
+    ]
+  },
+  {
+    "id": "unit",
+    "name": "单位转换",
+    "icon": "mdi:ruler-square",
+    "primaryAlias": "单位",
+    "aliases": [
+      "单位",
+      "单位转换",
+      "换算",
+      "单位换算",
+      "danwei",
+      "danweizhuanhuan",
+      "huansuan",
+      "dw",
+      "dwzh",
+      "unit",
+      "units",
+      "convert"
+    ]
+  },
+  {
+    "id": "char",
+    "name": "Unicode / 字符",
+    "icon": "mdi:unicode",
+    "primaryAlias": "字符",
+    "aliases": [
+      "字符",
+      "符号",
+      "unicode",
+      "unicode字符",
+      "unicode查询",
+      "字符查询",
+      "zifu",
+      "fuhao",
+      "zifuchaxun",
+      "zf",
+      "fh",
+      "char",
+      "character",
+      "codepoint",
+      "码位"
+    ]
+  },
+  {
+    "id": "mathchar",
+    "name": "数学符号",
+    "icon": "mdi:unicode",
+    "primaryAlias": "math",
+    "aliases": [
+      "math",
+      "数学符号",
+      "数学字符",
+      "shuxuefuhao",
+      "sxfh"
+    ]
+  },
+  {
+    "id": "greek",
+    "name": "希腊字母",
+    "icon": "mdi:unicode",
+    "primaryAlias": "greek",
+    "aliases": [
+      "greek",
+      "希腊",
+      "希腊字母",
+      "xila",
+      "xilazimu",
+      "xlzm"
+    ]
+  },
+  {
+    "id": "bopomofo",
+    "name": "注音符号",
+    "icon": "mdi:unicode",
+    "primaryAlias": "bopomofo",
+    "aliases": [
+      "bopomofo",
+      "注音",
+      "注音符号",
+      "zhuyin",
+      "zhuyinfuhao",
+      "zyfh"
+    ]
+  },
+  {
+    "id": "emoji",
+    "name": "Emoji / 表情",
+    "icon": "mdi:unicode",
+    "primaryAlias": "emoji",
+    "aliases": [
+      "emoji",
+      "表情",
+      "表情符号",
+      "biaoqing",
+      "biaoqingfuhao",
+      "bq"
+    ]
+  },
+  {
+    "id": "width",
+    "name": "全角 / 半角转换",
+    "icon": "mdi:swap-horizontal",
+    "primaryAlias": "全半角",
+    "aliases": [
+      "全半角",
+      "全角",
+      "半角",
+      "全半角转换",
+      "quanbanjiao",
+      "quanjiao",
+      "banjiao",
+      "qbj",
+      "qj",
+      "bj",
+      "width",
+      "fullwidth",
+      "halfwidth"
+    ]
+  },
+  {
+    "id": "country",
+    "name": "国家 / 地区代码",
+    "icon": "mdi:earth",
+    "primaryAlias": "国家",
+    "aliases": [
+      "国家",
+      "国家代码",
+      "国家地区",
+      "国家地区代码",
+      "guojia",
+      "guojiadaima",
+      "guojiadiqu",
+      "gj",
+      "gjdm",
+      "country",
+      "countrycode",
+      "iso",
+      "iso2",
+      "iso3"
+    ]
+  },
+  {
+    "id": "pinwindow",
+    "name": "钉住主窗口",
+    "icon": "mdi:pin-outline",
+    "primaryAlias": "钉住窗口",
+    "aliases": [
+      "钉住窗口",
+      "钉住主窗口",
+      "钉住插件",
+      "固定窗口",
+      "pinwindow",
+      "pinapp",
+      "dingzhuchuangkou",
+      "dzck"
+    ]
+  },
+  {
+    "id": "settings",
+    "name": "QuickTool 设置",
+    "icon": "mdi:cog-outline",
+    "primaryAlias": "设置",
+    "aliases": [
+      "设置",
+      "软件设置",
+      "偏好设置",
+      "settings",
+      "preferences",
+      "shezhi",
+      "sz"
+    ]
+  },
+  {
+    "id": "history",
+    "name": "历史记录",
+    "icon": "mdi:history",
+    "primaryAlias": "历史",
+    "aliases": [
+      "历史",
+      "历史记录",
+      "history",
+      "lishi",
+      "lishijilu",
+      "ls",
+      "lsjl"
+    ]
+  },
+  {
+    "id": "pin",
+    "name": "钉住内容",
+    "icon": "mdi:pin",
+    "primaryAlias": "pin",
+    "aliases": [
+      "pin",
+      "钉住",
+      "钉住内容",
+      "置顶便签",
+      "固定内容",
+      "悬浮",
+      "dingzhu",
+      "xuanfu",
+      "dz",
+      "xf"
+    ]
+  },
+  {
+    "id": "clipboard",
+    "name": "剪贴板原始数据",
+    "icon": "mdi:clipboard-text-outline",
+    "primaryAlias": "剪切板",
+    "aliases": [
+      "剪切板",
+      "剪贴板",
+      "剪切板原始数据",
+      "jianqieban",
+      "jiantieban",
+      "jqb",
+      "clipboard"
+    ]
+  },
+  {
+    "id": "help",
+    "name": "帮助 / 命令查询",
+    "icon": "mdi:information-outline",
+    "primaryAlias": "帮助",
+    "aliases": [
+      "帮助",
+      "命令",
+      "命令帮助",
+      "功能",
+      "功能列表",
+      "bangzhu",
+      "mingling",
+      "bz",
+      "ml",
+      "help",
+      "commands"
+    ]
+  },
+  {
+    "id": "files",
+    "name": "文件 / 目录搜索",
+    "icon": "mdi:file-search-outline",
+    "primaryAlias": "文件",
+    "aliases": [
+      "文件",
+      "文件搜索",
+      "搜索文件",
+      "目录搜索",
+      "文件索引",
+      "wenjian",
+      "wenjiansousuo",
+      "wjss",
+      "file",
+      "files",
+      "findfile",
+      "searchfile"
+    ]
+  },
+  {
+    "id": "registry",
+    "name": "注册表搜索",
+    "icon": "mdi:database-search-outline",
+    "primaryAlias": "注册表搜索",
+    "aliases": [
+      "注册表搜索",
+      "搜索注册表",
+      "注册表查询",
+      "zhucebiaosousuo",
+      "zcbss",
+      "registry",
+      "regsearch",
+      "reg"
+    ]
+  },
+  {
+    "id": "winsettings",
+    "name": "Windows 设置",
+    "icon": "mdi:cog-outline",
+    "primaryAlias": "系统设置",
+    "aliases": [
+      "系统设置",
+      "Windows设置",
+      "设置项",
+      "xitongshezhi",
+      "xtsz",
+      "winsettings",
+      "windowssettings"
+    ]
+  },
+  {
+    "id": "run",
+    "name": "运行应用",
+    "icon": "mdi:open-in-new",
+    "primaryAlias": "run",
+    "aliases": [
+      "run",
+      "运行",
+      "打开软件",
+      "启动软件",
+      "yunxing",
+      "dakaruanjian",
+      "yx",
+      "dkrj",
+      "launch",
+      "app"
+    ]
+  },
+  {
+    "id": "cd",
+    "name": "打开文件夹",
+    "icon": "mdi:folder-outline",
+    "primaryAlias": "cd",
+    "aliases": [
+      "cd",
+      "文件夹",
+      "目录",
+      "打开文件夹",
+      "打开目录",
+      "wenjianjia",
+      "mulu",
+      "wj",
+      "ml"
+    ]
+  },
+  {
+    "id": "open",
+    "name": "打开文件 / URL",
+    "icon": "mdi:open-in-new",
+    "primaryAlias": "open",
+    "aliases": [
+      "open",
+      "打开",
+      "打开文件",
+      "打开路径",
+      "dakai",
+      "dakaiwenjian",
+      "dk",
+      "dkwj"
+    ]
+  },
+  {
+    "id": "powershell",
+    "name": "PowerShell",
+    "icon": "mdi:console",
+    "primaryAlias": "powershell",
+    "aliases": [
+      "powershell",
+      "ps",
+      "pwsh",
+      "PowerShell",
+      "微软终端脚本"
+    ]
+  },
+  {
+    "id": "terminal",
+    "name": "Windows Terminal",
+    "icon": "mdi:console",
+    "primaryAlias": "terminal",
+    "aliases": [
+      "terminal",
+      "term",
+      "wt",
+      "终端",
+      "windows terminal",
+      "zhongduan",
+      "zd"
+    ]
+  },
+  {
+    "id": "text",
+    "name": "文本处理",
+    "icon": "mdi:text-box-outline",
+    "primaryAlias": "文本",
+    "aliases": [
+      "文本",
+      "文本处理",
+      "wenben",
+      "wenbenchuli",
+      "wb",
+      "wbcl",
+      "text",
+      "trim",
+      "去重",
+      "排序",
+      "quchong",
+      "paixu"
+    ]
+  },
+  {
+    "id": "cmd",
+    "name": "CMD",
+    "icon": "mdi:console",
+    "primaryAlias": "cmd",
+    "aliases": [
+      "cmd",
+      "命令行",
+      "命令提示符",
+      "minglinghang",
+      "mlh",
+      "terminalcmd"
+    ]
+  },
+  {
+    "id": "uuid",
+    "name": "UUID v4",
+    "icon": "mdi:identifier",
+    "primaryAlias": "uuid",
+    "aliases": [
+      "uuid",
+      "guid",
+      "唯一标识",
+      "weiyibiaoshi",
+      "wybs"
+    ]
+  },
+  {
+    "id": "random",
+    "name": "随机字符串",
+    "icon": "mdi:shuffle-variant",
+    "primaryAlias": "随机",
+    "aliases": [
+      "随机",
+      "随机字符串",
+      "随机密码",
+      "suiji",
+      "suijizifuchuan",
+      "suijimima",
+      "sjzfc",
+      "sjmm",
+      "random",
+      "password",
+      "密码"
+    ]
+  },
+  {
+    "id": "system:ipconfig",
+    "name": "网络配置 / ipconfig",
+    "icon": "mdi:console",
+    "primaryAlias": "ipconfig",
+    "aliases": [
+      "ipconfig",
+      "网络配置",
+      "网络信息",
+      "ip配置",
+      "wangluopeizhi",
+      "wangluoxinxi",
+      "wlpz",
+      "wlxx"
+    ]
+  },
+  {
+    "id": "system:ping",
+    "name": "Ping 网络测试",
+    "icon": "mdi:console",
+    "primaryAlias": "ping",
+    "aliases": [
+      "ping",
+      "网络测试",
+      "连通性",
+      "延迟测试",
+      "wangluoceshi",
+      "liantongxing",
+      "wlcs"
+    ]
+  },
+  {
+    "id": "system:nslookup",
+    "name": "DNS 查询 / nslookup",
+    "icon": "mdi:console",
+    "primaryAlias": "nslookup",
+    "aliases": [
+      "nslookup",
+      "dns查询",
+      "域名查询",
+      "DNS",
+      "yumingchaxun",
+      "ymcx"
+    ]
+  },
+  {
+    "id": "system:tracert",
+    "name": "路由追踪 / tracert",
+    "icon": "mdi:console",
+    "primaryAlias": "tracert",
+    "aliases": [
+      "tracert",
+      "路由追踪",
+      "路由跟踪",
+      "luyouzhuizong",
+      "lyzz"
+    ]
+  },
+  {
+    "id": "system:netstat",
+    "name": "网络连接 / netstat",
+    "icon": "mdi:console",
+    "primaryAlias": "netstat",
+    "aliases": [
+      "netstat",
+      "网络连接",
+      "端口连接",
+      "wangluolianjie",
+      "wllj"
+    ]
+  },
+  {
+    "id": "system:regedit",
+    "name": "注册表编辑器",
+    "icon": "mdi:console",
+    "primaryAlias": "regedit",
+    "aliases": [
+      "regedit",
+      "注册表",
+      "注册表编辑器",
+      "zhucebiao",
+      "zcbbjq",
+      "zcb"
+    ]
+  },
+  {
+    "id": "system:taskmgr",
+    "name": "任务管理器",
+    "icon": "mdi:console",
+    "primaryAlias": "taskmgr",
+    "aliases": [
+      "taskmgr",
+      "任务管理器",
+      "renwuguanliqi",
+      "rwg",
+      "rwg lq",
+      "rwglq"
+    ]
+  },
+  {
+    "id": "system:services",
+    "name": "Windows 服务",
+    "icon": "mdi:console",
+    "primaryAlias": "services",
+    "aliases": [
+      "services",
+      "服务",
+      "系统服务",
+      "fuwu",
+      "xtfw"
+    ]
+  },
+  {
+    "id": "system:devmgmt",
+    "name": "设备管理器",
+    "icon": "mdi:console",
+    "primaryAlias": "devmgmt",
+    "aliases": [
+      "devmgmt",
+      "设备管理器",
+      "shebeiguanliqi",
+      "sbglq"
+    ]
+  },
+  {
+    "id": "system:diskmgmt",
+    "name": "磁盘管理",
+    "icon": "mdi:console",
+    "primaryAlias": "diskmgmt",
+    "aliases": [
+      "diskmgmt",
+      "磁盘管理",
+      "cipanguanli",
+      "cpgl"
+    ]
+  },
+  {
+    "id": "system:eventvwr",
+    "name": "事件查看器",
+    "icon": "mdi:console",
+    "primaryAlias": "eventvwr",
+    "aliases": [
+      "eventvwr",
+      "事件查看器",
+      "shijianchakanqi",
+      "sjckq"
+    ]
+  },
+  {
+    "id": "system:control",
+    "name": "控制面板",
+    "icon": "mdi:console",
+    "primaryAlias": "control",
+    "aliases": [
+      "control",
+      "控制面板",
+      "kongzhimianban",
+      "kzmb"
+    ]
+  }
+]

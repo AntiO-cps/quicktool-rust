@@ -1,0 +1,185 @@
+[
+  {
+    "input": "",
+    "results": [
+      {
+        "command": "ms-settings:devices-touchpad",
+        "score": 0.55
+      },
+      {
+        "command": "ms-settings:storagesense",
+        "score": 0.55
+      },
+      {
+        "command": "ms-settings:printers",
+        "score": 0.55
+      },
+      {
+        "command": "ms-settings:signinoptions",
+        "score": 0.55
+      },
+      {
+        "command": "ms-settings:powersleep",
+        "score": 0.55
+      },
+      {
+        "command": "ms-settings:personalization",
+        "score": 0.55
+      },
+      {
+        "command": "ms-settings:recovery",
+        "score": 0.55
+      },
+      {
+        "command": "ms-settings:activation",
+        "score": 0.55
+      },
+      {
+        "command": "ms-settings:clipboard",
+        "score": 0.55
+      },
+      {
+        "command": "ms-settings:developers",
+        "score": 0.55
+      },
+      {
+        "command": "ms-settings:optionalfeatures",
+        "score": 0.55
+      },
+      {
+        "command": "ms-settings:bluetooth",
+        "score": 0.55
+      }
+    ]
+  },
+  {
+    "input": "显示",
+    "results": [
+      {
+        "command": "ms-settings:display",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "input": "声音",
+    "results": [
+      {
+        "command": "ms-settings:sound",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "input": "wifi",
+    "results": [
+      {
+        "command": "ms-settings:network-wifi",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "input": "网络",
+    "results": [
+      {
+        "command": "ms-settings:network-status",
+        "score": 1
+      },
+      {
+        "command": "ms-settings:network-ethernet",
+        "score": 0.8679999999999999
+      },
+      {
+        "command": "ms-settings:network-wifi",
+        "score": 0.8679999999999999
+      },
+      {
+        "command": "ms-settings:network-vpn",
+        "score": 0.856
+      }
+    ]
+  },
+  {
+    "input": "主题",
+    "results": [
+      {
+        "command": "ms-settings:themes",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "input": "update",
+    "results": [
+      {
+        "command": "ms-settings:windowsupdate",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "input": "clipboard",
+    "results": [
+      {
+        "command": "ms-settings:clipboard",
+        "score": 0.993
+      }
+    ]
+  },
+  {
+    "input": "yuyan",
+    "results": [
+      {
+        "command": "ms-settings:regionlanguage",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "input": "startup",
+    "results": [
+      {
+        "command": "ms-settings:startupapps",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "input": "xyz",
+    "results": []
+  },
+  {
+    "input": "WINDOWS",
+    "results": [
+      {
+        "command": "ms-settings:activation",
+        "score": 1
+      },
+      {
+        "command": "ms-settings:optionalfeatures",
+        "score": 1
+      },
+      {
+        "command": "ms-settings:themes",
+        "score": 1
+      },
+      {
+        "command": "ms-settings:windowsupdate",
+        "score": 1
+      },
+      {
+        "command": "ms-settings:",
+        "score": 1
+      },
+      {
+        "command": "ms-settings:signinoptions",
+        "score": 0.993
+      }
+    ]
+  },
+  {
+    "input": "developers",
+    "results": []
+  }
+]

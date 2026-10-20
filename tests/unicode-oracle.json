@@ -1,0 +1,8621 @@
+[
+  {
+    "input": "中",
+    "kind": "char",
+    "result": [
+      {
+        "title": "中 · U+4E2D",
+        "value": "CJK UNIFIED IDEOGRAPH-4E2D"
+      },
+      {
+        "title": "U+4E2D UTF-8",
+        "value": "E4 B8 AD"
+      },
+      {
+        "title": "U+4E2D UTF-16",
+        "value": "4E2D"
+      },
+      {
+        "title": "U+4E2D JavaScript 转义",
+        "value": "\\u4E2D"
+      },
+      {
+        "title": "U+4E2D HTML 实体",
+        "value": "&#x4E2D;"
+      }
+    ]
+  },
+  {
+    "input": "中",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "中 · U+4E2D",
+        "value": "CJK UNIFIED IDEOGRAPH-4E2D"
+      },
+      {
+        "title": "U+4E2D UTF-8",
+        "value": "E4 B8 AD"
+      },
+      {
+        "title": "U+4E2D UTF-16",
+        "value": "4E2D"
+      },
+      {
+        "title": "U+4E2D JavaScript 转义",
+        "value": "\\u4E2D"
+      },
+      {
+        "title": "U+4E2D HTML 实体",
+        "value": "&#x4E2D;"
+      }
+    ]
+  },
+  {
+    "input": "中",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "中 · U+4E2D",
+        "value": "CJK UNIFIED IDEOGRAPH-4E2D"
+      },
+      {
+        "title": "U+4E2D UTF-8",
+        "value": "E4 B8 AD"
+      },
+      {
+        "title": "U+4E2D UTF-16",
+        "value": "4E2D"
+      },
+      {
+        "title": "U+4E2D JavaScript 转义",
+        "value": "\\u4E2D"
+      },
+      {
+        "title": "U+4E2D HTML 实体",
+        "value": "&#x4E2D;"
+      }
+    ]
+  },
+  {
+    "input": "中",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "中 · U+4E2D",
+        "value": "CJK UNIFIED IDEOGRAPH-4E2D"
+      },
+      {
+        "title": "U+4E2D UTF-8",
+        "value": "E4 B8 AD"
+      },
+      {
+        "title": "U+4E2D UTF-16",
+        "value": "4E2D"
+      },
+      {
+        "title": "U+4E2D JavaScript 转义",
+        "value": "\\u4E2D"
+      },
+      {
+        "title": "U+4E2D HTML 实体",
+        "value": "&#x4E2D;"
+      }
+    ]
+  },
+  {
+    "input": "中",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "中 · U+4E2D",
+        "value": "CJK UNIFIED IDEOGRAPH-4E2D"
+      },
+      {
+        "title": "U+4E2D UTF-8",
+        "value": "E4 B8 AD"
+      },
+      {
+        "title": "U+4E2D UTF-16",
+        "value": "4E2D"
+      },
+      {
+        "title": "U+4E2D JavaScript 转义",
+        "value": "\\u4E2D"
+      },
+      {
+        "title": "U+4E2D HTML 实体",
+        "value": "&#x4E2D;"
+      }
+    ]
+  },
+  {
+    "input": "🙂",
+    "kind": "char",
+    "result": [
+      {
+        "title": "🙂 · U+1F642",
+        "value": "SLIGHTLY SMILING FACE"
+      },
+      {
+        "title": "U+1F642 UTF-8",
+        "value": "F0 9F 99 82"
+      },
+      {
+        "title": "U+1F642 UTF-16",
+        "value": "D83D DE42"
+      },
+      {
+        "title": "U+1F642 JavaScript 转义",
+        "value": "\\u{1F642}"
+      },
+      {
+        "title": "U+1F642 HTML 实体",
+        "value": "&#x1F642;"
+      }
+    ]
+  },
+  {
+    "input": "🙂",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "🙂 · U+1F642",
+        "value": "SLIGHTLY SMILING FACE"
+      },
+      {
+        "title": "U+1F642 UTF-8",
+        "value": "F0 9F 99 82"
+      },
+      {
+        "title": "U+1F642 UTF-16",
+        "value": "D83D DE42"
+      },
+      {
+        "title": "U+1F642 JavaScript 转义",
+        "value": "\\u{1F642}"
+      },
+      {
+        "title": "U+1F642 HTML 实体",
+        "value": "&#x1F642;"
+      }
+    ]
+  },
+  {
+    "input": "🙂",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "🙂 · U+1F642",
+        "value": "SLIGHTLY SMILING FACE"
+      },
+      {
+        "title": "U+1F642 UTF-8",
+        "value": "F0 9F 99 82"
+      },
+      {
+        "title": "U+1F642 UTF-16",
+        "value": "D83D DE42"
+      },
+      {
+        "title": "U+1F642 JavaScript 转义",
+        "value": "\\u{1F642}"
+      },
+      {
+        "title": "U+1F642 HTML 实体",
+        "value": "&#x1F642;"
+      }
+    ]
+  },
+  {
+    "input": "🙂",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "🙂 · U+1F642",
+        "value": "SLIGHTLY SMILING FACE"
+      },
+      {
+        "title": "U+1F642 UTF-8",
+        "value": "F0 9F 99 82"
+      },
+      {
+        "title": "U+1F642 UTF-16",
+        "value": "D83D DE42"
+      },
+      {
+        "title": "U+1F642 JavaScript 转义",
+        "value": "\\u{1F642}"
+      },
+      {
+        "title": "U+1F642 HTML 实体",
+        "value": "&#x1F642;"
+      }
+    ]
+  },
+  {
+    "input": "🙂",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "🙂 · U+1F642",
+        "value": "SLIGHTLY SMILING FACE"
+      },
+      {
+        "title": "U+1F642 UTF-8",
+        "value": "F0 9F 99 82"
+      },
+      {
+        "title": "U+1F642 UTF-16",
+        "value": "D83D DE42"
+      },
+      {
+        "title": "U+1F642 JavaScript 转义",
+        "value": "\\u{1F642}"
+      },
+      {
+        "title": "U+1F642 HTML 实体",
+        "value": "&#x1F642;"
+      }
+    ]
+  },
+  {
+    "input": "U+1F600",
+    "kind": "char",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "U+1F600",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "U+1F600",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "U+1F600",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "U+1F600",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "0xFF",
+    "kind": "char",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "ÿ"
+      },
+      {
+        "title": "ÿ · U+00FF",
+        "value": "LATIN SMALL LETTER Y WITH DIAERESIS"
+      },
+      {
+        "title": "U+00FF UTF-8",
+        "value": "C3 BF"
+      },
+      {
+        "title": "U+00FF UTF-16",
+        "value": "00FF"
+      },
+      {
+        "title": "U+00FF JavaScript 转义",
+        "value": "\\u00FF"
+      },
+      {
+        "title": "U+00FF HTML 实体",
+        "value": "&#xFF;"
+      }
+    ]
+  },
+  {
+    "input": "0xFF",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "ÿ"
+      },
+      {
+        "title": "ÿ · U+00FF",
+        "value": "LATIN SMALL LETTER Y WITH DIAERESIS"
+      },
+      {
+        "title": "U+00FF UTF-8",
+        "value": "C3 BF"
+      },
+      {
+        "title": "U+00FF UTF-16",
+        "value": "00FF"
+      },
+      {
+        "title": "U+00FF JavaScript 转义",
+        "value": "\\u00FF"
+      },
+      {
+        "title": "U+00FF HTML 实体",
+        "value": "&#xFF;"
+      }
+    ]
+  },
+  {
+    "input": "0xFF",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "ÿ"
+      },
+      {
+        "title": "ÿ · U+00FF",
+        "value": "LATIN SMALL LETTER Y WITH DIAERESIS"
+      },
+      {
+        "title": "U+00FF UTF-8",
+        "value": "C3 BF"
+      },
+      {
+        "title": "U+00FF UTF-16",
+        "value": "00FF"
+      },
+      {
+        "title": "U+00FF JavaScript 转义",
+        "value": "\\u00FF"
+      },
+      {
+        "title": "U+00FF HTML 实体",
+        "value": "&#xFF;"
+      }
+    ]
+  },
+  {
+    "input": "0xFF",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "ÿ"
+      },
+      {
+        "title": "ÿ · U+00FF",
+        "value": "LATIN SMALL LETTER Y WITH DIAERESIS"
+      },
+      {
+        "title": "U+00FF UTF-8",
+        "value": "C3 BF"
+      },
+      {
+        "title": "U+00FF UTF-16",
+        "value": "00FF"
+      },
+      {
+        "title": "U+00FF JavaScript 转义",
+        "value": "\\u00FF"
+      },
+      {
+        "title": "U+00FF HTML 实体",
+        "value": "&#xFF;"
+      }
+    ]
+  },
+  {
+    "input": "0xFF",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "ÿ"
+      },
+      {
+        "title": "ÿ · U+00FF",
+        "value": "LATIN SMALL LETTER Y WITH DIAERESIS"
+      },
+      {
+        "title": "U+00FF UTF-8",
+        "value": "C3 BF"
+      },
+      {
+        "title": "U+00FF UTF-16",
+        "value": "00FF"
+      },
+      {
+        "title": "U+00FF JavaScript 转义",
+        "value": "\\u00FF"
+      },
+      {
+        "title": "U+00FF HTML 实体",
+        "value": "&#xFF;"
+      }
+    ]
+  },
+  {
+    "input": "0041",
+    "kind": "char",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "A"
+      },
+      {
+        "title": "A · U+0041",
+        "value": "LATIN CAPITAL LETTER A"
+      },
+      {
+        "title": "U+0041 UTF-8",
+        "value": "41"
+      },
+      {
+        "title": "U+0041 UTF-16",
+        "value": "0041"
+      },
+      {
+        "title": "U+0041 JavaScript 转义",
+        "value": "\\u0041"
+      },
+      {
+        "title": "U+0041 HTML 实体",
+        "value": "&#x41;"
+      }
+    ]
+  },
+  {
+    "input": "0041",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "A"
+      },
+      {
+        "title": "A · U+0041",
+        "value": "LATIN CAPITAL LETTER A"
+      },
+      {
+        "title": "U+0041 UTF-8",
+        "value": "41"
+      },
+      {
+        "title": "U+0041 UTF-16",
+        "value": "0041"
+      },
+      {
+        "title": "U+0041 JavaScript 转义",
+        "value": "\\u0041"
+      },
+      {
+        "title": "U+0041 HTML 实体",
+        "value": "&#x41;"
+      }
+    ]
+  },
+  {
+    "input": "0041",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "A"
+      },
+      {
+        "title": "A · U+0041",
+        "value": "LATIN CAPITAL LETTER A"
+      },
+      {
+        "title": "U+0041 UTF-8",
+        "value": "41"
+      },
+      {
+        "title": "U+0041 UTF-16",
+        "value": "0041"
+      },
+      {
+        "title": "U+0041 JavaScript 转义",
+        "value": "\\u0041"
+      },
+      {
+        "title": "U+0041 HTML 实体",
+        "value": "&#x41;"
+      }
+    ]
+  },
+  {
+    "input": "0041",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "A"
+      },
+      {
+        "title": "A · U+0041",
+        "value": "LATIN CAPITAL LETTER A"
+      },
+      {
+        "title": "U+0041 UTF-8",
+        "value": "41"
+      },
+      {
+        "title": "U+0041 UTF-16",
+        "value": "0041"
+      },
+      {
+        "title": "U+0041 JavaScript 转义",
+        "value": "\\u0041"
+      },
+      {
+        "title": "U+0041 HTML 实体",
+        "value": "&#x41;"
+      }
+    ]
+  },
+  {
+    "input": "0041",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "A"
+      },
+      {
+        "title": "A · U+0041",
+        "value": "LATIN CAPITAL LETTER A"
+      },
+      {
+        "title": "U+0041 UTF-8",
+        "value": "41"
+      },
+      {
+        "title": "U+0041 UTF-16",
+        "value": "0041"
+      },
+      {
+        "title": "U+0041 JavaScript 转义",
+        "value": "\\u0041"
+      },
+      {
+        "title": "U+0041 HTML 实体",
+        "value": "&#x41;"
+      }
+    ]
+  },
+  {
+    "input": "U+41 U+42",
+    "kind": "char",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "AB"
+      },
+      {
+        "title": "A · U+0041",
+        "value": "LATIN CAPITAL LETTER A"
+      },
+      {
+        "title": "U+0041 UTF-8",
+        "value": "41"
+      },
+      {
+        "title": "U+0041 UTF-16",
+        "value": "0041"
+      },
+      {
+        "title": "U+0041 JavaScript 转义",
+        "value": "\\u0041"
+      },
+      {
+        "title": "U+0041 HTML 实体",
+        "value": "&#x41;"
+      },
+      {
+        "title": "B · U+0042",
+        "value": "LATIN CAPITAL LETTER B"
+      },
+      {
+        "title": "U+0042 UTF-8",
+        "value": "42"
+      },
+      {
+        "title": "U+0042 UTF-16",
+        "value": "0042"
+      },
+      {
+        "title": "U+0042 JavaScript 转义",
+        "value": "\\u0042"
+      },
+      {
+        "title": "U+0042 HTML 实体",
+        "value": "&#x42;"
+      }
+    ]
+  },
+  {
+    "input": "U+41 U+42",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "AB"
+      },
+      {
+        "title": "A · U+0041",
+        "value": "LATIN CAPITAL LETTER A"
+      },
+      {
+        "title": "U+0041 UTF-8",
+        "value": "41"
+      },
+      {
+        "title": "U+0041 UTF-16",
+        "value": "0041"
+      },
+      {
+        "title": "U+0041 JavaScript 转义",
+        "value": "\\u0041"
+      },
+      {
+        "title": "U+0041 HTML 实体",
+        "value": "&#x41;"
+      },
+      {
+        "title": "B · U+0042",
+        "value": "LATIN CAPITAL LETTER B"
+      },
+      {
+        "title": "U+0042 UTF-8",
+        "value": "42"
+      },
+      {
+        "title": "U+0042 UTF-16",
+        "value": "0042"
+      },
+      {
+        "title": "U+0042 JavaScript 转义",
+        "value": "\\u0042"
+      },
+      {
+        "title": "U+0042 HTML 实体",
+        "value": "&#x42;"
+      }
+    ]
+  },
+  {
+    "input": "U+41 U+42",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "AB"
+      },
+      {
+        "title": "A · U+0041",
+        "value": "LATIN CAPITAL LETTER A"
+      },
+      {
+        "title": "U+0041 UTF-8",
+        "value": "41"
+      },
+      {
+        "title": "U+0041 UTF-16",
+        "value": "0041"
+      },
+      {
+        "title": "U+0041 JavaScript 转义",
+        "value": "\\u0041"
+      },
+      {
+        "title": "U+0041 HTML 实体",
+        "value": "&#x41;"
+      },
+      {
+        "title": "B · U+0042",
+        "value": "LATIN CAPITAL LETTER B"
+      },
+      {
+        "title": "U+0042 UTF-8",
+        "value": "42"
+      },
+      {
+        "title": "U+0042 UTF-16",
+        "value": "0042"
+      },
+      {
+        "title": "U+0042 JavaScript 转义",
+        "value": "\\u0042"
+      },
+      {
+        "title": "U+0042 HTML 实体",
+        "value": "&#x42;"
+      }
+    ]
+  },
+  {
+    "input": "U+41 U+42",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "AB"
+      },
+      {
+        "title": "A · U+0041",
+        "value": "LATIN CAPITAL LETTER A"
+      },
+      {
+        "title": "U+0041 UTF-8",
+        "value": "41"
+      },
+      {
+        "title": "U+0041 UTF-16",
+        "value": "0041"
+      },
+      {
+        "title": "U+0041 JavaScript 转义",
+        "value": "\\u0041"
+      },
+      {
+        "title": "U+0041 HTML 实体",
+        "value": "&#x41;"
+      },
+      {
+        "title": "B · U+0042",
+        "value": "LATIN CAPITAL LETTER B"
+      },
+      {
+        "title": "U+0042 UTF-8",
+        "value": "42"
+      },
+      {
+        "title": "U+0042 UTF-16",
+        "value": "0042"
+      },
+      {
+        "title": "U+0042 JavaScript 转义",
+        "value": "\\u0042"
+      },
+      {
+        "title": "U+0042 HTML 实体",
+        "value": "&#x42;"
+      }
+    ]
+  },
+  {
+    "input": "U+41 U+42",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "AB"
+      },
+      {
+        "title": "A · U+0041",
+        "value": "LATIN CAPITAL LETTER A"
+      },
+      {
+        "title": "U+0041 UTF-8",
+        "value": "41"
+      },
+      {
+        "title": "U+0041 UTF-16",
+        "value": "0041"
+      },
+      {
+        "title": "U+0041 JavaScript 转义",
+        "value": "\\u0041"
+      },
+      {
+        "title": "U+0041 HTML 实体",
+        "value": "&#x41;"
+      },
+      {
+        "title": "B · U+0042",
+        "value": "LATIN CAPITAL LETTER B"
+      },
+      {
+        "title": "U+0042 UTF-8",
+        "value": "42"
+      },
+      {
+        "title": "U+0042 UTF-16",
+        "value": "0042"
+      },
+      {
+        "title": "U+0042 JavaScript 转义",
+        "value": "\\u0042"
+      },
+      {
+        "title": "U+0042 HTML 实体",
+        "value": "&#x42;"
+      }
+    ]
+  },
+  {
+    "input": "\\uD83D\\uDE00",
+    "kind": "char",
+    "result": [
+      {
+        "title": "\\ · U+005C",
+        "value": "REVERSE SOLIDUS"
+      },
+      {
+        "title": "U+005C UTF-8",
+        "value": "5C"
+      },
+      {
+        "title": "U+005C UTF-16",
+        "value": "005C"
+      },
+      {
+        "title": "U+005C JavaScript 转义",
+        "value": "\\u005C"
+      },
+      {
+        "title": "U+005C HTML 实体",
+        "value": "&#x5C;"
+      },
+      {
+        "title": "u · U+0075",
+        "value": "LATIN SMALL LETTER U"
+      },
+      {
+        "title": "U+0075 UTF-8",
+        "value": "75"
+      },
+      {
+        "title": "U+0075 UTF-16",
+        "value": "0075"
+      },
+      {
+        "title": "U+0075 JavaScript 转义",
+        "value": "\\u0075"
+      },
+      {
+        "title": "U+0075 HTML 实体",
+        "value": "&#x75;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "8 · U+0038",
+        "value": "DIGIT EIGHT"
+      },
+      {
+        "title": "U+0038 UTF-8",
+        "value": "38"
+      },
+      {
+        "title": "U+0038 UTF-16",
+        "value": "0038"
+      },
+      {
+        "title": "U+0038 JavaScript 转义",
+        "value": "\\u0038"
+      },
+      {
+        "title": "U+0038 HTML 实体",
+        "value": "&#x38;"
+      },
+      {
+        "title": "3 · U+0033",
+        "value": "DIGIT THREE"
+      },
+      {
+        "title": "U+0033 UTF-8",
+        "value": "33"
+      },
+      {
+        "title": "U+0033 UTF-16",
+        "value": "0033"
+      },
+      {
+        "title": "U+0033 JavaScript 转义",
+        "value": "\\u0033"
+      },
+      {
+        "title": "U+0033 HTML 实体",
+        "value": "&#x33;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "\\ · U+005C",
+        "value": "REVERSE SOLIDUS"
+      },
+      {
+        "title": "U+005C UTF-8",
+        "value": "5C"
+      },
+      {
+        "title": "U+005C UTF-16",
+        "value": "005C"
+      },
+      {
+        "title": "U+005C JavaScript 转义",
+        "value": "\\u005C"
+      },
+      {
+        "title": "U+005C HTML 实体",
+        "value": "&#x5C;"
+      },
+      {
+        "title": "u · U+0075",
+        "value": "LATIN SMALL LETTER U"
+      },
+      {
+        "title": "U+0075 UTF-8",
+        "value": "75"
+      },
+      {
+        "title": "U+0075 UTF-16",
+        "value": "0075"
+      },
+      {
+        "title": "U+0075 JavaScript 转义",
+        "value": "\\u0075"
+      },
+      {
+        "title": "U+0075 HTML 实体",
+        "value": "&#x75;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "E · U+0045",
+        "value": "LATIN CAPITAL LETTER E"
+      },
+      {
+        "title": "U+0045 UTF-8",
+        "value": "45"
+      },
+      {
+        "title": "U+0045 UTF-16",
+        "value": "0045"
+      },
+      {
+        "title": "U+0045 JavaScript 转义",
+        "value": "\\u0045"
+      },
+      {
+        "title": "U+0045 HTML 实体",
+        "value": "&#x45;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "\\uD83D\\uDE00",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "\\ · U+005C",
+        "value": "REVERSE SOLIDUS"
+      },
+      {
+        "title": "U+005C UTF-8",
+        "value": "5C"
+      },
+      {
+        "title": "U+005C UTF-16",
+        "value": "005C"
+      },
+      {
+        "title": "U+005C JavaScript 转义",
+        "value": "\\u005C"
+      },
+      {
+        "title": "U+005C HTML 实体",
+        "value": "&#x5C;"
+      },
+      {
+        "title": "u · U+0075",
+        "value": "LATIN SMALL LETTER U"
+      },
+      {
+        "title": "U+0075 UTF-8",
+        "value": "75"
+      },
+      {
+        "title": "U+0075 UTF-16",
+        "value": "0075"
+      },
+      {
+        "title": "U+0075 JavaScript 转义",
+        "value": "\\u0075"
+      },
+      {
+        "title": "U+0075 HTML 实体",
+        "value": "&#x75;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "8 · U+0038",
+        "value": "DIGIT EIGHT"
+      },
+      {
+        "title": "U+0038 UTF-8",
+        "value": "38"
+      },
+      {
+        "title": "U+0038 UTF-16",
+        "value": "0038"
+      },
+      {
+        "title": "U+0038 JavaScript 转义",
+        "value": "\\u0038"
+      },
+      {
+        "title": "U+0038 HTML 实体",
+        "value": "&#x38;"
+      },
+      {
+        "title": "3 · U+0033",
+        "value": "DIGIT THREE"
+      },
+      {
+        "title": "U+0033 UTF-8",
+        "value": "33"
+      },
+      {
+        "title": "U+0033 UTF-16",
+        "value": "0033"
+      },
+      {
+        "title": "U+0033 JavaScript 转义",
+        "value": "\\u0033"
+      },
+      {
+        "title": "U+0033 HTML 实体",
+        "value": "&#x33;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "\\ · U+005C",
+        "value": "REVERSE SOLIDUS"
+      },
+      {
+        "title": "U+005C UTF-8",
+        "value": "5C"
+      },
+      {
+        "title": "U+005C UTF-16",
+        "value": "005C"
+      },
+      {
+        "title": "U+005C JavaScript 转义",
+        "value": "\\u005C"
+      },
+      {
+        "title": "U+005C HTML 实体",
+        "value": "&#x5C;"
+      },
+      {
+        "title": "u · U+0075",
+        "value": "LATIN SMALL LETTER U"
+      },
+      {
+        "title": "U+0075 UTF-8",
+        "value": "75"
+      },
+      {
+        "title": "U+0075 UTF-16",
+        "value": "0075"
+      },
+      {
+        "title": "U+0075 JavaScript 转义",
+        "value": "\\u0075"
+      },
+      {
+        "title": "U+0075 HTML 实体",
+        "value": "&#x75;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "E · U+0045",
+        "value": "LATIN CAPITAL LETTER E"
+      },
+      {
+        "title": "U+0045 UTF-8",
+        "value": "45"
+      },
+      {
+        "title": "U+0045 UTF-16",
+        "value": "0045"
+      },
+      {
+        "title": "U+0045 JavaScript 转义",
+        "value": "\\u0045"
+      },
+      {
+        "title": "U+0045 HTML 实体",
+        "value": "&#x45;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "\\uD83D\\uDE00",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "\\ · U+005C",
+        "value": "REVERSE SOLIDUS"
+      },
+      {
+        "title": "U+005C UTF-8",
+        "value": "5C"
+      },
+      {
+        "title": "U+005C UTF-16",
+        "value": "005C"
+      },
+      {
+        "title": "U+005C JavaScript 转义",
+        "value": "\\u005C"
+      },
+      {
+        "title": "U+005C HTML 实体",
+        "value": "&#x5C;"
+      },
+      {
+        "title": "u · U+0075",
+        "value": "LATIN SMALL LETTER U"
+      },
+      {
+        "title": "U+0075 UTF-8",
+        "value": "75"
+      },
+      {
+        "title": "U+0075 UTF-16",
+        "value": "0075"
+      },
+      {
+        "title": "U+0075 JavaScript 转义",
+        "value": "\\u0075"
+      },
+      {
+        "title": "U+0075 HTML 实体",
+        "value": "&#x75;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "8 · U+0038",
+        "value": "DIGIT EIGHT"
+      },
+      {
+        "title": "U+0038 UTF-8",
+        "value": "38"
+      },
+      {
+        "title": "U+0038 UTF-16",
+        "value": "0038"
+      },
+      {
+        "title": "U+0038 JavaScript 转义",
+        "value": "\\u0038"
+      },
+      {
+        "title": "U+0038 HTML 实体",
+        "value": "&#x38;"
+      },
+      {
+        "title": "3 · U+0033",
+        "value": "DIGIT THREE"
+      },
+      {
+        "title": "U+0033 UTF-8",
+        "value": "33"
+      },
+      {
+        "title": "U+0033 UTF-16",
+        "value": "0033"
+      },
+      {
+        "title": "U+0033 JavaScript 转义",
+        "value": "\\u0033"
+      },
+      {
+        "title": "U+0033 HTML 实体",
+        "value": "&#x33;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "\\ · U+005C",
+        "value": "REVERSE SOLIDUS"
+      },
+      {
+        "title": "U+005C UTF-8",
+        "value": "5C"
+      },
+      {
+        "title": "U+005C UTF-16",
+        "value": "005C"
+      },
+      {
+        "title": "U+005C JavaScript 转义",
+        "value": "\\u005C"
+      },
+      {
+        "title": "U+005C HTML 实体",
+        "value": "&#x5C;"
+      },
+      {
+        "title": "u · U+0075",
+        "value": "LATIN SMALL LETTER U"
+      },
+      {
+        "title": "U+0075 UTF-8",
+        "value": "75"
+      },
+      {
+        "title": "U+0075 UTF-16",
+        "value": "0075"
+      },
+      {
+        "title": "U+0075 JavaScript 转义",
+        "value": "\\u0075"
+      },
+      {
+        "title": "U+0075 HTML 实体",
+        "value": "&#x75;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "E · U+0045",
+        "value": "LATIN CAPITAL LETTER E"
+      },
+      {
+        "title": "U+0045 UTF-8",
+        "value": "45"
+      },
+      {
+        "title": "U+0045 UTF-16",
+        "value": "0045"
+      },
+      {
+        "title": "U+0045 JavaScript 转义",
+        "value": "\\u0045"
+      },
+      {
+        "title": "U+0045 HTML 实体",
+        "value": "&#x45;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "\\uD83D\\uDE00",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "\\ · U+005C",
+        "value": "REVERSE SOLIDUS"
+      },
+      {
+        "title": "U+005C UTF-8",
+        "value": "5C"
+      },
+      {
+        "title": "U+005C UTF-16",
+        "value": "005C"
+      },
+      {
+        "title": "U+005C JavaScript 转义",
+        "value": "\\u005C"
+      },
+      {
+        "title": "U+005C HTML 实体",
+        "value": "&#x5C;"
+      },
+      {
+        "title": "u · U+0075",
+        "value": "LATIN SMALL LETTER U"
+      },
+      {
+        "title": "U+0075 UTF-8",
+        "value": "75"
+      },
+      {
+        "title": "U+0075 UTF-16",
+        "value": "0075"
+      },
+      {
+        "title": "U+0075 JavaScript 转义",
+        "value": "\\u0075"
+      },
+      {
+        "title": "U+0075 HTML 实体",
+        "value": "&#x75;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "8 · U+0038",
+        "value": "DIGIT EIGHT"
+      },
+      {
+        "title": "U+0038 UTF-8",
+        "value": "38"
+      },
+      {
+        "title": "U+0038 UTF-16",
+        "value": "0038"
+      },
+      {
+        "title": "U+0038 JavaScript 转义",
+        "value": "\\u0038"
+      },
+      {
+        "title": "U+0038 HTML 实体",
+        "value": "&#x38;"
+      },
+      {
+        "title": "3 · U+0033",
+        "value": "DIGIT THREE"
+      },
+      {
+        "title": "U+0033 UTF-8",
+        "value": "33"
+      },
+      {
+        "title": "U+0033 UTF-16",
+        "value": "0033"
+      },
+      {
+        "title": "U+0033 JavaScript 转义",
+        "value": "\\u0033"
+      },
+      {
+        "title": "U+0033 HTML 实体",
+        "value": "&#x33;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "\\ · U+005C",
+        "value": "REVERSE SOLIDUS"
+      },
+      {
+        "title": "U+005C UTF-8",
+        "value": "5C"
+      },
+      {
+        "title": "U+005C UTF-16",
+        "value": "005C"
+      },
+      {
+        "title": "U+005C JavaScript 转义",
+        "value": "\\u005C"
+      },
+      {
+        "title": "U+005C HTML 实体",
+        "value": "&#x5C;"
+      },
+      {
+        "title": "u · U+0075",
+        "value": "LATIN SMALL LETTER U"
+      },
+      {
+        "title": "U+0075 UTF-8",
+        "value": "75"
+      },
+      {
+        "title": "U+0075 UTF-16",
+        "value": "0075"
+      },
+      {
+        "title": "U+0075 JavaScript 转义",
+        "value": "\\u0075"
+      },
+      {
+        "title": "U+0075 HTML 实体",
+        "value": "&#x75;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "E · U+0045",
+        "value": "LATIN CAPITAL LETTER E"
+      },
+      {
+        "title": "U+0045 UTF-8",
+        "value": "45"
+      },
+      {
+        "title": "U+0045 UTF-16",
+        "value": "0045"
+      },
+      {
+        "title": "U+0045 JavaScript 转义",
+        "value": "\\u0045"
+      },
+      {
+        "title": "U+0045 HTML 实体",
+        "value": "&#x45;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "\\uD83D\\uDE00",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "\\ · U+005C",
+        "value": "REVERSE SOLIDUS"
+      },
+      {
+        "title": "U+005C UTF-8",
+        "value": "5C"
+      },
+      {
+        "title": "U+005C UTF-16",
+        "value": "005C"
+      },
+      {
+        "title": "U+005C JavaScript 转义",
+        "value": "\\u005C"
+      },
+      {
+        "title": "U+005C HTML 实体",
+        "value": "&#x5C;"
+      },
+      {
+        "title": "u · U+0075",
+        "value": "LATIN SMALL LETTER U"
+      },
+      {
+        "title": "U+0075 UTF-8",
+        "value": "75"
+      },
+      {
+        "title": "U+0075 UTF-16",
+        "value": "0075"
+      },
+      {
+        "title": "U+0075 JavaScript 转义",
+        "value": "\\u0075"
+      },
+      {
+        "title": "U+0075 HTML 实体",
+        "value": "&#x75;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "8 · U+0038",
+        "value": "DIGIT EIGHT"
+      },
+      {
+        "title": "U+0038 UTF-8",
+        "value": "38"
+      },
+      {
+        "title": "U+0038 UTF-16",
+        "value": "0038"
+      },
+      {
+        "title": "U+0038 JavaScript 转义",
+        "value": "\\u0038"
+      },
+      {
+        "title": "U+0038 HTML 实体",
+        "value": "&#x38;"
+      },
+      {
+        "title": "3 · U+0033",
+        "value": "DIGIT THREE"
+      },
+      {
+        "title": "U+0033 UTF-8",
+        "value": "33"
+      },
+      {
+        "title": "U+0033 UTF-16",
+        "value": "0033"
+      },
+      {
+        "title": "U+0033 JavaScript 转义",
+        "value": "\\u0033"
+      },
+      {
+        "title": "U+0033 HTML 实体",
+        "value": "&#x33;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "\\ · U+005C",
+        "value": "REVERSE SOLIDUS"
+      },
+      {
+        "title": "U+005C UTF-8",
+        "value": "5C"
+      },
+      {
+        "title": "U+005C UTF-16",
+        "value": "005C"
+      },
+      {
+        "title": "U+005C JavaScript 转义",
+        "value": "\\u005C"
+      },
+      {
+        "title": "U+005C HTML 实体",
+        "value": "&#x5C;"
+      },
+      {
+        "title": "u · U+0075",
+        "value": "LATIN SMALL LETTER U"
+      },
+      {
+        "title": "U+0075 UTF-8",
+        "value": "75"
+      },
+      {
+        "title": "U+0075 UTF-16",
+        "value": "0075"
+      },
+      {
+        "title": "U+0075 JavaScript 转义",
+        "value": "\\u0075"
+      },
+      {
+        "title": "U+0075 HTML 实体",
+        "value": "&#x75;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "E · U+0045",
+        "value": "LATIN CAPITAL LETTER E"
+      },
+      {
+        "title": "U+0045 UTF-8",
+        "value": "45"
+      },
+      {
+        "title": "U+0045 UTF-16",
+        "value": "0045"
+      },
+      {
+        "title": "U+0045 JavaScript 转义",
+        "value": "\\u0045"
+      },
+      {
+        "title": "U+0045 HTML 实体",
+        "value": "&#x45;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "\\u{1F600}",
+    "kind": "char",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "\\u{1F600}",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "\\u{1F600}",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "\\u{1F600}",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "\\u{1F600}",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "\\U0001F600",
+    "kind": "char",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "\\U0001F600",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "\\U0001F600",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "\\U0001F600",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "\\U0001F600",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "积分",
+    "kind": "char",
+    "result": [
+      {
+        "title": "∫ · U+222B",
+        "value": "∫"
+      },
+      {
+        "title": "∬ · U+222C",
+        "value": "∬"
+      },
+      {
+        "title": "∭ · U+222D",
+        "value": "∭"
+      },
+      {
+        "title": "∮ · U+222E",
+        "value": "∮"
+      },
+      {
+        "title": "∯ · U+222F",
+        "value": "∯"
+      },
+      {
+        "title": "∰ · U+2230",
+        "value": "∰"
+      },
+      {
+        "title": "∱ · U+2231",
+        "value": "∱"
+      },
+      {
+        "title": "∲ · U+2232",
+        "value": "∲"
+      },
+      {
+        "title": "∳ · U+2233",
+        "value": "∳"
+      },
+      {
+        "title": "⌠ · U+2320",
+        "value": "⌠"
+      },
+      {
+        "title": "⌡ · U+2321",
+        "value": "⌡"
+      },
+      {
+        "title": "⨋ · U+2A0B",
+        "value": "⨋"
+      },
+      {
+        "title": "⨍ · U+2A0D",
+        "value": "⨍"
+      },
+      {
+        "title": "⨌ · U+2A0C",
+        "value": "⨌"
+      },
+      {
+        "title": "⎮ · U+23AE",
+        "value": "⎮"
+      },
+      {
+        "title": "⨎ · U+2A0E",
+        "value": "⨎"
+      },
+      {
+        "title": "⨏ · U+2A0F",
+        "value": "⨏"
+      },
+      {
+        "title": "⨕ · U+2A15",
+        "value": "⨕"
+      },
+      {
+        "title": "⨖ · U+2A16",
+        "value": "⨖"
+      },
+      {
+        "title": "⨗ · U+2A17",
+        "value": "⨗"
+      },
+      {
+        "title": "⨘ · U+2A18",
+        "value": "⨘"
+      },
+      {
+        "title": "⨙ · U+2A19",
+        "value": "⨙"
+      },
+      {
+        "title": "⨚ · U+2A1A",
+        "value": "⨚"
+      },
+      {
+        "title": "⨛ · U+2A1B",
+        "value": "⨛"
+      }
+    ]
+  },
+  {
+    "input": "积分",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "∫ · U+222B",
+        "value": "∫"
+      },
+      {
+        "title": "∬ · U+222C",
+        "value": "∬"
+      },
+      {
+        "title": "∭ · U+222D",
+        "value": "∭"
+      },
+      {
+        "title": "∮ · U+222E",
+        "value": "∮"
+      },
+      {
+        "title": "∯ · U+222F",
+        "value": "∯"
+      },
+      {
+        "title": "∰ · U+2230",
+        "value": "∰"
+      },
+      {
+        "title": "∱ · U+2231",
+        "value": "∱"
+      },
+      {
+        "title": "∲ · U+2232",
+        "value": "∲"
+      },
+      {
+        "title": "∳ · U+2233",
+        "value": "∳"
+      },
+      {
+        "title": "⌠ · U+2320",
+        "value": "⌠"
+      },
+      {
+        "title": "⌡ · U+2321",
+        "value": "⌡"
+      },
+      {
+        "title": "⨋ · U+2A0B",
+        "value": "⨋"
+      },
+      {
+        "title": "⨍ · U+2A0D",
+        "value": "⨍"
+      },
+      {
+        "title": "⨌ · U+2A0C",
+        "value": "⨌"
+      },
+      {
+        "title": "⎮ · U+23AE",
+        "value": "⎮"
+      },
+      {
+        "title": "⨎ · U+2A0E",
+        "value": "⨎"
+      },
+      {
+        "title": "⨏ · U+2A0F",
+        "value": "⨏"
+      },
+      {
+        "title": "⨕ · U+2A15",
+        "value": "⨕"
+      },
+      {
+        "title": "⨖ · U+2A16",
+        "value": "⨖"
+      },
+      {
+        "title": "⨗ · U+2A17",
+        "value": "⨗"
+      },
+      {
+        "title": "⨘ · U+2A18",
+        "value": "⨘"
+      },
+      {
+        "title": "⨙ · U+2A19",
+        "value": "⨙"
+      },
+      {
+        "title": "⨚ · U+2A1A",
+        "value": "⨚"
+      },
+      {
+        "title": "⨛ · U+2A1B",
+        "value": "⨛"
+      }
+    ]
+  },
+  {
+    "input": "积分",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "积 · U+79EF",
+        "value": "CJK UNIFIED IDEOGRAPH-79EF"
+      },
+      {
+        "title": "U+79EF UTF-8",
+        "value": "E7 A7 AF"
+      },
+      {
+        "title": "U+79EF UTF-16",
+        "value": "79EF"
+      },
+      {
+        "title": "U+79EF JavaScript 转义",
+        "value": "\\u79EF"
+      },
+      {
+        "title": "U+79EF HTML 实体",
+        "value": "&#x79EF;"
+      },
+      {
+        "title": "分 · U+5206",
+        "value": "CJK UNIFIED IDEOGRAPH-5206"
+      },
+      {
+        "title": "U+5206 UTF-8",
+        "value": "E5 88 86"
+      },
+      {
+        "title": "U+5206 UTF-16",
+        "value": "5206"
+      },
+      {
+        "title": "U+5206 JavaScript 转义",
+        "value": "\\u5206"
+      },
+      {
+        "title": "U+5206 HTML 实体",
+        "value": "&#x5206;"
+      }
+    ]
+  },
+  {
+    "input": "积分",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "积 · U+79EF",
+        "value": "CJK UNIFIED IDEOGRAPH-79EF"
+      },
+      {
+        "title": "U+79EF UTF-8",
+        "value": "E7 A7 AF"
+      },
+      {
+        "title": "U+79EF UTF-16",
+        "value": "79EF"
+      },
+      {
+        "title": "U+79EF JavaScript 转义",
+        "value": "\\u79EF"
+      },
+      {
+        "title": "U+79EF HTML 实体",
+        "value": "&#x79EF;"
+      },
+      {
+        "title": "分 · U+5206",
+        "value": "CJK UNIFIED IDEOGRAPH-5206"
+      },
+      {
+        "title": "U+5206 UTF-8",
+        "value": "E5 88 86"
+      },
+      {
+        "title": "U+5206 UTF-16",
+        "value": "5206"
+      },
+      {
+        "title": "U+5206 JavaScript 转义",
+        "value": "\\u5206"
+      },
+      {
+        "title": "U+5206 HTML 实体",
+        "value": "&#x5206;"
+      }
+    ]
+  },
+  {
+    "input": "积分",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "积 · U+79EF",
+        "value": "CJK UNIFIED IDEOGRAPH-79EF"
+      },
+      {
+        "title": "U+79EF UTF-8",
+        "value": "E7 A7 AF"
+      },
+      {
+        "title": "U+79EF UTF-16",
+        "value": "79EF"
+      },
+      {
+        "title": "U+79EF JavaScript 转义",
+        "value": "\\u79EF"
+      },
+      {
+        "title": "U+79EF HTML 实体",
+        "value": "&#x79EF;"
+      },
+      {
+        "title": "分 · U+5206",
+        "value": "CJK UNIFIED IDEOGRAPH-5206"
+      },
+      {
+        "title": "U+5206 UTF-8",
+        "value": "E5 88 86"
+      },
+      {
+        "title": "U+5206 UTF-16",
+        "value": "5206"
+      },
+      {
+        "title": "U+5206 JavaScript 转义",
+        "value": "\\u5206"
+      },
+      {
+        "title": "U+5206 HTML 实体",
+        "value": "&#x5206;"
+      }
+    ]
+  },
+  {
+    "input": "求和",
+    "kind": "char",
+    "result": [
+      {
+        "title": "⅀ · U+2140",
+        "value": "⅀"
+      },
+      {
+        "title": "∑ · U+2211",
+        "value": "∑"
+      },
+      {
+        "title": "⎲ · U+23B2",
+        "value": "⎲"
+      },
+      {
+        "title": "⎳ · U+23B3",
+        "value": "⎳"
+      },
+      {
+        "title": "⨋ · U+2A0B",
+        "value": "⨋"
+      }
+    ]
+  },
+  {
+    "input": "求和",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "⅀ · U+2140",
+        "value": "⅀"
+      },
+      {
+        "title": "∑ · U+2211",
+        "value": "∑"
+      },
+      {
+        "title": "⎲ · U+23B2",
+        "value": "⎲"
+      },
+      {
+        "title": "⎳ · U+23B3",
+        "value": "⎳"
+      },
+      {
+        "title": "⨋ · U+2A0B",
+        "value": "⨋"
+      }
+    ]
+  },
+  {
+    "input": "求和",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "求 · U+6C42",
+        "value": "CJK UNIFIED IDEOGRAPH-6C42"
+      },
+      {
+        "title": "U+6C42 UTF-8",
+        "value": "E6 B1 82"
+      },
+      {
+        "title": "U+6C42 UTF-16",
+        "value": "6C42"
+      },
+      {
+        "title": "U+6C42 JavaScript 转义",
+        "value": "\\u6C42"
+      },
+      {
+        "title": "U+6C42 HTML 实体",
+        "value": "&#x6C42;"
+      },
+      {
+        "title": "和 · U+548C",
+        "value": "CJK UNIFIED IDEOGRAPH-548C"
+      },
+      {
+        "title": "U+548C UTF-8",
+        "value": "E5 92 8C"
+      },
+      {
+        "title": "U+548C UTF-16",
+        "value": "548C"
+      },
+      {
+        "title": "U+548C JavaScript 转义",
+        "value": "\\u548C"
+      },
+      {
+        "title": "U+548C HTML 实体",
+        "value": "&#x548C;"
+      }
+    ]
+  },
+  {
+    "input": "求和",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "求 · U+6C42",
+        "value": "CJK UNIFIED IDEOGRAPH-6C42"
+      },
+      {
+        "title": "U+6C42 UTF-8",
+        "value": "E6 B1 82"
+      },
+      {
+        "title": "U+6C42 UTF-16",
+        "value": "6C42"
+      },
+      {
+        "title": "U+6C42 JavaScript 转义",
+        "value": "\\u6C42"
+      },
+      {
+        "title": "U+6C42 HTML 实体",
+        "value": "&#x6C42;"
+      },
+      {
+        "title": "和 · U+548C",
+        "value": "CJK UNIFIED IDEOGRAPH-548C"
+      },
+      {
+        "title": "U+548C UTF-8",
+        "value": "E5 92 8C"
+      },
+      {
+        "title": "U+548C UTF-16",
+        "value": "548C"
+      },
+      {
+        "title": "U+548C JavaScript 转义",
+        "value": "\\u548C"
+      },
+      {
+        "title": "U+548C HTML 实体",
+        "value": "&#x548C;"
+      }
+    ]
+  },
+  {
+    "input": "求和",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "求 · U+6C42",
+        "value": "CJK UNIFIED IDEOGRAPH-6C42"
+      },
+      {
+        "title": "U+6C42 UTF-8",
+        "value": "E6 B1 82"
+      },
+      {
+        "title": "U+6C42 UTF-16",
+        "value": "6C42"
+      },
+      {
+        "title": "U+6C42 JavaScript 转义",
+        "value": "\\u6C42"
+      },
+      {
+        "title": "U+6C42 HTML 实体",
+        "value": "&#x6C42;"
+      },
+      {
+        "title": "和 · U+548C",
+        "value": "CJK UNIFIED IDEOGRAPH-548C"
+      },
+      {
+        "title": "U+548C UTF-8",
+        "value": "E5 92 8C"
+      },
+      {
+        "title": "U+548C UTF-16",
+        "value": "548C"
+      },
+      {
+        "title": "U+548C JavaScript 转义",
+        "value": "\\u548C"
+      },
+      {
+        "title": "U+548C HTML 实体",
+        "value": "&#x548C;"
+      }
+    ]
+  },
+  {
+    "input": "阿尔法",
+    "kind": "char",
+    "result": [
+      {
+        "title": "⍺ · U+237A",
+        "value": "⍺"
+      },
+      {
+        "title": "ɑ · U+0251",
+        "value": "ɑ"
+      },
+      {
+        "title": "ᵅ · U+1D45",
+        "value": "ᵅ"
+      },
+      {
+        "title": "ᷧ · U+1DE7",
+        "value": "ᷧ"
+      },
+      {
+        "title": "Ɑ · U+2C6D",
+        "value": "Ɑ"
+      },
+      {
+        "title": "ꬰ · U+AB30",
+        "value": "ꬰ"
+      },
+      {
+        "title": "ɒ · U+0252",
+        "value": "ɒ"
+      },
+      {
+        "title": "ᶛ · U+1D9B",
+        "value": "ᶛ"
+      },
+      {
+        "title": "Ɒ · U+2C70",
+        "value": "Ɒ"
+      },
+      {
+        "title": "ꭤ · U+AB64",
+        "value": "ꭤ"
+      },
+      {
+        "title": "Α · U+0391",
+        "value": "Α"
+      },
+      {
+        "title": "α · U+03B1",
+        "value": "α"
+      },
+      {
+        "title": "𝚨 · U+1D6A8",
+        "value": "𝚨"
+      },
+      {
+        "title": "𝛂 · U+1D6C2",
+        "value": "𝛂"
+      },
+      {
+        "title": "𝛢 · U+1D6E2",
+        "value": "𝛢"
+      },
+      {
+        "title": "𝛼 · U+1D6FC",
+        "value": "𝛼"
+      },
+      {
+        "title": "𝜜 · U+1D71C",
+        "value": "𝜜"
+      },
+      {
+        "title": "𝜶 · U+1D736",
+        "value": "𝜶"
+      },
+      {
+        "title": "𝝖 · U+1D756",
+        "value": "𝝖"
+      },
+      {
+        "title": "𝝰 · U+1D770",
+        "value": "𝝰"
+      },
+      {
+        "title": "𝞐 · U+1D790",
+        "value": "𝞐"
+      },
+      {
+        "title": "𝞪 · U+1D7AA",
+        "value": "𝞪"
+      },
+      {
+        "title": "⍶ · U+2376",
+        "value": "⍶"
+      },
+      {
+        "title": "ᶐ · U+1D90",
+        "value": "ᶐ"
+      }
+    ]
+  },
+  {
+    "input": "阿尔法",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "𝚨 · U+1D6A8",
+        "value": "𝚨"
+      },
+      {
+        "title": "𝛂 · U+1D6C2",
+        "value": "𝛂"
+      },
+      {
+        "title": "𝛢 · U+1D6E2",
+        "value": "𝛢"
+      },
+      {
+        "title": "𝛼 · U+1D6FC",
+        "value": "𝛼"
+      },
+      {
+        "title": "𝜜 · U+1D71C",
+        "value": "𝜜"
+      },
+      {
+        "title": "𝜶 · U+1D736",
+        "value": "𝜶"
+      },
+      {
+        "title": "𝝖 · U+1D756",
+        "value": "𝝖"
+      },
+      {
+        "title": "𝝰 · U+1D770",
+        "value": "𝝰"
+      },
+      {
+        "title": "𝞐 · U+1D790",
+        "value": "𝞐"
+      },
+      {
+        "title": "𝞪 · U+1D7AA",
+        "value": "𝞪"
+      }
+    ]
+  },
+  {
+    "input": "阿尔法",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "Α · U+0391",
+        "value": "Α"
+      },
+      {
+        "title": "α · U+03B1",
+        "value": "α"
+      },
+      {
+        "title": "𝚨 · U+1D6A8",
+        "value": "𝚨"
+      },
+      {
+        "title": "𝛂 · U+1D6C2",
+        "value": "𝛂"
+      },
+      {
+        "title": "𝛢 · U+1D6E2",
+        "value": "𝛢"
+      },
+      {
+        "title": "𝛼 · U+1D6FC",
+        "value": "𝛼"
+      },
+      {
+        "title": "𝜜 · U+1D71C",
+        "value": "𝜜"
+      },
+      {
+        "title": "𝜶 · U+1D736",
+        "value": "𝜶"
+      },
+      {
+        "title": "𝝖 · U+1D756",
+        "value": "𝝖"
+      },
+      {
+        "title": "𝝰 · U+1D770",
+        "value": "𝝰"
+      },
+      {
+        "title": "𝞐 · U+1D790",
+        "value": "𝞐"
+      },
+      {
+        "title": "𝞪 · U+1D7AA",
+        "value": "𝞪"
+      },
+      {
+        "title": "Ά · U+0386",
+        "value": "Ά"
+      },
+      {
+        "title": "ά · U+03AC",
+        "value": "ά"
+      },
+      {
+        "title": "ἀ · U+1F00",
+        "value": "ἀ"
+      },
+      {
+        "title": "ἁ · U+1F01",
+        "value": "ἁ"
+      },
+      {
+        "title": "ἂ · U+1F02",
+        "value": "ἂ"
+      },
+      {
+        "title": "ἃ · U+1F03",
+        "value": "ἃ"
+      },
+      {
+        "title": "ἄ · U+1F04",
+        "value": "ἄ"
+      },
+      {
+        "title": "ἅ · U+1F05",
+        "value": "ἅ"
+      },
+      {
+        "title": "ἆ · U+1F06",
+        "value": "ἆ"
+      },
+      {
+        "title": "ἇ · U+1F07",
+        "value": "ἇ"
+      },
+      {
+        "title": "Ἀ · U+1F08",
+        "value": "Ἀ"
+      },
+      {
+        "title": "Ἁ · U+1F09",
+        "value": "Ἁ"
+      }
+    ]
+  },
+  {
+    "input": "阿尔法",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "阿 · U+963F",
+        "value": "CJK UNIFIED IDEOGRAPH-963F"
+      },
+      {
+        "title": "U+963F UTF-8",
+        "value": "E9 98 BF"
+      },
+      {
+        "title": "U+963F UTF-16",
+        "value": "963F"
+      },
+      {
+        "title": "U+963F JavaScript 转义",
+        "value": "\\u963F"
+      },
+      {
+        "title": "U+963F HTML 实体",
+        "value": "&#x963F;"
+      },
+      {
+        "title": "尔 · U+5C14",
+        "value": "CJK UNIFIED IDEOGRAPH-5C14"
+      },
+      {
+        "title": "U+5C14 UTF-8",
+        "value": "E5 B0 94"
+      },
+      {
+        "title": "U+5C14 UTF-16",
+        "value": "5C14"
+      },
+      {
+        "title": "U+5C14 JavaScript 转义",
+        "value": "\\u5C14"
+      },
+      {
+        "title": "U+5C14 HTML 实体",
+        "value": "&#x5C14;"
+      },
+      {
+        "title": "法 · U+6CD5",
+        "value": "CJK UNIFIED IDEOGRAPH-6CD5"
+      },
+      {
+        "title": "U+6CD5 UTF-8",
+        "value": "E6 B3 95"
+      },
+      {
+        "title": "U+6CD5 UTF-16",
+        "value": "6CD5"
+      },
+      {
+        "title": "U+6CD5 JavaScript 转义",
+        "value": "\\u6CD5"
+      },
+      {
+        "title": "U+6CD5 HTML 实体",
+        "value": "&#x6CD5;"
+      }
+    ]
+  },
+  {
+    "input": "阿尔法",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "阿 · U+963F",
+        "value": "CJK UNIFIED IDEOGRAPH-963F"
+      },
+      {
+        "title": "U+963F UTF-8",
+        "value": "E9 98 BF"
+      },
+      {
+        "title": "U+963F UTF-16",
+        "value": "963F"
+      },
+      {
+        "title": "U+963F JavaScript 转义",
+        "value": "\\u963F"
+      },
+      {
+        "title": "U+963F HTML 实体",
+        "value": "&#x963F;"
+      },
+      {
+        "title": "尔 · U+5C14",
+        "value": "CJK UNIFIED IDEOGRAPH-5C14"
+      },
+      {
+        "title": "U+5C14 UTF-8",
+        "value": "E5 B0 94"
+      },
+      {
+        "title": "U+5C14 UTF-16",
+        "value": "5C14"
+      },
+      {
+        "title": "U+5C14 JavaScript 转义",
+        "value": "\\u5C14"
+      },
+      {
+        "title": "U+5C14 HTML 实体",
+        "value": "&#x5C14;"
+      },
+      {
+        "title": "法 · U+6CD5",
+        "value": "CJK UNIFIED IDEOGRAPH-6CD5"
+      },
+      {
+        "title": "U+6CD5 UTF-8",
+        "value": "E6 B3 95"
+      },
+      {
+        "title": "U+6CD5 UTF-16",
+        "value": "6CD5"
+      },
+      {
+        "title": "U+6CD5 JavaScript 转义",
+        "value": "\\u6CD5"
+      },
+      {
+        "title": "U+6CD5 HTML 实体",
+        "value": "&#x6CD5;"
+      }
+    ]
+  },
+  {
+    "input": "爱心",
+    "kind": "char",
+    "result": [
+      {
+        "title": "❤ · U+2764",
+        "value": "❤"
+      },
+      {
+        "title": "❦ · U+2766",
+        "value": "❦"
+      },
+      {
+        "title": "💑 · U+1F491",
+        "value": "💑"
+      },
+      {
+        "title": "💓 · U+1F493",
+        "value": "💓"
+      },
+      {
+        "title": "💔 · U+1F494",
+        "value": "💔"
+      },
+      {
+        "title": "💖 · U+1F496",
+        "value": "💖"
+      },
+      {
+        "title": "💗 · U+1F497",
+        "value": "💗"
+      },
+      {
+        "title": "💙 · U+1F499",
+        "value": "💙"
+      },
+      {
+        "title": "💚 · U+1F49A",
+        "value": "💚"
+      },
+      {
+        "title": "💛 · U+1F49B",
+        "value": "💛"
+      },
+      {
+        "title": "💜 · U+1F49C",
+        "value": "💜"
+      },
+      {
+        "title": "🖤 · U+1F5A4",
+        "value": "🖤"
+      },
+      {
+        "title": "🤍 · U+1F90D",
+        "value": "🤍"
+      },
+      {
+        "title": "🤎 · U+1F90E",
+        "value": "🤎"
+      },
+      {
+        "title": "🧡 · U+1F9E1",
+        "value": "🧡"
+      },
+      {
+        "title": "🩵 · U+1FA75",
+        "value": "🩵"
+      },
+      {
+        "title": "🩶 · U+1FA76",
+        "value": "🩶"
+      },
+      {
+        "title": "🩷 · U+1FA77",
+        "value": "🩷"
+      },
+      {
+        "title": "🫀 · U+1FAC0",
+        "value": "🫀"
+      },
+      {
+        "title": "⼼ · U+2F3C",
+        "value": "⼼"
+      },
+      {
+        "title": "☙ · U+2619",
+        "value": "☙"
+      },
+      {
+        "title": "♡ · U+2661",
+        "value": "♡"
+      },
+      {
+        "title": "♥ · U+2665",
+        "value": "♥"
+      },
+      {
+        "title": "❣ · U+2763",
+        "value": "❣"
+      }
+    ]
+  },
+  {
+    "input": "爱心",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "💘 · U+1F498",
+        "value": "💘"
+      }
+    ]
+  },
+  {
+    "input": "爱心",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "爱 · U+7231",
+        "value": "CJK UNIFIED IDEOGRAPH-7231"
+      },
+      {
+        "title": "U+7231 UTF-8",
+        "value": "E7 88 B1"
+      },
+      {
+        "title": "U+7231 UTF-16",
+        "value": "7231"
+      },
+      {
+        "title": "U+7231 JavaScript 转义",
+        "value": "\\u7231"
+      },
+      {
+        "title": "U+7231 HTML 实体",
+        "value": "&#x7231;"
+      },
+      {
+        "title": "心 · U+5FC3",
+        "value": "CJK UNIFIED IDEOGRAPH-5FC3"
+      },
+      {
+        "title": "U+5FC3 UTF-8",
+        "value": "E5 BF 83"
+      },
+      {
+        "title": "U+5FC3 UTF-16",
+        "value": "5FC3"
+      },
+      {
+        "title": "U+5FC3 JavaScript 转义",
+        "value": "\\u5FC3"
+      },
+      {
+        "title": "U+5FC3 HTML 实体",
+        "value": "&#x5FC3;"
+      }
+    ]
+  },
+  {
+    "input": "爱心",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "爱 · U+7231",
+        "value": "CJK UNIFIED IDEOGRAPH-7231"
+      },
+      {
+        "title": "U+7231 UTF-8",
+        "value": "E7 88 B1"
+      },
+      {
+        "title": "U+7231 UTF-16",
+        "value": "7231"
+      },
+      {
+        "title": "U+7231 JavaScript 转义",
+        "value": "\\u7231"
+      },
+      {
+        "title": "U+7231 HTML 实体",
+        "value": "&#x7231;"
+      },
+      {
+        "title": "心 · U+5FC3",
+        "value": "CJK UNIFIED IDEOGRAPH-5FC3"
+      },
+      {
+        "title": "U+5FC3 UTF-8",
+        "value": "E5 BF 83"
+      },
+      {
+        "title": "U+5FC3 UTF-16",
+        "value": "5FC3"
+      },
+      {
+        "title": "U+5FC3 JavaScript 转义",
+        "value": "\\u5FC3"
+      },
+      {
+        "title": "U+5FC3 HTML 实体",
+        "value": "&#x5FC3;"
+      }
+    ]
+  },
+  {
+    "input": "爱心",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "❤ · U+2764",
+        "value": "❤"
+      },
+      {
+        "title": "❦ · U+2766",
+        "value": "❦"
+      },
+      {
+        "title": "💑 · U+1F491",
+        "value": "💑"
+      },
+      {
+        "title": "💓 · U+1F493",
+        "value": "💓"
+      },
+      {
+        "title": "💔 · U+1F494",
+        "value": "💔"
+      },
+      {
+        "title": "💖 · U+1F496",
+        "value": "💖"
+      },
+      {
+        "title": "💗 · U+1F497",
+        "value": "💗"
+      },
+      {
+        "title": "💙 · U+1F499",
+        "value": "💙"
+      },
+      {
+        "title": "💚 · U+1F49A",
+        "value": "💚"
+      },
+      {
+        "title": "💛 · U+1F49B",
+        "value": "💛"
+      },
+      {
+        "title": "💜 · U+1F49C",
+        "value": "💜"
+      },
+      {
+        "title": "🖤 · U+1F5A4",
+        "value": "🖤"
+      },
+      {
+        "title": "🤍 · U+1F90D",
+        "value": "🤍"
+      },
+      {
+        "title": "🤎 · U+1F90E",
+        "value": "🤎"
+      },
+      {
+        "title": "🧡 · U+1F9E1",
+        "value": "🧡"
+      },
+      {
+        "title": "🩵 · U+1FA75",
+        "value": "🩵"
+      },
+      {
+        "title": "🩶 · U+1FA76",
+        "value": "🩶"
+      },
+      {
+        "title": "🩷 · U+1FA77",
+        "value": "🩷"
+      },
+      {
+        "title": "🫀 · U+1FAC0",
+        "value": "🫀"
+      },
+      {
+        "title": "☙ · U+2619",
+        "value": "☙"
+      },
+      {
+        "title": "♡ · U+2661",
+        "value": "♡"
+      },
+      {
+        "title": "♥ · U+2665",
+        "value": "♥"
+      },
+      {
+        "title": "❣ · U+2763",
+        "value": "❣"
+      },
+      {
+        "title": "❥ · U+2765",
+        "value": "❥"
+      }
+    ]
+  },
+  {
+    "input": "alpha",
+    "kind": "char",
+    "result": [
+      {
+        "title": "⍺ · U+237A",
+        "value": "⍺"
+      },
+      {
+        "title": "ɑ · U+0251",
+        "value": "ɑ"
+      },
+      {
+        "title": "ᵅ · U+1D45",
+        "value": "ᵅ"
+      },
+      {
+        "title": "ᷧ · U+1DE7",
+        "value": "ᷧ"
+      },
+      {
+        "title": "Ɑ · U+2C6D",
+        "value": "Ɑ"
+      },
+      {
+        "title": "ꬰ · U+AB30",
+        "value": "ꬰ"
+      },
+      {
+        "title": "ɒ · U+0252",
+        "value": "ɒ"
+      },
+      {
+        "title": "ᶛ · U+1D9B",
+        "value": "ᶛ"
+      },
+      {
+        "title": "Ɒ · U+2C70",
+        "value": "Ɒ"
+      },
+      {
+        "title": "ꭤ · U+AB64",
+        "value": "ꭤ"
+      },
+      {
+        "title": "Α · U+0391",
+        "value": "Α"
+      },
+      {
+        "title": "α · U+03B1",
+        "value": "α"
+      },
+      {
+        "title": "𝚨 · U+1D6A8",
+        "value": "𝚨"
+      },
+      {
+        "title": "𝛂 · U+1D6C2",
+        "value": "𝛂"
+      },
+      {
+        "title": "𝛢 · U+1D6E2",
+        "value": "𝛢"
+      },
+      {
+        "title": "𝛼 · U+1D6FC",
+        "value": "𝛼"
+      },
+      {
+        "title": "𝜜 · U+1D71C",
+        "value": "𝜜"
+      },
+      {
+        "title": "𝜶 · U+1D736",
+        "value": "𝜶"
+      },
+      {
+        "title": "𝝖 · U+1D756",
+        "value": "𝝖"
+      },
+      {
+        "title": "𝝰 · U+1D770",
+        "value": "𝝰"
+      },
+      {
+        "title": "𝞐 · U+1D790",
+        "value": "𝞐"
+      },
+      {
+        "title": "𝞪 · U+1D7AA",
+        "value": "𝞪"
+      },
+      {
+        "title": "⍶ · U+2376",
+        "value": "⍶"
+      },
+      {
+        "title": "ᶐ · U+1D90",
+        "value": "ᶐ"
+      }
+    ]
+  },
+  {
+    "input": "alpha",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "𝚨 · U+1D6A8",
+        "value": "𝚨"
+      },
+      {
+        "title": "𝛂 · U+1D6C2",
+        "value": "𝛂"
+      },
+      {
+        "title": "𝛢 · U+1D6E2",
+        "value": "𝛢"
+      },
+      {
+        "title": "𝛼 · U+1D6FC",
+        "value": "𝛼"
+      },
+      {
+        "title": "𝜜 · U+1D71C",
+        "value": "𝜜"
+      },
+      {
+        "title": "𝜶 · U+1D736",
+        "value": "𝜶"
+      },
+      {
+        "title": "𝝖 · U+1D756",
+        "value": "𝝖"
+      },
+      {
+        "title": "𝝰 · U+1D770",
+        "value": "𝝰"
+      },
+      {
+        "title": "𝞐 · U+1D790",
+        "value": "𝞐"
+      },
+      {
+        "title": "𝞪 · U+1D7AA",
+        "value": "𝞪"
+      }
+    ]
+  },
+  {
+    "input": "alpha",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "Α · U+0391",
+        "value": "Α"
+      },
+      {
+        "title": "α · U+03B1",
+        "value": "α"
+      },
+      {
+        "title": "𝚨 · U+1D6A8",
+        "value": "𝚨"
+      },
+      {
+        "title": "𝛂 · U+1D6C2",
+        "value": "𝛂"
+      },
+      {
+        "title": "𝛢 · U+1D6E2",
+        "value": "𝛢"
+      },
+      {
+        "title": "𝛼 · U+1D6FC",
+        "value": "𝛼"
+      },
+      {
+        "title": "𝜜 · U+1D71C",
+        "value": "𝜜"
+      },
+      {
+        "title": "𝜶 · U+1D736",
+        "value": "𝜶"
+      },
+      {
+        "title": "𝝖 · U+1D756",
+        "value": "𝝖"
+      },
+      {
+        "title": "𝝰 · U+1D770",
+        "value": "𝝰"
+      },
+      {
+        "title": "𝞐 · U+1D790",
+        "value": "𝞐"
+      },
+      {
+        "title": "𝞪 · U+1D7AA",
+        "value": "𝞪"
+      },
+      {
+        "title": "Ά · U+0386",
+        "value": "Ά"
+      },
+      {
+        "title": "ά · U+03AC",
+        "value": "ά"
+      },
+      {
+        "title": "ἀ · U+1F00",
+        "value": "ἀ"
+      },
+      {
+        "title": "ἁ · U+1F01",
+        "value": "ἁ"
+      },
+      {
+        "title": "ἂ · U+1F02",
+        "value": "ἂ"
+      },
+      {
+        "title": "ἃ · U+1F03",
+        "value": "ἃ"
+      },
+      {
+        "title": "ἄ · U+1F04",
+        "value": "ἄ"
+      },
+      {
+        "title": "ἅ · U+1F05",
+        "value": "ἅ"
+      },
+      {
+        "title": "ἆ · U+1F06",
+        "value": "ἆ"
+      },
+      {
+        "title": "ἇ · U+1F07",
+        "value": "ἇ"
+      },
+      {
+        "title": "Ἀ · U+1F08",
+        "value": "Ἀ"
+      },
+      {
+        "title": "Ἁ · U+1F09",
+        "value": "Ἁ"
+      }
+    ]
+  },
+  {
+    "input": "alpha",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "a · U+0061",
+        "value": "LATIN SMALL LETTER A"
+      },
+      {
+        "title": "U+0061 UTF-8",
+        "value": "61"
+      },
+      {
+        "title": "U+0061 UTF-16",
+        "value": "0061"
+      },
+      {
+        "title": "U+0061 JavaScript 转义",
+        "value": "\\u0061"
+      },
+      {
+        "title": "U+0061 HTML 实体",
+        "value": "&#x61;"
+      },
+      {
+        "title": "l · U+006C",
+        "value": "LATIN SMALL LETTER L"
+      },
+      {
+        "title": "U+006C UTF-8",
+        "value": "6C"
+      },
+      {
+        "title": "U+006C UTF-16",
+        "value": "006C"
+      },
+      {
+        "title": "U+006C JavaScript 转义",
+        "value": "\\u006C"
+      },
+      {
+        "title": "U+006C HTML 实体",
+        "value": "&#x6C;"
+      },
+      {
+        "title": "p · U+0070",
+        "value": "LATIN SMALL LETTER P"
+      },
+      {
+        "title": "U+0070 UTF-8",
+        "value": "70"
+      },
+      {
+        "title": "U+0070 UTF-16",
+        "value": "0070"
+      },
+      {
+        "title": "U+0070 JavaScript 转义",
+        "value": "\\u0070"
+      },
+      {
+        "title": "U+0070 HTML 实体",
+        "value": "&#x70;"
+      },
+      {
+        "title": "h · U+0068",
+        "value": "LATIN SMALL LETTER H"
+      },
+      {
+        "title": "U+0068 UTF-8",
+        "value": "68"
+      },
+      {
+        "title": "U+0068 UTF-16",
+        "value": "0068"
+      },
+      {
+        "title": "U+0068 JavaScript 转义",
+        "value": "\\u0068"
+      },
+      {
+        "title": "U+0068 HTML 实体",
+        "value": "&#x68;"
+      },
+      {
+        "title": "a · U+0061",
+        "value": "LATIN SMALL LETTER A"
+      },
+      {
+        "title": "U+0061 UTF-8",
+        "value": "61"
+      },
+      {
+        "title": "U+0061 UTF-16",
+        "value": "0061"
+      },
+      {
+        "title": "U+0061 JavaScript 转义",
+        "value": "\\u0061"
+      },
+      {
+        "title": "U+0061 HTML 实体",
+        "value": "&#x61;"
+      }
+    ]
+  },
+  {
+    "input": "alpha",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "a · U+0061",
+        "value": "LATIN SMALL LETTER A"
+      },
+      {
+        "title": "U+0061 UTF-8",
+        "value": "61"
+      },
+      {
+        "title": "U+0061 UTF-16",
+        "value": "0061"
+      },
+      {
+        "title": "U+0061 JavaScript 转义",
+        "value": "\\u0061"
+      },
+      {
+        "title": "U+0061 HTML 实体",
+        "value": "&#x61;"
+      },
+      {
+        "title": "l · U+006C",
+        "value": "LATIN SMALL LETTER L"
+      },
+      {
+        "title": "U+006C UTF-8",
+        "value": "6C"
+      },
+      {
+        "title": "U+006C UTF-16",
+        "value": "006C"
+      },
+      {
+        "title": "U+006C JavaScript 转义",
+        "value": "\\u006C"
+      },
+      {
+        "title": "U+006C HTML 实体",
+        "value": "&#x6C;"
+      },
+      {
+        "title": "p · U+0070",
+        "value": "LATIN SMALL LETTER P"
+      },
+      {
+        "title": "U+0070 UTF-8",
+        "value": "70"
+      },
+      {
+        "title": "U+0070 UTF-16",
+        "value": "0070"
+      },
+      {
+        "title": "U+0070 JavaScript 转义",
+        "value": "\\u0070"
+      },
+      {
+        "title": "U+0070 HTML 实体",
+        "value": "&#x70;"
+      },
+      {
+        "title": "h · U+0068",
+        "value": "LATIN SMALL LETTER H"
+      },
+      {
+        "title": "U+0068 UTF-8",
+        "value": "68"
+      },
+      {
+        "title": "U+0068 UTF-16",
+        "value": "0068"
+      },
+      {
+        "title": "U+0068 JavaScript 转义",
+        "value": "\\u0068"
+      },
+      {
+        "title": "U+0068 HTML 实体",
+        "value": "&#x68;"
+      },
+      {
+        "title": "a · U+0061",
+        "value": "LATIN SMALL LETTER A"
+      },
+      {
+        "title": "U+0061 UTF-8",
+        "value": "61"
+      },
+      {
+        "title": "U+0061 UTF-16",
+        "value": "0061"
+      },
+      {
+        "title": "U+0061 JavaScript 转义",
+        "value": "\\u0061"
+      },
+      {
+        "title": "U+0061 HTML 实体",
+        "value": "&#x61;"
+      }
+    ]
+  },
+  {
+    "input": "GREEK LETTER",
+    "kind": "char",
+    "result": [
+      {
+        "title": "A · U+0041",
+        "value": "A"
+      },
+      {
+        "title": "a · U+0061",
+        "value": "a"
+      },
+      {
+        "title": "Ā · U+0100",
+        "value": "Ā"
+      },
+      {
+        "title": "ā · U+0101",
+        "value": "ā"
+      },
+      {
+        "title": "Ă · U+0102",
+        "value": "Ă"
+      },
+      {
+        "title": "ă · U+0103",
+        "value": "ă"
+      },
+      {
+        "title": "Ą · U+0104",
+        "value": "Ą"
+      },
+      {
+        "title": "ą · U+0105",
+        "value": "ą"
+      },
+      {
+        "title": "B · U+0042",
+        "value": "B"
+      },
+      {
+        "title": "b · U+0062",
+        "value": "b"
+      },
+      {
+        "title": "C · U+0043",
+        "value": "C"
+      },
+      {
+        "title": "c · U+0063",
+        "value": "c"
+      },
+      {
+        "title": "Ć · U+0106",
+        "value": "Ć"
+      },
+      {
+        "title": "ć · U+0107",
+        "value": "ć"
+      },
+      {
+        "title": "Ĉ · U+0108",
+        "value": "Ĉ"
+      },
+      {
+        "title": "ĉ · U+0109",
+        "value": "ĉ"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "D"
+      },
+      {
+        "title": "d · U+0064",
+        "value": "d"
+      },
+      {
+        "title": "Đ · U+0110",
+        "value": "Đ"
+      },
+      {
+        "title": "đ · U+0111",
+        "value": "đ"
+      },
+      {
+        "title": "E · U+0045",
+        "value": "E"
+      },
+      {
+        "title": "e · U+0065",
+        "value": "e"
+      },
+      {
+        "title": "Ē · U+0112",
+        "value": "Ē"
+      },
+      {
+        "title": "ē · U+0113",
+        "value": "ē"
+      }
+    ]
+  },
+  {
+    "input": "GREEK LETTER",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "˂ · U+02C2",
+        "value": "˂"
+      },
+      {
+        "title": "˃ · U+02C3",
+        "value": "˃"
+      },
+      {
+        "title": "˄ · U+02C4",
+        "value": "˄"
+      },
+      {
+        "title": "˅ · U+02C5",
+        "value": "˅"
+      },
+      {
+        "title": "˯ · U+02EF",
+        "value": "˯"
+      },
+      {
+        "title": "˰ · U+02F0",
+        "value": "˰"
+      },
+      {
+        "title": "˱ · U+02F1",
+        "value": "˱"
+      },
+      {
+        "title": "˲ · U+02F2",
+        "value": "˲"
+      },
+      {
+        "title": "˿ · U+02FF",
+        "value": "˿"
+      },
+      {
+        "title": "ꜚ · U+A71A",
+        "value": "ꜚ"
+      },
+      {
+        "title": "ꜛ · U+A71B",
+        "value": "ꜛ"
+      },
+      {
+        "title": "ꜜ · U+A71C",
+        "value": "ꜜ"
+      },
+      {
+        "title": "꞊ · U+A78A",
+        "value": "꞊"
+      },
+      {
+        "title": "϶ · U+03F6",
+        "value": "϶"
+      },
+      {
+        "title": "﬩ · U+FB29",
+        "value": "﬩"
+      },
+      {
+        "title": "ᲂ · U+1C82",
+        "value": "ᲂ"
+      }
+    ]
+  },
+  {
+    "input": "GREEK LETTER",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "; · U+037E",
+        "value": ";"
+      },
+      {
+        "title": "· · U+0387",
+        "value": "·"
+      },
+      {
+        "title": "΄ · U+0384",
+        "value": "΄"
+      },
+      {
+        "title": "΅ · U+0385",
+        "value": "΅"
+      },
+      {
+        "title": "ʹ · U+0374",
+        "value": "ʹ"
+      },
+      {
+        "title": "͵ · U+0375",
+        "value": "͵"
+      },
+      {
+        "title": "Ά · U+0386",
+        "value": "Ά"
+      },
+      {
+        "title": "Α · U+0391",
+        "value": "Α"
+      },
+      {
+        "title": "ά · U+03AC",
+        "value": "ά"
+      },
+      {
+        "title": "α · U+03B1",
+        "value": "α"
+      },
+      {
+        "title": "Β · U+0392",
+        "value": "Β"
+      },
+      {
+        "title": "β · U+03B2",
+        "value": "β"
+      },
+      {
+        "title": "Γ · U+0393",
+        "value": "Γ"
+      },
+      {
+        "title": "γ · U+03B3",
+        "value": "γ"
+      },
+      {
+        "title": "Δ · U+0394",
+        "value": "Δ"
+      },
+      {
+        "title": "δ · U+03B4",
+        "value": "δ"
+      },
+      {
+        "title": "Έ · U+0388",
+        "value": "Έ"
+      },
+      {
+        "title": "Ε · U+0395",
+        "value": "Ε"
+      },
+      {
+        "title": "έ · U+03AD",
+        "value": "έ"
+      },
+      {
+        "title": "ε · U+03B5",
+        "value": "ε"
+      },
+      {
+        "title": "Ͷ · U+0376",
+        "value": "Ͷ"
+      },
+      {
+        "title": "ͷ · U+0377",
+        "value": "ͷ"
+      },
+      {
+        "title": "Ζ · U+0396",
+        "value": "Ζ"
+      },
+      {
+        "title": "ζ · U+03B6",
+        "value": "ζ"
+      }
+    ]
+  },
+  {
+    "input": "GREEK LETTER",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "ㄅ · U+3105",
+        "value": "ㄅ"
+      },
+      {
+        "title": "ㆠ · U+31A0",
+        "value": "ㆠ"
+      },
+      {
+        "title": "ㄆ · U+3106",
+        "value": "ㄆ"
+      },
+      {
+        "title": "ㆴ · U+31B4",
+        "value": "ㆴ"
+      },
+      {
+        "title": "ㄇ · U+3107",
+        "value": "ㄇ"
+      },
+      {
+        "title": "ㆬ · U+31AC",
+        "value": "ㆬ"
+      },
+      {
+        "title": "ㄈ · U+3108",
+        "value": "ㄈ"
+      },
+      {
+        "title": "ㄪ · U+312A",
+        "value": "ㄪ"
+      },
+      {
+        "title": "ㄉ · U+3109",
+        "value": "ㄉ"
+      },
+      {
+        "title": "ㄊ · U+310A",
+        "value": "ㄊ"
+      },
+      {
+        "title": "ㆵ · U+31B5",
+        "value": "ㆵ"
+      },
+      {
+        "title": "ㄋ · U+310B",
+        "value": "ㄋ"
+      },
+      {
+        "title": "ㄯ · U+312F",
+        "value": "ㄯ"
+      },
+      {
+        "title": "ㄌ · U+310C",
+        "value": "ㄌ"
+      },
+      {
+        "title": "ㄍ · U+310D",
+        "value": "ㄍ"
+      },
+      {
+        "title": "ㆣ · U+31A3",
+        "value": "ㆣ"
+      },
+      {
+        "title": "ㆻ · U+31BB",
+        "value": "ㆻ"
+      },
+      {
+        "title": "ㄎ · U+310E",
+        "value": "ㄎ"
+      },
+      {
+        "title": "ㆶ · U+31B6",
+        "value": "ㆶ"
+      },
+      {
+        "title": "ㄫ · U+312B",
+        "value": "ㄫ"
+      },
+      {
+        "title": "ㆭ · U+31AD",
+        "value": "ㆭ"
+      },
+      {
+        "title": "ㄏ · U+310F",
+        "value": "ㄏ"
+      },
+      {
+        "title": "ㆷ · U+31B7",
+        "value": "ㆷ"
+      },
+      {
+        "title": "ㄐ · U+3110",
+        "value": "ㄐ"
+      }
+    ]
+  },
+  {
+    "input": "GREEK LETTER",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "🄐 · U+1F110",
+        "value": "🄐"
+      },
+      {
+        "title": "🄑 · U+1F111",
+        "value": "🄑"
+      },
+      {
+        "title": "🄒 · U+1F112",
+        "value": "🄒"
+      },
+      {
+        "title": "🄓 · U+1F113",
+        "value": "🄓"
+      },
+      {
+        "title": "🄔 · U+1F114",
+        "value": "🄔"
+      },
+      {
+        "title": "🄕 · U+1F115",
+        "value": "🄕"
+      },
+      {
+        "title": "🄖 · U+1F116",
+        "value": "🄖"
+      },
+      {
+        "title": "🄗 · U+1F117",
+        "value": "🄗"
+      },
+      {
+        "title": "🄘 · U+1F118",
+        "value": "🄘"
+      },
+      {
+        "title": "🄙 · U+1F119",
+        "value": "🄙"
+      },
+      {
+        "title": "🄚 · U+1F11A",
+        "value": "🄚"
+      },
+      {
+        "title": "🄛 · U+1F11B",
+        "value": "🄛"
+      },
+      {
+        "title": "🄜 · U+1F11C",
+        "value": "🄜"
+      },
+      {
+        "title": "🄝 · U+1F11D",
+        "value": "🄝"
+      },
+      {
+        "title": "🄞 · U+1F11E",
+        "value": "🄞"
+      },
+      {
+        "title": "🄟 · U+1F11F",
+        "value": "🄟"
+      },
+      {
+        "title": "🄠 · U+1F120",
+        "value": "🄠"
+      },
+      {
+        "title": "🄡 · U+1F121",
+        "value": "🄡"
+      },
+      {
+        "title": "🄢 · U+1F122",
+        "value": "🄢"
+      },
+      {
+        "title": "🄣 · U+1F123",
+        "value": "🄣"
+      },
+      {
+        "title": "🄤 · U+1F124",
+        "value": "🄤"
+      },
+      {
+        "title": "🄥 · U+1F125",
+        "value": "🄥"
+      },
+      {
+        "title": "🄦 · U+1F126",
+        "value": "🄦"
+      },
+      {
+        "title": "🄧 · U+1F127",
+        "value": "🄧"
+      }
+    ]
+  },
+  {
+    "input": "arrow",
+    "kind": "char",
+    "result": [
+      {
+        "title": "← · U+2190",
+        "value": "←"
+      },
+      {
+        "title": "→ · U+2192",
+        "value": "→"
+      },
+      {
+        "title": "↑ · U+2191",
+        "value": "↑"
+      },
+      {
+        "title": "↓ · U+2193",
+        "value": "↓"
+      },
+      {
+        "title": "↔ · U+2194",
+        "value": "↔"
+      },
+      {
+        "title": "↕ · U+2195",
+        "value": "↕"
+      },
+      {
+        "title": "↖ · U+2196",
+        "value": "↖"
+      },
+      {
+        "title": "↗ · U+2197",
+        "value": "↗"
+      },
+      {
+        "title": "↘ · U+2198",
+        "value": "↘"
+      },
+      {
+        "title": "↙ · U+2199",
+        "value": "↙"
+      },
+      {
+        "title": "⌁ · U+2301",
+        "value": "⌁"
+      },
+      {
+        "title": "⍇ · U+2347",
+        "value": "⍇"
+      },
+      {
+        "title": "⍈ · U+2348",
+        "value": "⍈"
+      },
+      {
+        "title": "⍐ · U+2350",
+        "value": "⍐"
+      },
+      {
+        "title": "⍗ · U+2357",
+        "value": "⍗"
+      },
+      {
+        "title": "➔ · U+2794",
+        "value": "➔"
+      },
+      {
+        "title": "➘ · U+2798",
+        "value": "➘"
+      },
+      {
+        "title": "➙ · U+2799",
+        "value": "➙"
+      },
+      {
+        "title": "⤐ · U+2910",
+        "value": "⤐"
+      },
+      {
+        "title": "⤡ · U+2921",
+        "value": "⤡"
+      },
+      {
+        "title": "⤢ · U+2922",
+        "value": "⤢"
+      },
+      {
+        "title": "⤧ · U+2927",
+        "value": "⤧"
+      },
+      {
+        "title": "⤨ · U+2928",
+        "value": "⤨"
+      },
+      {
+        "title": "⤩ · U+2929",
+        "value": "⤩"
+      }
+    ]
+  },
+  {
+    "input": "arrow",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "← · U+2190",
+        "value": "←"
+      },
+      {
+        "title": "→ · U+2192",
+        "value": "→"
+      },
+      {
+        "title": "↑ · U+2191",
+        "value": "↑"
+      },
+      {
+        "title": "↓ · U+2193",
+        "value": "↓"
+      },
+      {
+        "title": "↔ · U+2194",
+        "value": "↔"
+      },
+      {
+        "title": "↕ · U+2195",
+        "value": "↕"
+      },
+      {
+        "title": "↖ · U+2196",
+        "value": "↖"
+      },
+      {
+        "title": "↗ · U+2197",
+        "value": "↗"
+      },
+      {
+        "title": "↘ · U+2198",
+        "value": "↘"
+      },
+      {
+        "title": "↙ · U+2199",
+        "value": "↙"
+      },
+      {
+        "title": "⌁ · U+2301",
+        "value": "⌁"
+      },
+      {
+        "title": "⍇ · U+2347",
+        "value": "⍇"
+      },
+      {
+        "title": "⍈ · U+2348",
+        "value": "⍈"
+      },
+      {
+        "title": "⍐ · U+2350",
+        "value": "⍐"
+      },
+      {
+        "title": "⍗ · U+2357",
+        "value": "⍗"
+      },
+      {
+        "title": "➔ · U+2794",
+        "value": "➔"
+      },
+      {
+        "title": "➘ · U+2798",
+        "value": "➘"
+      },
+      {
+        "title": "➙ · U+2799",
+        "value": "➙"
+      },
+      {
+        "title": "⤐ · U+2910",
+        "value": "⤐"
+      },
+      {
+        "title": "⤡ · U+2921",
+        "value": "⤡"
+      },
+      {
+        "title": "⤢ · U+2922",
+        "value": "⤢"
+      },
+      {
+        "title": "⤧ · U+2927",
+        "value": "⤧"
+      },
+      {
+        "title": "⤨ · U+2928",
+        "value": "⤨"
+      },
+      {
+        "title": "⤩ · U+2929",
+        "value": "⤩"
+      }
+    ]
+  },
+  {
+    "input": "arrow",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "a · U+0061",
+        "value": "LATIN SMALL LETTER A"
+      },
+      {
+        "title": "U+0061 UTF-8",
+        "value": "61"
+      },
+      {
+        "title": "U+0061 UTF-16",
+        "value": "0061"
+      },
+      {
+        "title": "U+0061 JavaScript 转义",
+        "value": "\\u0061"
+      },
+      {
+        "title": "U+0061 HTML 实体",
+        "value": "&#x61;"
+      },
+      {
+        "title": "r · U+0072",
+        "value": "LATIN SMALL LETTER R"
+      },
+      {
+        "title": "U+0072 UTF-8",
+        "value": "72"
+      },
+      {
+        "title": "U+0072 UTF-16",
+        "value": "0072"
+      },
+      {
+        "title": "U+0072 JavaScript 转义",
+        "value": "\\u0072"
+      },
+      {
+        "title": "U+0072 HTML 实体",
+        "value": "&#x72;"
+      },
+      {
+        "title": "r · U+0072",
+        "value": "LATIN SMALL LETTER R"
+      },
+      {
+        "title": "U+0072 UTF-8",
+        "value": "72"
+      },
+      {
+        "title": "U+0072 UTF-16",
+        "value": "0072"
+      },
+      {
+        "title": "U+0072 JavaScript 转义",
+        "value": "\\u0072"
+      },
+      {
+        "title": "U+0072 HTML 实体",
+        "value": "&#x72;"
+      },
+      {
+        "title": "o · U+006F",
+        "value": "LATIN SMALL LETTER O"
+      },
+      {
+        "title": "U+006F UTF-8",
+        "value": "6F"
+      },
+      {
+        "title": "U+006F UTF-16",
+        "value": "006F"
+      },
+      {
+        "title": "U+006F JavaScript 转义",
+        "value": "\\u006F"
+      },
+      {
+        "title": "U+006F HTML 实体",
+        "value": "&#x6F;"
+      },
+      {
+        "title": "w · U+0077",
+        "value": "LATIN SMALL LETTER W"
+      },
+      {
+        "title": "U+0077 UTF-8",
+        "value": "77"
+      },
+      {
+        "title": "U+0077 UTF-16",
+        "value": "0077"
+      },
+      {
+        "title": "U+0077 JavaScript 转义",
+        "value": "\\u0077"
+      },
+      {
+        "title": "U+0077 HTML 实体",
+        "value": "&#x77;"
+      }
+    ]
+  },
+  {
+    "input": "arrow",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "a · U+0061",
+        "value": "LATIN SMALL LETTER A"
+      },
+      {
+        "title": "U+0061 UTF-8",
+        "value": "61"
+      },
+      {
+        "title": "U+0061 UTF-16",
+        "value": "0061"
+      },
+      {
+        "title": "U+0061 JavaScript 转义",
+        "value": "\\u0061"
+      },
+      {
+        "title": "U+0061 HTML 实体",
+        "value": "&#x61;"
+      },
+      {
+        "title": "r · U+0072",
+        "value": "LATIN SMALL LETTER R"
+      },
+      {
+        "title": "U+0072 UTF-8",
+        "value": "72"
+      },
+      {
+        "title": "U+0072 UTF-16",
+        "value": "0072"
+      },
+      {
+        "title": "U+0072 JavaScript 转义",
+        "value": "\\u0072"
+      },
+      {
+        "title": "U+0072 HTML 实体",
+        "value": "&#x72;"
+      },
+      {
+        "title": "r · U+0072",
+        "value": "LATIN SMALL LETTER R"
+      },
+      {
+        "title": "U+0072 UTF-8",
+        "value": "72"
+      },
+      {
+        "title": "U+0072 UTF-16",
+        "value": "0072"
+      },
+      {
+        "title": "U+0072 JavaScript 转义",
+        "value": "\\u0072"
+      },
+      {
+        "title": "U+0072 HTML 实体",
+        "value": "&#x72;"
+      },
+      {
+        "title": "o · U+006F",
+        "value": "LATIN SMALL LETTER O"
+      },
+      {
+        "title": "U+006F UTF-8",
+        "value": "6F"
+      },
+      {
+        "title": "U+006F UTF-16",
+        "value": "006F"
+      },
+      {
+        "title": "U+006F JavaScript 转义",
+        "value": "\\u006F"
+      },
+      {
+        "title": "U+006F HTML 实体",
+        "value": "&#x6F;"
+      },
+      {
+        "title": "w · U+0077",
+        "value": "LATIN SMALL LETTER W"
+      },
+      {
+        "title": "U+0077 UTF-8",
+        "value": "77"
+      },
+      {
+        "title": "U+0077 UTF-16",
+        "value": "0077"
+      },
+      {
+        "title": "U+0077 JavaScript 转义",
+        "value": "\\u0077"
+      },
+      {
+        "title": "U+0077 HTML 实体",
+        "value": "&#x77;"
+      }
+    ]
+  },
+  {
+    "input": "arrow",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "➔ · U+2794",
+        "value": "➔"
+      },
+      {
+        "title": "➘ · U+2798",
+        "value": "➘"
+      },
+      {
+        "title": "➙ · U+2799",
+        "value": "➙"
+      },
+      {
+        "title": "➚ · U+279A",
+        "value": "➚"
+      },
+      {
+        "title": "➛ · U+279B",
+        "value": "➛"
+      },
+      {
+        "title": "➜ · U+279C",
+        "value": "➜"
+      },
+      {
+        "title": "➝ · U+279D",
+        "value": "➝"
+      },
+      {
+        "title": "➞ · U+279E",
+        "value": "➞"
+      },
+      {
+        "title": "➟ · U+279F",
+        "value": "➟"
+      },
+      {
+        "title": "➠ · U+27A0",
+        "value": "➠"
+      },
+      {
+        "title": "➡ · U+27A1",
+        "value": "➡"
+      },
+      {
+        "title": "➥ · U+27A5",
+        "value": "➥"
+      },
+      {
+        "title": "➦ · U+27A6",
+        "value": "➦"
+      },
+      {
+        "title": "➧ · U+27A7",
+        "value": "➧"
+      },
+      {
+        "title": "➨ · U+27A8",
+        "value": "➨"
+      },
+      {
+        "title": "➩ · U+27A9",
+        "value": "➩"
+      },
+      {
+        "title": "➪ · U+27AA",
+        "value": "➪"
+      },
+      {
+        "title": "➫ · U+27AB",
+        "value": "➫"
+      },
+      {
+        "title": "➬ · U+27AC",
+        "value": "➬"
+      },
+      {
+        "title": "➭ · U+27AD",
+        "value": "➭"
+      },
+      {
+        "title": "➮ · U+27AE",
+        "value": "➮"
+      },
+      {
+        "title": "➯ · U+27AF",
+        "value": "➯"
+      },
+      {
+        "title": "➱ · U+27B1",
+        "value": "➱"
+      },
+      {
+        "title": "➲ · U+27B2",
+        "value": "➲"
+      }
+    ]
+  },
+  {
+    "input": "  中 ",
+    "kind": "char",
+    "result": [
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      },
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      },
+      {
+        "title": "中 · U+4E2D",
+        "value": "CJK UNIFIED IDEOGRAPH-4E2D"
+      },
+      {
+        "title": "U+4E2D UTF-8",
+        "value": "E4 B8 AD"
+      },
+      {
+        "title": "U+4E2D UTF-16",
+        "value": "4E2D"
+      },
+      {
+        "title": "U+4E2D JavaScript 转义",
+        "value": "\\u4E2D"
+      },
+      {
+        "title": "U+4E2D HTML 实体",
+        "value": "&#x4E2D;"
+      },
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      }
+    ]
+  },
+  {
+    "input": "  中 ",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      },
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      },
+      {
+        "title": "中 · U+4E2D",
+        "value": "CJK UNIFIED IDEOGRAPH-4E2D"
+      },
+      {
+        "title": "U+4E2D UTF-8",
+        "value": "E4 B8 AD"
+      },
+      {
+        "title": "U+4E2D UTF-16",
+        "value": "4E2D"
+      },
+      {
+        "title": "U+4E2D JavaScript 转义",
+        "value": "\\u4E2D"
+      },
+      {
+        "title": "U+4E2D HTML 实体",
+        "value": "&#x4E2D;"
+      },
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      }
+    ]
+  },
+  {
+    "input": "  中 ",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      },
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      },
+      {
+        "title": "中 · U+4E2D",
+        "value": "CJK UNIFIED IDEOGRAPH-4E2D"
+      },
+      {
+        "title": "U+4E2D UTF-8",
+        "value": "E4 B8 AD"
+      },
+      {
+        "title": "U+4E2D UTF-16",
+        "value": "4E2D"
+      },
+      {
+        "title": "U+4E2D JavaScript 转义",
+        "value": "\\u4E2D"
+      },
+      {
+        "title": "U+4E2D HTML 实体",
+        "value": "&#x4E2D;"
+      },
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      }
+    ]
+  },
+  {
+    "input": "  中 ",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      },
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      },
+      {
+        "title": "中 · U+4E2D",
+        "value": "CJK UNIFIED IDEOGRAPH-4E2D"
+      },
+      {
+        "title": "U+4E2D UTF-8",
+        "value": "E4 B8 AD"
+      },
+      {
+        "title": "U+4E2D UTF-16",
+        "value": "4E2D"
+      },
+      {
+        "title": "U+4E2D JavaScript 转义",
+        "value": "\\u4E2D"
+      },
+      {
+        "title": "U+4E2D HTML 实体",
+        "value": "&#x4E2D;"
+      },
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      }
+    ]
+  },
+  {
+    "input": "  中 ",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      },
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      },
+      {
+        "title": "中 · U+4E2D",
+        "value": "CJK UNIFIED IDEOGRAPH-4E2D"
+      },
+      {
+        "title": "U+4E2D UTF-8",
+        "value": "E4 B8 AD"
+      },
+      {
+        "title": "U+4E2D UTF-16",
+        "value": "4E2D"
+      },
+      {
+        "title": "U+4E2D JavaScript 转义",
+        "value": "\\u4E2D"
+      },
+      {
+        "title": "U+4E2D HTML 实体",
+        "value": "&#x4E2D;"
+      },
+      {
+        "title": "  · U+0020",
+        "value": "SPACE"
+      },
+      {
+        "title": "U+0020 UTF-8",
+        "value": "20"
+      },
+      {
+        "title": "U+0020 UTF-16",
+        "value": "0020"
+      },
+      {
+        "title": "U+0020 JavaScript 转义",
+        "value": "\\u0020"
+      },
+      {
+        "title": "U+0020 HTML 实体",
+        "value": "&#x20;"
+      }
+    ]
+  },
+  {
+    "input": "",
+    "kind": "char",
+    "error": true
+  },
+  {
+    "input": "",
+    "kind": "mathchar",
+    "error": true
+  },
+  {
+    "input": "",
+    "kind": "greek",
+    "error": true
+  },
+  {
+    "input": "",
+    "kind": "bopomofo",
+    "error": true
+  },
+  {
+    "input": "",
+    "kind": "emoji",
+    "error": true
+  },
+  {
+    "input": "U+D800",
+    "kind": "char",
+    "result": [
+      {
+        "title": "U · U+0055",
+        "value": "LATIN CAPITAL LETTER U"
+      },
+      {
+        "title": "U+0055 UTF-8",
+        "value": "55"
+      },
+      {
+        "title": "U+0055 UTF-16",
+        "value": "0055"
+      },
+      {
+        "title": "U+0055 JavaScript 转义",
+        "value": "\\u0055"
+      },
+      {
+        "title": "U+0055 HTML 实体",
+        "value": "&#x55;"
+      },
+      {
+        "title": "+ · U+002B",
+        "value": "PLUS SIGN"
+      },
+      {
+        "title": "U+002B UTF-8",
+        "value": "2B"
+      },
+      {
+        "title": "U+002B UTF-16",
+        "value": "002B"
+      },
+      {
+        "title": "U+002B JavaScript 转义",
+        "value": "\\u002B"
+      },
+      {
+        "title": "U+002B HTML 实体",
+        "value": "&#x2B;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "8 · U+0038",
+        "value": "DIGIT EIGHT"
+      },
+      {
+        "title": "U+0038 UTF-8",
+        "value": "38"
+      },
+      {
+        "title": "U+0038 UTF-16",
+        "value": "0038"
+      },
+      {
+        "title": "U+0038 JavaScript 转义",
+        "value": "\\u0038"
+      },
+      {
+        "title": "U+0038 HTML 实体",
+        "value": "&#x38;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "U+D800",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "U · U+0055",
+        "value": "LATIN CAPITAL LETTER U"
+      },
+      {
+        "title": "U+0055 UTF-8",
+        "value": "55"
+      },
+      {
+        "title": "U+0055 UTF-16",
+        "value": "0055"
+      },
+      {
+        "title": "U+0055 JavaScript 转义",
+        "value": "\\u0055"
+      },
+      {
+        "title": "U+0055 HTML 实体",
+        "value": "&#x55;"
+      },
+      {
+        "title": "+ · U+002B",
+        "value": "PLUS SIGN"
+      },
+      {
+        "title": "U+002B UTF-8",
+        "value": "2B"
+      },
+      {
+        "title": "U+002B UTF-16",
+        "value": "002B"
+      },
+      {
+        "title": "U+002B JavaScript 转义",
+        "value": "\\u002B"
+      },
+      {
+        "title": "U+002B HTML 实体",
+        "value": "&#x2B;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "8 · U+0038",
+        "value": "DIGIT EIGHT"
+      },
+      {
+        "title": "U+0038 UTF-8",
+        "value": "38"
+      },
+      {
+        "title": "U+0038 UTF-16",
+        "value": "0038"
+      },
+      {
+        "title": "U+0038 JavaScript 转义",
+        "value": "\\u0038"
+      },
+      {
+        "title": "U+0038 HTML 实体",
+        "value": "&#x38;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "U+D800",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "U · U+0055",
+        "value": "LATIN CAPITAL LETTER U"
+      },
+      {
+        "title": "U+0055 UTF-8",
+        "value": "55"
+      },
+      {
+        "title": "U+0055 UTF-16",
+        "value": "0055"
+      },
+      {
+        "title": "U+0055 JavaScript 转义",
+        "value": "\\u0055"
+      },
+      {
+        "title": "U+0055 HTML 实体",
+        "value": "&#x55;"
+      },
+      {
+        "title": "+ · U+002B",
+        "value": "PLUS SIGN"
+      },
+      {
+        "title": "U+002B UTF-8",
+        "value": "2B"
+      },
+      {
+        "title": "U+002B UTF-16",
+        "value": "002B"
+      },
+      {
+        "title": "U+002B JavaScript 转义",
+        "value": "\\u002B"
+      },
+      {
+        "title": "U+002B HTML 实体",
+        "value": "&#x2B;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "8 · U+0038",
+        "value": "DIGIT EIGHT"
+      },
+      {
+        "title": "U+0038 UTF-8",
+        "value": "38"
+      },
+      {
+        "title": "U+0038 UTF-16",
+        "value": "0038"
+      },
+      {
+        "title": "U+0038 JavaScript 转义",
+        "value": "\\u0038"
+      },
+      {
+        "title": "U+0038 HTML 实体",
+        "value": "&#x38;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "U+D800",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "U · U+0055",
+        "value": "LATIN CAPITAL LETTER U"
+      },
+      {
+        "title": "U+0055 UTF-8",
+        "value": "55"
+      },
+      {
+        "title": "U+0055 UTF-16",
+        "value": "0055"
+      },
+      {
+        "title": "U+0055 JavaScript 转义",
+        "value": "\\u0055"
+      },
+      {
+        "title": "U+0055 HTML 实体",
+        "value": "&#x55;"
+      },
+      {
+        "title": "+ · U+002B",
+        "value": "PLUS SIGN"
+      },
+      {
+        "title": "U+002B UTF-8",
+        "value": "2B"
+      },
+      {
+        "title": "U+002B UTF-16",
+        "value": "002B"
+      },
+      {
+        "title": "U+002B JavaScript 转义",
+        "value": "\\u002B"
+      },
+      {
+        "title": "U+002B HTML 实体",
+        "value": "&#x2B;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "8 · U+0038",
+        "value": "DIGIT EIGHT"
+      },
+      {
+        "title": "U+0038 UTF-8",
+        "value": "38"
+      },
+      {
+        "title": "U+0038 UTF-16",
+        "value": "0038"
+      },
+      {
+        "title": "U+0038 JavaScript 转义",
+        "value": "\\u0038"
+      },
+      {
+        "title": "U+0038 HTML 实体",
+        "value": "&#x38;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "U+D800",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "U · U+0055",
+        "value": "LATIN CAPITAL LETTER U"
+      },
+      {
+        "title": "U+0055 UTF-8",
+        "value": "55"
+      },
+      {
+        "title": "U+0055 UTF-16",
+        "value": "0055"
+      },
+      {
+        "title": "U+0055 JavaScript 转义",
+        "value": "\\u0055"
+      },
+      {
+        "title": "U+0055 HTML 实体",
+        "value": "&#x55;"
+      },
+      {
+        "title": "+ · U+002B",
+        "value": "PLUS SIGN"
+      },
+      {
+        "title": "U+002B UTF-8",
+        "value": "2B"
+      },
+      {
+        "title": "U+002B UTF-16",
+        "value": "002B"
+      },
+      {
+        "title": "U+002B JavaScript 转义",
+        "value": "\\u002B"
+      },
+      {
+        "title": "U+002B HTML 实体",
+        "value": "&#x2B;"
+      },
+      {
+        "title": "D · U+0044",
+        "value": "LATIN CAPITAL LETTER D"
+      },
+      {
+        "title": "U+0044 UTF-8",
+        "value": "44"
+      },
+      {
+        "title": "U+0044 UTF-16",
+        "value": "0044"
+      },
+      {
+        "title": "U+0044 JavaScript 转义",
+        "value": "\\u0044"
+      },
+      {
+        "title": "U+0044 HTML 实体",
+        "value": "&#x44;"
+      },
+      {
+        "title": "8 · U+0038",
+        "value": "DIGIT EIGHT"
+      },
+      {
+        "title": "U+0038 UTF-8",
+        "value": "38"
+      },
+      {
+        "title": "U+0038 UTF-16",
+        "value": "0038"
+      },
+      {
+        "title": "U+0038 JavaScript 转义",
+        "value": "\\u0038"
+      },
+      {
+        "title": "U+0038 HTML 实体",
+        "value": "&#x38;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "U+110000",
+    "kind": "char",
+    "result": [
+      {
+        "title": "U · U+0055",
+        "value": "LATIN CAPITAL LETTER U"
+      },
+      {
+        "title": "U+0055 UTF-8",
+        "value": "55"
+      },
+      {
+        "title": "U+0055 UTF-16",
+        "value": "0055"
+      },
+      {
+        "title": "U+0055 JavaScript 转义",
+        "value": "\\u0055"
+      },
+      {
+        "title": "U+0055 HTML 实体",
+        "value": "&#x55;"
+      },
+      {
+        "title": "+ · U+002B",
+        "value": "PLUS SIGN"
+      },
+      {
+        "title": "U+002B UTF-8",
+        "value": "2B"
+      },
+      {
+        "title": "U+002B UTF-16",
+        "value": "002B"
+      },
+      {
+        "title": "U+002B JavaScript 转义",
+        "value": "\\u002B"
+      },
+      {
+        "title": "U+002B HTML 实体",
+        "value": "&#x2B;"
+      },
+      {
+        "title": "1 · U+0031",
+        "value": "DIGIT ONE"
+      },
+      {
+        "title": "U+0031 UTF-8",
+        "value": "31"
+      },
+      {
+        "title": "U+0031 UTF-16",
+        "value": "0031"
+      },
+      {
+        "title": "U+0031 JavaScript 转义",
+        "value": "\\u0031"
+      },
+      {
+        "title": "U+0031 HTML 实体",
+        "value": "&#x31;"
+      },
+      {
+        "title": "1 · U+0031",
+        "value": "DIGIT ONE"
+      },
+      {
+        "title": "U+0031 UTF-8",
+        "value": "31"
+      },
+      {
+        "title": "U+0031 UTF-16",
+        "value": "0031"
+      },
+      {
+        "title": "U+0031 JavaScript 转义",
+        "value": "\\u0031"
+      },
+      {
+        "title": "U+0031 HTML 实体",
+        "value": "&#x31;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "U+110000",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "U · U+0055",
+        "value": "LATIN CAPITAL LETTER U"
+      },
+      {
+        "title": "U+0055 UTF-8",
+        "value": "55"
+      },
+      {
+        "title": "U+0055 UTF-16",
+        "value": "0055"
+      },
+      {
+        "title": "U+0055 JavaScript 转义",
+        "value": "\\u0055"
+      },
+      {
+        "title": "U+0055 HTML 实体",
+        "value": "&#x55;"
+      },
+      {
+        "title": "+ · U+002B",
+        "value": "PLUS SIGN"
+      },
+      {
+        "title": "U+002B UTF-8",
+        "value": "2B"
+      },
+      {
+        "title": "U+002B UTF-16",
+        "value": "002B"
+      },
+      {
+        "title": "U+002B JavaScript 转义",
+        "value": "\\u002B"
+      },
+      {
+        "title": "U+002B HTML 实体",
+        "value": "&#x2B;"
+      },
+      {
+        "title": "1 · U+0031",
+        "value": "DIGIT ONE"
+      },
+      {
+        "title": "U+0031 UTF-8",
+        "value": "31"
+      },
+      {
+        "title": "U+0031 UTF-16",
+        "value": "0031"
+      },
+      {
+        "title": "U+0031 JavaScript 转义",
+        "value": "\\u0031"
+      },
+      {
+        "title": "U+0031 HTML 实体",
+        "value": "&#x31;"
+      },
+      {
+        "title": "1 · U+0031",
+        "value": "DIGIT ONE"
+      },
+      {
+        "title": "U+0031 UTF-8",
+        "value": "31"
+      },
+      {
+        "title": "U+0031 UTF-16",
+        "value": "0031"
+      },
+      {
+        "title": "U+0031 JavaScript 转义",
+        "value": "\\u0031"
+      },
+      {
+        "title": "U+0031 HTML 实体",
+        "value": "&#x31;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "U+110000",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "U · U+0055",
+        "value": "LATIN CAPITAL LETTER U"
+      },
+      {
+        "title": "U+0055 UTF-8",
+        "value": "55"
+      },
+      {
+        "title": "U+0055 UTF-16",
+        "value": "0055"
+      },
+      {
+        "title": "U+0055 JavaScript 转义",
+        "value": "\\u0055"
+      },
+      {
+        "title": "U+0055 HTML 实体",
+        "value": "&#x55;"
+      },
+      {
+        "title": "+ · U+002B",
+        "value": "PLUS SIGN"
+      },
+      {
+        "title": "U+002B UTF-8",
+        "value": "2B"
+      },
+      {
+        "title": "U+002B UTF-16",
+        "value": "002B"
+      },
+      {
+        "title": "U+002B JavaScript 转义",
+        "value": "\\u002B"
+      },
+      {
+        "title": "U+002B HTML 实体",
+        "value": "&#x2B;"
+      },
+      {
+        "title": "1 · U+0031",
+        "value": "DIGIT ONE"
+      },
+      {
+        "title": "U+0031 UTF-8",
+        "value": "31"
+      },
+      {
+        "title": "U+0031 UTF-16",
+        "value": "0031"
+      },
+      {
+        "title": "U+0031 JavaScript 转义",
+        "value": "\\u0031"
+      },
+      {
+        "title": "U+0031 HTML 实体",
+        "value": "&#x31;"
+      },
+      {
+        "title": "1 · U+0031",
+        "value": "DIGIT ONE"
+      },
+      {
+        "title": "U+0031 UTF-8",
+        "value": "31"
+      },
+      {
+        "title": "U+0031 UTF-16",
+        "value": "0031"
+      },
+      {
+        "title": "U+0031 JavaScript 转义",
+        "value": "\\u0031"
+      },
+      {
+        "title": "U+0031 HTML 实体",
+        "value": "&#x31;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "U+110000",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "U · U+0055",
+        "value": "LATIN CAPITAL LETTER U"
+      },
+      {
+        "title": "U+0055 UTF-8",
+        "value": "55"
+      },
+      {
+        "title": "U+0055 UTF-16",
+        "value": "0055"
+      },
+      {
+        "title": "U+0055 JavaScript 转义",
+        "value": "\\u0055"
+      },
+      {
+        "title": "U+0055 HTML 实体",
+        "value": "&#x55;"
+      },
+      {
+        "title": "+ · U+002B",
+        "value": "PLUS SIGN"
+      },
+      {
+        "title": "U+002B UTF-8",
+        "value": "2B"
+      },
+      {
+        "title": "U+002B UTF-16",
+        "value": "002B"
+      },
+      {
+        "title": "U+002B JavaScript 转义",
+        "value": "\\u002B"
+      },
+      {
+        "title": "U+002B HTML 实体",
+        "value": "&#x2B;"
+      },
+      {
+        "title": "1 · U+0031",
+        "value": "DIGIT ONE"
+      },
+      {
+        "title": "U+0031 UTF-8",
+        "value": "31"
+      },
+      {
+        "title": "U+0031 UTF-16",
+        "value": "0031"
+      },
+      {
+        "title": "U+0031 JavaScript 转义",
+        "value": "\\u0031"
+      },
+      {
+        "title": "U+0031 HTML 实体",
+        "value": "&#x31;"
+      },
+      {
+        "title": "1 · U+0031",
+        "value": "DIGIT ONE"
+      },
+      {
+        "title": "U+0031 UTF-8",
+        "value": "31"
+      },
+      {
+        "title": "U+0031 UTF-16",
+        "value": "0031"
+      },
+      {
+        "title": "U+0031 JavaScript 转义",
+        "value": "\\u0031"
+      },
+      {
+        "title": "U+0031 HTML 实体",
+        "value": "&#x31;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "U+110000",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "U · U+0055",
+        "value": "LATIN CAPITAL LETTER U"
+      },
+      {
+        "title": "U+0055 UTF-8",
+        "value": "55"
+      },
+      {
+        "title": "U+0055 UTF-16",
+        "value": "0055"
+      },
+      {
+        "title": "U+0055 JavaScript 转义",
+        "value": "\\u0055"
+      },
+      {
+        "title": "U+0055 HTML 实体",
+        "value": "&#x55;"
+      },
+      {
+        "title": "+ · U+002B",
+        "value": "PLUS SIGN"
+      },
+      {
+        "title": "U+002B UTF-8",
+        "value": "2B"
+      },
+      {
+        "title": "U+002B UTF-16",
+        "value": "002B"
+      },
+      {
+        "title": "U+002B JavaScript 转义",
+        "value": "\\u002B"
+      },
+      {
+        "title": "U+002B HTML 实体",
+        "value": "&#x2B;"
+      },
+      {
+        "title": "1 · U+0031",
+        "value": "DIGIT ONE"
+      },
+      {
+        "title": "U+0031 UTF-8",
+        "value": "31"
+      },
+      {
+        "title": "U+0031 UTF-16",
+        "value": "0031"
+      },
+      {
+        "title": "U+0031 JavaScript 转义",
+        "value": "\\u0031"
+      },
+      {
+        "title": "U+0031 HTML 实体",
+        "value": "&#x31;"
+      },
+      {
+        "title": "1 · U+0031",
+        "value": "DIGIT ONE"
+      },
+      {
+        "title": "U+0031 UTF-8",
+        "value": "31"
+      },
+      {
+        "title": "U+0031 UTF-16",
+        "value": "0031"
+      },
+      {
+        "title": "U+0031 JavaScript 转义",
+        "value": "\\u0031"
+      },
+      {
+        "title": "U+0031 HTML 实体",
+        "value": "&#x31;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      },
+      {
+        "title": "0 · U+0030",
+        "value": "DIGIT ZERO"
+      },
+      {
+        "title": "U+0030 UTF-8",
+        "value": "30"
+      },
+      {
+        "title": "U+0030 UTF-16",
+        "value": "0030"
+      },
+      {
+        "title": "U+0030 JavaScript 转义",
+        "value": "\\u0030"
+      },
+      {
+        "title": "U+0030 HTML 实体",
+        "value": "&#x30;"
+      }
+    ]
+  },
+  {
+    "input": "LATIN SMALL LETTER A",
+    "kind": "char",
+    "result": [
+      {
+        "title": "A · U+0041",
+        "value": "A"
+      },
+      {
+        "title": "a · U+0061",
+        "value": "a"
+      },
+      {
+        "title": "  · U+0020",
+        "value": " "
+      },
+      {
+        "title": "! · U+0021",
+        "value": "!"
+      },
+      {
+        "title": "' · U+0027",
+        "value": "'"
+      },
+      {
+        "title": "\" · U+0022",
+        "value": "\""
+      },
+      {
+        "title": "( · U+0028",
+        "value": "("
+      },
+      {
+        "title": ") · U+0029",
+        "value": ")"
+      },
+      {
+        "title": "@ · U+0040",
+        "value": "@"
+      },
+      {
+        "title": "& · U+0026",
+        "value": "&"
+      },
+      {
+        "title": "` · U+0060",
+        "value": "`"
+      },
+      {
+        "title": "$ · U+0024",
+        "value": "$"
+      },
+      {
+        "title": "Ā · U+0100",
+        "value": "Ā"
+      },
+      {
+        "title": "ā · U+0101",
+        "value": "ā"
+      },
+      {
+        "title": "Ă · U+0102",
+        "value": "Ă"
+      },
+      {
+        "title": "ă · U+0103",
+        "value": "ă"
+      },
+      {
+        "title": "Ą · U+0104",
+        "value": "Ą"
+      },
+      {
+        "title": "ą · U+0105",
+        "value": "ą"
+      },
+      {
+        "title": "B · U+0042",
+        "value": "B"
+      },
+      {
+        "title": "b · U+0062",
+        "value": "b"
+      },
+      {
+        "title": "C · U+0043",
+        "value": "C"
+      },
+      {
+        "title": "c · U+0063",
+        "value": "c"
+      },
+      {
+        "title": "Ć · U+0106",
+        "value": "Ć"
+      },
+      {
+        "title": "ć · U+0107",
+        "value": "ć"
+      }
+    ]
+  },
+  {
+    "input": "LATIN SMALL LETTER A",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "͇ · U+0347",
+        "value": "͇"
+      },
+      {
+        "title": "͉ · U+0349",
+        "value": "͉"
+      },
+      {
+        "title": "͐ · U+0350",
+        "value": "͐"
+      },
+      {
+        "title": "͔ · U+0354",
+        "value": "͔"
+      },
+      {
+        "title": "͕ · U+0355",
+        "value": "͕"
+      },
+      {
+        "title": "͖ · U+0356",
+        "value": "͖"
+      },
+      {
+        "title": "͢ · U+0362",
+        "value": "͢"
+      },
+      {
+        "title": "‹ · U+2039",
+        "value": "‹"
+      },
+      {
+        "title": "؈ · U+0608",
+        "value": "؈"
+      },
+      {
+        "title": "℘ · U+2118",
+        "value": "℘"
+      },
+      {
+        "title": "⅁ · U+2141",
+        "value": "⅁"
+      },
+      {
+        "title": "⅂ · U+2142",
+        "value": "⅂"
+      },
+      {
+        "title": "⅃ · U+2143",
+        "value": "⅃"
+      },
+      {
+        "title": "⅄ · U+2144",
+        "value": "⅄"
+      },
+      {
+        "title": "← · U+2190",
+        "value": "←"
+      },
+      {
+        "title": "→ · U+2192",
+        "value": "→"
+      },
+      {
+        "title": "↑ · U+2191",
+        "value": "↑"
+      },
+      {
+        "title": "↓ · U+2193",
+        "value": "↓"
+      },
+      {
+        "title": "↔ · U+2194",
+        "value": "↔"
+      },
+      {
+        "title": "↕ · U+2195",
+        "value": "↕"
+      },
+      {
+        "title": "↖ · U+2196",
+        "value": "↖"
+      },
+      {
+        "title": "↗ · U+2197",
+        "value": "↗"
+      },
+      {
+        "title": "↘ · U+2198",
+        "value": "↘"
+      },
+      {
+        "title": "↙ · U+2199",
+        "value": "↙"
+      }
+    ]
+  },
+  {
+    "input": "LATIN SMALL LETTER A",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "; · U+037E",
+        "value": ";"
+      },
+      {
+        "title": "· · U+0387",
+        "value": "·"
+      },
+      {
+        "title": "΅ · U+0385",
+        "value": "΅"
+      },
+      {
+        "title": "ʹ · U+0374",
+        "value": "ʹ"
+      },
+      {
+        "title": "͵ · U+0375",
+        "value": "͵"
+      },
+      {
+        "title": "Ά · U+0386",
+        "value": "Ά"
+      },
+      {
+        "title": "Α · U+0391",
+        "value": "Α"
+      },
+      {
+        "title": "ά · U+03AC",
+        "value": "ά"
+      },
+      {
+        "title": "α · U+03B1",
+        "value": "α"
+      },
+      {
+        "title": "Β · U+0392",
+        "value": "Β"
+      },
+      {
+        "title": "β · U+03B2",
+        "value": "β"
+      },
+      {
+        "title": "Γ · U+0393",
+        "value": "Γ"
+      },
+      {
+        "title": "γ · U+03B3",
+        "value": "γ"
+      },
+      {
+        "title": "Δ · U+0394",
+        "value": "Δ"
+      },
+      {
+        "title": "δ · U+03B4",
+        "value": "δ"
+      },
+      {
+        "title": "Έ · U+0388",
+        "value": "Έ"
+      },
+      {
+        "title": "Ε · U+0395",
+        "value": "Ε"
+      },
+      {
+        "title": "έ · U+03AD",
+        "value": "έ"
+      },
+      {
+        "title": "ε · U+03B5",
+        "value": "ε"
+      },
+      {
+        "title": "Ͷ · U+0376",
+        "value": "Ͷ"
+      },
+      {
+        "title": "ͷ · U+0377",
+        "value": "ͷ"
+      },
+      {
+        "title": "Ζ · U+0396",
+        "value": "Ζ"
+      },
+      {
+        "title": "ζ · U+03B6",
+        "value": "ζ"
+      },
+      {
+        "title": "Ͱ · U+0370",
+        "value": "Ͱ"
+      }
+    ]
+  },
+  {
+    "input": "LATIN SMALL LETTER A",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "ㄚ · U+311A",
+        "value": "ㄚ"
+      },
+      {
+        "title": "ㄅ · U+3105",
+        "value": "ㄅ"
+      },
+      {
+        "title": "ㆠ · U+31A0",
+        "value": "ㆠ"
+      },
+      {
+        "title": "ㄆ · U+3106",
+        "value": "ㄆ"
+      },
+      {
+        "title": "ㆴ · U+31B4",
+        "value": "ㆴ"
+      },
+      {
+        "title": "ㄇ · U+3107",
+        "value": "ㄇ"
+      },
+      {
+        "title": "ㆬ · U+31AC",
+        "value": "ㆬ"
+      },
+      {
+        "title": "ㄈ · U+3108",
+        "value": "ㄈ"
+      },
+      {
+        "title": "ㄪ · U+312A",
+        "value": "ㄪ"
+      },
+      {
+        "title": "ㄉ · U+3109",
+        "value": "ㄉ"
+      },
+      {
+        "title": "ㄊ · U+310A",
+        "value": "ㄊ"
+      },
+      {
+        "title": "ㆵ · U+31B5",
+        "value": "ㆵ"
+      },
+      {
+        "title": "ㄋ · U+310B",
+        "value": "ㄋ"
+      },
+      {
+        "title": "ㄯ · U+312F",
+        "value": "ㄯ"
+      },
+      {
+        "title": "ㄌ · U+310C",
+        "value": "ㄌ"
+      },
+      {
+        "title": "ㄍ · U+310D",
+        "value": "ㄍ"
+      },
+      {
+        "title": "ㆣ · U+31A3",
+        "value": "ㆣ"
+      },
+      {
+        "title": "ㆻ · U+31BB",
+        "value": "ㆻ"
+      },
+      {
+        "title": "ㄎ · U+310E",
+        "value": "ㄎ"
+      },
+      {
+        "title": "ㆶ · U+31B6",
+        "value": "ㆶ"
+      },
+      {
+        "title": "ㄫ · U+312B",
+        "value": "ㄫ"
+      },
+      {
+        "title": "ㆭ · U+31AD",
+        "value": "ㆭ"
+      },
+      {
+        "title": "ㄏ · U+310F",
+        "value": "ㄏ"
+      },
+      {
+        "title": "ㆷ · U+31B7",
+        "value": "ㆷ"
+      }
+    ]
+  },
+  {
+    "input": "LATIN SMALL LETTER A",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "☀ · U+2600",
+        "value": "☀"
+      },
+      {
+        "title": "☂ · U+2602",
+        "value": "☂"
+      },
+      {
+        "title": "☃ · U+2603",
+        "value": "☃"
+      },
+      {
+        "title": "★ · U+2605",
+        "value": "★"
+      },
+      {
+        "title": "☆ · U+2606",
+        "value": "☆"
+      },
+      {
+        "title": "☐ · U+2610",
+        "value": "☐"
+      },
+      {
+        "title": "☑ · U+2611",
+        "value": "☑"
+      },
+      {
+        "title": "☒ · U+2612",
+        "value": "☒"
+      },
+      {
+        "title": "☓ · U+2613",
+        "value": "☓"
+      },
+      {
+        "title": "☔ · U+2614",
+        "value": "☔"
+      },
+      {
+        "title": "☕ · U+2615",
+        "value": "☕"
+      },
+      {
+        "title": "☗ · U+2617",
+        "value": "☗"
+      },
+      {
+        "title": "☘ · U+2618",
+        "value": "☘"
+      },
+      {
+        "title": "☙ · U+2619",
+        "value": "☙"
+      },
+      {
+        "title": "☠ · U+2620",
+        "value": "☠"
+      },
+      {
+        "title": "☡ · U+2621",
+        "value": "☡"
+      },
+      {
+        "title": "☢ · U+2622",
+        "value": "☢"
+      },
+      {
+        "title": "☣ · U+2623",
+        "value": "☣"
+      },
+      {
+        "title": "☤ · U+2624",
+        "value": "☤"
+      },
+      {
+        "title": "☥ · U+2625",
+        "value": "☥"
+      },
+      {
+        "title": "☨ · U+2628",
+        "value": "☨"
+      },
+      {
+        "title": "☩ · U+2629",
+        "value": "☩"
+      },
+      {
+        "title": "☸ · U+2638",
+        "value": "☸"
+      },
+      {
+        "title": "☹ · U+2639",
+        "value": "☹"
+      }
+    ]
+  },
+  {
+    "input": "1F600",
+    "kind": "char",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "1F600",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "1F600",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "1F600",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "1F600",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "Unicode → 字符",
+        "value": "😀"
+      },
+      {
+        "title": "😀 · U+1F600",
+        "value": "GRINNING FACE"
+      },
+      {
+        "title": "U+1F600 UTF-8",
+        "value": "F0 9F 98 80"
+      },
+      {
+        "title": "U+1F600 UTF-16",
+        "value": "D83D DE00"
+      },
+      {
+        "title": "U+1F600 JavaScript 转义",
+        "value": "\\u{1F600}"
+      },
+      {
+        "title": "U+1F600 HTML 实体",
+        "value": "&#x1F600;"
+      }
+    ]
+  },
+  {
+    "input": "A",
+    "kind": "char",
+    "result": [
+      {
+        "title": "A · U+0041",
+        "value": "LATIN CAPITAL LETTER A"
+      },
+      {
+        "title": "U+0041 UTF-8",
+        "value": "41"
+      },
+      {
+        "title": "U+0041 UTF-16",
+        "value": "0041"
+      },
+      {
+        "title": "U+0041 JavaScript 转义",
+        "value": "\\u0041"
+      },
+      {
+        "title": "U+0041 HTML 实体",
+        "value": "&#x41;"
+      }
+    ]
+  },
+  {
+    "input": "A",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "͇ · U+0347",
+        "value": "͇"
+      },
+      {
+        "title": "͉ · U+0349",
+        "value": "͉"
+      },
+      {
+        "title": "͐ · U+0350",
+        "value": "͐"
+      },
+      {
+        "title": "͔ · U+0354",
+        "value": "͔"
+      },
+      {
+        "title": "͕ · U+0355",
+        "value": "͕"
+      },
+      {
+        "title": "͖ · U+0356",
+        "value": "͖"
+      },
+      {
+        "title": "͢ · U+0362",
+        "value": "͢"
+      },
+      {
+        "title": "‹ · U+2039",
+        "value": "‹"
+      },
+      {
+        "title": "؈ · U+0608",
+        "value": "؈"
+      },
+      {
+        "title": "℘ · U+2118",
+        "value": "℘"
+      },
+      {
+        "title": "⅁ · U+2141",
+        "value": "⅁"
+      },
+      {
+        "title": "⅂ · U+2142",
+        "value": "⅂"
+      },
+      {
+        "title": "⅃ · U+2143",
+        "value": "⅃"
+      },
+      {
+        "title": "⅄ · U+2144",
+        "value": "⅄"
+      },
+      {
+        "title": "← · U+2190",
+        "value": "←"
+      },
+      {
+        "title": "→ · U+2192",
+        "value": "→"
+      },
+      {
+        "title": "↑ · U+2191",
+        "value": "↑"
+      },
+      {
+        "title": "↓ · U+2193",
+        "value": "↓"
+      },
+      {
+        "title": "↔ · U+2194",
+        "value": "↔"
+      },
+      {
+        "title": "↕ · U+2195",
+        "value": "↕"
+      },
+      {
+        "title": "↖ · U+2196",
+        "value": "↖"
+      },
+      {
+        "title": "↗ · U+2197",
+        "value": "↗"
+      },
+      {
+        "title": "↘ · U+2198",
+        "value": "↘"
+      },
+      {
+        "title": "↙ · U+2199",
+        "value": "↙"
+      }
+    ]
+  },
+  {
+    "input": "A",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "; · U+037E",
+        "value": ";"
+      },
+      {
+        "title": "· · U+0387",
+        "value": "·"
+      },
+      {
+        "title": "΅ · U+0385",
+        "value": "΅"
+      },
+      {
+        "title": "ʹ · U+0374",
+        "value": "ʹ"
+      },
+      {
+        "title": "͵ · U+0375",
+        "value": "͵"
+      },
+      {
+        "title": "Ά · U+0386",
+        "value": "Ά"
+      },
+      {
+        "title": "Α · U+0391",
+        "value": "Α"
+      },
+      {
+        "title": "ά · U+03AC",
+        "value": "ά"
+      },
+      {
+        "title": "α · U+03B1",
+        "value": "α"
+      },
+      {
+        "title": "Β · U+0392",
+        "value": "Β"
+      },
+      {
+        "title": "β · U+03B2",
+        "value": "β"
+      },
+      {
+        "title": "Γ · U+0393",
+        "value": "Γ"
+      },
+      {
+        "title": "γ · U+03B3",
+        "value": "γ"
+      },
+      {
+        "title": "Δ · U+0394",
+        "value": "Δ"
+      },
+      {
+        "title": "δ · U+03B4",
+        "value": "δ"
+      },
+      {
+        "title": "Έ · U+0388",
+        "value": "Έ"
+      },
+      {
+        "title": "Ε · U+0395",
+        "value": "Ε"
+      },
+      {
+        "title": "έ · U+03AD",
+        "value": "έ"
+      },
+      {
+        "title": "ε · U+03B5",
+        "value": "ε"
+      },
+      {
+        "title": "Ͷ · U+0376",
+        "value": "Ͷ"
+      },
+      {
+        "title": "ͷ · U+0377",
+        "value": "ͷ"
+      },
+      {
+        "title": "Ζ · U+0396",
+        "value": "Ζ"
+      },
+      {
+        "title": "ζ · U+03B6",
+        "value": "ζ"
+      },
+      {
+        "title": "Ͱ · U+0370",
+        "value": "Ͱ"
+      }
+    ]
+  },
+  {
+    "input": "A",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "ㄚ · U+311A",
+        "value": "ㄚ"
+      },
+      {
+        "title": "ㆴ · U+31B4",
+        "value": "ㆴ"
+      },
+      {
+        "title": "ㆵ · U+31B5",
+        "value": "ㆵ"
+      },
+      {
+        "title": "ㆻ · U+31BB",
+        "value": "ㆻ"
+      },
+      {
+        "title": "ㆶ · U+31B6",
+        "value": "ㆶ"
+      },
+      {
+        "title": "ㆷ · U+31B7",
+        "value": "ㆷ"
+      },
+      {
+        "title": "ㆩ · U+31A9",
+        "value": "ㆩ"
+      },
+      {
+        "title": "ㄮ · U+312E",
+        "value": "ㄮ"
+      },
+      {
+        "title": "ㄞ · U+311E",
+        "value": "ㄞ"
+      },
+      {
+        "title": "ㆮ · U+31AE",
+        "value": "ㆮ"
+      },
+      {
+        "title": "ㄠ · U+3120",
+        "value": "ㄠ"
+      },
+      {
+        "title": "ㆯ · U+31AF",
+        "value": "ㆯ"
+      },
+      {
+        "title": "ㄢ · U+3122",
+        "value": "ㄢ"
+      },
+      {
+        "title": "ㄤ · U+3124",
+        "value": "ㄤ"
+      },
+      {
+        "title": "ㆰ · U+31B0",
+        "value": "ㆰ"
+      },
+      {
+        "title": "ㆿ · U+31BF",
+        "value": "ㆿ"
+      }
+    ]
+  },
+  {
+    "input": "A",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "☀ · U+2600",
+        "value": "☀"
+      },
+      {
+        "title": "☂ · U+2602",
+        "value": "☂"
+      },
+      {
+        "title": "☃ · U+2603",
+        "value": "☃"
+      },
+      {
+        "title": "★ · U+2605",
+        "value": "★"
+      },
+      {
+        "title": "☆ · U+2606",
+        "value": "☆"
+      },
+      {
+        "title": "☐ · U+2610",
+        "value": "☐"
+      },
+      {
+        "title": "☑ · U+2611",
+        "value": "☑"
+      },
+      {
+        "title": "☒ · U+2612",
+        "value": "☒"
+      },
+      {
+        "title": "☓ · U+2613",
+        "value": "☓"
+      },
+      {
+        "title": "☔ · U+2614",
+        "value": "☔"
+      },
+      {
+        "title": "☕ · U+2615",
+        "value": "☕"
+      },
+      {
+        "title": "☗ · U+2617",
+        "value": "☗"
+      },
+      {
+        "title": "☘ · U+2618",
+        "value": "☘"
+      },
+      {
+        "title": "☙ · U+2619",
+        "value": "☙"
+      },
+      {
+        "title": "☠ · U+2620",
+        "value": "☠"
+      },
+      {
+        "title": "☡ · U+2621",
+        "value": "☡"
+      },
+      {
+        "title": "☢ · U+2622",
+        "value": "☢"
+      },
+      {
+        "title": "☣ · U+2623",
+        "value": "☣"
+      },
+      {
+        "title": "☤ · U+2624",
+        "value": "☤"
+      },
+      {
+        "title": "☥ · U+2625",
+        "value": "☥"
+      },
+      {
+        "title": "☨ · U+2628",
+        "value": "☨"
+      },
+      {
+        "title": "☩ · U+2629",
+        "value": "☩"
+      },
+      {
+        "title": "☸ · U+2638",
+        "value": "☸"
+      },
+      {
+        "title": "☹ · U+2639",
+        "value": "☹"
+      }
+    ]
+  },
+  {
+    "input": "a\nb",
+    "kind": "char",
+    "result": [
+      {
+        "title": "a · U+0061",
+        "value": "LATIN SMALL LETTER A"
+      },
+      {
+        "title": "U+0061 UTF-8",
+        "value": "61"
+      },
+      {
+        "title": "U+0061 UTF-16",
+        "value": "0061"
+      },
+      {
+        "title": "U+0061 JavaScript 转义",
+        "value": "\\u0061"
+      },
+      {
+        "title": "U+0061 HTML 实体",
+        "value": "&#x61;"
+      },
+      {
+        "title": "\n · U+000A",
+        "value": "<unnamed>"
+      },
+      {
+        "title": "U+000A UTF-8",
+        "value": "0A"
+      },
+      {
+        "title": "U+000A UTF-16",
+        "value": "000A"
+      },
+      {
+        "title": "U+000A JavaScript 转义",
+        "value": "\\u000A"
+      },
+      {
+        "title": "U+000A HTML 实体",
+        "value": "&#xA;"
+      },
+      {
+        "title": "b · U+0062",
+        "value": "LATIN SMALL LETTER B"
+      },
+      {
+        "title": "U+0062 UTF-8",
+        "value": "62"
+      },
+      {
+        "title": "U+0062 UTF-16",
+        "value": "0062"
+      },
+      {
+        "title": "U+0062 JavaScript 转义",
+        "value": "\\u0062"
+      },
+      {
+        "title": "U+0062 HTML 实体",
+        "value": "&#x62;"
+      }
+    ]
+  },
+  {
+    "input": "a\nb",
+    "kind": "mathchar",
+    "result": [
+      {
+        "title": "͇ · U+0347",
+        "value": "͇"
+      },
+      {
+        "title": "͉ · U+0349",
+        "value": "͉"
+      },
+      {
+        "title": "͐ · U+0350",
+        "value": "͐"
+      },
+      {
+        "title": "͔ · U+0354",
+        "value": "͔"
+      },
+      {
+        "title": "͕ · U+0355",
+        "value": "͕"
+      },
+      {
+        "title": "͖ · U+0356",
+        "value": "͖"
+      },
+      {
+        "title": "͢ · U+0362",
+        "value": "͢"
+      },
+      {
+        "title": "‹ · U+2039",
+        "value": "‹"
+      },
+      {
+        "title": "؈ · U+0608",
+        "value": "؈"
+      },
+      {
+        "title": "℘ · U+2118",
+        "value": "℘"
+      },
+      {
+        "title": "⅁ · U+2141",
+        "value": "⅁"
+      },
+      {
+        "title": "⅂ · U+2142",
+        "value": "⅂"
+      },
+      {
+        "title": "⅃ · U+2143",
+        "value": "⅃"
+      },
+      {
+        "title": "⅄ · U+2144",
+        "value": "⅄"
+      },
+      {
+        "title": "← · U+2190",
+        "value": "←"
+      },
+      {
+        "title": "→ · U+2192",
+        "value": "→"
+      },
+      {
+        "title": "↑ · U+2191",
+        "value": "↑"
+      },
+      {
+        "title": "↓ · U+2193",
+        "value": "↓"
+      },
+      {
+        "title": "↔ · U+2194",
+        "value": "↔"
+      },
+      {
+        "title": "↕ · U+2195",
+        "value": "↕"
+      },
+      {
+        "title": "↖ · U+2196",
+        "value": "↖"
+      },
+      {
+        "title": "↗ · U+2197",
+        "value": "↗"
+      },
+      {
+        "title": "↘ · U+2198",
+        "value": "↘"
+      },
+      {
+        "title": "↙ · U+2199",
+        "value": "↙"
+      }
+    ]
+  },
+  {
+    "input": "a\nb",
+    "kind": "greek",
+    "result": [
+      {
+        "title": "; · U+037E",
+        "value": ";"
+      },
+      {
+        "title": "· · U+0387",
+        "value": "·"
+      },
+      {
+        "title": "΅ · U+0385",
+        "value": "΅"
+      },
+      {
+        "title": "ʹ · U+0374",
+        "value": "ʹ"
+      },
+      {
+        "title": "͵ · U+0375",
+        "value": "͵"
+      },
+      {
+        "title": "Ά · U+0386",
+        "value": "Ά"
+      },
+      {
+        "title": "Α · U+0391",
+        "value": "Α"
+      },
+      {
+        "title": "ά · U+03AC",
+        "value": "ά"
+      },
+      {
+        "title": "α · U+03B1",
+        "value": "α"
+      },
+      {
+        "title": "Β · U+0392",
+        "value": "Β"
+      },
+      {
+        "title": "β · U+03B2",
+        "value": "β"
+      },
+      {
+        "title": "Γ · U+0393",
+        "value": "Γ"
+      },
+      {
+        "title": "γ · U+03B3",
+        "value": "γ"
+      },
+      {
+        "title": "Δ · U+0394",
+        "value": "Δ"
+      },
+      {
+        "title": "δ · U+03B4",
+        "value": "δ"
+      },
+      {
+        "title": "Έ · U+0388",
+        "value": "Έ"
+      },
+      {
+        "title": "Ε · U+0395",
+        "value": "Ε"
+      },
+      {
+        "title": "έ · U+03AD",
+        "value": "έ"
+      },
+      {
+        "title": "ε · U+03B5",
+        "value": "ε"
+      },
+      {
+        "title": "Ͷ · U+0376",
+        "value": "Ͷ"
+      },
+      {
+        "title": "ͷ · U+0377",
+        "value": "ͷ"
+      },
+      {
+        "title": "Ζ · U+0396",
+        "value": "Ζ"
+      },
+      {
+        "title": "ζ · U+03B6",
+        "value": "ζ"
+      },
+      {
+        "title": "Ͱ · U+0370",
+        "value": "Ͱ"
+      }
+    ]
+  },
+  {
+    "input": "a\nb",
+    "kind": "bopomofo",
+    "result": [
+      {
+        "title": "ㄅ · U+3105",
+        "value": "ㄅ"
+      },
+      {
+        "title": "ㄚ · U+311A",
+        "value": "ㄚ"
+      },
+      {
+        "title": "ㆠ · U+31A0",
+        "value": "ㆠ"
+      },
+      {
+        "title": "ㄆ · U+3106",
+        "value": "ㄆ"
+      },
+      {
+        "title": "ㆴ · U+31B4",
+        "value": "ㆴ"
+      },
+      {
+        "title": "ㄇ · U+3107",
+        "value": "ㄇ"
+      },
+      {
+        "title": "ㆬ · U+31AC",
+        "value": "ㆬ"
+      },
+      {
+        "title": "ㄈ · U+3108",
+        "value": "ㄈ"
+      },
+      {
+        "title": "ㄪ · U+312A",
+        "value": "ㄪ"
+      },
+      {
+        "title": "ㄉ · U+3109",
+        "value": "ㄉ"
+      },
+      {
+        "title": "ㄊ · U+310A",
+        "value": "ㄊ"
+      },
+      {
+        "title": "ㆵ · U+31B5",
+        "value": "ㆵ"
+      },
+      {
+        "title": "ㄋ · U+310B",
+        "value": "ㄋ"
+      },
+      {
+        "title": "ㄯ · U+312F",
+        "value": "ㄯ"
+      },
+      {
+        "title": "ㄌ · U+310C",
+        "value": "ㄌ"
+      },
+      {
+        "title": "ㄍ · U+310D",
+        "value": "ㄍ"
+      },
+      {
+        "title": "ㆣ · U+31A3",
+        "value": "ㆣ"
+      },
+      {
+        "title": "ㆻ · U+31BB",
+        "value": "ㆻ"
+      },
+      {
+        "title": "ㄎ · U+310E",
+        "value": "ㄎ"
+      },
+      {
+        "title": "ㆶ · U+31B6",
+        "value": "ㆶ"
+      },
+      {
+        "title": "ㄫ · U+312B",
+        "value": "ㄫ"
+      },
+      {
+        "title": "ㆭ · U+31AD",
+        "value": "ㆭ"
+      },
+      {
+        "title": "ㄏ · U+310F",
+        "value": "ㄏ"
+      },
+      {
+        "title": "ㆷ · U+31B7",
+        "value": "ㆷ"
+      }
+    ]
+  },
+  {
+    "input": "a\nb",
+    "kind": "emoji",
+    "result": [
+      {
+        "title": "☀ · U+2600",
+        "value": "☀"
+      },
+      {
+        "title": "☂ · U+2602",
+        "value": "☂"
+      },
+      {
+        "title": "☃ · U+2603",
+        "value": "☃"
+      },
+      {
+        "title": "★ · U+2605",
+        "value": "★"
+      },
+      {
+        "title": "☆ · U+2606",
+        "value": "☆"
+      },
+      {
+        "title": "☐ · U+2610",
+        "value": "☐"
+      },
+      {
+        "title": "☑ · U+2611",
+        "value": "☑"
+      },
+      {
+        "title": "☒ · U+2612",
+        "value": "☒"
+      },
+      {
+        "title": "☓ · U+2613",
+        "value": "☓"
+      },
+      {
+        "title": "☔ · U+2614",
+        "value": "☔"
+      },
+      {
+        "title": "☕ · U+2615",
+        "value": "☕"
+      },
+      {
+        "title": "☗ · U+2617",
+        "value": "☗"
+      },
+      {
+        "title": "☘ · U+2618",
+        "value": "☘"
+      },
+      {
+        "title": "☙ · U+2619",
+        "value": "☙"
+      },
+      {
+        "title": "☠ · U+2620",
+        "value": "☠"
+      },
+      {
+        "title": "☡ · U+2621",
+        "value": "☡"
+      },
+      {
+        "title": "☢ · U+2622",
+        "value": "☢"
+      },
+      {
+        "title": "☣ · U+2623",
+        "value": "☣"
+      },
+      {
+        "title": "☤ · U+2624",
+        "value": "☤"
+      },
+      {
+        "title": "☥ · U+2625",
+        "value": "☥"
+      },
+      {
+        "title": "☨ · U+2628",
+        "value": "☨"
+      },
+      {
+        "title": "☩ · U+2629",
+        "value": "☩"
+      },
+      {
+        "title": "☸ · U+2638",
+        "value": "☸"
+      },
+      {
+        "title": "☹ · U+2639",
+        "value": "☹"
+      }
+    ]
+  }
+]
