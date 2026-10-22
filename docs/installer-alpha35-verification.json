@@ -1,0 +1,170 @@
+{
+  "payloadHashes": "PASS",
+  "installedExecutableSha256": "4D2ADCDFCDD9605B278DD37C1C4BF03F373491CC72D7D058199351C64B5367A8",
+  "installer": "QuickTool-Rust-Setup-0.6.0-alpha.35-x64.exe",
+  "installedBinaryMatchesFinalBuild": true,
+  "bytes": 21648059,
+  "unrelatedFilePreserved": "PASS",
+  "nativeSummon": {
+    "passed": true,
+    "checks": [
+      {
+        "check": "native tray restores hidden panel without blur cancellation",
+        "round": 1,
+        "passed": true,
+        "hiddenBefore": true,
+        "callbackPosted": true,
+        "visibleAfter": true,
+        "remainsVisible": true
+      },
+      {
+        "check": "native tray restores hidden panel without blur cancellation",
+        "round": 2,
+        "passed": true,
+        "hiddenBefore": true,
+        "callbackPosted": true,
+        "visibleAfter": true,
+        "remainsVisible": true
+      },
+      {
+        "check": "native tray restores hidden panel without blur cancellation",
+        "round": 3,
+        "passed": true,
+        "hiddenBefore": true,
+        "callbackPosted": true,
+        "visibleAfter": true,
+        "remainsVisible": true
+      }
+    ],
+    "elapsedMs": 1907.4643999999998,
+    "method": "Actual QuickTool, native hidden/visible state and own-process tray callback; hideOnBlur enabled; no OS keyboard/mouse input or user data"
+  },
+  "sha256": "13EF5F9506D20BB3025CF4C4EB7888023C7BF734D504F728B1FBF9A16F17DF8F",
+  "installExit": 0,
+  "uninstallPayloadRemoval": "PASS",
+  "time": "2026-10-23T01:48:47+08:00",
+  "registryIntegration": "Disabled for isolated test",
+  "installedPayloadFiles": 977,
+  "nativeExpanded": {
+    "passed": true,
+    "checks": [
+      {
+        "case": "settings",
+        "passed": true,
+        "client": [
+          1015,
+          803
+        ],
+        "region": [
+          1015,
+          803
+        ],
+        "regionCoversClient": true,
+        "bodyHitIsMainWindow": true,
+        "bodyRgb": [
+          16,
+          20,
+          28
+        ],
+        "candidateRows": 7
+      },
+      {
+        "case": "candidates",
+        "passed": true,
+        "client": [
+          1015,
+          803
+        ],
+        "region": [
+          1015,
+          803
+        ],
+        "regionCoversClient": true,
+        "bodyHitIsMainWindow": true,
+        "bodyRgb": [
+          23,
+          28,
+          37
+        ],
+        "candidateRows": 10
+      },
+      {
+        "case": "history",
+        "passed": true,
+        "client": [
+          1015,
+          803
+        ],
+        "region": [
+          1015,
+          803
+        ],
+        "regionCoversClient": true,
+        "bodyHitIsMainWindow": true,
+        "bodyRgb": [
+          16,
+          20,
+          28
+        ],
+        "candidateRows": 7
+      },
+      {
+        "case": "compact",
+        "passed": true,
+        "client": [
+          1015,
+          105
+        ],
+        "region": [
+          1015,
+          105
+        ],
+        "regionCoversClient": true,
+        "bodyHitIsMainWindow": true,
+        "bodyRgb": null,
+        "candidateRows": 7
+      },
+      {
+        "case": "settings again",
+        "passed": true,
+        "client": [
+          1015,
+          803
+        ],
+        "region": [
+          1015,
+          803
+        ],
+        "regionCoversClient": true,
+        "bodyHitIsMainWindow": true,
+        "bodyRgb": [
+          16,
+          20,
+          28
+        ],
+        "candidateRows": 7
+      },
+      {
+        "case": "candidates again",
+        "passed": true,
+        "client": [
+          1015,
+          803
+        ],
+        "region": [
+          1015,
+          803
+        ],
+        "regionCoversClient": true,
+        "bodyHitIsMainWindow": true,
+        "bodyRgb": [
+          23,
+          28,
+          37
+        ],
+        "candidateRows": 10
+      }
+    ],
+    "method": "Actual production window, normal native styling and backdrop enabled; native clip bounds, body hit and own-window-only body pixel; no screenshot-mode bypass or OS input"
+  }
+}

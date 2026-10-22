@@ -1,5 +1,7 @@
 #[path = "attachments.rs"]
 mod attachments;
+#[path = "expanded_probe.rs"]
+mod expanded_probe;
 #[path = "eyedrop_overlay.rs"]
 mod eyedrop_overlay;
 #[path = "theme.rs"]
@@ -509,13 +511,14 @@ pub struct QuickTool {
     probe: Option<Probe>,
     interaction_probe: Option<interaction_probe::InteractionProbe>,
     summon_probe: Option<summon_probe::SummonProbe>,
+    expanded_probe: Option<expanded_probe::ExpandedProbe>,
     frames: u32,
     hotkey: Option<platform::Hotkey>,
     hotkey_error: Option<String>,
     registered_shortcut: String,
     was_focused: bool,
     tray: Option<quicktool_rust::tray::Tray>,
-    window_style: Option<(bool, u32, u32)>,
+    window_style: Option<(bool, u32, u32, [i32; 2])>,
     backdrop: Option<quicktool_rust::backdrop::Backdrop>,
     backdrop_initialized: bool,
     glow: glow::Glow,
@@ -711,11 +714,13 @@ impl QuickTool {
             .map(std::path::PathBuf::from);
         let interaction_probe = interaction_probe::InteractionProbe::from_args();
         let summon_probe = summon_probe::SummonProbe::from_args();
+        let expanded_probe = expanded_probe::ExpandedProbe::from_args();
         let isolated = metrics_path.is_some()
             || interaction_probe.is_some()
             || summon_probe.is_some()
+            || expanded_probe.is_some()
             || std::env::args().any(|a| a == "--picker-screenshot");
-        let mut store = Store::open(if summon_probe.is_some() {
+        let mut store = Store::open(if summon_probe.is_some() || expanded_probe.is_some() {
             std::env::temp_dir().join(format!("QuickTool-Rust-summon-{}", std::process::id()))
         } else if isolated {
             std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -828,6 +833,7 @@ impl QuickTool {
             screenshot_requested: None,
             interaction_probe,
             summon_probe,
+            expanded_probe,
             probe: metrics_path.map(|path| Probe {
                 path,
                 ready_at: None,
@@ -4876,24 +4882,40 @@ impl eframe::App for QuickTool {
         let opacity = visual["glassOpacity"].as_f64().unwrap_or(0.78) as f32;
         let blur = visual["blurStrength"].as_u64().unwrap_or(28) as u32;
         #[cfg(windows)]
-        if self.window_style != Some((light, blur, (ctx.pixels_per_point() * 100.).round() as u32))
-            && self.screenshot.is_none()
-        {
+        if self.screenshot.is_none() {
             use raw_window_handle::{HasWindowHandle, RawWindowHandle};
             if let Ok(handle) = frame.window_handle() {
                 if let RawWindowHandle::Win32(handle) = handle.as_raw() {
                     self.glow.owner = handle.hwnd.get();
                     unsafe {
-                        let _ = platform::apply_window_style(
-                            handle.hwnd.get(),
-                            !light,
-                            0,
-                            (8. * ctx.pixels_per_point()).round() as i32,
-                        );
+                        use windows_sys::Win32::{
+                            Foundation::RECT, UI::WindowsAndMessaging::GetClientRect,
+                        };
+                        let mut client: RECT = std::mem::zeroed();
+                        if GetClientRect(handle.hwnd.get() as _, &mut client) != 0 {
+                            // The native clip region must follow every actual resize, including
+                            // compact -> settings/results and delayed viewport resize delivery.
+                            let style = (
+                                light,
+                                blur,
+                                (ctx.pixels_per_point() * 100.).round() as u32,
+                                [client.right - client.left, client.bottom - client.top],
+                            );
+                            if self.window_style != Some(style)
+                                && platform::apply_window_style(
+                                    handle.hwnd.get(),
+                                    !light,
+                                    0,
+                                    (8. * ctx.pixels_per_point()).round() as i32,
+                                )
+                                .is_ok()
+                            {
+                                self.window_style = Some(style);
+                            }
+                        }
                     }
                 }
             }
-            self.window_style = Some((light, blur, (ctx.pixels_per_point() * 100.).round() as u32));
         }
         #[cfg(windows)]
         if !self.backdrop_initialized && self.screenshot.is_none() {
@@ -5233,5 +5255,6 @@ impl eframe::App for QuickTool {
             }
         }
         interaction_probe::tick(self, ctx);
+        expanded_probe::tick(self, ctx);
     }
 }
