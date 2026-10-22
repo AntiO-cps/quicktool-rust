@@ -132,3 +132,45 @@
 - 未完成：无（此项修复不代表整体Rust UI一致性目标已完成）。
 - 未验证：物理键鼠手工流程、正式系统集成；迁移阶段其他已知差异沿用前述记录。
 - 风险：用户的两个旧版进程仍在运行，需退出后安装新版；安装包未签名。
+
+## 修复 Rust 面板及 Glow 黑底
+
+| 字段 | 内容 |
+| --- | --- |
+| 状态 | `已完成` |
+| 时间 | `2026-10-23T01:15:33+08:00` → `2026-10-23T01:28:15+08:00` |
+| 最后更新 | `2026-10-23T01:28:15+08:00` |
+| Git | `codex/rust-rewrite` · `d1d670e` → 待提交 |
+
+### 目标
+修复原生透明合成，使主面板和外发光背景正确透出桌面，并更新安装包。
+
+### 修改
+- `vendor/eframe/src/native/glow_integration.rs`：Windows子窗口创建保留请求的透明属性；不让glutin依据WGL TRANSPARENT_ARB标志关闭DWM透明。其他平台沿用原finalize_window路径。
+- `examples/transparent_child.rs`：自有绿色host与透明child原生合成像素回归；透明区域应透出绿色，不透明红色内容应保留；包含Glow的鼠标穿透/非激活/无任务栏/置顶属性和主面板DWM材质/圆角配置。
+- `Cargo.toml`、`Cargo.lock`：升为0.6.0-alpha.34。
+- `README.md`、`docs/migration.md`、`docs/transparency-verification.json`、`docs/installer-alpha34-verification.json`：修复说明、实际前后颜色及安装验证证据。
+- `releases/QuickTool-Rust-Setup-0.6.0-alpha.34-x64.exe`及`.sha256`：本地修复包21617113字节；按仓库规则忽略二进制。
+- 两处 `AGENT_WORKLOG.md`：本任务单条记录；未调整用户颜色、透明度或主题设置。
+
+### 验证
+- `PASS` 修改前Git检查：工作区干净，HEAD d1d670e。
+- `PASS` 附图检查：1415×505 RGB，外部纯黑，尺寸与Glow窗口一致。
+- `FAILED` 修复前 `cargo run --offline --example transparent_child -- ...`：透明区域期望绿色[40,180,90]，原生实际采样为黑色[0,0,0]，复现问题。
+- `PASS` 同一基础回归修复后：透明区域原生实际[40,180,90]与背景精确一致。
+- `PASS` 扩展原生回归：采用Glow鼠标穿透/非激活等属性及主面板DWM样式后，透明区域仍为[40,180,90]，不透明内容为[255,0,0]；仅采样自身测试窗口覆盖范围，未保存其他桌面内容或发送输入。
+- `PASS` `cargo test --offline --all-targets`：143项通过、5项按需/环境检查跳过；日志`.qa/transparency-full-tests.log`。
+- `PASS` `cargo clippy --offline --all-targets -- -D warnings`、`cargo fmt --all -- --check`：通过。
+- `PASS` `cargo build --offline --release --bin quicktool-rust`、便携目录及NSIS构建：alpha.34生成成功。
+- `PASS` 最终实际隔离安装：975项payload哈希一致，安装后主EXE与最终发布构建一致（8A224976DC6EB49EB1F2415FB95B2EB1425B074C357A01DB38B6B34E7CD282BC）。
+- `PASS` 安装后的程序连续三轮原生托盘回调唤起、保持可见；上轮隐藏窗口修复保持通过。
+- `PASS` 最终隔离卸载：安装文件全部删除，额外sentinel保留；正式快捷方式/注册表集成禁用，用户设置、历史和运行进程未修改。
+- `PASS` 安装包SHA256：BEBD7DE645BBBA8DAB42709B4B1705AF67AE89B860E803A3C195D2F7D7CF1B60。
+- `PASS` 原版源码589/589哈希保持一致；diff空白检查通过。
+- `NOT_RUN` 所有GPU/驱动组合及完整物理键鼠验收：原生实测覆盖当前Windows环境，其他迁移限制沿用前项记录。
+
+### 结论
+- 已完成：黑底根因复现、透明窗口创建修复、实际DWM合成验证、回归及alpha.34安装包。
+- 未完成：无（不代表整体Rust UI完全一致目标已完成）。
+- 未验证：其他GPU/驱动环境、物理键鼠及正式系统集成的完整人工流程。
+- 风险：安装包未签名；更新前需退出旧Rust版本。

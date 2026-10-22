@@ -1,0 +1,63 @@
+{
+  "measuredAt": "2026-10-23T01:22:30+08:00",
+  "version": "0.6.0-alpha.34",
+  "cause": "Windows child-window creation used glutin finalize_window, which disabled requested transparency when WGL TRANSPARENT_ARB was false despite working DWM alpha composition",
+  "before": {
+    "passed": false,
+    "expected": [
+      40,
+      180,
+      90
+    ],
+    "actual": [
+      0,
+      0,
+      0
+    ],
+    "method": "Native screen pixel strictly inside own transparent child over own opaque green host; no other desktop contents recorded"
+  },
+  "after": {
+    "passed": true,
+    "expected": [
+      40,
+      180,
+      90
+    ],
+    "actual": [
+      40,
+      180,
+      90
+    ],
+    "opaqueExpected": [
+      255,
+      0,
+      0
+    ],
+    "opaqueActual": [
+      255,
+      0,
+      0
+    ],
+    "method": "Native screen pixels strictly inside own transparent child over own opaque green host; no other desktop contents recorded"
+  },
+  "windowAttributes": [
+    "transparent",
+    "mouse passthrough",
+    "non-activating",
+    "no taskbar",
+    "always on top",
+    "DWM material and rounded region"
+  ],
+  "reference": "https://github.com/rust-windowing/glutin/issues/1717",
+  "limits": [
+    "Pixels sampled strictly within own green host and own overlay; no general desktop capture",
+    "No physical keyboard or mouse automation",
+    "No user opacity or theme setting changes"
+  ],
+  "validation": {
+    "unitTestsIgnored": 5,
+    "unitTestsPassed": 143,
+    "strictClippy": "PASS",
+    "fmt": "PASS"
+  }
+}

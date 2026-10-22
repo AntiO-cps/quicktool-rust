@@ -1116,11 +1116,20 @@ impl GlutinWindowContext {
                 event_loop,
                 viewport.builder.clone(),
             );
-            if window_attributes.transparent()
+            if !cfg!(target_os = "windows")
+                && window_attributes.transparent()
                 && self.gl_config.supports_transparency() == Some(false)
             {
                 log::error!("Cannot create transparent window: the GL config does not support it");
             }
+            // WGL's TRANSPARENT_ARB flag is not the DWM alpha-composition
+            // capability. finalize_window disables Win32 transparency when
+            // that unrelated flag is false, making deferred viewports black.
+            // Keep the requested attributes, just as DisplayBuilder does for
+            // the initial Windows window.
+            #[cfg(target_os = "windows")]
+            let window = event_loop.create_window(window_attributes)?;
+            #[cfg(not(target_os = "windows"))]
             let window =
                 glutin_winit::finalize_window(event_loop, window_attributes, &self.gl_config)?;
             egui_winit::apply_viewport_builder_to_window(

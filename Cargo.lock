@@ -2404,7 +2404,7 @@ dependencies = [
 
 [[package]]
 name = "quicktool-rust"
-version = "0.6.0-alpha.33"
+version = "0.6.0-alpha.34"
 dependencies = [
  "base64",
  "eframe",
