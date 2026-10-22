@@ -1,0 +1,13 @@
+{
+  "time": "2026-10-23T00:04:09+08:00",
+  "installer": "QuickTool-Rust-Setup-0.6.0-alpha.32-x64.exe",
+  "sha256": "1FEA7ED23D28CEAAF3D0A4995C7272EC5075341DE6E19E0F8CB2376BC0EB97D1",
+  "bytes": 21625429,
+  "installedPayloadFiles": 971,
+  "installedExecutableSha256": "EAAE511083C005CA842695B2F2B030867229BF05C9C7BA984D62FCB7E3657DC9",
+  "installExit": 0,
+  "payloadHashes": "PASS",
+  "uninstallPayloadRemoval": "PASS",
+  "unrelatedFileAndDataPreserved": "PASS",
+  "registryIntegration": "Disabled for isolated test; interactive registry and shortcut creation not exercised"
+}

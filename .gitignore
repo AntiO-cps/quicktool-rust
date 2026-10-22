@@ -1,5 +1,6 @@
 /target/
 /dist/
+/releases/
 /target*/
 /.qa/
 /.cargo-home/

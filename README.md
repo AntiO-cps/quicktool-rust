@@ -16,6 +16,10 @@ cargo run --release
 
 生成可移植目录：`./scripts/Build-Rust.ps1 -Offline`。运行 `dist/QuickTool.exe`，并保留旁边的资源与许可目录。依赖许可清单在 `licenses/rust/INDEX.json`。
 
+安装包位于 `releases/QuickTool-Rust-Setup-0.6.0-alpha.32-x64.exe`，旁边提供 SHA256 校验文件。默认安装到当前用户的 `LocalAppData/Programs/QuickTool Rust`，创建快捷方式及卸载入口；卸载保留设置和历史。
+
+使用已有 NSIS 编译器生成安装包：`./scripts/Build-Installer.ps1 -MakeNsis PATH_TO_MAKENSIS -Offline`。已有可移植目录时可添加 `-SkipPortableBuild`；脚本会先核验目录内 SHA256 清单。
+
 数据默认写入 `%APPDATA%/QuickTool-Rust`。测试可用 `QUICKTOOL_RUST_DATA_DIR` 指定隔离数据目录。原版 QuickTool 数据暂不自动导入。
 
 显式导入旧设置与历史：`QuickTool.exe --import-from OLD_DIR --import-to NEW_DIR`。目标目录必须不存在；旧目录只读。原文件备份、坏记录及错误报告保存在新目录。退出码 `0` 表示成功，`3` 表示导入完成但有错误记录，`2` 表示失败。使用 `QuickTool.exe --data-dir NEW_DIR` 运行导入后的数据。

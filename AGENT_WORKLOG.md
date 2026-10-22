@@ -48,3 +48,41 @@
 - 未完成：UI与交互完全一致；字体/图标抗锯齿及少量边界像素差异仍存在，需继续视觉校准。
 - 未验证：系统级键鼠/IME、多屏/DPI、实际滴管/拖拽、Everything与Windows Search非空结果、真实管理员/终端/Regedit启动及用户剪贴板；完整依赖许可审计。
 - 风险：整体目标仍在进行中，不能将阶段版本视为已满足完全一致的替代版本。
+
+## 生成 Rust Windows 安装包
+
+| 字段 | 内容 |
+| --- | --- |
+| 状态 | `已完成` |
+| 时间 | `2026-10-22T23:59:28+08:00` → `2026-10-23T00:05:10+08:00` |
+| 最后更新 | `2026-10-23T00:05:10+08:00` |
+| Git | `codex/rust-rewrite` · `ef0b9ee` → 待提交 |
+
+### 目标
+提供可双击安装的 Windows x64 安装包。
+
+### 修改
+- `scripts/installer.nsi`：当前用户安装、中文/英文安装向导、目录选择、快捷方式及卸载入口；默认不启动应用，卸载按安装文件清单删除，保留额外文件及用户数据。
+- `scripts/Build-Installer.ps1`：检查便携目录SHA256、生成精确卸载清单、编译NSIS安装包并输出SHA256校验文件。
+- `README.md`、`.gitignore`：安装/构建说明及生成目录排除。
+- `docs/installer-verification.json`：实际安装包摘要、大小及隔离安装/卸载验证结果。
+- `releases/QuickTool-Rust-Setup-0.6.0-alpha.32-x64.exe`及`.sha256`：本地安装包21625429字节；二进制按仓库规则忽略，不进入Git。
+- 两处 `AGENT_WORKLOG.md`：本任务单条记录。
+
+### 验证
+- `PASS` 修改前Git检查：工作区干净，起点ef0b9ee；仅修改本任务文件。
+- `PASS` NSIS3.0.4.1工具：使用原项目依赖中固定的下载URL与SHA512校验，仅置于任务缓存；未全局安装。
+- `FAILED` 受限沙箱启动makensis：DLL重定位错误；同一已校验工具在正常Windows进程中编译成功。
+- `PASS` `scripts/Build-Installer.ps1 -SkipPortableBuild -Offline -MakeNsis ...`：生成安装包与SHA256；包SHA256为1FEA7ED23D28CEAAF3D0A4995C7272EC5075341DE6E19E0F8CB2376BC0EB97D1。
+- `PASS` 两次隔离中文及空格路径静默安装：退出0；971项payload哈希一致；安装后的主程序摘要EAAE511083C005CA842695B2F2B030867229BF05C9C7BA984D62FCB7E3657DC9。
+- `FAILED` 首次卸载验证脚本：只等主程序删除，过早检查尚在执行的卸载子进程；实际随后卸载完毕，目录仅剩两个测试数据文件。
+- `PASS` 修正等待全部payload消失后的隔离卸载回归：安装文件全部删除，额外sentinel及测试设置保留。使用/NOINTEGRATION，未创建正式快捷方式或注册表卸载项。
+- `PASS` `git diff --check`：通过；脚本已实际编译执行。
+- `PASS` `Get-AuthenticodeSignature`：确认当前安装包未签名。
+- `NOT_RUN` 安装向导鼠标操作、正式快捷方式及注册表集成：本次采用禁用系统集成的隔离静默验收。
+
+### 结论
+- 已完成：安装包、摘要文件、可复现构建脚本及隔离安装/卸载验证。
+- 未完成：无（本任务仅打包，整体Rust一致性目标仍按前条记录继续）。
+- 未验证：安装向导手工流程与正式系统集成。
+- 风险：未签名安装包；沿用当前Rust阶段版本的已知一致性限制。
