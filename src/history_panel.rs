@@ -218,14 +218,14 @@ fn section(ui: &mut Ui, icons: &HashMap<String, TextureHandle>, pinned: bool) {
             ui,
             icons,
             "mdi:star",
-            Rect::from_min_size(pos2(x, rect.top() + 12.), vec2(12., 12.)),
+            Rect::from_min_size(pos2(x, rect.top() + 13.75), vec2(10.5, 10.5)),
             Color32::from_rgb(243, 200, 92),
         );
-        x += 18.;
+        x += 16.5;
     }
     text(
         ui,
-        pos2(x, rect.top() + 10.),
+        pos2(x, rect.top() + 11.8),
         if pinned { "收藏" } else { "历史记录" },
         10.5,
         colors(ui.visuals().dark_mode).2,
@@ -278,8 +278,10 @@ fn paint_row(
     if item.pinned || hovered {
         ui.painter().rect_filled(rect, 12, background);
     }
+    // Chromium snaps a 1 CSS px border down to whole device pixels.
+    let border = ui.ctx().pixels_per_point().floor() / ui.ctx().pixels_per_point();
     let icon = Rect::from_center_size(
-        pos2(rect.left() + 10. + 16., rect.center().y),
+        pos2(rect.left() + 9. + border + 16., rect.center().y),
         vec2(32., 32.),
     );
     ui.painter().rect_filled(
@@ -299,9 +301,9 @@ fn paint_row(
         Rect::from_center_size(icon.center(), vec2(16., 16.)),
         weak,
     );
-    let action_start = rect.right() - 10. - 106.;
+    let action_start = rect.right() - 9. - border - 106.;
     let content = Rect::from_min_max(
-        pos2(rect.left() + 54., rect.top() + 8.8),
+        pos2(rect.left() + 53. + border, rect.top() + 8.8),
         pos2(action_start - 10., rect.bottom() - 8.8),
     );
     let name = item.tool_name.as_deref().unwrap_or_else(|| {
@@ -436,10 +438,10 @@ impl QuickTool {
             ui.spacing_mut().item_spacing = Vec2::ZERO;
             ui.set_min_height(620.);
             let (header, _) =
-                ui.allocate_exact_size(vec2(ui.available_width(), 65.2), Sense::hover());
+                ui.allocate_exact_size(vec2(ui.available_width(), 66.), Sense::hover());
             let dark = ui.visuals().dark_mode;
             let (primary, secondary, weak) = colors(dark);
-            let icon = Rect::from_min_size(header.min + vec2(14., 16.), vec2(34., 34.));
+            let icon = Rect::from_min_size(header.min + vec2(14., 16.1), vec2(34., 34.));
             ui.painter().rect_filled(
                 icon,
                 10,
@@ -456,7 +458,7 @@ impl QuickTool {
                 Rect::from_center_size(icon.center(), vec2(18., 18.)),
                 secondary,
             );
-            let title = header.min + vec2(58., 15.);
+            let title = header.min + vec2(58., 15.7);
             text(
                 ui,
                 title,
@@ -468,7 +470,7 @@ impl QuickTool {
             );
             text(
                 ui,
-                title + vec2(0., 21.),
+                title + vec2(0., 20.4),
                 "收藏项固定保留；点击历史项恢复输入与模式",
                 10.5,
                 weak,

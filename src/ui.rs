@@ -3142,6 +3142,8 @@ impl QuickTool {
         ui.visuals_mut().widgets.inactive.bg_fill = Color32::from_rgb(54, 57, 66);
         ui.visuals_mut().widgets.hovered.bg_fill = Color32::from_rgb(69, 73, 84);
         ui.visuals_mut().widgets.active.bg_fill = Color32::from_rgb(85, 91, 105);
+        // The original results scrollbar has a transparent track.
+        ui.visuals_mut().extreme_bg_color = Color32::TRANSPARENT;
         let output = ScrollArea::vertical()
             .max_height(478.)
             .vertical_scroll_offset(
@@ -4998,11 +5000,19 @@ impl eframe::App for QuickTool {
                             top: 16,
                             bottom: 10,
                         }
+                    } else if self.panel == Panel::History {
+                        // CSS inset:10px excludes the outer shell's stroke.
+                        Margin::same(9)
                     } else {
                         Margin::same(10)
                     }),
             )
             .show(ctx, |ui| {
+                // The launcher shell has fixed viewport bounds, like the
+                // original overflow:hidden element. A long row may grow its
+                // own layout, but must not expand the outer frame off-screen.
+                let mut content = ui.new_child(UiBuilder::new().max_rect(ui.max_rect()));
+                let ui = &mut content;
                 if self.panel == Panel::None {
                     self.topbar(ui, ctx);
                 }
@@ -5044,14 +5054,14 @@ impl eframe::App for QuickTool {
                                     Color32::from_rgb(16, 20, 28)
                                 })
                                 .stroke(Stroke::new(
-                                    1.,
+                                    ctx.pixels_per_point().floor() / ctx.pixels_per_point(),
                                     if light {
                                         Color32::from_gray(215)
                                     } else {
                                         Color32::from_rgb(40, 45, 56)
                                     },
                                 ))
-                                .corner_radius(16)
+                                .corner_radius(15)
                                 .inner_margin(0)
                                 .show(ui, |ui| self.history(ui, ctx));
                         }

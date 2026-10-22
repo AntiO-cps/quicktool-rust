@@ -1,0 +1,40 @@
+{
+  "measuredAt": "2026-10-22T23:50:31+08:00",
+  "dpiScale": 1.25,
+  "source": "Original Electron DOM rectangles plus isolated application screenshots",
+  "historyFirstPinnedRow": {
+    "original": {
+      "left": 22,
+      "right": 992,
+      "bottom": 230,
+      "top": 147
+    },
+    "before": {
+      "left": 24,
+      "right": 990,
+      "bottom": 230,
+      "top": 148
+    },
+    "after": {
+      "left": 22,
+      "right": 992,
+      "bottom": 230,
+      "top": 147
+    }
+  },
+  "mainShell": {
+    "before": "Frame expanded with child content; viewport clipped outer stroke",
+    "after": "Child content cannot expand the parent frame; complete rounded outer stroke visible"
+  },
+  "regression": {
+    "report": "Isolated eframe RawInput event probe",
+    "passed": true,
+    "checks": 23
+  },
+  "limits": [
+    "Coordinates apply to the captured 125% DPI case; other DPI and displays remain unverified",
+    "Font and icon antialiasing still differ",
+    "Native cursor hover was not forced to a common position; action icon brightness is not used as parity evidence",
+    "Screenshots and in-app events do not replace OS mouse and keyboard acceptance"
+  ]
+}

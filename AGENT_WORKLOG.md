@@ -4,7 +4,7 @@
 | --- | --- |
 | 状态 | `进行中` |
 | 时间 | `2026-10-20T00:07:15+08:00` → 进行中 |
-| 最后更新 | `2026-10-22T23:43:58+08:00` |
+| 最后更新 | `2026-10-22T23:54:29+08:00` |
 | Git | 独立目录 `codex/rust-rewrite` · 无初始提交 → `8ecdb260afa53e6627bd2e7d106d67ae1edd3e0b`（本轮已验证代码提交，继续视觉校准）；原目录 `master` 无提交 |
 
 ### 目标
@@ -29,8 +29,8 @@
 - `PASS` 原版编辑对照：192 Ctrl + 840普通输入用例；JPEG/WebP/GIF原编码等6项历史资产回归；历史面板2项真实egui点击测试。
 - `PASS` 生命周期最终修复后：27项UI单元测试再通过；23步实际eframe帧事件探针通过，报告 `docs/ui-interaction-probe.json`。
 - `PASS` `cargo clippy --offline --all-targets -- -D warnings`、`cargo fmt --all -- --check`：最终代码通过。
-- `PASS` `cargo build --offline --release --bin quicktool-rust`：最终发布构建成功，64512000字节。
-- `PASS` `scripts/Build-Rust.ps1 -Offline -SkipBuild`：更新可移植程序、资源、文档及依赖许可索引；970个文件SHA256逐一匹配。许可索引277条，部分上游crate未附独立许可文件，索引保留声明，不视为完整许可审计。
+- `PASS` `cargo build --offline --release --bin quicktool-rust`：最终发布构建成功，64513536字节。
+- `PASS` `scripts/Build-Rust.ps1 -Offline -SkipBuild`：更新可移植程序、资源、文档及依赖许可索引；971个文件SHA256逐一匹配。许可索引277条，部分上游crate未附独立许可文件，索引保留声明，不视为完整许可审计。
 - `PASS` 最终打包程序隔离运行：0xFF候选截图生成，正常退出0；独立日期/颜色子窗口及历史截图已检查，仍存在已知视觉差异。
 - `PASS` 三轮应用采样：启动中位2.889s→1.025s、空闲工作集约845MiB→234MiB。万条索引两次566/694ms，原版2234ms；数据库13606912字节。测量边界及样本见 `docs/`，不代表所有机器同比提升。
 - `PASS` 16MB有效PNG DataURL：debug至候选/GPU截图3.84秒，峰值working set416358400字节；不代表系统输入呈现延迟。
@@ -40,6 +40,8 @@
 - `BLOCKED` 系统级鼠标/键盘全流程：computer-use窗口访问授权超时，未发送OS输入；应用内事件与截图不代替此项。
 
 - `PASS` 暂存diff与敏感信息模式检查：无空白错误、未发现匹配；只提交本任务源码/夹具/文档，构建与隔离数据未入库。
+
+- `PASS` 后续几何修复：历史首卡在125%DPI下与原版同为x22..992/y147..230；主框固定边界、透明滚动轨道已实际截图复核。最终27项UI测试、Clippy、fmt、Release、打包程序隔离截图及23步探针全部再通过；对照记录 `docs/visual-geometry.json`。
 
 ### 结论
 - 已完成：独立目录/分支、上述原生Rust实现、差分/回归、性能采样及当前可移植阶段版本。
