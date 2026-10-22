@@ -16,7 +16,7 @@ cargo run --release
 
 生成可移植目录：`./scripts/Build-Rust.ps1 -Offline`。运行 `dist/QuickTool.exe`，并保留旁边的资源与许可目录。依赖许可清单在 `licenses/rust/INDEX.json`。
 
-安装包位于 `releases/QuickTool-Rust-Setup-0.6.0-alpha.32-x64.exe`，旁边提供 SHA256 校验文件。默认安装到当前用户的 `LocalAppData/Programs/QuickTool Rust`，创建快捷方式及卸载入口；卸载保留设置和历史。
+安装包位于 `releases/QuickTool-Rust-Setup-0.6.0-alpha.33-x64.exe`，旁边提供 SHA256 校验文件。默认安装到当前用户的 `LocalAppData/Programs/QuickTool Rust`，创建快捷方式及卸载入口；卸载保留设置和历史。
 
 使用已有 NSIS 编译器生成安装包：`./scripts/Build-Installer.ps1 -MakeNsis PATH_TO_MAKENSIS -Offline`。已有可移植目录时可添加 `-SkipPortableBuild`；脚本会先核验目录内 SHA256 清单。
 
@@ -43,7 +43,13 @@ cargo clippy --all-targets -- -D warnings
 
 [索引基准](docs/index-benchmark.json)：10031条合成文件，整数ID版两次扫描566/694ms，同日原版2234ms；Rust数据库从约79MB降至14MB，原版约11MB。测量边界、文件清单和完整样本均保留。
 
-当前142项测试通过、5项跳过；1032条原版编辑对照与23步应用内整窗事件通过。系统级输入、多屏/DPI及像素完全一致性仍未验收。
+当前143项测试通过、5项跳过；1032条原版编辑对照与23步应用内整窗事件通过。系统级输入、多屏/DPI及像素完全一致性仍未验收。
+
+## 面板唤起回归
+
+alpha.33 修复Windows隐藏窗口无法处理托盘/快捷键唤起，以及唤起被同帧失焦事件取消的问题。后台通知明确唤醒主窗口。安装新版本前先退出旧Rust版本；若旧托盘无法退出，可在任务管理器结束对应进程。
+
+执行 `./scripts/Verify-Summon.ps1` 可用临时配置复验三轮真实托盘回调；不发送系统键鼠输入。原生隐藏窗口最小回归：`cargo run --example hidden_wake -- REPORT.json`。
 
 ## 状态
 

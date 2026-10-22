@@ -14,6 +14,8 @@ mod interaction_probe;
 mod large_input;
 #[path = "pickers.rs"]
 mod pickers;
+#[path = "summon_probe.rs"]
+mod summon_probe;
 #[path = "widgets.rs"]
 mod widgets;
 use eframe::egui::{epaint::Shadow, *};
@@ -506,6 +508,7 @@ pub struct QuickTool {
     screenshot_requested: Option<Instant>,
     probe: Option<Probe>,
     interaction_probe: Option<interaction_probe::InteractionProbe>,
+    summon_probe: Option<summon_probe::SummonProbe>,
     frames: u32,
     hotkey: Option<platform::Hotkey>,
     hotkey_error: Option<String>,
@@ -707,10 +710,14 @@ impl QuickTool {
             .nth(1)
             .map(std::path::PathBuf::from);
         let interaction_probe = interaction_probe::InteractionProbe::from_args();
+        let summon_probe = summon_probe::SummonProbe::from_args();
         let isolated = metrics_path.is_some()
             || interaction_probe.is_some()
+            || summon_probe.is_some()
             || std::env::args().any(|a| a == "--picker-screenshot");
-        let mut store = Store::open(if isolated {
+        let mut store = Store::open(if summon_probe.is_some() {
+            std::env::temp_dir().join(format!("QuickTool-Rust-summon-{}", std::process::id()))
+        } else if isolated {
             std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
                 .join(".qa")
                 .join(format!("metrics-data-{}", std::process::id()))
@@ -727,6 +734,10 @@ impl QuickTool {
             store.settings["globalShortcut"] = serde_json::json!("F24");
             store.settings["hideOnBlur"] = serde_json::json!(false);
             store.settings["fileIndexRoots"] = serde_json::json!(empty.to_string_lossy());
+            if summon_probe.is_some() {
+                store.settings["globalShortcut"] = serde_json::json!("Ctrl+Alt+Shift+F22");
+                store.settings["hideOnBlur"] = serde_json::json!(true);
+            }
         }
         let draft = store.settings.clone();
         let input = std::env::args()
@@ -753,7 +764,7 @@ impl QuickTool {
                 store.settings["globalShortcut"]
                     .as_str()
                     .unwrap_or("Alt+Space"),
-                move || context.request_repaint(),
+                move || context.request_repaint_of(ViewportId::ROOT),
             ) {
                 Ok(h) => (Some(h), None),
                 Err(e) => (None, Some(e)),
@@ -777,7 +788,7 @@ impl QuickTool {
             decoder: {
                 let context = cc.egui_ctx.clone();
                 image_decode::LatestWorker::new(attachments::Attachment::from_base64, move || {
-                    context.request_repaint()
+                    context.request_repaint_of(ViewportId::ROOT)
                 })
             },
             decoded_request: None,
@@ -816,6 +827,7 @@ impl QuickTool {
             screenshot_sent: false,
             screenshot_requested: None,
             interaction_probe,
+            summon_probe,
             probe: metrics_path.map(|path| Probe {
                 path,
                 ready_at: None,
@@ -833,7 +845,7 @@ impl QuickTool {
             was_focused: false,
             tray: if !unattended {
                 let c = cc.egui_ctx.clone();
-                quicktool_rust::tray::Tray::new(move || c.request_repaint()).ok()
+                quicktool_rust::tray::Tray::new(move || c.request_repaint_of(ViewportId::ROOT)).ok()
             } else {
                 None
             },
@@ -851,7 +863,9 @@ impl QuickTool {
             file_query: None,
             system_backend: {
                 let c = cc.egui_ctx.clone();
-                system::Backend::with_cache(app_cache_root, move || c.request_repaint())
+                system::Backend::with_cache(app_cache_root, move || {
+                    c.request_repaint_of(ViewportId::ROOT)
+                })
             },
             apps: vec![],
             apps_requested: false,
@@ -1080,7 +1094,7 @@ impl QuickTool {
                 (attachment, results)
             });
             let _ = sender.send(result);
-            context.request_repaint();
+            context.request_repaint_of(ViewportId::ROOT);
         });
     }
     fn rebuild(&mut self) {
@@ -2099,7 +2113,7 @@ impl QuickTool {
                 self.store.root.join("file-index.sqlite"),
                 roots,
                 excludes,
-                move || ctx.request_repaint(),
+                move || ctx.request_repaint_of(ViewportId::ROOT),
             ));
         }
         self.files_pending = true;
@@ -2254,7 +2268,7 @@ impl QuickTool {
                             bytes: image.bytes.clone(),
                             mime: image.mime.clone(),
                         }),
-                        move || context.request_repaint(),
+                        move || context.request_repaint_of(ViewportId::ROOT),
                     ) {
                         self.message(format!("保存图片历史失败：{error}"));
                     }
@@ -2454,7 +2468,7 @@ impl QuickTool {
                             args: vec![],
                             submode: self.submode.clone(),
                         }),
-                    move || context.request_repaint(),
+                    move || context.request_repaint_of(ViewportId::ROOT),
                 ) {
                     self.message(format!("保存图片历史失败：{error}"));
                 } else {
@@ -2499,6 +2513,27 @@ impl QuickTool {
             },
         ));
     }
+    fn show_main(&mut self, ctx: &Context) {
+        self.main_visible = true;
+        // A tray click can arrive with the previous frame's focus-loss event.
+        // The pending Focus command takes effect after this frame; do not let
+        // hide-on-blur cancel the explicit show in the meantime.
+        self.was_focused = false;
+        for command in [
+            ViewportCommand::Minimized(false),
+            ViewportCommand::Visible(true),
+            ViewportCommand::Focus,
+        ] {
+            ctx.send_viewport_cmd_to(ViewportId::ROOT, command);
+        }
+        if self.pinned || self.store.settings["summonAlwaysOnTop"] == true {
+            ctx.send_viewport_cmd_to(
+                ViewportId::ROOT,
+                ViewportCommand::WindowLevel(WindowLevel::AlwaysOnTop),
+            );
+        }
+        self.focus = true;
+    }
     fn shortcut_preview(&mut self, shortcut: &str) -> Result<(), String> {
         if self.registered_shortcut == shortcut && self.hotkey.is_some() {
             return Ok(());
@@ -2506,7 +2541,7 @@ impl QuickTool {
         self.hotkey = None;
         self.registered_shortcut.clear();
         let c = self.context.clone();
-        match platform::hotkey(shortcut, move || c.request_repaint()) {
+        match platform::hotkey(shortcut, move || c.request_repaint_of(ViewportId::ROOT)) {
             Ok(h) => {
                 self.hotkey = Some(h);
                 self.registered_shortcut = shortcut.into();
@@ -4345,7 +4380,9 @@ impl QuickTool {
             .to_string();
         let new_hotkey = if self.registered_shortcut != new_shortcut {
             let context = self.context.clone();
-            match platform::hotkey(&new_shortcut, move || context.request_repaint()) {
+            match platform::hotkey(&new_shortcut, move || {
+                context.request_repaint_of(ViewportId::ROOT)
+            }) {
                 Ok(h) => Some(h),
                 Err(error) => {
                     self.shortcut_error = Some(format!("快捷键不可用或已被占用：{error}"));
@@ -4707,6 +4744,7 @@ impl eframe::App for QuickTool {
             }
         }
         self.frames += 1;
+        summon_probe::tick(self, ctx);
         let tray_events = self
             .tray
             .as_ref()
@@ -4715,15 +4753,7 @@ impl eframe::App for QuickTool {
         for event in tray_events {
             match event {
                 quicktool_rust::tray::TrayEvent::Show => {
-                    self.main_visible = true;
-                    ctx.send_viewport_cmd(ViewportCommand::Visible(true));
-                    ctx.send_viewport_cmd(ViewportCommand::Focus);
-                    if self.pinned || self.store.settings["summonAlwaysOnTop"] == true {
-                        ctx.send_viewport_cmd(ViewportCommand::WindowLevel(
-                            WindowLevel::AlwaysOnTop,
-                        ));
-                    }
-                    self.focus = true;
+                    self.show_main(ctx);
                 }
                 quicktool_rust::tray::TrayEvent::Quit => {
                     ctx.send_viewport_cmd(ViewportCommand::Close)
@@ -4791,13 +4821,7 @@ impl eframe::App for QuickTool {
                 }
                 ctx.send_viewport_cmd(ViewportCommand::Visible(false));
             } else {
-                self.main_visible = true;
-                ctx.send_viewport_cmd(ViewportCommand::Visible(true));
-                ctx.send_viewport_cmd(ViewportCommand::Focus);
-                if self.store.settings["summonAlwaysOnTop"] == true {
-                    ctx.send_viewport_cmd(ViewportCommand::WindowLevel(WindowLevel::AlwaysOnTop));
-                }
-                self.focus = true;
+                self.show_main(ctx);
             }
         }
         if let Some(error) = self.hotkey_error.take() {
@@ -5133,7 +5157,10 @@ impl eframe::App for QuickTool {
         self.pins.show(ctx);
         for update in self.pins.drain_history_updates() {
             let c = ctx.clone();
-            if let Err(error) = self.store.enqueue_pin(update, move || c.request_repaint()) {
+            if let Err(error) = self
+                .store
+                .enqueue_pin(update, move || c.request_repaint_of(ViewportId::ROOT))
+            {
                 self.message(format!("保存 Pin 历史失败：{error}"));
             }
         }

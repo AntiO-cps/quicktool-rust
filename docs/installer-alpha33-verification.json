@@ -1,0 +1,49 @@
+{
+  "time": "2026-10-23T00:40:09+08:00",
+  "installer": "QuickTool-Rust-Setup-0.6.0-alpha.33-x64.exe",
+  "sha256": "108FAF41EA5F07B455607F017AA0CDBD45C326C19A6A87A751B654D590A6F351",
+  "bytes": 21608760,
+  "installedPayloadFiles": 973,
+  "installedExecutableSha256": "3A0ACF019CB9479BB8031FAD953EC10F9A28268EDDB464021236511501587F1D",
+  "sourceProbeSha256": "1B6E099F60EE6ECEC29708770BCB7B55E714622310669D9341C1C83DD9D3BDF1",
+  "installedBinaryMatchesFinalBuild": true,
+  "installExit": 0,
+  "payloadHashes": "PASS",
+  "nativeSummon": {
+    "passed": true,
+    "checks": [
+      {
+        "check": "native tray restores hidden panel without blur cancellation",
+        "round": 1,
+        "passed": true,
+        "hiddenBefore": true,
+        "callbackPosted": true,
+        "visibleAfter": true,
+        "remainsVisible": true
+      },
+      {
+        "check": "native tray restores hidden panel without blur cancellation",
+        "round": 2,
+        "passed": true,
+        "hiddenBefore": true,
+        "callbackPosted": true,
+        "visibleAfter": true,
+        "remainsVisible": true
+      },
+      {
+        "check": "native tray restores hidden panel without blur cancellation",
+        "round": 3,
+        "passed": true,
+        "hiddenBefore": true,
+        "callbackPosted": true,
+        "visibleAfter": true,
+        "remainsVisible": true
+      }
+    ],
+    "elapsedMs": 1779.4039000000002,
+    "method": "Actual QuickTool, native hidden/visible state and own-process tray callback; hideOnBlur enabled; no OS keyboard/mouse input or user data"
+  },
+  "uninstallPayloadRemoval": "PASS",
+  "unrelatedFilePreserved": "PASS",
+  "registryIntegration": "Disabled for isolated test; no permanent shortcuts or registry uninstall entry created"
+}

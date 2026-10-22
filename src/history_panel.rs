@@ -739,7 +739,7 @@ impl QuickTool {
                                 platform::copy_image(image.width(), image.height(), image.as_raw())
                             });
                         let _ = sender.send(outcome);
-                        context.request_repaint();
+                        context.request_repaint_of(ViewportId::ROOT);
                     });
                 } else {
                     self.message("复制 Pin 失败：原图资源不存在");
@@ -767,7 +767,7 @@ impl QuickTool {
                             platform::copy_image(image.width(), image.height(), image.as_raw())
                         });
                     let _ = sender.send(outcome);
-                    context.request_repaint();
+                    context.request_repaint_of(ViewportId::ROOT);
                 });
             }
         }

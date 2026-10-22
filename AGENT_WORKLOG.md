@@ -86,3 +86,49 @@
 - 未完成：无（本任务仅打包，整体Rust一致性目标仍按前条记录继续）。
 - 未验证：安装向导手工流程与正式系统集成。
 - 风险：未签名安装包；沿用当前Rust阶段版本的已知一致性限制。
+
+## 修复 Rust 面板无法唤起
+
+| 字段 | 内容 |
+| --- | --- |
+| 状态 | `已完成` |
+| 时间 | `2026-10-23T00:08:18+08:00` → `2026-10-23T00:41:14+08:00` |
+| 最后更新 | `2026-10-23T00:41:14+08:00` |
+| Git | `codex/rust-rewrite` · `b94bc0a` → 待提交 |
+
+### 目标
+定位并修复安装版面板无法唤起，交付已验证的修复安装包。
+
+### 修改
+- `vendor/eframe/src/native/run.rs`：Windows隐藏窗口由事件循环线程执行到期唤醒帧，避免等待不会送达的WM_PAINT，托盘/快捷键事件可被消费。
+- `src/ui.rs`、`src/history_panel.rs`：后台回调明确唤醒ROOT；统一显示、焦点、最小化恢复；清除旧失焦状态，避免同帧取消明确唤起。
+- `src/platform.rs`：增加快捷键线程注册、原生消息回调、唤醒及注销的回归。
+- `examples/hidden_wake.rs`：独立原生隐藏窗口回归；只使用测试窗口及后台通道。
+- `src/summon_probe.rs`、`scripts/Verify-Summon.ps1`：临时配置下连续三轮完整程序原生托盘回调验收；验证脚本显式释放进程句柄，避免影响紧随其后的卸载测试。
+- `Cargo.toml`、`Cargo.lock`：版本升为0.6.0-alpha.33。
+- `README.md`、`docs/migration.md`、`docs/panel-wake-verification.json`、`docs/installer-alpha33-verification.json`：根因、复现、构建及安装验证证据。
+- `releases/QuickTool-Rust-Setup-0.6.0-alpha.33-x64.exe`及`.sha256`：修复安装包21608760字节；二进制忽略，不纳入Git。
+- 两处 `AGENT_WORKLOG.md`：本任务单条持续记录。
+
+### 验证
+- `PASS` 修改前Git检查：工作区干净，HEAD b94bc0a。
+- `FAILED` 修复前独立原生隐藏窗口回归：hiddenBeforeWake=true、visibleAfterWake=false，复现托盘唤起事件无法消费的底层条件。
+- `PASS` 同一原生回归修复后：hiddenBeforeWake=true、visibleAfterWake=true。
+- `PASS` 原生快捷键线程回归：注册成功；只向本进程线程投递WM_HOTKEY，事件与唤醒到达；Drop后同一键可重新注册，未发送OS键盘输入。
+- `PASS` 最终源码 `cargo test --offline --all-targets`：143项通过、5项按需/环境检查跳过；最终日志 `.qa/panel-wake-full-tests.log`。
+- `PASS` `cargo clippy --offline --all-targets -- -D warnings`、`cargo fmt --all -- --check`：最终源码通过。
+- `PASS` 原有完整应用23步事件回归；编辑/菜单/日期/颜色逻辑保持通过。
+- `PASS` debug、发布态以及最终实际安装目录中的程序：各连续三轮托盘回调恢复主窗口并保持可见，开启hideOnBlur；仅向自身托盘通知窗口投递回调，无OS键鼠输入。
+- `PASS` 最终发布重新构建、便携目录与NSIS安装包生成；最终安装程序的主EXE与最终构建SHA256完全一致：3A0ACF019CB9479BB8031FAD953EC10F9A28268EDDB464021236511501587F1D。
+- `PASS` 修复安装包SHA256：108FAF41EA5F07B455607F017AA0CDBD45C326C19A6A87A751B654D590A6F351；973项已安装payload逐项校验。
+- `FAILED` 一次卸载自检残留主EXE：PowerShell测试脚本未及时释放已退出程序的进程句柄；脚本结束后EXE可独占打开。修正Dispose后重新安装/运行/卸载通过。
+- `PASS` 最终隔离卸载：安装文件全部删除，额外sentinel保留；正式快捷方式/注册表集成禁用，用户设置、历史及其他进程未修改。
+- `PASS` 原版源码589/589哈希未变；任务diff空白及敏感信息模式扫描通过。
+- `PASS` 只读进程检查：发现同一正式Rust安装目录有两个旧进程，未终止它们；更新说明要求退出旧版，避免快捷键占用。
+- `NOT_RUN` 物理鼠标/键盘、正式快捷方式和注册表集成：使用自身原生回调及隔离安装验收，不冒充手工操作。
+
+### 结论
+- 已完成：根因复现、隐藏窗口唤醒及焦点竞态修复、回归、修复版安装包及安装后的托盘唤起复验。
+- 未完成：无（此项修复不代表整体Rust UI一致性目标已完成）。
+- 未验证：物理键鼠手工流程、正式系统集成；迁移阶段其他已知差异沿用前述记录。
+- 风险：用户的两个旧版进程仍在运行，需退出后安装新版；安装包未签名。

@@ -1,0 +1,67 @@
+{
+  "measuredAt": "2026-10-23T00:27:40+08:00",
+  "version": "0.6.0-alpha.33",
+  "minimalBefore": {
+    "passed": false,
+    "hiddenBeforeWake": true,
+    "visibleAfterWake": false,
+    "method": "Native viewport, delayed worker channel and ROOT repaint; no OS input"
+  },
+  "minimalAfter": {
+    "passed": true,
+    "hiddenBeforeWake": true,
+    "visibleAfterWake": true,
+    "method": "Native viewport, delayed worker channel and ROOT repaint; no OS input"
+  },
+  "applicationTray": {
+    "passed": true,
+    "checks": [
+      {
+        "check": "native tray restores hidden panel without blur cancellation",
+        "round": 1,
+        "passed": true,
+        "hiddenBefore": true,
+        "callbackPosted": true,
+        "visibleAfter": true,
+        "remainsVisible": true
+      },
+      {
+        "check": "native tray restores hidden panel without blur cancellation",
+        "round": 2,
+        "passed": true,
+        "hiddenBefore": true,
+        "callbackPosted": true,
+        "visibleAfter": true,
+        "remainsVisible": true
+      },
+      {
+        "check": "native tray restores hidden panel without blur cancellation",
+        "round": 3,
+        "passed": true,
+        "hiddenBefore": true,
+        "callbackPosted": true,
+        "visibleAfter": true,
+        "remainsVisible": true
+      }
+    ],
+    "elapsedMs": 1823.5497,
+    "method": "Actual QuickTool, native hidden/visible state and own-process tray callback; hideOnBlur enabled; no OS keyboard/mouse input or user data"
+  },
+  "unitTests": {
+    "ignored": 5,
+    "failed": 0,
+    "passed": 143
+  },
+  "uiEvents": {
+    "passed": 23
+  },
+  "checks": {
+    "nativeHotkeyRegistrationCallbackAndUnregister": "PASS",
+    "fmt": "PASS",
+    "clippyAllTargets": "PASS"
+  },
+  "limits": [
+    "Tray callbacks are posted only to this process; physical mouse and keyboard acceptance remains separate",
+    "No user settings, history, clipboard, external launches, or unrelated processes were changed"
+  ]
+}

@@ -507,6 +507,29 @@ mod windows {
     mod tests {
         use super::*;
         #[test]
+        fn hotkey_native_message_wakes_and_unregisters() {
+            let (wake_tx, wake_rx) = mpsc::channel();
+            let shortcut = "Ctrl+Alt+Shift+F23";
+            let hotkey = hotkey(shortcut, move || {
+                let _ = wake_tx.send(());
+            })
+            .expect("Isolated regression shortcut must be available");
+            // Send only to our own registered worker. This does not inject a
+            // keyboard event into Windows or any other application.
+            unsafe {
+                assert_ne!(PostThreadMessageW(hotkey.thread_id, WM_HOTKEY, 1, 0), 0);
+            }
+            hotkey
+                .events
+                .recv_timeout(std::time::Duration::from_secs(2))
+                .unwrap();
+            wake_rx
+                .recv_timeout(std::time::Duration::from_secs(2))
+                .unwrap();
+            drop(hotkey);
+            drop(super::hotkey(shortcut, || {}).expect("Drop must release the shortcut"));
+        }
+        #[test]
         fn shortcut_validation() {
             assert!(parse_shortcut("Ctrl+A+B").is_err());
             assert!(parse_shortcut("Ctrl+").is_err());

@@ -169,6 +169,7 @@ impl<T: WinitApp> WinitAppWrapper<T> {
 
     fn check_redraw_requests(&mut self, event_loop: &ActiveEventLoop) {
         let now = Instant::now();
+        let mut hidden_windows = Vec::new();
 
         self.windows_next_repaint_times
             .retain(|window_id, repaint_time| {
@@ -179,13 +180,25 @@ impl<T: WinitApp> WinitAppWrapper<T> {
                 event_loop.set_control_flow(ControlFlow::Poll);
 
                 if let Some(window) = self.winit_app.window(*window_id) {
-                    log::trace!("request_redraw for {window_id:?}");
-                    window.request_redraw();
+                    if cfg!(target_os = "windows") && window.is_visible() == Some(false) {
+                        // Win32 does not deliver WM_PAINT for hidden windows.
+                        // Process the frame on the event-loop thread so that a
+                        // tray/hotkey wake can consume its event and show it.
+                        hidden_windows.push(*window_id);
+                    } else {
+                        log::trace!("request_redraw for {window_id:?}");
+                        window.request_redraw();
+                    }
                 } else {
                     log::trace!("No window found for {window_id:?}");
                 }
                 false
             });
+
+        for window_id in hidden_windows {
+            let result = self.winit_app.run_ui_and_paint(event_loop, window_id);
+            self.handle_event_result(event_loop, result);
+        }
 
         let next_repaint_time = self.windows_next_repaint_times.values().min().copied();
         if let Some(next_repaint_time) = next_repaint_time {
