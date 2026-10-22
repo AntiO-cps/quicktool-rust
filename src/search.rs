@@ -1,4 +1,4 @@
-use crate::core::normalize_search;
+use crate::core::{js_space, normalize_search};
 use serde::Serialize;
 use unicode_normalization::{UnicodeNormalization, char::is_combining_mark};
 
@@ -9,14 +9,14 @@ pub struct Match {
     pub indexes: Vec<Option<usize>>,
 }
 fn fold(c: char) -> Vec<char> {
-    c.to_string()
-        .nfkd()
-        .flat_map(char::to_lowercase)
+    crate::js_case::lower(&c.to_string().nfkd().collect::<String>())
+        .chars()
         .filter(|c| !is_combining_mark(*c))
         .collect()
 }
+
 fn separator(c: char) -> bool {
-    c.is_whitespace() || "_-–—()（）[]【】.,，。'\"·/\\:;".contains(c)
+    js_space(c) || "_-–—()（）[]【】.,，。'\"·/\\:;".contains(c)
 }
 pub fn fuzzy(query: &str, target: &str) -> Match {
     let fail = || Match {
@@ -24,7 +24,7 @@ pub fn fuzzy(query: &str, target: &str) -> Match {
         score: 0.,
         indexes: vec![],
     };
-    if target.is_empty() || query.trim().is_empty() {
+    if target.is_empty() || query.trim_matches(js_space).is_empty() {
         return fail();
     }
     let chars: Vec<char> = target.chars().collect();
@@ -35,7 +35,7 @@ pub fn fuzzy(query: &str, target: &str) -> Match {
         if i == 0
             || chars
                 .get(i - 1)
-                .is_some_and(|c| c.is_whitespace() || "_-–—()（）[]【】.,，。/\\:;".contains(*c))
+                .is_some_and(|c| js_space(*c) || "_-–—()（）[]【】.,，。/\\:;".contains(*c))
         {
             boundaries.push(hay.len());
         }
@@ -47,18 +47,27 @@ pub fn fuzzy(query: &str, target: &str) -> Match {
         }
     }
     let hay: Vec<u16> = hay.iter().collect::<String>().encode_utf16().collect();
-    let tokens: Vec<Vec<u16>> = query
-        .split_whitespace()
-        .map(|s| {
-            s.chars()
-                .flat_map(fold)
-                .filter(|c| !separator(*c))
-                .collect::<String>()
-                .encode_utf16()
-                .collect()
-        })
-        .filter(|v: &Vec<_>| !v.is_empty())
-        .collect();
+    // Ordered query tokens cannot consume more UTF-16 units than the target.
+    // Stop early before normalizing megabytes of Base64 for each short alias.
+    let mut tokens = Vec::new();
+    let mut units = 0;
+    for word in query.split(js_space) {
+        for c in word.chars().flat_map(fold).filter(|c| !separator(*c)) {
+            units += c.len_utf16();
+            if units > hay.len() {
+                return fail();
+            }
+        }
+        let token: Vec<u16> = crate::js_case::lower(&word.nfkd().collect::<String>())
+            .chars()
+            .filter(|c| !is_combining_mark(*c) && !separator(*c))
+            .collect::<String>()
+            .encode_utf16()
+            .collect();
+        if !token.is_empty() {
+            tokens.push(token);
+        }
+    }
     if hay.is_empty() || tokens.is_empty() {
         return fail();
     }
@@ -132,7 +141,7 @@ pub fn fuzzy(query: &str, target: &str) -> Match {
         }
     }
     let score = (total / tokens.len() as f64
-        + if normalize_search(target) == normalize_search(query.trim()) {
+        + if normalize_search(target) == normalize_search(query.trim_matches(js_space)) {
             0.08
         } else {
             0.

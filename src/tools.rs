@@ -232,7 +232,7 @@ pub fn detect_scored(q: &str) -> Vec<(String, ResultItem, f64)> {
         if compact { 0.93 } else { 0.98 },
         if compact { 4 } else { usize::MAX },
     );
-    if q.encode_utf16().count() < 500 && q.to_uppercase() != q.to_lowercase() {
+    if q.encode_utf16().count() < 500 && crate::js_case::upper(q) != crate::js_case::lower(q) {
         add("case", 0.28, usize::MAX)
     }
     if raw.len() >= 8 && has(5) && crate::text::base64_decode(q).is_some_and(|s| !s.is_empty()) {

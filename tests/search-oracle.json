@@ -1,0 +1,4327 @@
+{
+  "runtime": {
+    "node": "22.19.0",
+    "acorn": "8.15.0",
+    "ada": "2.9.2",
+    "amaro": "1.1.0",
+    "ares": "1.34.5",
+    "brotli": "1.0.9",
+    "cjs_module_lexer": "2.1.0",
+    "cldr": "44.1",
+    "icu": "74.2",
+    "llhttp": "9.3.0",
+    "modules": "139",
+    "napi": "10",
+    "nbytes": "0.1.1",
+    "ncrypto": "0.0.1",
+    "nghttp2": "1.64.0",
+    "openssl": "0.0.0",
+    "simdjson": "3.13.0",
+    "simdutf": "7.3.3",
+    "sqlite": "3.50.4",
+    "tz": "2025b",
+    "undici": "6.21.2",
+    "unicode": "15.1",
+    "uv": "1.51.0",
+    "uvwasi": "0.0.21",
+    "v8": "14.0.365.4-electron.0",
+    "zlib": "1.3.1",
+    "zstd": "1.5.8",
+    "electron": "38.1.2",
+    "chrome": "140.0.7339.133"
+  },
+  "cases": [
+    {
+      "query": "𜳖",
+      "target": "𜳖",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          null
+        ]
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "𜳖",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "Ᲊ",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Ᲊ",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "ᲊ",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ᲊ",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a",
+      "target": "a",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "a",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a",
+      "target": "alpha beta",
+      "result": {
+        "success": true,
+        "score": 0.993,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "a",
+      "target": "﻿alpha",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          1
+        ]
+      }
+    },
+    {
+      "query": "a",
+      "target": "alphabeta",
+      "result": {
+        "success": true,
+        "score": 0.993,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "a",
+      "target": "a-b",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "a",
+      "target": "Straße",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          3
+        ]
+      }
+    },
+    {
+      "query": "a",
+      "target": "İstanbul",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          3
+        ]
+      }
+    },
+    {
+      "query": "a",
+      "target": "éclair",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          3
+        ]
+      }
+    },
+    {
+      "query": "a",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a",
+      "target": "😀abc",
+      "result": {
+        "success": true,
+        "score": 0.855,
+        "indexes": [
+          2
+        ]
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "ος",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "ος",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "query": "ος",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ος",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "ΟΣ",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "οσ",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "ΟΣ́",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "οσ",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "ος",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ΟΣ́",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "alpha beta",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "﻿alpha",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "alphabeta",
+      "result": {
+        "success": true,
+        "score": 0.993,
+        "indexes": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "﻿alpha",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "alphabeta",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alphabeta",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "alpha beta",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "alphabeta",
+      "result": {
+        "success": true,
+        "score": 0.9185,
+        "indexes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "alpha beta",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "alpha beta",
+      "result": {
+        "success": true,
+        "score": 0.9430000000000001,
+        "indexes": [
+          0,
+          6
+        ]
+      }
+    },
+    {
+      "query": "A B",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "alphabeta",
+      "result": {
+        "success": true,
+        "score": 0.9155,
+        "indexes": [
+          0,
+          6
+        ]
+      }
+    },
+    {
+      "query": "A B",
+      "target": "a-b",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          2
+        ]
+      }
+    },
+    {
+      "query": "A B",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "İstanbul",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "query": "A B",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "A B",
+      "target": "😀abc",
+      "result": {
+        "success": true,
+        "score": 0.855,
+        "indexes": [
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "alpha beta",
+      "result": {
+        "success": true,
+        "score": 0.856,
+        "indexes": [
+          4,
+          6
+        ]
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "alphabeta",
+      "result": {
+        "success": true,
+        "score": 0.6826666666666668,
+        "indexes": [
+          4,
+          6
+        ]
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "a-b",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          2
+        ]
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "İstanbul",
+      "result": {
+        "success": true,
+        "score": 0.6886666666666668,
+        "indexes": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "a/b",
+      "target": "😀abc",
+      "result": {
+        "success": true,
+        "score": 0.8679999999999999,
+        "indexes": [
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "Straße",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "Straße",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "İstanbul",
+      "result": {
+        "success": true,
+        "score": 0.993,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "İ",
+      "target": "éclair",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          4
+        ]
+      }
+    },
+    {
+      "query": "İ",
+      "target": "ﬁle",
+      "result": {
+        "success": true,
+        "score": 0.855,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "İ",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "İ",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "alpha beta",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          7
+        ]
+      }
+    },
+    {
+      "query": "é",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "alphabeta",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          7
+        ]
+      }
+    },
+    {
+      "query": "é",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "Straße",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          5
+        ]
+      }
+    },
+    {
+      "query": "é",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "éclair",
+      "result": {
+        "success": true,
+        "score": 0.993,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "é",
+      "target": "ﬁle",
+      "result": {
+        "success": true,
+        "score": 0.855,
+        "indexes": [
+          2
+        ]
+      }
+    },
+    {
+      "query": "é",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "é",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "alpha beta",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          7
+        ]
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "alphabeta",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          7
+        ]
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "Straße",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          5
+        ]
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "éclair",
+      "result": {
+        "success": true,
+        "score": 0.993,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "ﬁle",
+      "result": {
+        "success": true,
+        "score": 0.855,
+        "indexes": [
+          2
+        ]
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ｅ",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "ﬁle",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "fi",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "fi",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀",
+      "target": "😀",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          null
+        ]
+      }
+    },
+    {
+      "query": "😀",
+      "target": "😀abc",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "😀a",
+      "target": "😀abc",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "query": "---",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "---",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "ͅ",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "a",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "alpha beta",
+      "result": {
+        "success": true,
+        "score": 0.993,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "﻿alpha",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          1
+        ]
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "alphabeta",
+      "result": {
+        "success": true,
+        "score": 0.993,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "a-b",
+      "result": {
+        "success": true,
+        "score": 1,
+        "indexes": [
+          0
+        ]
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "Straße",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          3
+        ]
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "İstanbul",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          3
+        ]
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "éclair",
+      "result": {
+        "success": true,
+        "score": 0.838,
+        "indexes": [
+          3
+        ]
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "aͅ",
+      "target": "😀abc",
+      "result": {
+        "success": true,
+        "score": 0.855,
+        "indexes": [
+          2
+        ]
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "𜳖",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "Ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "ᲊ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "a",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "ΟΣ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "ΟΣ.txt",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "ος",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "οσ",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "ΟΣ́",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "alpha beta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "﻿alpha",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "alphabeta",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "a-b",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "Straße",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "İstanbul",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "éclair",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "ﬁle",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "😀",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    },
+    {
+      "query": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "target": "😀abc",
+      "result": {
+        "success": false,
+        "score": 0,
+        "indexes": []
+      }
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 use crate::core::ResultItem;
+pub use crate::screen_picker::{EyeDropper, EyeDropperPreview, configure_screen_picker};
 use std::{path::PathBuf, sync::mpsc};
 
 pub fn known_folders() -> Vec<(String, PathBuf)> {

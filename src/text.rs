@@ -1,11 +1,14 @@
-use crate::core::ResultItem;
+use crate::{
+    core::ResultItem,
+    js_case::{lower, upper},
+};
 use base64::{
     Engine,
     engine::general_purpose::{STANDARD, STANDARD_NO_PAD},
 };
 fn words(s: &str) -> Vec<&str> {
     s.trim()
-        .split(|c: char| !c.is_alphanumeric())
+        .split(|c: char| !crate::js_case::is_alphanumeric(c))
         .filter(|s| !s.is_empty())
         .collect()
 }
@@ -13,32 +16,44 @@ fn capital(s: &str) -> String {
     let mut chars = s.chars();
     chars
         .next()
-        .map(|c| c.to_uppercase().collect::<String>() + &chars.as_str().to_lowercase())
+        .map(|c| {
+            (if c.len_utf16() == 2 {
+                c.to_string()
+            } else {
+                upper(&c.to_string())
+            }) + &lower(chars.as_str())
+        })
         .unwrap_or_default()
 }
 pub fn case_results(q: &str) -> Vec<ResultItem> {
-    let lower = q.to_lowercase();
+    let lowered = lower(q);
     let mut previous = None;
     let mut title = String::new();
-    for c in lower.chars() {
+    for c in lowered.chars() {
         let word = |c: char| c.is_ascii_alphanumeric() || c == '_';
         let boundary = previous.is_some_and(word) != word(c);
-        if boundary && c.is_alphabetic() {
-            title.extend(c.to_uppercase());
+        if boundary && crate::js_case::is_letter(c) {
+            title.push_str(&upper(&c.to_string()));
         } else {
             title.push(c);
         }
         previous = Some(c);
     }
-    let mut chars = lower.chars();
+    let mut chars = lowered.chars();
     let sentence = chars
         .next()
-        .map(|c| c.to_uppercase().collect::<String>() + chars.as_str())
+        .map(|c| {
+            (if c.len_utf16() == 2 {
+                c.to_string()
+            } else {
+                upper(&c.to_string())
+            }) + chars.as_str()
+        })
         .unwrap_or_default();
     let words = words(q);
     vec![
-        ResultItem::new("全大写", q.to_uppercase()),
-        ResultItem::new("全小写", &lower),
+        ResultItem::new("全大写", upper(q)),
+        ResultItem::new("全小写", &lowered),
         ResultItem::new("首字母大写", title),
         ResultItem::new("Sentence case", sentence),
         ResultItem::new(
@@ -46,11 +61,7 @@ pub fn case_results(q: &str) -> Vec<ResultItem> {
             q.chars()
                 .map(|c| {
                     let s = c.to_string();
-                    if s == s.to_uppercase() {
-                        s.to_lowercase()
-                    } else {
-                        s.to_uppercase()
-                    }
+                    if s == upper(&s) { lower(&s) } else { upper(&s) }
                 })
                 .collect::<String>(),
         ),
@@ -59,7 +70,7 @@ pub fn case_results(q: &str) -> Vec<ResultItem> {
             words
                 .iter()
                 .enumerate()
-                .map(|(i, w)| if i == 0 { w.to_lowercase() } else { capital(w) })
+                .map(|(i, w)| if i == 0 { lower(w) } else { capital(w) })
                 .collect::<String>(),
         ),
         ResultItem::new(
@@ -68,19 +79,11 @@ pub fn case_results(q: &str) -> Vec<ResultItem> {
         ),
         ResultItem::new(
             "snake_case",
-            words
-                .iter()
-                .map(|w| w.to_lowercase())
-                .collect::<Vec<_>>()
-                .join("_"),
+            words.iter().map(|w| lower(w)).collect::<Vec<_>>().join("_"),
         ),
         ResultItem::new(
             "kebab-case",
-            words
-                .iter()
-                .map(|w| w.to_lowercase())
-                .collect::<Vec<_>>()
-                .join("-"),
+            words.iter().map(|w| lower(w)).collect::<Vec<_>>().join("-"),
         ),
     ]
 }

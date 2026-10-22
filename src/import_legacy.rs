@@ -225,6 +225,7 @@ fn convert(
         id: id.clone(),
         input: text(row, "input"),
         tool,
+        tool_name: row["toolName"].as_str().map(str::to_owned),
         title: if row["action"].is_string() {
             text(row, "action")
         } else {
@@ -237,6 +238,8 @@ fn convert(
         thumbnail: None,
         mode,
         image_asset: None,
+        image_source_asset: None,
+        image_source_mime: None,
     };
     if let Some(ps) = row.get("pinState").filter(|v| !v.is_null()) {
         let kind = text(ps, "type");
@@ -309,7 +312,10 @@ fn convert(
         });
         h.thumbnail = asset;
     } else if row["outputType"] == "image" {
-        let asset = import_image(source, dest, &row["outputData"])?;
+        let encoded = legacy_encoded_source(source, &row["outputData"])?;
+        let asset = import_encoded_image(dest, &encoded)?;
+        h.image_source_asset = Some(crate::pin_storage::prepare_encoded_source(dest, &encoded)?);
+        h.image_source_mime = Some(encoded.mime);
         h.thumbnail = Some(asset.clone());
         h.image_asset = Some(asset);
     }
@@ -357,6 +363,13 @@ fn annotation(v: &Value, i: usize, width: f32) -> io::Result<Annotation> {
     Ok(a)
 }
 fn import_image(source: &Path, dest: &Path, value: &Value) -> io::Result<String> {
+    let encoded = legacy_encoded_source(source, value)?;
+    import_encoded_image(dest, &encoded)
+}
+fn legacy_encoded_source(
+    source: &Path,
+    value: &Value,
+) -> io::Result<crate::storage::EncodedImageSource> {
     let value = value.as_str().ok_or_else(|| error("图片资源为空"))?;
     let data = if let Some(hash) = value.strip_prefix("asset:") {
         crate::pin_storage::asset_path(source, value, false)?;
@@ -381,7 +394,22 @@ fn import_image(source: &Path, dest: &Path, value: &Value) -> io::Result<String>
         return Err(error("旧图片DataURL必须使用Base64"));
     }
     let bytes = STANDARD.decode(payload).map_err(io::Error::other)?;
-    if header.split(';').next() == Some("data:image/svg+xml") {
+    Ok(crate::storage::EncodedImageSource {
+        bytes: bytes.into(),
+        mime: header
+            .strip_prefix("data:")
+            .unwrap()
+            .strip_suffix(";base64")
+            .unwrap()
+            .into(),
+    })
+}
+fn import_encoded_image(
+    dest: &Path,
+    encoded: &crate::storage::EncodedImageSource,
+) -> io::Result<String> {
+    let bytes = encoded.bytes.as_ref();
+    if encoded.mime == "image/svg+xml" {
         let mut options = crate::annotations::svg_options();
         let external = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(false));
         let detected = external.clone();
@@ -389,7 +417,7 @@ fn import_image(source: &Path, dest: &Path, value: &Value) -> io::Result<String>
             detected.store(true, std::sync::atomic::Ordering::Relaxed);
             None
         });
-        let tree = resvg::usvg::Tree::from_data(&bytes, &options).map_err(io::Error::other)?;
+        let tree = resvg::usvg::Tree::from_data(bytes, &options).map_err(io::Error::other)?;
         if external.load(std::sync::atomic::Ordering::Relaxed) {
             return Err(error("SVG含外部资源，未读取外部文件；记录已保留"));
         }

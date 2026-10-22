@@ -1,0 +1,2532 @@
+{
+  "runtime": {
+    "node": "22.19.0",
+    "acorn": "8.15.0",
+    "ada": "2.9.2",
+    "amaro": "1.1.0",
+    "ares": "1.34.5",
+    "brotli": "1.0.9",
+    "cjs_module_lexer": "2.1.0",
+    "cldr": "44.1",
+    "icu": "74.2",
+    "llhttp": "9.3.0",
+    "modules": "139",
+    "napi": "10",
+    "nbytes": "0.1.1",
+    "ncrypto": "0.0.1",
+    "nghttp2": "1.64.0",
+    "openssl": "0.0.0",
+    "simdjson": "3.13.0",
+    "simdutf": "7.3.3",
+    "sqlite": "3.50.4",
+    "tz": "2025b",
+    "undici": "6.21.2",
+    "unicode": "15.1",
+    "uv": "1.51.0",
+    "uvwasi": "0.0.21",
+    "v8": "14.0.365.4-electron.0",
+    "zlib": "1.3.1",
+    "zstd": "1.5.8",
+    "electron": "38.1.2",
+    "chrome": "140.0.7339.133"
+  },
+  "method": "Original Electron search input, webContents.sendInputEvent only; no OS input, clipboard, or user profile",
+  "cases": [
+    {
+      "value": "alpha beta gamma",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 0,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "beta gamma",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 8,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 8,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 6,
+        "end": 8,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 8,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 11,
+        "end": 11,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 8,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 8,
+        "end": 11,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 8,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha ta gamma",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 8,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 8,
+        "end": 8,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 8,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha begamma",
+        "start": 8,
+        "end": 8,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 8,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 8,
+        "end": 8,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 16,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 11,
+        "end": 11,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 16,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 11,
+        "end": 16,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 16,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 16,
+        "end": 16,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 16,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 16,
+        "end": 16,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 16,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha beta ",
+        "start": 11,
+        "end": 11,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 16,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 16,
+        "end": 16,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 16,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 16,
+        "end": 16,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha beta gamma",
+      "caret": 16,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha beta gamma",
+        "start": 16,
+        "end": 16,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 9,
+        "end": 9,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 0,
+        "end": 9,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "ghi",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 6,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 6,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 0,
+        "end": 6,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 6,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 9,
+        "end": 9,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 6,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 6,
+        "end": 9,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 6,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "f  ghi",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 6,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 6,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "abc_deghi",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 6,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 12,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 9,
+        "end": 9,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 12,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 9,
+        "end": 12,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 12,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 12,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 12,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "abc_def  ",
+        "start": 9,
+        "end": 9,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 12,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 12,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "abc_def  ghi",
+      "caret": 12,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "abc_def  ghi",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 5,
+        "end": 5,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 0,
+        "end": 5,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "...beta",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 6,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 5,
+        "end": 5,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 6,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 5,
+        "end": 6,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 6,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 8,
+        "end": 8,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 6,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 6,
+        "end": 8,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 6,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha..beta",
+        "start": 5,
+        "end": 5,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 6,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 6,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha.beta",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 6,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 12,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 8,
+        "end": 8,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 12,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 8,
+        "end": 12,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 12,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 12,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 12,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha...",
+        "start": 8,
+        "end": 8,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 12,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 12,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "alpha...beta",
+      "caret": 12,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "alpha...beta",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 2,
+        "end": 2,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 0,
+        "end": 2,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "世界 abc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 4,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 2,
+        "end": 2,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 4,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 2,
+        "end": 4,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 4,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 5,
+        "end": 5,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 4,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 4,
+        "end": 5,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 4,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "你好 abc",
+        "start": 2,
+        "end": 2,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 4,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 4,
+        "end": 4,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 4,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "你好世界abc",
+        "start": 4,
+        "end": 4,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 4,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 4,
+        "end": 4,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 8,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 5,
+        "end": 5,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 8,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 5,
+        "end": 8,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 8,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 8,
+        "end": 8,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 8,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 8,
+        "end": 8,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 8,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "你好世界 ",
+        "start": 5,
+        "end": 5,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 8,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 8,
+        "end": 8,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 8,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 8,
+        "end": 8,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "你好世界 abc",
+      "caret": 8,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "你好世界 abc",
+        "start": 8,
+        "end": 8,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 3,
+        "end": 3,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 0,
+        "end": 3,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "emoji 👨‍👩‍👧‍👦 test",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 12,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 9,
+        "end": 9,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 12,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 9,
+        "end": 20,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 12,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 21,
+        "end": 21,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 12,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 20,
+        "end": 21,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 12,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "é emoji  test",
+        "start": 9,
+        "end": 9,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 12,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 12,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦test",
+        "start": 20,
+        "end": 20,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 12,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 25,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 21,
+        "end": 21,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 25,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 21,
+        "end": 25,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 25,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 25,
+        "end": 25,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 25,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 25,
+        "end": 25,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 25,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 ",
+        "start": 21,
+        "end": 21,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 25,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 25,
+        "end": 25,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 25,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 25,
+        "end": 25,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "é emoji 👨‍👩‍👧‍👦 test",
+      "caret": 25,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "é emoji 👨‍👩‍👧‍👦 test",
+        "start": 25,
+        "end": 25,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 5,
+        "end": 5,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 0,
+        "end": 5,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "Ᲊc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 4,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 4,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 0,
+        "end": 4,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 4,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 7,
+        "end": 7,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 4,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 4,
+        "end": 7,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 4,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": " Ᲊc",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 4,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 4,
+        "end": 4,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 4,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "A𐐀B",
+        "start": 4,
+        "end": 4,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 4,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 4,
+        "end": 4,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 7,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 7,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 6,
+        "end": 7,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 7,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 7,
+        "end": 7,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 7,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 7,
+        "end": 7,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 7,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "A𐐀B Ᲊ",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 7,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 7,
+        "end": 7,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 7,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 7,
+        "end": 7,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "A𐐀B Ᲊc",
+      "caret": 7,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "A𐐀B Ᲊc",
+        "start": 7,
+        "end": 7,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 0,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "beta",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 6,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 1,
+        "end": 1,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 6,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 1,
+        "end": 6,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 6,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 11,
+        "end": 11,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 6,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 6,
+        "end": 11,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 6,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "﻿beta",
+        "start": 1,
+        "end": 1,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 6,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 6,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "﻿alpha",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 6,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 6,
+        "end": 6,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 11,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 7,
+        "end": 7,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 11,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 7,
+        "end": 11,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 11,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 11,
+        "end": 11,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 11,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 11,
+        "end": 11,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 11,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "﻿alpha",
+        "start": 7,
+        "end": 7,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 11,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 11,
+        "end": 11,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 11,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 11,
+        "end": 11,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "﻿alphabeta",
+      "caret": 11,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "﻿alphabeta",
+        "start": 11,
+        "end": 11,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 0,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 0,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 0,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 0,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "/ab+CD== hello",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 0,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 0,
+        "end": 0,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 13,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 13,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 12,
+        "end": 13,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 13,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 15,
+        "end": 15,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 13,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 13,
+        "end": 15,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 13,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "YWJjZGVmZ2hpab+CD== hello",
+        "start": 12,
+        "end": 12,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 13,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 13,
+        "end": 13,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 13,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/+CD== hello",
+        "start": 13,
+        "end": 13,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 13,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 13,
+        "end": 13,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 26,
+      "key": "Left",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 21,
+        "end": 21,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 26,
+      "key": "Left",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 21,
+        "end": 26,
+        "direction": "backward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 26,
+      "key": "Right",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 26,
+        "end": 26,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 26,
+      "key": "Right",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 26,
+        "end": 26,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 26,
+      "key": "Backspace",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== ",
+        "start": 21,
+        "end": 21,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 26,
+      "key": "Backspace",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 26,
+        "end": 26,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 26,
+      "key": "Delete",
+      "control": true,
+      "shift": false,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 26,
+        "end": 26,
+        "direction": "forward"
+      }
+    },
+    {
+      "value": "YWJjZGVmZ2hp/ab+CD== hello",
+      "caret": 26,
+      "key": "Delete",
+      "control": true,
+      "shift": true,
+      "actual": {
+        "value": "YWJjZGVmZ2hp/ab+CD== hello",
+        "start": 26,
+        "end": 26,
+        "direction": "forward"
+      }
+    }
+  ]
+}

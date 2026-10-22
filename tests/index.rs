@@ -76,7 +76,7 @@ fn persistent_index_filters_watches_and_reconfigures() {
     assert!(search(&index, "hidden", 6).is_empty());
     assert_eq!(
         search(&index, &files.join("привет.txt").to_string_lossy(), 60).len(),
-        1
+        0
     );
     std::fs::write(files.join("created.txt"), "created").unwrap();
     let deadline = Instant::now() + Duration::from_secs(6);
@@ -117,7 +117,7 @@ fn persistent_index_filters_watches_and_reconfigures() {
     cleanup(&root);
 }
 #[test]
-fn older_database_paths_are_normalized_without_losing_entries() {
+fn older_database_preserves_entries_and_original_ascii_path_matching() {
     let root = root();
     std::fs::create_dir_all(&root).unwrap();
     let path = root.join("index.db");
@@ -131,8 +131,64 @@ fn older_database_paths_are_normalized_without_losing_entries() {
     drop(db);
     let upgraded = quicktool_rust::index::open(&path).unwrap();
     let result = quicktool_rust::index::query(&upgraded, "c:\\папка\\привет.txt", 10).unwrap();
-    assert_eq!(result.len(), 1);
-    assert_eq!(result[0].name, "ПРИВЕТ.txt");
+    assert!(result.is_empty());
+    let by_name = quicktool_rust::index::query(&upgraded, "\"\"", 10).unwrap();
+    assert_eq!(by_name.len(), 1);
+    assert_eq!(by_name[0].name, "ПРИВЕТ.txt");
     drop(upgraded);
+    cleanup(&root);
+}
+#[test]
+fn legacy_path_tokens_migrate_atomically_and_keep_search_and_cleanup() {
+    let root = root();
+    std::fs::create_dir_all(&root).unwrap();
+    let path = root.join("legacy.db");
+    let old = rusqlite::Connection::open(&path).unwrap();
+    old.execute_batch("CREATE TABLE entries(path TEXT PRIMARY KEY,name TEXT,search TEXT,root TEXT,generation INTEGER,is_dir INTEGER,size INTEGER,modified INTEGER);
+        CREATE TABLE tokens(token TEXT,path TEXT,PRIMARY KEY(token,path)) WITHOUT ROWID;
+        CREATE INDEX token_paths ON tokens(path);
+        CREATE TRIGGER cleanup AFTER DELETE ON entries BEGIN DELETE FROM tokens WHERE path=old.path;END;
+        INSERT INTO entries(rowid,path,name,search,root,generation,is_dir,size,modified) VALUES(9,'C:\\synthetic\\alpha.txt','alpha.txt','alpha.txt','C:\\synthetic',1,0,1,0);
+        INSERT INTO entries(rowid,path,name,search,root,generation,is_dir,size,modified) VALUES(3,'C:\\synthetic\\beta.txt','beta.txt','beta.txt','C:\\synthetic',1,0,1,0);
+        INSERT INTO tokens VALUES('al','C:\\synthetic\\alpha.txt'),('lp','C:\\synthetic\\alpha.txt'),('ph','C:\\synthetic\\alpha.txt'),('ha','C:\\synthetic\\alpha.txt');").unwrap();
+    drop(old);
+    let migrated = quicktool_rust::index::open(&path).unwrap();
+    let columns = migrated
+        .prepare("PRAGMA table_info(tokens)")
+        .unwrap()
+        .query_map([], |r| r.get::<_, String>(1))
+        .unwrap()
+        .collect::<Result<Vec<_>, _>>()
+        .unwrap();
+    assert_eq!(columns, ["token", "entry_id"]);
+    assert_eq!(
+        quicktool_rust::index::query(&migrated, "alpha", 40).unwrap()[0].name,
+        "alpha.txt"
+    );
+    assert_eq!(
+        migrated
+            .query_row("SELECT entry_id FROM tokens WHERE token='al'", [], |r| r
+                .get::<_, i64>(0))
+            .unwrap(),
+        9
+    );
+    migrated
+        .execute("DELETE FROM entries WHERE name='alpha.txt'", [])
+        .unwrap();
+    assert_eq!(
+        migrated
+            .query_row("SELECT count(*) FROM tokens", [], |r| r.get::<_, i64>(0))
+            .unwrap(),
+        0
+    );
+    drop(migrated);
+    let reopened = quicktool_rust::index::open(&path).unwrap();
+    assert_eq!(
+        reopened
+            .query_row("SELECT count(*) FROM entries", [], |r| r.get::<_, i64>(0))
+            .unwrap(),
+        1
+    );
+    drop(reopened);
     cleanup(&root);
 }

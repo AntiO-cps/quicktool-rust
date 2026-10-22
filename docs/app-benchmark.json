@@ -1,10 +1,432 @@
 {
-  "measured_at": "2026-10-20T17:08:05.266Z",
+  "measured_at": "2026-10-22T15:34:42.283Z",
   "platform": "win32",
   "architecture": "x64",
   "cpu": "AMD Ryzen 9 7940H w/ Radeon 780M Graphics     ",
   "dpi": 1.25,
   "runs": 3,
+  "idle_root_frames": [
+    11,
+    10,
+    11
+  ],
+  "raw_samples": {
+    "rust": [
+      {
+        "version": "0.6.0-alpha.32",
+        "pid": 80996,
+        "profile": "release",
+        "dpi": 1.25,
+        "first_stable_frame_ms": 833.3595,
+        "idle_seconds": 5,
+        "idle_memory": {
+          "working_set_bytes": 245055488,
+          "private_bytes": 207421440,
+          "peak_working_set_bytes": 245055488
+        },
+        "idle_root_frames": 11,
+        "query_samples": [
+          {
+            "query": "0xFF",
+            "rebuild_ms": 5.9129,
+            "query_to_stable_layout_ms": 12.8955,
+            "rows": 16
+          },
+          {
+            "query": "100cm",
+            "rebuild_ms": 1.661,
+            "query_to_stable_layout_ms": 9.4466,
+            "rows": 16
+          },
+          {
+            "query": "#7c3aed",
+            "rebuild_ms": 1.5324,
+            "query_to_stable_layout_ms": 112.37859999999999,
+            "rows": 16
+          },
+          {
+            "query": "/时间 2026-10-20 12:34:56",
+            "rebuild_ms": 0.1273,
+            "query_to_stable_layout_ms": 3.5429,
+            "rows": 13
+          },
+          {
+            "query": "/json {\"a\":1}",
+            "rebuild_ms": 0.0467,
+            "query_to_stable_layout_ms": 7.4039,
+            "rows": 2
+          },
+          {
+            "query": "/base64 Rust 性能",
+            "rebuild_ms": 0.0649,
+            "query_to_stable_layout_ms": 9.993500000000001,
+            "rows": 2
+          },
+          {
+            "query": "/国家 CN",
+            "rebuild_ms": 0.347,
+            "query_to_stable_layout_ms": 97.6234,
+            "rows": 2
+          },
+          {
+            "query": "/大小写 QuickTool Rust",
+            "rebuild_ms": 0.0306,
+            "query_to_stable_layout_ms": 53.367900000000006,
+            "rows": 9
+          },
+          {
+            "query": "/unicode U+00FF",
+            "rebuild_ms": 0.0576,
+            "query_to_stable_layout_ms": 136.4686,
+            "rows": 6
+          },
+          {
+            "query": "/帮助",
+            "rebuild_ms": 0.1307,
+            "query_to_stable_layout_ms": 57.372,
+            "rows": 46
+          }
+        ],
+        "measurement": "query_to_stable_layout includes resize animation and CPU UI layout; excludes OS display presentation; idle memory includes native glow/backdrop"
+      },
+      {
+        "version": "0.6.0-alpha.32",
+        "pid": 42204,
+        "profile": "release",
+        "dpi": 1.25,
+        "first_stable_frame_ms": 1124.9834,
+        "idle_seconds": 5,
+        "idle_memory": {
+          "working_set_bytes": 244858880,
+          "private_bytes": 208343040,
+          "peak_working_set_bytes": 244858880
+        },
+        "idle_root_frames": 10,
+        "query_samples": [
+          {
+            "query": "0xFF",
+            "rebuild_ms": 5.8149999999999995,
+            "query_to_stable_layout_ms": 12.5259,
+            "rows": 16
+          },
+          {
+            "query": "100cm",
+            "rebuild_ms": 1.2535,
+            "query_to_stable_layout_ms": 11.2346,
+            "rows": 16
+          },
+          {
+            "query": "#7c3aed",
+            "rebuild_ms": 1.5892,
+            "query_to_stable_layout_ms": 54.428200000000004,
+            "rows": 16
+          },
+          {
+            "query": "/时间 2026-10-20 12:34:56",
+            "rebuild_ms": 0.0915,
+            "query_to_stable_layout_ms": 4.060700000000001,
+            "rows": 13
+          },
+          {
+            "query": "/json {\"a\":1}",
+            "rebuild_ms": 0.0293,
+            "query_to_stable_layout_ms": 9.075,
+            "rows": 2
+          },
+          {
+            "query": "/base64 Rust 性能",
+            "rebuild_ms": 0.055600000000000004,
+            "query_to_stable_layout_ms": 11.8459,
+            "rows": 2
+          },
+          {
+            "query": "/国家 CN",
+            "rebuild_ms": 0.3911,
+            "query_to_stable_layout_ms": 59.2156,
+            "rows": 2
+          },
+          {
+            "query": "/大小写 QuickTool Rust",
+            "rebuild_ms": 0.0322,
+            "query_to_stable_layout_ms": 35.5233,
+            "rows": 9
+          },
+          {
+            "query": "/unicode U+00FF",
+            "rebuild_ms": 0.0853,
+            "query_to_stable_layout_ms": 72.18430000000001,
+            "rows": 6
+          },
+          {
+            "query": "/帮助",
+            "rebuild_ms": 0.1649,
+            "query_to_stable_layout_ms": 53.320600000000006,
+            "rows": 46
+          }
+        ],
+        "measurement": "query_to_stable_layout includes resize animation and CPU UI layout; excludes OS display presentation; idle memory includes native glow/backdrop"
+      },
+      {
+        "version": "0.6.0-alpha.32",
+        "pid": 49536,
+        "profile": "release",
+        "dpi": 1.25,
+        "first_stable_frame_ms": 1025.494,
+        "idle_seconds": 5,
+        "idle_memory": {
+          "working_set_bytes": 236670976,
+          "private_bytes": 208371712,
+          "peak_working_set_bytes": 238686208
+        },
+        "idle_root_frames": 11,
+        "query_samples": [
+          {
+            "query": "0xFF",
+            "rebuild_ms": 5.758,
+            "query_to_stable_layout_ms": 12.1034,
+            "rows": 16
+          },
+          {
+            "query": "100cm",
+            "rebuild_ms": 1.2628,
+            "query_to_stable_layout_ms": 9.6329,
+            "rows": 16
+          },
+          {
+            "query": "#7c3aed",
+            "rebuild_ms": 1.4437,
+            "query_to_stable_layout_ms": 38.280300000000004,
+            "rows": 16
+          },
+          {
+            "query": "/时间 2026-10-20 12:34:56",
+            "rebuild_ms": 0.0761,
+            "query_to_stable_layout_ms": 3.1336,
+            "rows": 13
+          },
+          {
+            "query": "/json {\"a\":1}",
+            "rebuild_ms": 0.047,
+            "query_to_stable_layout_ms": 9.4325,
+            "rows": 2
+          },
+          {
+            "query": "/base64 Rust 性能",
+            "rebuild_ms": 0.0573,
+            "query_to_stable_layout_ms": 10.399000000000001,
+            "rows": 2
+          },
+          {
+            "query": "/国家 CN",
+            "rebuild_ms": 0.2757,
+            "query_to_stable_layout_ms": 41.077299999999994,
+            "rows": 2
+          },
+          {
+            "query": "/大小写 QuickTool Rust",
+            "rebuild_ms": 0.0287,
+            "query_to_stable_layout_ms": 35.3206,
+            "rows": 9
+          },
+          {
+            "query": "/unicode U+00FF",
+            "rebuild_ms": 0.0641,
+            "query_to_stable_layout_ms": 43.176199999999994,
+            "rows": 6
+          },
+          {
+            "query": "/帮助",
+            "rebuild_ms": 0.1974,
+            "query_to_stable_layout_ms": 44.447300000000006,
+            "rows": 46
+          }
+        ],
+        "measurement": "query_to_stable_layout includes resize animation and CPU UI layout; excludes OS display presentation; idle memory includes native glow/backdrop"
+      }
+    ],
+    "original": [
+      {
+        "measured_at": "2026-10-22T15:29:19.582Z",
+        "startup_ms": 4652.893,
+        "working_set_bytes": 880721920,
+        "private_bytes": 679690240,
+        "process_count": 5,
+        "queries": [
+          {
+            "query": "0xFF",
+            "rebuild_ms": 78.70000004768372,
+            "query_to_stable_layout_ms": 80.20000004768372
+          },
+          {
+            "query": "100cm",
+            "rebuild_ms": 16.399999976158142,
+            "query_to_stable_layout_ms": 18.59999990463257
+          },
+          {
+            "query": "#7c3aed",
+            "rebuild_ms": 19.600000023841858,
+            "query_to_stable_layout_ms": 22.299999952316284
+          },
+          {
+            "query": "/时间 2026-10-20 12:34:56",
+            "rebuild_ms": 8.800000071525574,
+            "query_to_stable_layout_ms": 11.900000095367432
+          },
+          {
+            "query": "/json {\"a\":1}",
+            "rebuild_ms": 2.899999976158142,
+            "query_to_stable_layout_ms": 4
+          },
+          {
+            "query": "/base64 Rust 性能",
+            "rebuild_ms": 6.100000023841858,
+            "query_to_stable_layout_ms": 7.600000023841858
+          },
+          {
+            "query": "/国家 CN",
+            "rebuild_ms": 27.200000047683716,
+            "query_to_stable_layout_ms": 29.300000071525574
+          },
+          {
+            "query": "/大小写 QuickTool Rust",
+            "rebuild_ms": 6,
+            "query_to_stable_layout_ms": 7.700000047683716
+          },
+          {
+            "query": "/unicode U+00FF",
+            "rebuild_ms": 211,
+            "query_to_stable_layout_ms": 213.20000004768372
+          },
+          {
+            "query": "/帮助",
+            "rebuild_ms": 41.5,
+            "query_to_stable_layout_ms": 47.299999952316284
+          }
+        ],
+        "notes": "Electron main entry to first loaded renderer and two animation frames. Memory sums Electron process tree after five seconds. Layout timing excludes OS presentation; renderer animations may continue."
+      },
+      {
+        "measured_at": "2026-10-22T15:29:39.646Z",
+        "startup_ms": 2888.6081,
+        "working_set_bytes": 886030336,
+        "private_bytes": 684232704,
+        "process_count": 5,
+        "queries": [
+          {
+            "query": "0xFF",
+            "rebuild_ms": 59.10000002384186,
+            "query_to_stable_layout_ms": 61
+          },
+          {
+            "query": "100cm",
+            "rebuild_ms": 16.800000071525574,
+            "query_to_stable_layout_ms": 19.100000023841858
+          },
+          {
+            "query": "#7c3aed",
+            "rebuild_ms": 14,
+            "query_to_stable_layout_ms": 17.399999976158142
+          },
+          {
+            "query": "/时间 2026-10-20 12:34:56",
+            "rebuild_ms": 7.700000047683716,
+            "query_to_stable_layout_ms": 10.100000023841858
+          },
+          {
+            "query": "/json {\"a\":1}",
+            "rebuild_ms": 2.899999976158142,
+            "query_to_stable_layout_ms": 6
+          },
+          {
+            "query": "/base64 Rust 性能",
+            "rebuild_ms": 5.899999976158142,
+            "query_to_stable_layout_ms": 7.100000023841858
+          },
+          {
+            "query": "/国家 CN",
+            "rebuild_ms": 18.200000047683716,
+            "query_to_stable_layout_ms": 21.300000071525574
+          },
+          {
+            "query": "/大小写 QuickTool Rust",
+            "rebuild_ms": 5.5,
+            "query_to_stable_layout_ms": 7
+          },
+          {
+            "query": "/unicode U+00FF",
+            "rebuild_ms": 206.89999997615814,
+            "query_to_stable_layout_ms": 209.20000004768372
+          },
+          {
+            "query": "/帮助",
+            "rebuild_ms": 44.39999997615814,
+            "query_to_stable_layout_ms": 50.5
+          }
+        ],
+        "notes": "Electron main entry to first loaded renderer and two animation frames. Memory sums Electron process tree after five seconds. Layout timing excludes OS presentation; renderer animations may continue."
+      },
+      {
+        "measured_at": "2026-10-22T15:29:57.918Z",
+        "startup_ms": 1701.828,
+        "working_set_bytes": 891744256,
+        "private_bytes": 688570368,
+        "process_count": 5,
+        "queries": [
+          {
+            "query": "0xFF",
+            "rebuild_ms": 61.89999997615814,
+            "query_to_stable_layout_ms": 63.300000071525574
+          },
+          {
+            "query": "100cm",
+            "rebuild_ms": 10.200000047683716,
+            "query_to_stable_layout_ms": 12.399999976158142
+          },
+          {
+            "query": "#7c3aed",
+            "rebuild_ms": 7.800000071525574,
+            "query_to_stable_layout_ms": 10.5
+          },
+          {
+            "query": "/时间 2026-10-20 12:34:56",
+            "rebuild_ms": 7,
+            "query_to_stable_layout_ms": 10.099999904632568
+          },
+          {
+            "query": "/json {\"a\":1}",
+            "rebuild_ms": 2.799999952316284,
+            "query_to_stable_layout_ms": 8
+          },
+          {
+            "query": "/base64 Rust 性能",
+            "rebuild_ms": 5.100000023841858,
+            "query_to_stable_layout_ms": 6.300000071525574
+          },
+          {
+            "query": "/国家 CN",
+            "rebuild_ms": 18.800000071525574,
+            "query_to_stable_layout_ms": 22.899999976158142
+          },
+          {
+            "query": "/大小写 QuickTool Rust",
+            "rebuild_ms": 7.800000071525574,
+            "query_to_stable_layout_ms": 10
+          },
+          {
+            "query": "/unicode U+00FF",
+            "rebuild_ms": 197,
+            "query_to_stable_layout_ms": 199.39999997615814
+          },
+          {
+            "query": "/帮助",
+            "rebuild_ms": 41.700000047683716,
+            "query_to_stable_layout_ms": 47.300000071525574
+          }
+        ],
+        "notes": "Electron main entry to first loaded renderer and two animation frames. Memory sums Electron process tree after five seconds. Layout timing excludes OS presentation; renderer animations may continue."
+      }
+    ]
+  },
   "configuration": {
     "theme": "dark",
     "reduceMotion": true,
@@ -15,126 +437,126 @@
   "metrics": {
     "startup_ms": {
       "rust_samples": [
-        629.6422,
-        842.3446,
-        1122.5890000000002
+        833.3595,
+        1124.9834,
+        1025.494
       ],
       "original_samples": [
-        3464.6464,
-        3416.3841,
-        3748.0521
+        4652.893,
+        2888.6081,
+        1701.828
       ],
-      "rust_median": 842.3446,
-      "original_median": 3464.6464,
-      "reduction_percent": 75.6874294588908
+      "rust_median": 1025.494,
+      "original_median": 2888.6081,
+      "reduction_percent": 64.49868017748757
     },
     "working_set_bytes": {
       "rust_samples": [
-        203808768,
-        337162240,
-        245075968
+        245055488,
+        244858880,
+        236670976
       ],
       "original_samples": [
-        899166208,
-        888483840,
-        872361984
+        880721920,
+        886030336,
+        891744256
       ],
-      "rust_median": 245075968,
-      "original_median": 888483840,
-      "reduction_percent": 72.4163842979969
+      "rust_median": 244858880,
+      "original_median": 886030336,
+      "reduction_percent": 72.36450378150482
     },
     "private_bytes": {
       "rust_samples": [
-        176328704,
-        298967040,
-        207548416
+        207421440,
+        208343040,
+        208371712
       ],
       "original_samples": [
-        681611264,
-        692215808,
-        675774464
+        679690240,
+        684232704,
+        688570368
       ],
-      "rust_median": 207548416,
-      "original_median": 681611264,
-      "reduction_percent": 69.55032480214412
+      "rust_median": 208343040,
+      "original_median": 684232704,
+      "reduction_percent": 69.55085034929871
     }
   },
   "queries": [
     {
       "query": "0xFF",
-      "rust_rebuild_ms_median": 9.2195,
-      "original_rebuild_ms_median": 93.60000002384186,
-      "rust_layout_ms_median": 21.3271,
-      "original_layout_ms_median": 98.80000001192093
+      "rust_rebuild_ms_median": 5.8149999999999995,
+      "original_rebuild_ms_median": 61.89999997615814,
+      "rust_layout_ms_median": 12.5259,
+      "original_layout_ms_median": 63.300000071525574
     },
     {
       "query": "100cm",
-      "rust_rebuild_ms_median": 1.6891,
-      "original_rebuild_ms_median": 15.600000023841858,
-      "rust_layout_ms_median": 18.195200000000003,
-      "original_layout_ms_median": 19.900000035762787
+      "rust_rebuild_ms_median": 1.2628,
+      "original_rebuild_ms_median": 16.399999976158142,
+      "rust_layout_ms_median": 9.6329,
+      "original_layout_ms_median": 18.59999990463257
     },
     {
       "query": "#7c3aed",
-      "rust_rebuild_ms_median": 1.8550000000000002,
-      "original_rebuild_ms_median": 14.899999976158142,
-      "rust_layout_ms_median": 51.1986,
-      "original_layout_ms_median": 23.100000023841858
+      "rust_rebuild_ms_median": 1.5324,
+      "original_rebuild_ms_median": 14,
+      "rust_layout_ms_median": 54.428200000000004,
+      "original_layout_ms_median": 17.399999976158142
     },
     {
       "query": "/时间 2026-10-20 12:34:56",
-      "rust_rebuild_ms_median": 0.0869,
-      "original_rebuild_ms_median": 14.299999952316284,
-      "rust_layout_ms_median": 6.7752,
-      "original_layout_ms_median": 19.19999998807907
+      "rust_rebuild_ms_median": 0.0915,
+      "original_rebuild_ms_median": 7.700000047683716,
+      "rust_layout_ms_median": 3.5429,
+      "original_layout_ms_median": 10.100000023841858
     },
     {
       "query": "/json {\"a\":1}",
-      "rust_rebuild_ms_median": 0.0507,
-      "original_rebuild_ms_median": 4.200000047683716,
-      "rust_layout_ms_median": 11.3609,
-      "original_layout_ms_median": 6.700000047683716
+      "rust_rebuild_ms_median": 0.0467,
+      "original_rebuild_ms_median": 2.899999976158142,
+      "rust_layout_ms_median": 9.075,
+      "original_layout_ms_median": 6
     },
     {
       "query": "/base64 Rust 性能",
-      "rust_rebuild_ms_median": 0.046,
-      "original_rebuild_ms_median": 7.5,
-      "rust_layout_ms_median": 16.874299999999998,
-      "original_layout_ms_median": 10.5
+      "rust_rebuild_ms_median": 0.0573,
+      "original_rebuild_ms_median": 5.899999976158142,
+      "rust_layout_ms_median": 10.399000000000001,
+      "original_layout_ms_median": 7.100000023841858
     },
     {
       "query": "/国家 CN",
-      "rust_rebuild_ms_median": 0.3417,
-      "original_rebuild_ms_median": 30.30000001192093,
-      "rust_layout_ms_median": 57.8665,
-      "original_layout_ms_median": 36.90000003576279
+      "rust_rebuild_ms_median": 0.347,
+      "original_rebuild_ms_median": 18.800000071525574,
+      "rust_layout_ms_median": 59.2156,
+      "original_layout_ms_median": 22.899999976158142
     },
     {
       "query": "/大小写 QuickTool Rust",
-      "rust_rebuild_ms_median": 0.0245,
-      "original_rebuild_ms_median": 10.399999976158142,
-      "rust_layout_ms_median": 44.212799999999994,
-      "original_layout_ms_median": 15.600000023841858
+      "rust_rebuild_ms_median": 0.0306,
+      "original_rebuild_ms_median": 6,
+      "rust_layout_ms_median": 35.5233,
+      "original_layout_ms_median": 7.700000047683716
     },
     {
       "query": "/unicode U+00FF",
-      "rust_rebuild_ms_median": 0.0675,
-      "original_rebuild_ms_median": 378,
-      "rust_layout_ms_median": 57.329499999999996,
-      "original_layout_ms_median": 384.69999998807907
+      "rust_rebuild_ms_median": 0.0641,
+      "original_rebuild_ms_median": 206.89999997615814,
+      "rust_layout_ms_median": 72.18430000000001,
+      "original_layout_ms_median": 209.20000004768372
     },
     {
       "query": "/帮助",
-      "rust_rebuild_ms_median": 0.1202,
-      "original_rebuild_ms_median": 60.39999997615814,
-      "rust_layout_ms_median": 57.1906,
-      "original_layout_ms_median": 78.19999998807907
+      "rust_rebuild_ms_median": 0.1649,
+      "original_rebuild_ms_median": 41.700000047683716,
+      "rust_layout_ms_median": 53.320600000000006,
+      "original_layout_ms_median": 47.300000071525574
     }
   ],
   "limits": [
     "Startup measured from application main entry, excluding OS process creation. Rust uses five stable UI frames; Electron waits for loaded renderer and two animation frames.",
     "Idle memory: Rust process including native glow/backdrop; original sums Electron process tree, excluding external helper processes.",
     "CPU rebuild compares the same queries. Layout timings use different renderer scheduling and do not include OS display presentation; do not treat them as equivalent interaction latency.",
-    "Sequential warm filesystem-cache measurements on this machine, three samples. Empty roots exclude index scanning; large indexes, drag frame time and full UI parity remain unverified."
+    "Sequential warm filesystem-cache measurements on this machine, three samples. Empty roots exclude index scanning; large indexes have a separate docs/index-benchmark.json report; drag frame time and full UI parity remain unverified."
   ]
 }

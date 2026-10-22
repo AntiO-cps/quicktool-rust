@@ -1,0 +1,896 @@
+{
+  "runtime": {
+    "node": "22.19.0",
+    "acorn": "8.15.0",
+    "ada": "2.9.2",
+    "amaro": "1.1.0",
+    "ares": "1.34.5",
+    "brotli": "1.0.9",
+    "cjs_module_lexer": "2.1.0",
+    "cldr": "44.1",
+    "icu": "74.2",
+    "llhttp": "9.3.0",
+    "modules": "139",
+    "napi": "10",
+    "nbytes": "0.1.1",
+    "ncrypto": "0.0.1",
+    "nghttp2": "1.64.0",
+    "openssl": "0.0.0",
+    "simdjson": "3.13.0",
+    "simdutf": "7.3.3",
+    "sqlite": "3.50.4",
+    "tz": "2025b",
+    "undici": "6.21.2",
+    "unicode": "15.1",
+    "uv": "1.51.0",
+    "uvwasi": "0.0.21",
+    "v8": "14.0.365.4-electron.0",
+    "zlib": "1.3.1",
+    "zstd": "1.5.8",
+    "electron": "38.1.2",
+    "chrome": "140.0.7339.133"
+  },
+  "cases": [
+    {
+      "input": "",
+      "result": [
+        {
+          "title": "全大写",
+          "value": ""
+        },
+        {
+          "title": "全小写",
+          "value": ""
+        },
+        {
+          "title": "首字母大写",
+          "value": ""
+        },
+        {
+          "title": "Sentence case",
+          "value": ""
+        },
+        {
+          "title": "大小写反转",
+          "value": ""
+        },
+        {
+          "title": "camelCase",
+          "value": ""
+        },
+        {
+          "title": "PascalCase",
+          "value": ""
+        },
+        {
+          "title": "snake_case",
+          "value": ""
+        },
+        {
+          "title": "kebab-case",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "input": "Rust 性能",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "RUST 性能"
+        },
+        {
+          "title": "全小写",
+          "value": "rust 性能"
+        },
+        {
+          "title": "首字母大写",
+          "value": "Rust 性能"
+        },
+        {
+          "title": "Sentence case",
+          "value": "Rust 性能"
+        },
+        {
+          "title": "大小写反转",
+          "value": "rUST 性能"
+        },
+        {
+          "title": "camelCase",
+          "value": "rust性能"
+        },
+        {
+          "title": "PascalCase",
+          "value": "Rust性能"
+        },
+        {
+          "title": "snake_case",
+          "value": "rust_性能"
+        },
+        {
+          "title": "kebab-case",
+          "value": "rust-性能"
+        }
+      ]
+    },
+    {
+      "input": "ΟΣ οσ ος",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "ΟΣ ΟΣ ΟΣ"
+        },
+        {
+          "title": "全小写",
+          "value": "ος οσ ος"
+        },
+        {
+          "title": "首字母大写",
+          "value": "ος οσ ος"
+        },
+        {
+          "title": "Sentence case",
+          "value": "Ος οσ ος"
+        },
+        {
+          "title": "大小写反转",
+          "value": "οσ ΟΣ ΟΣ"
+        },
+        {
+          "title": "camelCase",
+          "value": "οςΟσΟς"
+        },
+        {
+          "title": "PascalCase",
+          "value": "ΟσΟσΟς"
+        },
+        {
+          "title": "snake_case",
+          "value": "ος_οσ_ος"
+        },
+        {
+          "title": "kebab-case",
+          "value": "ος-οσ-ος"
+        }
+      ]
+    },
+    {
+      "input": "ΟͅΣ",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "ΟΙΣ"
+        },
+        {
+          "title": "全小写",
+          "value": "οͅς"
+        },
+        {
+          "title": "首字母大写",
+          "value": "οͅς"
+        },
+        {
+          "title": "Sentence case",
+          "value": "Οͅς"
+        },
+        {
+          "title": "大小写反转",
+          "value": "οΙσ"
+        },
+        {
+          "title": "camelCase",
+          "value": "οΣ"
+        },
+        {
+          "title": "PascalCase",
+          "value": "ΟΣ"
+        },
+        {
+          "title": "snake_case",
+          "value": "ο_σ"
+        },
+        {
+          "title": "kebab-case",
+          "value": "ο-σ"
+        }
+      ]
+    },
+    {
+      "input": "abcͅ def",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "ABCΙ DEF"
+        },
+        {
+          "title": "全小写",
+          "value": "abcͅ def"
+        },
+        {
+          "title": "首字母大写",
+          "value": "Abcͅ Def"
+        },
+        {
+          "title": "Sentence case",
+          "value": "Abcͅ def"
+        },
+        {
+          "title": "大小写反转",
+          "value": "ABCΙ DEF"
+        },
+        {
+          "title": "camelCase",
+          "value": "abcDef"
+        },
+        {
+          "title": "PascalCase",
+          "value": "AbcDef"
+        },
+        {
+          "title": "snake_case",
+          "value": "abc_def"
+        },
+        {
+          "title": "kebab-case",
+          "value": "abc-def"
+        }
+      ]
+    },
+    {
+      "input": "aⅰ abc",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "AⅠ ABC"
+        },
+        {
+          "title": "全小写",
+          "value": "aⅰ abc"
+        },
+        {
+          "title": "首字母大写",
+          "value": "Aⅰ Abc"
+        },
+        {
+          "title": "Sentence case",
+          "value": "Aⅰ abc"
+        },
+        {
+          "title": "大小写反转",
+          "value": "AⅠ ABC"
+        },
+        {
+          "title": "camelCase",
+          "value": "aⅰAbc"
+        },
+        {
+          "title": "PascalCase",
+          "value": "AⅰAbc"
+        },
+        {
+          "title": "snake_case",
+          "value": "aⅰ_abc"
+        },
+        {
+          "title": "kebab-case",
+          "value": "aⅰ-abc"
+        }
+      ]
+    },
+    {
+      "input": "a𜳖 def",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "A𜳖 DEF"
+        },
+        {
+          "title": "全小写",
+          "value": "a𜳖 def"
+        },
+        {
+          "title": "首字母大写",
+          "value": "A𜳖 Def"
+        },
+        {
+          "title": "Sentence case",
+          "value": "A𜳖 def"
+        },
+        {
+          "title": "大小写反转",
+          "value": "A𜳖 DEF"
+        },
+        {
+          "title": "camelCase",
+          "value": "aDef"
+        },
+        {
+          "title": "PascalCase",
+          "value": "ADef"
+        },
+        {
+          "title": "snake_case",
+          "value": "a_def"
+        },
+        {
+          "title": "kebab-case",
+          "value": "a-def"
+        }
+      ]
+    },
+    {
+      "input": "Ᲊᲊ",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "Ᲊᲊ"
+        },
+        {
+          "title": "全小写",
+          "value": "Ᲊᲊ"
+        },
+        {
+          "title": "首字母大写",
+          "value": "Ᲊᲊ"
+        },
+        {
+          "title": "Sentence case",
+          "value": "Ᲊᲊ"
+        },
+        {
+          "title": "大小写反转",
+          "value": "Ᲊᲊ"
+        },
+        {
+          "title": "camelCase",
+          "value": ""
+        },
+        {
+          "title": "PascalCase",
+          "value": ""
+        },
+        {
+          "title": "snake_case",
+          "value": ""
+        },
+        {
+          "title": "kebab-case",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "input": "aᲉb",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "AᲉB"
+        },
+        {
+          "title": "全小写",
+          "value": "aᲉb"
+        },
+        {
+          "title": "首字母大写",
+          "value": "AᲉB"
+        },
+        {
+          "title": "Sentence case",
+          "value": "AᲉb"
+        },
+        {
+          "title": "大小写反转",
+          "value": "AᲉB"
+        },
+        {
+          "title": "camelCase",
+          "value": "aB"
+        },
+        {
+          "title": "PascalCase",
+          "value": "AB"
+        },
+        {
+          "title": "snake_case",
+          "value": "a_b"
+        },
+        {
+          "title": "kebab-case",
+          "value": "a-b"
+        }
+      ]
+    },
+    {
+      "input": "𐐀𐐨 hello",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "𐐀𐐀 HELLO"
+        },
+        {
+          "title": "全小写",
+          "value": "𐐨𐐨 hello"
+        },
+        {
+          "title": "首字母大写",
+          "value": "𐐨𐐨 Hello"
+        },
+        {
+          "title": "Sentence case",
+          "value": "𐐨𐐨 hello"
+        },
+        {
+          "title": "大小写反转",
+          "value": "𐐨𐐀 HELLO"
+        },
+        {
+          "title": "camelCase",
+          "value": "𐐨𐐨Hello"
+        },
+        {
+          "title": "PascalCase",
+          "value": "𐐀𐐨Hello"
+        },
+        {
+          "title": "snake_case",
+          "value": "𐐨𐐨_hello"
+        },
+        {
+          "title": "kebab-case",
+          "value": "𐐨𐐨-hello"
+        }
+      ]
+    },
+    {
+      "input": "hello 𐐀𐐨",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "HELLO 𐐀𐐀"
+        },
+        {
+          "title": "全小写",
+          "value": "hello 𐐨𐐨"
+        },
+        {
+          "title": "首字母大写",
+          "value": "Hello 𐐨𐐨"
+        },
+        {
+          "title": "Sentence case",
+          "value": "Hello 𐐨𐐨"
+        },
+        {
+          "title": "大小写反转",
+          "value": "HELLO 𐐨𐐀"
+        },
+        {
+          "title": "camelCase",
+          "value": "hello𐐀𐐨"
+        },
+        {
+          "title": "PascalCase",
+          "value": "Hello𐐀𐐨"
+        },
+        {
+          "title": "snake_case",
+          "value": "hello_𐐨𐐨"
+        },
+        {
+          "title": "kebab-case",
+          "value": "hello-𐐨𐐨"
+        }
+      ]
+    },
+    {
+      "input": "𐐨 GREEK ΟΣ",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "𐐀 GREEK ΟΣ"
+        },
+        {
+          "title": "全小写",
+          "value": "𐐨 greek ος"
+        },
+        {
+          "title": "首字母大写",
+          "value": "𐐨 Greek ος"
+        },
+        {
+          "title": "Sentence case",
+          "value": "𐐨 greek ος"
+        },
+        {
+          "title": "大小写反转",
+          "value": "𐐀 greek οσ"
+        },
+        {
+          "title": "camelCase",
+          "value": "𐐨GreekΟσ"
+        },
+        {
+          "title": "PascalCase",
+          "value": "𐐨GreekΟσ"
+        },
+        {
+          "title": "snake_case",
+          "value": "𐐨_greek_ος"
+        },
+        {
+          "title": "kebab-case",
+          "value": "𐐨-greek-ος"
+        }
+      ]
+    },
+    {
+      "input": "ß STRAẞE",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "SS STRAẞE"
+        },
+        {
+          "title": "全小写",
+          "value": "ß straße"
+        },
+        {
+          "title": "首字母大写",
+          "value": "ß StraSSE"
+        },
+        {
+          "title": "Sentence case",
+          "value": "SS straße"
+        },
+        {
+          "title": "大小写反转",
+          "value": "SS straße"
+        },
+        {
+          "title": "camelCase",
+          "value": "ßStraße"
+        },
+        {
+          "title": "PascalCase",
+          "value": "SSStraße"
+        },
+        {
+          "title": "snake_case",
+          "value": "ß_straße"
+        },
+        {
+          "title": "kebab-case",
+          "value": "ß-straße"
+        }
+      ]
+    },
+    {
+      "input": "İ I ı i",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "İ I I I"
+        },
+        {
+          "title": "全小写",
+          "value": "i̇ i ı i"
+        },
+        {
+          "title": "首字母大写",
+          "value": "İ I ı I"
+        },
+        {
+          "title": "Sentence case",
+          "value": "İ i ı i"
+        },
+        {
+          "title": "大小写反转",
+          "value": "i̇ i I I"
+        },
+        {
+          "title": "camelCase",
+          "value": "i̇III"
+        },
+        {
+          "title": "PascalCase",
+          "value": "İIII"
+        },
+        {
+          "title": "snake_case",
+          "value": "i̇_i_ı_i"
+        },
+        {
+          "title": "kebab-case",
+          "value": "i̇-i-ı-i"
+        }
+      ]
+    },
+    {
+      "input": "áb c",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "ÁB C"
+        },
+        {
+          "title": "全小写",
+          "value": "áb c"
+        },
+        {
+          "title": "首字母大写",
+          "value": "ÁB C"
+        },
+        {
+          "title": "Sentence case",
+          "value": "Áb c"
+        },
+        {
+          "title": "大小写反转",
+          "value": "ÁB C"
+        },
+        {
+          "title": "camelCase",
+          "value": "aBC"
+        },
+        {
+          "title": "PascalCase",
+          "value": "ABC"
+        },
+        {
+          "title": "snake_case",
+          "value": "a_b_c"
+        },
+        {
+          "title": "kebab-case",
+          "value": "a-b-c"
+        }
+      ]
+    },
+    {
+      "input": "foo_bar baz",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "FOO_BAR BAZ"
+        },
+        {
+          "title": "全小写",
+          "value": "foo_bar baz"
+        },
+        {
+          "title": "首字母大写",
+          "value": "Foo_bar Baz"
+        },
+        {
+          "title": "Sentence case",
+          "value": "Foo_bar baz"
+        },
+        {
+          "title": "大小写反转",
+          "value": "FOO_BAR BAZ"
+        },
+        {
+          "title": "camelCase",
+          "value": "fooBarBaz"
+        },
+        {
+          "title": "PascalCase",
+          "value": "FooBarBaz"
+        },
+        {
+          "title": "snake_case",
+          "value": "foo_bar_baz"
+        },
+        {
+          "title": "kebab-case",
+          "value": "foo-bar-baz"
+        }
+      ]
+    },
+    {
+      "input": "﻿alphabeta",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "﻿ALPHABETA"
+        },
+        {
+          "title": "全小写",
+          "value": "﻿alphabeta"
+        },
+        {
+          "title": "首字母大写",
+          "value": "﻿AlphaBeta"
+        },
+        {
+          "title": "Sentence case",
+          "value": "﻿alphabeta"
+        },
+        {
+          "title": "大小写反转",
+          "value": "﻿ALPHABETA"
+        },
+        {
+          "title": "camelCase",
+          "value": "alphaBeta"
+        },
+        {
+          "title": "PascalCase",
+          "value": "AlphaBeta"
+        },
+        {
+          "title": "snake_case",
+          "value": "alpha_beta"
+        },
+        {
+          "title": "kebab-case",
+          "value": "alpha-beta"
+        }
+      ]
+    },
+    {
+      "input": "é ö",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "É Ö"
+        },
+        {
+          "title": "全小写",
+          "value": "é ö"
+        },
+        {
+          "title": "首字母大写",
+          "value": "É Ö"
+        },
+        {
+          "title": "Sentence case",
+          "value": "É ö"
+        },
+        {
+          "title": "大小写反转",
+          "value": "É Ö"
+        },
+        {
+          "title": "camelCase",
+          "value": "eO"
+        },
+        {
+          "title": "PascalCase",
+          "value": "EO"
+        },
+        {
+          "title": "snake_case",
+          "value": "e_o"
+        },
+        {
+          "title": "kebab-case",
+          "value": "e-o"
+        }
+      ]
+    },
+    {
+      "input": "ＡＢＣ Ｄｅｆ",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "ＡＢＣ ＤＥＦ"
+        },
+        {
+          "title": "全小写",
+          "value": "ａｂｃ ｄｅｆ"
+        },
+        {
+          "title": "首字母大写",
+          "value": "ａｂｃ ｄｅｆ"
+        },
+        {
+          "title": "Sentence case",
+          "value": "Ａｂｃ ｄｅｆ"
+        },
+        {
+          "title": "大小写反转",
+          "value": "ａｂｃ ｄＥＦ"
+        },
+        {
+          "title": "camelCase",
+          "value": "ａｂｃＤｅｆ"
+        },
+        {
+          "title": "PascalCase",
+          "value": "ＡｂｃＤｅｆ"
+        },
+        {
+          "title": "snake_case",
+          "value": "ａｂｃ_ｄｅｆ"
+        },
+        {
+          "title": "kebab-case",
+          "value": "ａｂｃ-ｄｅｆ"
+        }
+      ]
+    },
+    {
+      "input": "123ⅰx",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "123ⅠX"
+        },
+        {
+          "title": "全小写",
+          "value": "123ⅰx"
+        },
+        {
+          "title": "首字母大写",
+          "value": "123ⅰX"
+        },
+        {
+          "title": "Sentence case",
+          "value": "123ⅰx"
+        },
+        {
+          "title": "大小写反转",
+          "value": "123ⅠX"
+        },
+        {
+          "title": "camelCase",
+          "value": "123ⅰx"
+        },
+        {
+          "title": "PascalCase",
+          "value": "123ⅰx"
+        },
+        {
+          "title": "snake_case",
+          "value": "123ⅰx"
+        },
+        {
+          "title": "kebab-case",
+          "value": "123ⅰx"
+        }
+      ]
+    },
+    {
+      "input": "αΒΓ ABC",
+      "result": [
+        {
+          "title": "全大写",
+          "value": "ΑΒΓ ABC"
+        },
+        {
+          "title": "全小写",
+          "value": "αβγ abc"
+        },
+        {
+          "title": "首字母大写",
+          "value": "αβγ Abc"
+        },
+        {
+          "title": "Sentence case",
+          "value": "Αβγ abc"
+        },
+        {
+          "title": "大小写反转",
+          "value": "Αβγ abc"
+        },
+        {
+          "title": "camelCase",
+          "value": "αβγAbc"
+        },
+        {
+          "title": "PascalCase",
+          "value": "ΑβγAbc"
+        },
+        {
+          "title": "snake_case",
+          "value": "αβγ_abc"
+        },
+        {
+          "title": "kebab-case",
+          "value": "αβγ-abc"
+        }
+      ]
+    }
+  ]
+}

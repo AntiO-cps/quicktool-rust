@@ -1,0 +1,135 @@
+{
+  "measuredAt": "2026-10-22T23:27:50+08:00",
+  "profile": {
+    "driver": "scripts/benchmark-index.ps1 (actual src/index.rs snapshot + production locale comparator; UI/provider branches unused)",
+    "original": "unmodified original file-index-worker.js + native/file-indexer.exe in Electron 38.1.2, Node 22.19.0, ICU 74.2, Unicode 15.1",
+    "normalizationUnicode": [
+      15,
+      1,
+      0
+    ],
+    "rust": "opt-level=3, lto=thin, codegen-units=1, panic=abort, debug-assertions=off"
+  },
+  "fixture": {
+    "storage": "task-only synthetic files on C drive; no user files",
+    "rows": 10031,
+    "scanBoundary": "Rust Index::start until building=false; original configure request until building=false, polled every 10ms. File fixture creation excluded. SQLite cold database, OS cache not reset.",
+    "sameFileListForAll": true,
+    "bulkFiles": 10000,
+    "source": ".qa/index-10000-original.json",
+    "queries": "100 measured worker round trips alternating needle and *needle*, limit 40; Rust discards 10 warmup iterations; original query cases run before timing",
+    "fileList": "docs/index-benchmark-files.json"
+  },
+  "original": {
+    "scanMs": 2123.7926000000007,
+    "rows": 10031,
+    "databaseBytes": 11255808,
+    "queryMedianMs": 0.7941000000009808,
+    "queryP95Ms": 1.0785999999989144
+  },
+  "rustBefore": {
+    "rows": 10031,
+    "scanMs": 4209.8724,
+    "queryMedianMs": 102.59509999999999,
+    "queryP95Ms": 119.47770000000001,
+    "queryIncludesWorkerRoundTrip": true,
+    "directQueryMedianMs": 30.261300000000002,
+    "directQueryP95Ms": 38.300599999999996,
+    "buildProfile": "release"
+  },
+  "rustAfter": [
+    {
+      "rows": 10031,
+      "scanMs": 2015.8636,
+      "databaseBytes": 78864384,
+      "normalizationUnicode": [
+        15,
+        1,
+        0
+      ],
+      "queryMedianMs": 0.883,
+      "queryP95Ms": 1.2260000000000002,
+      "queryIncludesWorkerRoundTrip": true,
+      "directQueryMedianMs": 3.7794,
+      "directQueryP95Ms": 6.2991,
+      "buildProfile": "release"
+    },
+    {
+      "rows": 10031,
+      "scanMs": 2388.1609,
+      "databaseBytes": 78864384,
+      "normalizationUnicode": [
+        15,
+        1,
+        0
+      ],
+      "queryMedianMs": 0.8446,
+      "queryP95Ms": 1.0556,
+      "queryIncludesWorkerRoundTrip": true,
+      "directQueryMedianMs": 2.7892,
+      "directQueryP95Ms": 3.8874,
+      "buildProfile": "release"
+    }
+  ],
+  "notes": [
+    "Before is the Rust correctness-compatible implementation before prepared statement/frequency/metadata/cold-insert optimization. Its cached unicode-normalization dependency was 0.1.26; final after runs use pinned 0.1.23 / Unicode 15.1. The fixed performance corpus predates outlined Unicode16 characters and contains no normalization mappings changed by that pin.",
+    "The first final after run overlapped cargo compilation; the repeat did not deliberately run a concurrent build. Measurements are individual local samples, not statistically controlled cross-machine results.",
+    "Final Rust query latency is close to the original Electron implementation; scan latency varies around the original. These results do not show the complete Rust application is faster.",
+    "Correctness separately validated with 553 original entries / 55 queries plus real scan Unicode16, combining marks, exclusions, watches and migration tests.",
+    "Integer-ID samples use the final explicit INTEGER PRIMARY KEY schema. Hidden rowids are migrated atomically before compaction so VACUUM cannot invalidate token references. 10,031-row database: 13,606,912 bytes, versus 78,864,384 for the preceding Rust path-token schema and 11,255,808 for the original.",
+    "Two final Rust samples scan in 566.42 / 693.77 ms; a same-day original sample takes 2233.85 ms. These are local warm-OS-cache samples, not a controlled benchmark. Query latency includes worker round trip; direct queries use a fresh frequency map and are reported separately."
+  ],
+  "reproduce": [
+    "pwsh -File scripts/capture-index.ps1 -Count 10000 -Output .qa/index-10000-original.json -FilesFrom docs/index-benchmark-files.json",
+    "cargo build --offline --release --lib",
+    "pwsh -File scripts/benchmark-index.ps1 -Label integer-ids-final",
+    "cargo test --offline --test index_parity --test index -- --nocapture"
+  ],
+  "integerIdSamples": [
+    {
+      "rows": 10031,
+      "scanMs": 566.4186,
+      "databaseBytes": 13606912,
+      "normalizationUnicode": [
+        15,
+        1,
+        0
+      ],
+      "queryMedianMs": 0.5493,
+      "queryP95Ms": 0.7624,
+      "queryIncludesWorkerRoundTrip": true,
+      "directQueryMedianMs": 1.5226,
+      "directQueryP95Ms": 2.3858,
+      "buildProfile": "release"
+    },
+    {
+      "rows": 10031,
+      "scanMs": 693.7669,
+      "databaseBytes": 13606912,
+      "normalizationUnicode": [
+        15,
+        1,
+        0
+      ],
+      "queryMedianMs": 0.4629,
+      "queryP95Ms": 0.7472,
+      "queryIncludesWorkerRoundTrip": true,
+      "directQueryMedianMs": 1.5245,
+      "directQueryP95Ms": 2.542,
+      "buildProfile": "release"
+    }
+  ],
+  "pairedOriginalCurrent": {
+    "runtime": {
+      "node": "v22.19.0",
+      "electron": null,
+      "icu": null,
+      "unicode": null
+    },
+    "scanMs": 2233.8549999999996,
+    "rows": 10031,
+    "databaseBytes": 11255808,
+    "queryMedianMs": 0.6911000000000058,
+    "queryP95Ms": 1.1954999999998108
+  }
+}

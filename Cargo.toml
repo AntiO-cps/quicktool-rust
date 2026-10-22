@@ -19,11 +19,16 @@ unicode-script = "=0.5.8"
 sha2 = "0.10"
 icu_collator = "=2.1.1"
 icu_locale = "=2.1.1"
+icu_segmenter = "=1.4.0"
+iana-time-zone = "0.1"
+tzdb = { version = "0.7", default-features = false }
+tz-rs = "0.7"
+tzdb_data = "=0.2.2"
 base64 = "0.22"
-unicode-normalization = "0.1"
+unicode-normalization = "=0.1.23"
 num-bigint = "0.4"
 num-traits = "0.2"
-time = { version = "0.3", features = ["formatting", "parsing", "local-offset", "macros"] }
+time = { version = "0.3", features = ["formatting", "parsing", "local-offset", "macros", "large-dates"] }
 png = "0.17"
 walkdir = "2"
 resvg = "=0.45.1"

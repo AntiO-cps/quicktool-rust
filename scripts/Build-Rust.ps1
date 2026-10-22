@@ -23,6 +23,29 @@ try {
     Copy-Item -LiteralPath (Join-Path $project 'assets/licenses') -Destination (Join-Path $output 'assets') -Recurse -Force
     Copy-Item -LiteralPath (Join-Path $project 'assets/assets/quicktool.ico') -Destination $assetOutput -Force
     Copy-Item -LiteralPath (Join-Path $project 'docs') -Destination $output -Recurse -Force
+    # Keep the notices of the actual Windows dependency graph beside the binary.
+    $licenseMetadata = & cargo metadata --offline --locked --format-version 1 --filter-platform x86_64-pc-windows-msvc | ConvertFrom-Json
+    if ($LASTEXITCODE -ne 0) { throw 'Cargo license metadata failed' }
+    $dependencyIds = [Collections.Generic.HashSet[string]]::new()
+    foreach ($node in $licenseMetadata.resolve.nodes) { [void]$dependencyIds.Add($node.id) }
+    $rustLicenseRoot = Join-Path $output 'licenses/rust'
+    New-Item -ItemType Directory -Path $rustLicenseRoot -Force | Out-Null
+    $licenseIndex = foreach ($package in ($licenseMetadata.packages | Sort-Object name, version)) {
+        if (!$dependencyIds.Contains($package.id)) { continue }
+        $packageRoot = Split-Path -Parent $package.manifest_path
+        $licenseFiles = @(Get-ChildItem -LiteralPath $packageRoot -File | Where-Object Name -Match '^(LICENSE|LICENCE|COPYING|NOTICE|UNLICENSE)([._-].*)?$')
+        if ($package.license_file) {
+            $declaredLicense = if ([IO.Path]::IsPathRooted($package.license_file)) { $package.license_file } else { Join-Path $packageRoot $package.license_file }
+            if (Test-Path -LiteralPath $declaredLicense -PathType Leaf) { $licenseFiles += Get-Item -LiteralPath $declaredLicense }
+        }
+        $packageLicenseOutput = Join-Path $rustLicenseRoot ($package.name + '-' + $package.version)
+        New-Item -ItemType Directory -Path $packageLicenseOutput -Force | Out-Null
+        foreach ($licenseFile in ($licenseFiles | Sort-Object FullName -Unique)) {
+            Copy-Item -LiteralPath $licenseFile.FullName -Destination $packageLicenseOutput -Force
+        }
+        [PSCustomObject]@{ name=$package.name; version=$package.version; license=$package.license; files=@($licenseFiles.Name | Sort-Object -Unique) }
+    }
+    $licenseIndex | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $rustLicenseRoot 'INDEX.json') -Encoding UTF8
     @'
 QuickTool Rust portable build
 Run QuickTool.exe. Keep the assets directory beside the executable.

@@ -14,7 +14,7 @@ cargo run --release
 
 字体已嵌入程序。国旗等资源从可执行文件旁的 `assets/` 加载。
 
-生成可移植目录：`./scripts/Build-Rust.ps1 -Offline`。运行 `dist/QuickTool.exe`，并保留旁边的资源目录。
+生成可移植目录：`./scripts/Build-Rust.ps1 -Offline`。运行 `dist/QuickTool.exe`，并保留旁边的资源与许可目录。依赖许可清单在 `licenses/rust/INDEX.json`。
 
 数据默认写入 `%APPDATA%/QuickTool-Rust`。测试可用 `QUICKTOOL_RUST_DATA_DIR` 指定隔离数据目录。原版 QuickTool 数据暂不自动导入。
 
@@ -35,7 +35,11 @@ cargo clippy --all-targets -- -D warnings
 
 [像素基准](docs/pixel-benchmark.json)：同一输入与滤镜参数，1,048,576 像素，预热 3 次、采样 7 次。当前中位耗时 JS 88.93 ms，Rust Release 54.80 ms（约 1.62 倍），结果校验一致。此结果仅说明像素计算性能，不能代表整机启动、内存、搜索或拖拽性能。
 
-[应用基准](docs/app-benchmark.json)：最新同机三轮隔离采样，启动中位数 3.465 s → 0.842 s，空闲工作集约 847 MiB → 234 MiB。启动计时从应用入口开始，不包括 OS 创建进程；原版内存未包含外部辅助进程。Unicode 已改只读索引，避免首次解析大型 JSON。不同渲染器的布局耗时不能直接视为同等交互延迟；样本存在波动，大目录索引与拖拽帧耗时尚未验证。
+[应用基准](docs/app-benchmark.json)：最新同机三轮隔离采样，启动中位数2.889s → 1.025s，空闲工作集约845MiB → 234MiB。启动从应用入口计时，不包括OS创建进程；原版内存不含外部辅助进程。样本有波动，不同渲染器的布局延迟不能直接等同。
+
+[索引基准](docs/index-benchmark.json)：10031条合成文件，整数ID版两次扫描566/694ms，同日原版2234ms；Rust数据库从约79MB降至14MB，原版约11MB。测量边界、文件清单和完整样本均保留。
+
+当前142项测试通过、5项跳过；1032条原版编辑对照与23步应用内整窗事件通过。系统级输入、多屏/DPI及像素完全一致性仍未验收。
 
 ## 状态
 

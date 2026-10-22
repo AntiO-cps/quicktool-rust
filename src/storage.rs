@@ -10,6 +10,8 @@ pub struct HistoryItem {
     pub id: String,
     pub input: String,
     pub tool: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tool_name: Option<String>,
     pub title: String,
     pub value: String,
     pub pinned: bool,
@@ -22,6 +24,15 @@ pub struct HistoryItem {
     pub mode: Option<HistoryMode>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub image_asset: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub image_source_asset: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub image_source_mime: Option<String>,
+}
+#[derive(Clone, Debug)]
+pub struct EncodedImageSource {
+    pub bytes: std::sync::Arc<[u8]>,
+    pub mime: String,
 }
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -240,6 +251,10 @@ impl Store {
                 id: format!("{created}-{:x}", u64::from_le_bytes(random)),
                 input: input.into(),
                 tool: tool.into(),
+                tool_name: crate::tools::commands()
+                    .iter()
+                    .find(|c| c.id == tool)
+                    .map(|c| c.name.clone()),
                 title: title.into(),
                 value: value.into(),
                 pinned: false,
@@ -248,6 +263,8 @@ impl Store {
                 thumbnail: None,
                 mode,
                 image_asset: None,
+                image_source_asset: None,
+                image_source_mime: None,
             },
         );
         let limit = self.settings["historyLimit"]
@@ -317,6 +334,20 @@ impl Store {
         mode: Option<HistoryMode>,
         wake: impl Fn() + Send + 'static,
     ) -> io::Result<String> {
+        self.enqueue_image_with_source(input, tool, title, source, mode, None, wake)
+    }
+    /// Preserve the encoded source as well as PNG pixels; JPEG/GIF/WebP Base64 is reversible.
+    #[allow(clippy::too_many_arguments)]
+    pub fn enqueue_image_with_source(
+        &mut self,
+        input: &str,
+        tool: &str,
+        title: &str,
+        source: std::sync::Arc<image::RgbaImage>,
+        mode: Option<HistoryMode>,
+        encoded: Option<EncodedImageSource>,
+        wake: impl Fn() + Send + 'static,
+    ) -> io::Result<String> {
         if self.history_blocked {
             return Err(io::Error::other("历史源文件读取失败，禁止覆盖"));
         }
@@ -331,6 +362,10 @@ impl Store {
             id: id.clone(),
             input: input.into(),
             tool: tool.into(),
+            tool_name: crate::tools::commands()
+                .iter()
+                .find(|c| c.id == tool)
+                .map(|c| c.name.clone()),
             title: title.into(),
             value: format!("图片 {} × {}", source.width(), source.height()),
             pinned: false,
@@ -339,6 +374,8 @@ impl Store {
             thumbnail: None,
             mode,
             image_asset: None,
+            image_source_asset: None,
+            image_source_mime: None,
         };
         if self.pin_worker.is_none() {
             let existing = self
@@ -356,7 +393,7 @@ impl Store {
         self.pin_worker
             .as_ref()
             .unwrap()
-            .queue_image(item, source)?;
+            .queue_image_with_source(item, source, encoded)?;
         Ok(id)
     }
     fn apply_image(&mut self, item: HistoryItem) -> io::Result<()> {
@@ -395,6 +432,20 @@ impl Store {
             .and_then(|h| h.image_asset.as_deref())
             .ok_or_else(|| io::Error::other("图片历史原图不存在"))?;
         crate::pin_storage::load_image(&self.root, asset)
+    }
+    pub fn load_history_image_source(&self, id: &str) -> io::Result<Option<EncodedImageSource>> {
+        let item = self
+            .history
+            .iter()
+            .find(|h| h.id == id)
+            .ok_or_else(|| io::Error::other("图片历史不存在"))?;
+        match (&item.image_source_asset, &item.image_source_mime) {
+            (None, None) => Ok(None),
+            (Some(asset), Some(mime)) => {
+                crate::pin_storage::load_encoded_source(&self.root, asset, mime).map(Some)
+            }
+            _ => Err(io::Error::other("图片历史原始编码记录不完整")),
+        }
     }
     pub fn poll_pin_updates(&mut self) -> Vec<String> {
         let prepared = self
@@ -459,11 +510,14 @@ impl Store {
                 pin.text.clone()
             },
             tool: "pin".into(),
+            tool_name: Some("钉住内容".into()),
             title,
             value,
             pinned,
             created: pin.created,
             image_asset: None,
+            image_source_asset: None,
+            image_source_mime: None,
             pin_state: Some(pin),
             thumbnail: prepared.thumbnail,
             mode: Some(HistoryMode {

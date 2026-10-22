@@ -1,7 +1,19 @@
 #[path = "attachments.rs"]
 mod attachments;
+#[path = "eyedrop_overlay.rs"]
+mod eyedrop_overlay;
 #[path = "theme.rs"]
 mod glow;
+#[path = "history_panel.rs"]
+mod history_panel;
+#[path = "image_decode.rs"]
+mod image_decode;
+#[path = "interaction_probe.rs"]
+mod interaction_probe;
+#[path = "large_input.rs"]
+mod large_input;
+#[path = "pickers.rs"]
+mod pickers;
 #[path = "widgets.rs"]
 mod widgets;
 use eframe::egui::{epaint::Shadow, *};
@@ -451,10 +463,14 @@ fn process_memory() -> Value {
 pub struct QuickTool {
     store: Store,
     input: String,
+    large_input: large_input::LargeInput,
     attachment: Option<attachments::Attachment>,
     attachment_job: Option<std::sync::mpsc::Receiver<AttachmentLoad>>,
     attachment_results: Option<Vec<ResultItem>>,
     decoded_image: Option<attachments::Attachment>,
+    decoder: image_decode::LatestWorker<attachments::Attachment>,
+    decoded_request: Option<(std::sync::Arc<str>, u64)>,
+    decoded_pending: bool,
     image_copy: Option<std::sync::mpsc::Receiver<Result<(), String>>>,
     mode: Option<String>,
     rows: Vec<Row>,
@@ -474,6 +490,10 @@ pub struct QuickTool {
     recording_rect: Option<Rect>,
     shortcut_error: Option<String>,
     color_picker: bool,
+    native_color: pickers::ColorPicker,
+    native_date: pickers::DatePicker,
+    eyedrop: eyedrop_overlay::EyeDropperOverlay,
+    eyedrop_pending: u8,
     picker_color: [f32; 4],
     date_picker: bool,
     date_value: String,
@@ -485,6 +505,7 @@ pub struct QuickTool {
     screenshot_sent: bool,
     screenshot_requested: Option<Instant>,
     probe: Option<Probe>,
+    interaction_probe: Option<interaction_probe::InteractionProbe>,
     frames: u32,
     hotkey: Option<platform::Hotkey>,
     hotkey_error: Option<String>,
@@ -630,6 +651,14 @@ fn font_setup(ctx: &Context) {
             .map(str::to_string)
             .collect(),
     );
+    fonts.families.insert(
+        FontFamily::Name("NativePicker".into()),
+        ["segoe", "yahei", "pin-misans"]
+            .into_iter()
+            .filter(|name| fonts.font_data.contains_key(*name))
+            .map(str::to_owned)
+            .collect(),
+    );
     ctx.set_fonts(fonts);
 }
 fn icon_textures(ctx: &Context) -> HashMap<String, TextureHandle> {
@@ -677,14 +706,18 @@ impl QuickTool {
             .skip_while(|a| a != "--metrics")
             .nth(1)
             .map(std::path::PathBuf::from);
-        let mut store = Store::open(if metrics_path.is_some() {
+        let interaction_probe = interaction_probe::InteractionProbe::from_args();
+        let isolated = metrics_path.is_some()
+            || interaction_probe.is_some()
+            || std::env::args().any(|a| a == "--picker-screenshot");
+        let mut store = Store::open(if isolated {
             std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
                 .join(".qa")
                 .join(format!("metrics-data-{}", std::process::id()))
         } else {
             Store::default_root()
         });
-        if metrics_path.is_some() {
+        if isolated {
             let empty = store.root.join("empty");
             if let Err(error) = std::fs::create_dir_all(&empty) {
                 eprintln!("metrics empty index directory: {error}");
@@ -704,10 +737,12 @@ impl QuickTool {
             .skip_while(|a| a != "--screenshot")
             .nth(1)
             .map(std::path::PathBuf::from);
-        let unattended = screenshot.is_some()
+        let unattended = interaction_probe.is_some()
+            || screenshot.is_some()
             || metrics_path.is_some()
             || std::env::args().any(|a| {
-                a == "--pin-screenshot"
+                a == "--picker-screenshot"
+                    || a == "--pin-screenshot"
                     || a == "--pin-effects-screenshot"
                     || a == "--select-screenshot"
                     || a == "--glow-screenshot"
@@ -734,10 +769,19 @@ impl QuickTool {
         let mut app = Self {
             store,
             input,
+            large_input: large_input::LargeInput::default(),
             attachment: None,
             attachment_job: None,
             attachment_results: None,
             decoded_image: None,
+            decoder: {
+                let context = cc.egui_ctx.clone();
+                image_decode::LatestWorker::new(attachments::Attachment::from_base64, move || {
+                    context.request_repaint()
+                })
+            },
+            decoded_request: None,
+            decoded_pending: false,
             image_copy: None,
             mode: None,
             rows: vec![],
@@ -757,6 +801,10 @@ impl QuickTool {
             recording_rect: None,
             shortcut_error: None,
             color_picker: false,
+            native_color: pickers::ColorPicker::default(),
+            native_date: pickers::DatePicker::default(),
+            eyedrop: eyedrop_overlay::EyeDropperOverlay::default(),
+            eyedrop_pending: 0,
             picker_color: [0.486, 0.227, 0.929, 1.],
             date_picker: false,
             date_value: now_date(),
@@ -767,6 +815,7 @@ impl QuickTool {
             screenshot: screenshot.clone(),
             screenshot_sent: false,
             screenshot_requested: None,
+            interaction_probe,
             probe: metrics_path.map(|path| Probe {
                 path,
                 ready_at: None,
@@ -819,6 +868,12 @@ impl QuickTool {
             registry_running_query: String::new(),
             file_debounce: None,
         };
+        if let Some(path) = std::env::args().skip_while(|a| a != "--query-file").nth(1) {
+            match std::fs::read_to_string(path) {
+                Ok(input) => app.input = input,
+                Err(error) => eprintln!("query-file: {error}"),
+            }
+        }
         if let Some(mode) = std::env::args().skip_while(|a| a != "--mode").nth(1) {
             app.mode = Some(mode);
         }
@@ -826,7 +881,8 @@ impl QuickTool {
             app.panel = match panel.as_str() {
                 "settings" => Panel::Settings,
                 "history" => Panel::History,
-                "color-picker" => {
+                "color-picker" | "color-native" => {
+                    app.native_color.open = panel == "color-native";
                     app.color_picker = true;
                     if let Some(color) = quicktool_rust::colors::candidates(&app.input).first() {
                         app.picker_color = [
@@ -840,7 +896,6 @@ impl QuickTool {
                 }
                 "date-picker" => {
                     app.date_picker = true;
-                    app.mode = Some("time".into());
                     if !app.input.is_empty() {
                         app.date_value = app.input.clone();
                     }
@@ -1038,7 +1093,9 @@ impl QuickTool {
         {
             return;
         }
-        self.decoded_image = None;
+        let previous_pending = std::mem::take(&mut self.decoded_pending);
+        let previous_image = self.decoded_image.take();
+        let previous_request = self.decoded_request.take();
         self.rebuild_inner();
         if self.mode.is_none()
             && !self.input.starts_with('/')
@@ -1052,10 +1109,10 @@ impl QuickTool {
         if self.attachment.is_some() || self.submode.as_deref() == Some("encode") {
             return;
         }
-        if let Some(index) = self
+        if self
             .rows
             .iter()
-            .position(|row| row.tool == "base64" && !row.command)
+            .any(|row| row.tool == "base64" && !row.command)
         {
             let (inline_sub, input) = if self.mode.as_deref() == Some("base64") {
                 parse_sub_arg("base64", &self.input)
@@ -1069,38 +1126,58 @@ impl QuickTool {
             if inline_sub == Some("encode") {
                 return;
             }
-            if let Ok(image) = attachments::Attachment::from_base64(input) {
-                let rgba = &image.thumbnail;
-                self.icons.insert(
-                    "decoded-image".into(),
-                    self.context.load_texture(
-                        "decoded-image",
-                        ColorImage::from_rgba_unmultiplied(
-                            [rgba.width() as usize, rgba.height() as usize],
-                            rgba.as_raw(),
-                        ),
-                        TextureOptions::LINEAR,
-                    ),
-                );
-                self.rows.insert(
-                    index + usize::from(self.rows[index].item.title.contains("编码")),
-                    Row {
-                        score: self.rows[index].score,
-                        tool: "base64".into(),
-                        item: ResultItem::new(
-                            format!(
-                                "Base64 → {} 图片",
-                                image.mime.trim_start_matches("image/").to_uppercase()
-                            ),
-                            format!("{} 图片", image.mime),
-                        ),
-                        command: false,
-                    },
-                );
-                self.decoded_image = Some(image);
+            if let Some((key, serial)) = previous_request.filter(|(key, _)| key.as_ref() == input) {
+                self.decoded_request = Some((key, serial));
+                self.decoded_pending = previous_pending;
+                if let Some(image) = previous_image {
+                    self.install_decoded_image(image);
+                }
+            } else {
+                let key: std::sync::Arc<str> = std::sync::Arc::from(input);
+                self.decoded_pending = true;
+                let serial = self.decoder.request(key.clone());
+                self.decoded_request = Some((key, serial));
             }
         }
     }
+    fn install_decoded_image(&mut self, image: attachments::Attachment) {
+        let Some(index) = self
+            .rows
+            .iter()
+            .position(|row| row.tool == "base64" && !row.command)
+        else {
+            return;
+        };
+        let rgba = &image.thumbnail;
+        self.icons.insert(
+            "decoded-image".into(),
+            self.context.load_texture(
+                "decoded-image",
+                ColorImage::from_rgba_unmultiplied(
+                    [rgba.width() as usize, rgba.height() as usize],
+                    rgba.as_raw(),
+                ),
+                TextureOptions::LINEAR,
+            ),
+        );
+        self.rows.insert(
+            index + usize::from(self.rows[index].item.title.contains("编码")),
+            Row {
+                score: self.rows[index].score,
+                tool: "base64".into(),
+                item: ResultItem::new(
+                    format!(
+                        "Base64 → {} 图片",
+                        image.mime.trim_start_matches("image/").to_uppercase()
+                    ),
+                    format!("{} 图片", image.mime),
+                ),
+                command: false,
+            },
+        );
+        self.decoded_image = Some(image);
+    }
+
     fn rebuild_inner(&mut self) {
         self.rows.clear();
         self.selected = 0;
@@ -1275,6 +1352,18 @@ impl QuickTool {
         if let Some(text) = self.input.strip_prefix('/') {
             if let Some((head, args)) = text.split_once(' ') {
                 if let Some(c) = tools::command(head) {
+                    if args.trim().is_empty() && mode_entry(&c.id) {
+                        self.rows = vec![Row {
+                            score: 0.99,
+                            tool: c.id.clone(),
+                            item: ResultItem::new(
+                                format!("进入 {} 模式", c.name),
+                                "输入内容后立即处理",
+                            ),
+                            command: true,
+                        }];
+                        return;
+                    }
                     if c.id == "files" {
                         let query = args.to_string();
                         self.request_files(query);
@@ -2149,7 +2238,7 @@ impl QuickTool {
                         ctx.copy_text(image.data_url());
                     }
                     let context = ctx.clone();
-                    if let Err(error) = self.store.enqueue_image_with_mode(
+                    if let Err(error) = self.store.enqueue_image_with_source(
                         &self.input,
                         &row.tool,
                         &row.item.title,
@@ -2161,6 +2250,10 @@ impl QuickTool {
                                 args: vec![],
                                 submode: self.submode.clone(),
                             }),
+                        Some(quicktool_rust::storage::EncodedImageSource {
+                            bytes: image.bytes.clone(),
+                            mime: image.mime.clone(),
+                        }),
                         move || context.request_repaint(),
                     ) {
                         self.message(format!("保存图片历史失败：{error}"));
@@ -2444,18 +2537,22 @@ impl QuickTool {
         }
     }
     fn keyboard(&mut self, ctx: &Context) {
-        if ctx.input_mut(|i| i.consume_key(Modifiers::CTRL, Key::Tab)) {
-            self.tab = (self.tab + 1) % 3;
+        if self.eyedrop.active() || self.eyedrop_pending > 0 {
+            return;
         }
         if ctx.input_mut(|i| i.consume_key(Modifiers::CTRL | Modifiers::SHIFT, Key::Tab)) {
             self.tab = (self.tab + 2) % 3;
+        } else if ctx.input_mut(|i| i.consume_key(Modifiers::CTRL, Key::Tab)) {
+            self.tab = (self.tab + 1) % 3;
         }
         let visible = self.visible_indices();
         if !visible.contains(&self.selected) {
             self.selected = visible.first().copied().unwrap_or(0);
         }
         if ctx.input_mut(|i| i.consume_key(Modifiers::NONE, Key::Escape)) {
-            if self.color_picker {
+            if self.native_color.open {
+                self.native_color.open = false;
+            } else if self.color_picker {
                 self.color_picker = false;
             } else if self.date_picker {
                 self.date_picker = false;
@@ -2477,6 +2574,9 @@ impl QuickTool {
                 }
                 ctx.send_viewport_cmd(ViewportCommand::Visible(false));
             }
+        }
+        if self.date_picker || self.color_picker || self.native_color.open {
+            return;
         }
         if self.panel == Panel::None {
             if ctx.input(|i| i.modifiers.ctrl && i.key_pressed(Key::V)) && clipboard_has_image() {
@@ -2538,7 +2638,7 @@ impl QuickTool {
             return None;
         }
         if let Some(ghost) = self.completion() {
-            return Some(ghost);
+            return Some(format!("{ghost} "));
         }
         let row = self.rows.get(self.selected)?;
         if !row.command || row.tool.starts_with('@') || self.mode.is_some() {
@@ -2576,81 +2676,38 @@ impl QuickTool {
             .map(|a| format!("/{a}"))
     }
     fn search_context(&mut self, ui: &Ui, response: &Response, ctx: &Context) {
-        use eframe::egui::text::{CCursor, CCursorRange};
-        let mut state = TextEdit::load_state(ctx, response.id).unwrap_or_default();
-        let range = state
-            .cursor
-            .char_range()
-            .unwrap_or_else(|| CCursorRange::one(CCursor::new(self.input.chars().count())));
-        let [start, end] = range.sorted();
-        let has_selection = start.index != end.index;
-        let action = widgets::context(
-            ui,
-            response,
-            "search-editor",
-            &[
-                ("undo", "撤销\tCtrl+Z", true),
-                ("redo", "重做\tCtrl+Y", true),
-                ("sep1", "", false),
-                ("cut", "剪切\tCtrl+X", has_selection),
-                ("copy", "复制\tCtrl+C", has_selection),
-                ("paste", "粘贴\tCtrl+V", true),
-                ("sep2", "", false),
-                ("all", "全选\tCtrl+A", true),
-            ],
-        );
-        let Some(action) = action else { return };
-        let before = self.input.clone();
-        let mut undoer = state.undoer();
-        undoer.feed_state(ctx.input(|input| input.time), &(range, self.input.clone()));
-        let selected = self
-            .input
-            .chars()
-            .skip(start.index)
-            .take(end.index - start.index)
-            .collect::<String>();
-        match action.as_str() {
-            "undo" | "redo" => {
-                let current = (range, self.input.clone());
-                let restored = if action == "undo" {
-                    undoer.undo(&current).cloned()
-                } else {
-                    undoer.redo(&current).cloned()
-                };
-                if let Some((range, text)) = restored {
-                    self.input = text;
-                    state.cursor.set_char_range(Some(range));
+        if self.large_input.active() {
+            if let Some(action) = widgets::context(
+                ui,
+                response,
+                "large-search-editor",
+                &[
+                    ("undo", "撤销\tCtrl+Z", true),
+                    ("redo", "重做\tCtrl+Y", true),
+                    ("sep1", "", false),
+                    (
+                        "cut",
+                        "剪切\tCtrl+X",
+                        !self.large_input.selection().is_empty(),
+                    ),
+                    (
+                        "copy",
+                        "复制\tCtrl+C",
+                        !self.large_input.selection().is_empty(),
+                    ),
+                    ("paste", "粘贴\tCtrl+V", true),
+                    ("sep2", "", false),
+                    ("all", "全选\tCtrl+A", true),
+                ],
+            ) {
+                if self.large_input.action(&mut self.input, ctx, &action) {
+                    self.rebuild();
                 }
+                self.focus = true;
             }
-            "copy" => ctx.copy_text(selected),
-            "cut" => {
-                ctx.copy_text(selected);
-                self.input.delete_char_range(start.index..end.index);
-                state.cursor.set_char_range(Some(CCursorRange::one(start)));
-            }
-            "paste" => match platform::clipboard_text() {
-                Ok(text) => {
-                    self.input.delete_char_range(start.index..end.index);
-                    let count = self.input.insert_text(&text, start.index);
-                    state
-                        .cursor
-                        .set_char_range(Some(CCursorRange::one(CCursor::new(start.index + count))));
-                }
-                Err(error) => self.message(error),
-            },
-            "all" => state.cursor.set_char_range(Some(CCursorRange::two(
-                CCursor::new(0),
-                CCursor::new(self.input.chars().count()),
-            ))),
-            _ => {}
-        }
-        state.set_undoer(undoer);
-        state.store(ctx, response.id);
-        self.focus = true;
-        if before != self.input {
-            self.rebuild();
         }
     }
+
     fn mode_tag(&self, ui: &mut Ui, label: &str, icon: Option<&str>) -> bool {
         let mut close = false;
         Frame::new()
@@ -2808,16 +2865,7 @@ impl QuickTool {
                                     .is_some()));
                         let reserve = if show_tab { 32. } else { 0. } + if date { 30. } else { 0. };
                         let w = (ui.available_width() - reserve).max(25.);
-                        let r = ui.add_sized(
-                            [w, 32.],
-                            TextEdit::singleline(&mut self.input)
-                                .id(Id::new("quicktool-search"))
-                                .font(FontId::proportional(16.))
-                                .frame(false)
-                                .hint_text(
-                                    RichText::new("输入命令、文本或表达式…").color(weak_color(ui)),
-                                ),
-                        );
+                        let r = self.large_input.show(ui, &mut self.input, vec2(w, 32.));
                         if let Some(full) = completion {
                             let prefix = ui
                                 .painter()
@@ -2840,6 +2888,7 @@ impl QuickTool {
                         }
                         if date && self.date_button(ui).clicked() {
                             self.date_picker = !self.date_picker;
+                            self.native_date.reset();
                             let raw = if self.input.starts_with('/') {
                                 self.input
                                     .split_once(' ')
@@ -2920,97 +2969,140 @@ impl QuickTool {
         });
     }
     fn results(&mut self, ui: &mut Ui, ctx: &Context) {
-        ui.spacing_mut().item_spacing.y = 3.;
-        ui.horizontal(|ui| {
-            ui.set_max_width(ui.available_width() - 7.);
-            ui.add_space(7.);
-            ui.spacing_mut().item_spacing.x = 5.;
-            for (i, (label, icon)) in [
-                ("全部", "mdi:view-grid-outline"),
-                ("运行", "mdi:play-circle-outline"),
-                ("工具", "mdi:wrench-outline"),
-            ]
-            .iter()
-            .enumerate()
-            {
-                let r = Frame::new()
-                    .fill(if self.tab == i {
-                        selected_surface(ui)
-                    } else {
-                        Color32::TRANSPARENT
-                    })
-                    .stroke(Stroke::new(
-                        1.,
-                        if self.tab == i {
-                            Color32::from_rgba_unmultiplied(155, 188, 255, 40)
-                        } else {
-                            Color32::TRANSPARENT
-                        },
-                    ))
-                    .corner_radius(9)
-                    .inner_margin(Margin::symmetric(10, 6))
-                    .show(ui, |ui| {
-                        ui.horizontal(|ui| {
-                            self.icon(ui, icon, 15.);
-                            ui.label(
-                                RichText::new(*label)
-                                    .font(FontId::new(11., FontFamily::Name("UiMedium".into())))
-                                    .color(if self.tab == i {
-                                        ui.visuals().text_color()
-                                    } else {
-                                        Color32::from_gray(130)
-                                    }),
-                            );
-                        });
-                    })
-                    .response;
-                if ui
-                    .interact(r.rect, ui.id().with(("tab", i)), Sense::click())
-                    .clicked()
-                {
-                    self.tab = i;
-                    self.selected = self.visible_indices().first().copied().unwrap_or(0);
-                }
-            }
-            ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                ui.label(RichText::new("切换分类").size(10.).color(weak_color(ui)));
-                keycap(ui, "Tab");
-                keycap(ui, "Ctrl");
-            });
-        });
-        ui.separator();
-        ui.horizontal(|ui| {
-            ui.set_max_width(ui.available_width() - 7.);
-            ui.add_space(7.);
-            ui.label(
-                RichText::new(if let Some(id) = &self.mode {
-                    tools::commands()
-                        .iter()
-                        .find(|c| c.id == *id)
-                        .map(|c| format!("{} 模式", c.name))
-                        .unwrap_or_else(|| "工具模式".into())
-                } else if self.input.trim().is_empty() {
-                    "最近使用".into()
-                } else if self.input.starts_with('/') {
-                    "命令候选".into()
-                } else if self.visible_indices().len() > 1 {
-                    format!("已筛选 {} 个高相关结果", self.visible_indices().len())
-                } else {
-                    "最佳匹配".into()
-                })
-                .size(11.)
-                .color(weak_color(ui)),
+        ui.visuals_mut().clip_rect_margin = 0.;
+        ui.spacing_mut().item_spacing.y = 0.;
+        let (tabs_rect, _) =
+            ui.allocate_exact_size(vec2(ui.available_width(), 38.), Sense::hover());
+        for (i, (label, icon)) in [
+            ("全部", "mdi:view-grid-outline"),
+            ("运行", "mdi:play-circle-outline"),
+            ("工具", "mdi:wrench-outline"),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let rect = Rect::from_min_size(
+                tabs_rect.min + vec2(6. + i as f32 * 69., 1.),
+                vec2(64., 30.),
             );
-            ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                ui.label(RichText::new("逐层退出").size(10.).color(weak_color(ui)));
-                keycap(ui, "Esc");
-                ui.label(RichText::new("执行/复制").size(10.).color(weak_color(ui)));
-                keycap(ui, "Enter");
-                ui.label(RichText::new("选择").size(10.).color(weak_color(ui)));
-                keycap(ui, "↑↓");
-            });
-        });
-        ui.separator();
+            let response = ui.interact(rect, ui.id().with(("tab", i)), Sense::click());
+            if self.tab == i {
+                ui.painter().rect_filled(rect, 9, selected_surface(ui));
+                ui.painter().rect_stroke(
+                    rect,
+                    9,
+                    Stroke::new(0.8, Color32::from_rgba_unmultiplied(155, 188, 255, 40)),
+                    StrokeKind::Inside,
+                );
+            } else if response.hovered() {
+                ui.painter().rect_filled(rect, 9, surface(ui, 0.05));
+            }
+            let tint = if self.tab == i {
+                ui.visuals().text_color()
+            } else {
+                Color32::from_gray(130)
+            };
+            if let Some(texture) = self.icons.get(icon) {
+                ui.painter().image(
+                    texture.id(),
+                    Rect::from_min_size(rect.min + vec2(10., 7.5), vec2(15., 15.)),
+                    Rect::from_min_max(Pos2::ZERO, pos2(1., 1.)),
+                    tint,
+                );
+            }
+            ui.painter().text(
+                rect.left_center() + vec2(31., 0.),
+                Align2::LEFT_CENTER,
+                label,
+                FontId::new(11., FontFamily::Name("UiMedium".into())),
+                tint,
+            );
+            if response.clicked() {
+                self.tab = i;
+                self.selected = self.visible_indices().first().copied().unwrap_or(0);
+            }
+        }
+        let hint = pos2(tabs_rect.right() - 7., tabs_rect.top() + 16.);
+        ui.painter().text(
+            hint,
+            Align2::RIGHT_CENTER,
+            "切换分类",
+            FontId::proportional(10.),
+            weak_color(ui),
+        );
+        for (name, x, width) in [("Ctrl", -103., 26.5), ("Tab", -71.5, 27.)] {
+            let rect = Rect::from_min_size(hint + vec2(x, -9.), vec2(width, 18.));
+            ui.painter().rect_filled(rect, 5, surface(ui, 0.025));
+            ui.painter().rect_stroke(
+                rect,
+                5,
+                Stroke::new(0.8, Color32::from_rgb(45, 49, 60)),
+                StrokeKind::Inside,
+            );
+            ui.painter().text(
+                rect.center(),
+                Align2::CENTER_CENTER,
+                name,
+                FontId::new(9., FontFamily::Name("Jura".into())),
+                weak_color(ui),
+            );
+        }
+        ui.painter().hline(
+            tabs_rect.x_range(),
+            tabs_rect.bottom(),
+            Stroke::new(0.8, Color32::from_white_alpha(12)),
+        );
+        let (context_rect, _) =
+            ui.allocate_exact_size(vec2(ui.available_width(), 36.), Sense::hover());
+        ui.scope_builder(
+            UiBuilder::new()
+                .max_rect(Rect::from_min_max(
+                    context_rect.min,
+                    context_rect.max - vec2(0., 5.),
+                ))
+                .layout(Layout::left_to_right(Align::Center)),
+            |ui| {
+                ui.horizontal(|ui| {
+                    ui.set_max_width(ui.available_width() - 7.);
+                    ui.add_space(7.);
+                    ui.label(
+                        RichText::new(if let Some(id) = &self.mode {
+                            tools::commands()
+                                .iter()
+                                .find(|c| c.id == *id)
+                                .map(|c| format!("{} 模式", c.name))
+                                .unwrap_or_else(|| "工具模式".into())
+                        } else if self.input.trim().is_empty() {
+                            "最近使用".into()
+                        } else if self.input.starts_with('/') {
+                            "命令候选".into()
+                        } else if self.visible_indices().len() > 1 {
+                            format!("已筛选 {} 个高相关结果", self.visible_indices().len())
+                        } else {
+                            "最佳匹配".into()
+                        })
+                        .size(11.)
+                        .color(weak_color(ui)),
+                    );
+                    ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                        ui.label(RichText::new("逐层退出").size(10.).color(weak_color(ui)));
+                        keycap(ui, "Esc");
+                        ui.label(RichText::new("执行/复制").size(10.).color(weak_color(ui)));
+                        keycap(ui, "Enter");
+                        ui.label(RichText::new("选择").size(10.).color(weak_color(ui)));
+                        keycap(ui, "↑↓");
+                    });
+                });
+            },
+        );
+        ui.advance_cursor_after_rect(context_rect);
+        ui.painter().hline(
+            context_rect.x_range(),
+            context_rect.bottom(),
+            Stroke::new(0.8, Color32::from_white_alpha(14)),
+        );
+        ui.spacing_mut().item_spacing.y = 3.;
+
         if let Some(query) = self.country_query() {
             let rect = ui.available_rect_before_wrap().shrink2(vec2(7., 0.));
             ui.scope_builder(UiBuilder::new().max_rect(rect), |ui| {
@@ -3022,8 +3114,31 @@ impl QuickTool {
             self.help_cards(ui);
             return;
         }
+        let raw_date = if self.input.starts_with('/') {
+            self.input
+                .split_once(' ')
+                .map(|(_, args)| args)
+                .unwrap_or(&self.input)
+        } else {
+            &self.input
+        };
+        let date_parsed = if self
+            .rows
+            .iter()
+            .any(|row| row.tool == "time" && !row.command)
+        {
+            quicktool_rust::dates::parse(
+                raw_date,
+                self.store.settings["dateOrder"].as_str().unwrap_or("YMD"),
+            )
+        } else {
+            None
+        };
         let visible = self.visible_indices();
         let body_top = ui.cursor().top();
+        if self.frames == 8 && std::env::args().any(|a| a == "--layout-debug") {
+            eprintln!("layout tabs={tabs_rect:?} context={context_rect:?} body={body_top}");
+        }
         ui.visuals_mut().widgets.inactive.bg_fill = Color32::from_rgb(54, 57, 66);
         ui.visuals_mut().widgets.hovered.bg_fill = Color32::from_rgb(69, 73, 84);
         ui.visuals_mut().widgets.active.bg_fill = Color32::from_rgb(85, 91, 105);
@@ -3245,6 +3360,35 @@ impl QuickTool {
                                                 .map(|entry| entry.value_type.as_str())
                                                 .unwrap_or("Registry")
                                         )
+                                    } else if row.tool == "time"
+                                        && !row.command
+                                        && date_parsed.is_some()
+                                    {
+                                        let parsed = date_parsed.as_ref().unwrap();
+                                        let mapping = if row.item.title.starts_with("其他识别 [")
+                                        {
+                                            format!(
+                                                "识别 {} [{}] → 本地日期时间",
+                                                row.item.value,
+                                                row.item
+                                                    .title
+                                                    .trim_start_matches("其他识别 [")
+                                                    .trim_end_matches(']')
+                                            )
+                                        } else {
+                                            format!(
+                                                "识别 {} [{}]{} → {}",
+                                                quicktool_rust::dates::recognized(parsed.date),
+                                                parsed.format,
+                                                match parsed.precision.as_str() {
+                                                    "year" => " · 仅年份，按 1 月 1 日",
+                                                    "month" => " · 仅月份，按 1 日",
+                                                    _ => "",
+                                                },
+                                                row.item.value
+                                            )
+                                        };
+                                        format!("{} · {mapping}", row.item.title)
                                     } else if action {
                                         row.item.value.clone()
                                     } else {
@@ -3334,6 +3478,9 @@ impl QuickTool {
                     }
 
                     if selected {
+                        if self.frames == 8 && std::env::args().any(|a| a == "--layout-debug") {
+                            eprintln!("selected rect={:?}", r.rect);
+                        }
                         r.scroll_to_me(None);
                     }
                 }
@@ -4346,254 +4493,100 @@ impl QuickTool {
         }
     }
     fn pickers(&mut self, ctx: &Context) {
+        if self.eyedrop_pending > 0 {
+            self.eyedrop_pending -= 1;
+            if self.eyedrop_pending == 0 {
+                if let Err(error) = self.eyedrop.start(ctx) {
+                    self.message(error);
+                    self.color_picker = true;
+                }
+            }
+            ctx.request_repaint();
+        }
+        if let Some(result) = self.eyedrop.update(ctx) {
+            self.color_picker = true;
+            match result {
+                Ok(Some(rgb)) => {
+                    for (i, value) in rgb.into_iter().enumerate() {
+                        self.picker_color[i] = value as f32 / 255.;
+                    }
+                    let c = self.picker_color;
+                    self.input = quicktool_rust::colors::Color::new(
+                        c[0] as f64,
+                        c[1] as f64,
+                        c[2] as f64,
+                        c[3] as f64,
+                    )
+                    .hex(c[3] < 0.999);
+                    self.rebuild();
+                }
+                Ok(None) => {}
+                Err(error) => self.message(error),
+            }
+        }
+
         if self.color_picker {
-            let previous = self.picker_color;
-            let mut edited = false;
-            let color = quicktool_rust::colors::Color::new(
-                previous[0] as f64,
-                previous[1] as f64,
-                previous[2] as f64,
-                previous[3] as f64,
-            );
-            let formats = quicktool_rust::colors::formats(color);
-            Window::new("Color Picker")
-                .title_bar(false)
-                .resizable(false)
-                .collapsible(false)
-                .fixed_pos(pos2(438., 68.))
-                .fixed_size(vec2(360., 470.))
-                .frame(
-                    Frame::new()
-                        .fill(if ctx.style().visuals.dark_mode {
-                            Color32::from_rgb(20, 24, 34)
-                        } else {
-                            Color32::from_rgb(249, 251, 255)
-                        })
-                        .corner_radius(16)
-                        .stroke(Stroke::new(1., Color32::from_rgb(49, 55, 72)))
-                        .inner_margin(8),
+            let action = if self.interaction_probe.is_some() || self.screenshot.is_some() {
+                pickers::color_panel(
+                    ctx,
+                    &mut self.color_picker,
+                    &mut self.picker_color,
+                    &mut self.native_color,
+                    self.icons.get("mdi:content-copy"),
                 )
-                .show(ctx, |ui| {
-                    ui.horizontal(|ui| {
-                        let (rect, _) = ui.allocate_exact_size(vec2(20., 20.), Sense::hover());
-                        ui.painter().rect_filled(
-                            rect,
-                            CornerRadius::same(5),
-                            Color32::from_rgba_unmultiplied(
-                                (previous[0] * 255.) as u8,
-                                (previous[1] * 255.) as u8,
-                                (previous[2] * 255.) as u8,
-                                (previous[3] * 255.) as u8,
-                            ),
-                        );
-                        ui.label(
-                            RichText::new("Color Picker")
-                                .font(FontId::new(12.5, FontFamily::Name("UiStrong".into()))),
-                        );
-                        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                            if ui
-                                .add_sized([28., 28.], Button::new("×").frame(false))
-                                .clicked()
-                            {
-                                self.color_picker = false;
-                                self.focus = true;
-                            }
-                        });
-                    });
-                    ui.separator();
-                    ui.horizontal(|ui| {
-                        let mut swatch = Color32::from_rgb(
-                            (self.picker_color[0] * 255.).round() as u8,
-                            (self.picker_color[1] * 255.).round() as u8,
-                            (self.picker_color[2] * 255.).round() as u8,
-                        );
-                        if eframe::egui::color_picker::color_edit_button_srgba(
-                            ui,
-                            &mut swatch,
-                            eframe::egui::color_picker::Alpha::Opaque,
-                        )
-                        .changed()
-                        {
-                            self.picker_color[0] = swatch.r() as f32 / 255.;
-                            self.picker_color[1] = swatch.g() as f32 / 255.;
-                            self.picker_color[2] = swatch.b() as f32 / 255.;
-                            edited = true;
-                        }
-                        ui.label(RichText::new("颜色").size(11.));
-                        ui.label(RichText::new("Alpha").size(10.5).color(weak_color(ui)));
-                        let mut alpha = (self.picker_color[3] * 100.).round() as u32;
-                        ui.spacing_mut().slider_width = 120.;
-                        if ui
-                            .add(Slider::new(&mut alpha, 0..=100).show_value(false))
-                            .changed()
-                        {
-                            self.picker_color[3] = alpha as f32 / 100.;
-                            edited = true;
-                        }
-                        ui.label(RichText::new(format!("{alpha}%")).size(10.5));
-                    });
-                    ui.separator();
-                    ScrollArea::vertical().max_height(330.).show(ui, |ui| {
-                        ui.spacing_mut().item_spacing.y = 0.;
-                        for format in formats.into_iter().take(14) {
-                            let (rect, response) = ui.allocate_exact_size(
-                                vec2(ui.available_width(), 34.),
-                                Sense::click(),
-                            );
-                            if response.hovered() {
-                                ui.painter().rect_filled(
-                                    rect,
-                                    CornerRadius::same(9),
-                                    surface(ui, 0.075),
-                                );
-                            }
-                            ui.painter().text(
-                                rect.left_center() + vec2(8., 0.),
-                                Align2::LEFT_CENTER,
-                                &format.title,
-                                FontId::proportional(10.5),
-                                weak_color(ui),
-                            );
-                            let value_rect = Rect::from_min_max(
-                                rect.min + vec2(113., 0.),
-                                rect.max - vec2(28., 0.),
-                            );
-                            ui.painter().with_clip_rect(value_rect).text(
-                                value_rect.left_center(),
-                                Align2::LEFT_CENTER,
-                                &format.value,
-                                FontId::monospace(10.5),
-                                ui.visuals().text_color(),
-                            );
-                            if let Some(texture) = self.icons.get("mdi:content-copy") {
-                                let icon_rect = Rect::from_center_size(
-                                    rect.right_center() - vec2(12., 0.),
-                                    vec2(14., 14.),
-                                );
-                                ui.painter().image(
-                                    texture.id(),
-                                    icon_rect,
-                                    Rect::from_min_max(Pos2::ZERO, pos2(1., 1.)),
-                                    weak_color(ui),
-                                );
-                            }
-                            if response.clicked() {
-                                ctx.copy_text(format.value);
-                                self.message(format!("{} 已复制", format.title));
-                            }
-                        }
-                    });
-                });
-            if edited {
+            } else {
+                pickers::color_panel_detached(
+                    ctx,
+                    &mut self.color_picker,
+                    &mut self.picker_color,
+                    &mut self.native_color,
+                    self.icons.get("mdi:content-copy"),
+                    self.glow.owner,
+                    self.applied_topmost.unwrap_or(false),
+                )
+            };
+            if std::mem::take(&mut self.native_color.eyedrop_requested) {
+                self.native_color.open = false;
+                self.color_picker = false;
+                self.eyedrop_pending = 2;
+                ctx.request_repaint();
+            }
+            if let Some((title, value)) = action.copied {
+                ctx.copy_text(value);
+                self.message(format!("{title} 已复制"));
+            }
+            if action.edited {
                 let c = self.picker_color;
-                let color = quicktool_rust::colors::Color::new(
+                self.input = quicktool_rust::colors::Color::new(
                     c[0] as f64,
                     c[1] as f64,
                     c[2] as f64,
                     c[3] as f64,
-                );
-                self.input = color.hex(c[3] < 0.999);
+                )
+                .hex(c[3] < 0.999);
                 self.rebuild();
             }
         }
         if self.date_picker {
-            let mut open = true;
-            Window::new("选择日期和时间")
-                .open(&mut open)
-                .resizable(false)
-                .show(ctx, |ui| {
-                    let d = quicktool_rust::dates::parse(&self.date_value, "YMD")
-                        .map(|d| d.date)
-                        .unwrap_or_else(time::OffsetDateTime::now_utc);
-                    let mut month = d.month() as u8;
-                    let mut year = d.year();
-                    ui.horizontal(|ui| {
-                        if ui.button("‹").clicked() {
-                            if month == 1 {
-                                month = 12;
-                                year -= 1;
-                            } else {
-                                month -= 1;
-                            }
-                            self.date_value = format!(
-                                "{year:04}-{month:02}-01 {:02}:{:02}:{:02}",
-                                d.hour(),
-                                d.minute(),
-                                d.second()
-                            );
-                        }
-                        ui.label(format!("{year} 年 {month} 月"));
-                        if ui.button("›").clicked() {
-                            if month == 12 {
-                                month = 1;
-                                year += 1;
-                            } else {
-                                month += 1;
-                            }
-                            self.date_value = format!(
-                                "{year:04}-{month:02}-01 {:02}:{:02}:{:02}",
-                                d.hour(),
-                                d.minute(),
-                                d.second()
-                            );
-                        }
-                    });
-                    if let Ok(month_enum) = time::Month::try_from(month) {
-                        if let Ok(first) = time::Date::from_calendar_date(year, month_enum, 1) {
-                            let offset = first.weekday().number_days_from_monday() as usize;
-                            Grid::new("date-calendar").num_columns(7).show(ui, |ui| {
-                                for label in ["一", "二", "三", "四", "五", "六", "日"] {
-                                    ui.label(RichText::new(label).size(11.).color(weak_color(ui)));
-                                }
-                                ui.end_row();
-                                for cell in 0..42 {
-                                    let day = cell - offset as i32 + 1;
-                                    if day > 0
-                                        && time::Date::from_calendar_date(
-                                            year, month_enum, day as u8,
-                                        )
-                                        .is_ok()
-                                    {
-                                        if ui
-                                            .add_sized(
-                                                [26., 25.],
-                                                Button::new(day.to_string())
-                                                    .selected(day as u8 == d.day()),
-                                            )
-                                            .clicked()
-                                        {
-                                            self.date_value = format!(
-                                                "{year:04}-{month:02}-{day:02} {:02}:{:02}:{:02}",
-                                                d.hour(),
-                                                d.minute(),
-                                                d.second()
-                                            );
-                                        }
-                                    } else {
-                                        ui.allocate_space(vec2(26., 25.));
-                                    }
-                                    if cell % 7 == 6 {
-                                        ui.end_row();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                    ui.label("YYYY-MM-DD HH:mm:ss");
-                    ui.text_edit_singleline(&mut self.date_value);
-                    if ui.button("现在").clicked() {
-                        self.date_value = now_date();
-                    }
-                    if ui.button("使用此日期").clicked() {
-                        self.input = self.date_value.clone();
-                        self.rebuild();
-                        self.date_picker = false;
-                        self.focus = true;
-                    }
-                });
-            self.date_picker &= open;
+            let changed = if self.interaction_probe.is_some() || self.screenshot.is_some() {
+                self.native_date
+                    .show(ctx, &mut self.date_picker, &mut self.date_value)
+            } else {
+                self.native_date.show_detached(
+                    ctx,
+                    &mut self.date_picker,
+                    &mut self.date_value,
+                    self.glow.owner,
+                    self.applied_topmost.unwrap_or(false),
+                )
+            };
+            if changed {
+                self.input = self.date_value.clone();
+                self.rebuild();
+            }
         }
     }
+
     fn probe_tick(&mut self, ctx: &Context, target_height: f32) {
         let Some(mut probe) = self.probe.take() else {
             return;
@@ -4673,228 +4666,7 @@ impl QuickTool {
         self.probe = Some(probe);
     }
     fn history(&mut self, ui: &mut Ui, ctx: &Context) {
-        ui.horizontal(|ui| {
-            self.icon(ui, "mdi:history", 24.);
-            ui.vertical(|ui| {
-                ui.label(
-                    RichText::new("历史与收藏")
-                        .font(FontId::new(14., FontFamily::Name("UiStrong".into())))
-                        .strong(),
-                );
-                ui.label(
-                    RichText::new("收藏项固定保留；点击历史项恢复输入与模式")
-                        .size(10.)
-                        .color(weak_color(ui)),
-                );
-            });
-            if ui.button("清空普通历史").clicked() {
-                self.store.history.retain(|h| h.pinned);
-                if let Err(e) = self.store.save_history() {
-                    self.message(e.to_string());
-                }
-            }
-            if ui.button("关闭").clicked() {
-                self.panel = Panel::None;
-                self.focus = true;
-            }
-        });
-        ui.separator();
-        let mut changed = false;
-        let mut remove = None;
-        let mut restore = None;
-        let mut restore_pin = None;
-        let mut copy_pin = None;
-        let mut copy_image = None;
-        if self.store.history.is_empty() {
-            ui.add_space(40.);
-            ui.vertical_centered(|ui| {
-                ui.label(
-                    RichText::new("暂无历史记录")
-                        .size(14.)
-                        .color(weak_color(ui)),
-                );
-            });
-        }
-        for item in &self.store.history {
-            let key = format!("history-thumb:{}", item.id);
-            if (item.pin_state.is_some() || item.image_asset.is_some())
-                && !self.icons.contains_key(&key)
-            {
-                if let Some(path) = self.store.thumbnail_path(&item.id) {
-                    if let Ok(image) = image::open(path) {
-                        let image = image.to_rgba8();
-                        self.icons.insert(
-                            key,
-                            ctx.load_texture(
-                                &item.id,
-                                ColorImage::from_rgba_unmultiplied(
-                                    [image.width() as usize, image.height() as usize],
-                                    image.as_raw(),
-                                ),
-                                TextureOptions::LINEAR,
-                            ),
-                        );
-                    }
-                }
-            }
-        }
-        let mut order = (0..self.store.history.len()).collect::<Vec<_>>();
-        order.sort_by_key(|i| !self.store.history[*i].pinned);
-        ScrollArea::vertical().max_height(430.).show(ui, |ui| {
-            for index in order {
-                let item = &mut self.store.history[index];
-                Frame::new().inner_margin(8).show(ui, |ui| {
-                    if let Some(texture) = self.icons.get(&format!("history-thumb:{}", item.id)) {
-                        ui.add(Image::new(texture).max_size(vec2(96., 64.)));
-                    }
-                    ui.label(
-                        RichText::new(&item.title)
-                            .font(FontId::new(12., FontFamily::Name("UiStrong".into())))
-                            .strong(),
-                    );
-                    ui.add(
-                        Label::new(
-                            RichText::new(clip_text(&item.input, 110))
-                                .size(10.)
-                                .color(weak_color(ui)),
-                        )
-                        .truncate(),
-                    );
-                    ui.add(
-                        Label::new(
-                            RichText::new(clip_text(&item.value, 96))
-                                .size(12.)
-                                .monospace(),
-                        )
-                        .truncate(),
-                    );
-                    ui.horizontal(|ui| {
-                        if ui.small_button("恢复").clicked() {
-                            if item.pin_state.is_some() {
-                                restore_pin = Some(item.id.clone());
-                            } else {
-                                restore = Some((
-                                    item.input.clone(),
-                                    item.tool.clone(),
-                                    item.value.clone(),
-                                    item.mode.clone(),
-                                ));
-                            }
-                        }
-                        if ui.small_button("复制").clicked() {
-                            if item.pin_state.is_some() {
-                                copy_pin = Some(item.id.clone());
-                            } else if item.image_asset.is_some() {
-                                copy_image = Some(item.id.clone());
-                            } else {
-                                ctx.copy_text(item.value.clone());
-                            }
-                        }
-                        if ui
-                            .small_button(if item.pinned {
-                                "取消收藏"
-                            } else {
-                                "收藏"
-                            })
-                            .clicked()
-                        {
-                            item.pinned = !item.pinned;
-                            changed = true;
-                        }
-                        if ui.small_button("删除").clicked() {
-                            remove = Some(index);
-                        }
-                    });
-                });
-            }
-        });
-        if let Some(index) = remove {
-            self.store.history.remove(index);
-            changed = true;
-        }
-        if changed {
-            if let Err(e) = self.store.save_history() {
-                self.message(e.to_string());
-            }
-        }
-        if let Some(id) = restore_pin {
-            match self.store.load_pin(&id) {
-                Ok((record, source)) => {
-                    if let Err(error) = self.pins.restore(record, source) {
-                        self.message(error);
-                    } else {
-                        self.panel = Panel::None;
-                        self.focus = true;
-                    }
-                }
-                Err(error) => self.message(format!("恢复 Pin 失败：{error}")),
-            }
-        }
-        if let Some(id) = copy_pin {
-            match self.store.load_pin(&id) {
-                Ok((record, source)) => {
-                    if let Some(image) = source {
-                        if let Err(error) =
-                            platform::copy_image(image.width(), image.height(), image.as_raw())
-                        {
-                            self.message(error);
-                        }
-                    } else {
-                        ctx.copy_text(record.text);
-                    }
-                }
-                Err(error) => self.message(format!("复制 Pin 失败：{error}")),
-            }
-        }
-        if let Some(id) = copy_image {
-            if let Some(asset) = self
-                .store
-                .history
-                .iter()
-                .find(|item| item.id == id)
-                .and_then(|item| item.image_asset.clone())
-            {
-                let root = self.store.root.clone();
-                let context = ctx.clone();
-                let (sender, receiver) = std::sync::mpsc::channel();
-                self.image_copy = Some(receiver);
-                std::thread::spawn(move || {
-                    let outcome = quicktool_rust::pin_storage::load_image(&root, &asset)
-                        .map_err(|error| error.to_string())
-                        .and_then(|image| {
-                            platform::copy_image(image.width(), image.height(), image.as_raw())
-                        });
-                    let _ = sender.send(outcome);
-                    context.request_repaint();
-                });
-            }
-        }
-        if let Some((input, tool, value, mode)) = restore {
-            if matches!(tool.as_str(), "files" | "cd") && !std::path::Path::new(&value).exists() {
-                self.message("该历史目标已失效或不存在");
-                return;
-            }
-            if tool == "open"
-                && !value.starts_with("http://")
-                && !value.starts_with("https://")
-                && !std::path::Path::new(&value).exists()
-            {
-                self.message("该历史目标已失效或不存在");
-                return;
-            }
-            self.submode = mode.as_ref().and_then(|m| {
-                m.submode.clone().or_else(|| {
-                    m.args
-                        .last()
-                        .and_then(|arg| arg["id"].as_str().map(str::to_string))
-                })
-            });
-            self.input = input;
-            self.mode = mode.map(|mode| mode.tool_id);
-            self.panel = Panel::None;
-            self.rebuild();
-            self.focus = true;
-        }
+        self.history_panel(ui, ctx);
     }
 }
 impl eframe::App for QuickTool {
@@ -4911,6 +4683,11 @@ impl eframe::App for QuickTool {
     }
     fn clear_color(&self, _: &Visuals) -> [f32; 4] {
         [0., 0., 0., 0.]
+    }
+    fn raw_input_hook(&mut self, _ctx: &Context, raw: &mut RawInput) {
+        if raw.viewport_id == ViewportId::ROOT {
+            interaction_probe::raw_input(self, raw);
+        }
     }
     fn update(&mut self, ctx: &Context, frame: &mut eframe::Frame) {
         if self.screenshot.is_some() {
@@ -4980,6 +4757,19 @@ impl eframe::App for QuickTool {
                 Err("未找到可识别图片".into())
             });
         }
+        let decoded = self.decoder.results.try_iter().collect::<Vec<_>>();
+        for (serial, result) in decoded {
+            if self
+                .decoded_request
+                .as_ref()
+                .is_some_and(|(_, current)| *current == serial)
+            {
+                self.decoded_pending = false;
+                if let Ok(image) = result {
+                    self.install_decoded_image(image);
+                }
+            }
+        }
         self.poll_files();
         self.poll_system();
         self.poll_icons();
@@ -5018,6 +4808,7 @@ impl eframe::App for QuickTool {
             && self.panel == Panel::None
             && self.screenshot.is_none()
             && self.probe.is_none()
+            && self.interaction_probe.is_none()
             && self.store.settings["hideOnBlur"] == true
         {
             self.main_visible = false;
@@ -5156,8 +4947,15 @@ impl eframe::App for QuickTool {
         };
         ctx.set_visuals(visuals);
         self.record_shortcut(ctx);
+
         if !self.recording_shortcut && !widgets::is_open(ctx) {
             self.keyboard(ctx);
+            if (self.date_picker || self.color_picker)
+                && self.interaction_probe.is_none()
+                && self.screenshot.is_none()
+            {
+                pickers::hold_input(ctx);
+            }
         }
         let expanded =
             !self.input.trim().is_empty() || self.mode.is_some() || self.panel != Panel::None;
@@ -5254,7 +5052,7 @@ impl eframe::App for QuickTool {
                                     },
                                 ))
                                 .corner_radius(16)
-                                .inner_margin(Margin::symmetric(18, 14))
+                                .inner_margin(0)
                                 .show(ui, |ui| self.history(ui, ctx));
                         }
                     }
@@ -5263,7 +5061,7 @@ impl eframe::App for QuickTool {
                         Panel::None if self.showing_help() => 642.,
                         Panel::None => self.result_height,
                         Panel::Settings => 642.,
-                        Panel::History => 560.,
+                        Panel::History => 642.,
                     };
                 }
             });
@@ -5343,11 +5141,17 @@ impl eframe::App for QuickTool {
         if let Some(error) = self.glow.error.take() {
             self.message(format!("边缘 Glow 不可用：{error}"));
         }
-        self.pickers(ctx);
+        if self.main_visible {
+            self.pickers(ctx);
+        } else {
+            self.date_picker = false;
+            self.native_color.open = false;
+            pickers::close_detached(ctx);
+        }
         self.probe_tick(ctx, height);
         if let Some(path) = self.screenshot.clone() {
             ctx.request_repaint_after(Duration::from_millis(100));
-            if self.frames >= 5 && !self.screenshot_sent {
+            if self.frames >= 5 && !self.decoded_pending && !self.screenshot_sent {
                 ctx.send_viewport_cmd(ViewportCommand::Screenshot(Default::default()));
                 self.screenshot_sent = true;
                 self.screenshot_requested = Some(Instant::now());
@@ -5391,5 +5195,6 @@ impl eframe::App for QuickTool {
                 ctx.send_viewport_cmd(ViewportCommand::Close);
             }
         }
+        interaction_probe::tick(self, ctx);
     }
 }
