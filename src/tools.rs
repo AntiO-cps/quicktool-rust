@@ -72,6 +72,10 @@ pub fn command(input: &str) -> Option<&'static Command> {
         .find(|c| c.id == n || c.aliases.iter().any(|a| normalize_search(a) == n))
 }
 pub fn suggestions(input: &str) -> Vec<(&'static Command, f64)> {
+    suggestions_all(input).into_iter().take(16).collect()
+}
+/// Apply usage before the caller truncates; ties retain the original tool order.
+pub fn suggestions_all(input: &str) -> Vec<(&'static Command, f64)> {
     let input = input.strip_prefix('/').unwrap_or(input);
     let mut results: Vec<_> = commands()
         .iter()
@@ -81,8 +85,53 @@ pub fn suggestions(input: &str) -> Vec<(&'static Command, f64)> {
         })
         .collect();
     results.sort_by(|a, b| b.1.total_cmp(&a.1));
-    results.truncate(16);
     results
+}
+/// Split commandParse's first JavaScript whitespace, retaining the argument text.
+pub fn parse_command_input(raw: &str) -> (&str, &str) {
+    parse_command_input_without_slash(raw.strip_prefix('/').unwrap_or(raw))
+}
+/// Match the original parseToolArg/subcommandMatch threshold and alias order.
+pub fn parse_submode(id: &str, raw: &str) -> (Option<String>, String) {
+    let subcommands: &[(&str, &[&str])] = match id {
+        "base64" => &[
+            ("encode", &["encode", "编码", "bianma", "bm"]),
+            ("decode", &["decode", "解码", "jiema", "jm"]),
+        ],
+        "cmd" | "powershell" | "terminal" => &[(
+            "admin",
+            &["admin", "administrator", "管理员", "guanliyuan", "gly", "a"],
+        )],
+        _ => return (None, raw.into()),
+    };
+    let trimmed = raw.trim_start_matches(js_space);
+    let (token, input) = parse_command_input_without_slash(trimmed);
+    let mut best = None;
+    for &(submode, aliases) in subcommands {
+        for alias in aliases {
+            let score = if normalize_search(token).is_empty() {
+                0.70
+            } else {
+                search::fuzzy(token, alias).score
+            };
+            if score > 0. && best.is_none_or(|(_, old_score)| score > old_score) {
+                best = Some((submode, score));
+            }
+        }
+    }
+    match best {
+        Some((submode, score)) if !token.is_empty() && score >= 0.79 => (
+            Some(submode.into()),
+            input.trim_start_matches(js_space).into(),
+        ),
+        _ => (None, raw.into()),
+    }
+}
+fn parse_command_input_without_slash(raw: &str) -> (&str, &str) {
+    raw.char_indices()
+        .find(|(_, ch)| js_space(*ch))
+        .map(|(offset, ch)| (&raw[..offset], &raw[offset + ch.len_utf8()..]))
+        .unwrap_or((raw, ""))
 }
 pub fn best_alias<'a>(command: &'a Command, input: &str) -> Option<(&'a str, f64)> {
     let mut best: Option<(&str, f64)> = None;
@@ -159,11 +208,8 @@ pub fn execute(id: &str, q: &str) -> Result<Vec<ResultItem>, String> {
                     .collect::<String>(),
             )]
         }
-        "country" => countries(q),
-        "color" => crate::colors::candidates(q)
-            .into_iter()
-            .flat_map(crate::colors::formats)
-            .collect(),
+        "country" => countries(q)?,
+        "color" => color_results(q)?,
         "char" | "mathchar" | "greek" | "bopomofo" | "emoji" => crate::unicode::results(q, id)?,
         "help" => commands()
             .iter()
@@ -199,7 +245,6 @@ pub fn detect_scored(q: &str) -> Vec<(String, ResultItem, f64)> {
         r"(?:%[0-9A-Fa-f]{2}|\\u(?:\{|[0-9A-Fa-f]{4})|&(?:#\d+|#x[0-9a-f]+|\w+);)",
         r"(?i)^[+-]?0(?:x[0-9a-f]+|b[01]+|o[0-7]+)$",
         r"(?i)^(?:U\+|\\u(?:\{|[0-9A-Fa-f]{4})|\\U[0-9A-Fa-f]{8}|0x[0-9A-Fa-f]{1,6})",
-        r"^(?:\+\d{1,4}|\.[a-z]{2}|[A-Z]{2,3}|\d{3})$",r"(?i)^[a-z\s]+$",
     ].iter().map(|p|regex_lite::Regex::new(p).unwrap()).collect());
     let raw = q.trim();
     let has = |i: usize| patterns[i].is_match(raw);
@@ -285,17 +330,8 @@ pub fn detect_scored(q: &str) -> Vec<(String, ResultItem, f64)> {
     {
         add("width", 0.92)
     }
-    let matches = crate::countries::scored_matches(q, 4);
-    if let Some((_, score)) = matches.first() {
-        let count = raw.encode_utf16().count();
-        let han = raw.chars().any(|c| ('\u{3400}'..='\u{9fff}').contains(&c));
-        if (*score >= 1. && count >= 2)
-            || (han && count >= 2 && *score >= 0.8)
-            || (has(11) && count >= 4 && *score >= 0.85)
-            || has(10)
-        {
-            add("country", if has(10) { 0.99 } else { 0.86 })
-        }
+    if let Some(score) = crate::countries::detection_score(q) {
+        add("country", score)
     }
     if q.contains('\n') {
         add("text", 0.36)
@@ -303,11 +339,34 @@ pub fn detect_scored(q: &str) -> Vec<(String, ResultItem, f64)> {
     out.sort_by(|a, b| b.2.total_cmp(&a.2));
     out
 }
-fn countries(q: &str) -> Vec<ResultItem> {
-    crate::countries::matches(q)
-        .iter()
-        .flat_map(crate::countries::items)
-        .collect()
+fn countries(q: &str) -> Result<Vec<ResultItem>, String> {
+    let matches = crate::countries::matches(q);
+    if matches.is_empty() {
+        return Err("未找到国家/地区".into());
+    }
+    Ok(matches.iter().flat_map(crate::countries::items).collect())
+}
+fn color_results(q: &str) -> Result<Vec<ResultItem>, String> {
+    let variants = crate::colors::candidates(q);
+    let Some(&primary) = variants.first() else {
+        return Err("无法识别颜色".into());
+    };
+    let mut rows = Vec::new();
+    if variants.len() > 1 {
+        let labels = if q.trim_matches(js_space).len() == 3 {
+            ["QuickTool 灰度短 HEX", "灰度 + Alpha"]
+        } else {
+            ["CSS #RGB", "QuickTool 重复模式"]
+        };
+        rows.extend(
+            variants
+                .iter()
+                .zip(labels)
+                .map(|(color, label)| ResultItem::new(label, color.hex(true))),
+        );
+    }
+    rows.extend(crate::colors::formats(primary));
+    Ok(rows)
 }
 pub fn country_matches(q: &str) -> Vec<Value> {
     crate::countries::matches(q)

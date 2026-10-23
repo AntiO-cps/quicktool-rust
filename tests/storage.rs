@@ -83,6 +83,76 @@ fn usage_is_persisted_and_corrupt_usage_is_preserved() {
     cleanup(&root);
 }
 #[test]
+fn usage_read_update_append_and_write_preserve_object_insertion_order() {
+    let root = root();
+    std::fs::create_dir_all(&root).unwrap();
+    atomic_write(
+        &root.join("usage.json"),
+        br#"{"country":{"count":2,"last":100},"char":{"count":3,"last":100},"case":{"count":4,"last":100}}"#,
+    )
+    .unwrap();
+    let mut store = Store::open(root.clone());
+    assert!(store.load_errors.is_empty());
+    assert_eq!(
+        store.usage.keys().map(String::as_str).collect::<Vec<_>>(),
+        ["country", "char", "case"]
+    );
+    store.mark_used("char").unwrap();
+    store.mark_used("base64").unwrap();
+    assert_eq!(store.usage["char"].count, 4);
+    assert_eq!(store.usage["base64"].count, 1);
+    assert!(store.usage["char"].last >= 100);
+    let persisted: serde_json::Value =
+        serde_json::from_slice(&std::fs::read(root.join("usage.json")).unwrap()).unwrap();
+    assert_eq!(
+        persisted
+            .as_object()
+            .unwrap()
+            .keys()
+            .map(String::as_str)
+            .collect::<Vec<_>>(),
+        ["country", "char", "case", "base64"]
+    );
+    let restored = Store::open(root.clone());
+    assert_eq!(
+        restored
+            .usage
+            .keys()
+            .map(String::as_str)
+            .collect::<Vec<_>>(),
+        ["country", "char", "case", "base64"]
+    );
+    assert_eq!(restored.usage["char"].count, 4);
+    assert_eq!(restored.usage["country"].last, 100);
+    cleanup(&root);
+}
+#[test]
+fn recent_usage_tied_timestamps_keep_original_object_order_after_updates() {
+    let root = root();
+    let mut store = Store::open(root.clone());
+    for id in ["country", "char", "case"] {
+        store.mark_used(id).unwrap();
+    }
+    // Equal timestamps are common when legacy usage is imported in one batch.
+    // The original Object.entries(...).sort() retains insertion order for ties.
+    for usage in store.usage.values_mut() {
+        usage.last = 123456;
+    }
+    atomic_write(
+        &root.join("usage.json"),
+        &serde_json::to_vec(&store.usage).unwrap(),
+    )
+    .unwrap();
+    let restored = Store::open(root.clone());
+    let mut recent = restored.usage.iter().collect::<Vec<_>>();
+    recent.sort_by_key(|entry| std::cmp::Reverse(entry.1.last));
+    assert_eq!(
+        recent.iter().map(|(id, _)| id.as_str()).collect::<Vec<_>>(),
+        ["country", "char", "case"]
+    );
+    cleanup(&root);
+}
+#[test]
 fn history_restores_mode_and_subcommand() {
     use quicktool_rust::storage::HistoryMode;
     let root = root();

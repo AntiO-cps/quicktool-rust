@@ -48,7 +48,7 @@ pub struct Store {
     pub settings: Value,
     pub history: Vec<HistoryItem>,
     pub load_errors: Vec<String>,
-    pub usage: std::collections::BTreeMap<String, Usage>,
+    pub usage: indexmap::IndexMap<String, Usage>,
     usage_blocked: bool,
     settings_blocked: bool,
     history_blocked: bool,
@@ -136,7 +136,7 @@ impl Store {
             Ok(value) => (value.unwrap_or_default(), false),
             Err(error) => {
                 load_errors.push(format!("usage.json 读取失败，已禁止覆盖：{error}"));
-                (std::collections::BTreeMap::new(), true)
+                (indexmap::IndexMap::new(), true)
             }
         };
         Self {

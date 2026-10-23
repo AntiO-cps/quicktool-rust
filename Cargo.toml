@@ -1,13 +1,14 @@
 [package]
 name = "quicktool-rust"
 default-run = "quicktool-rust"
-version = "0.6.0-alpha.36"
+version = "0.6.0-alpha.37"
 edition = "2024"
 rust-version = "1.85"
 description = "Native Rust rewrite of QuickTool"
 publish = false
 
 [dependencies]
+indexmap = { version = "2", features = ["serde"] }
 eframe = { version = "=0.31.1", default-features = false, features = ["glow", "default_fonts", "x11", "wayland"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["preserve_order", "arbitrary_precision"] }

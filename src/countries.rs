@@ -53,7 +53,7 @@ fn data() -> &'static Vec<Entry> {
     })
 }
 pub fn scored_matches(q: &str, limit: usize) -> Vec<(Value, f64)> {
-    let q = normalize_search(q.trim());
+    let q = normalize_search(q.trim_matches(crate::core::js_space));
     if q.is_empty() {
         return vec![];
     }
@@ -94,6 +94,80 @@ pub fn scored_matches(q: &str, limit: usize) -> Vec<(Value, f64)> {
 }
 pub fn matches(q: &str) -> Vec<Value> {
     scored_matches(q, 5).into_iter().map(|(c, _)| c).collect()
+}
+/// The original renderer assigns these row scores after detector/usage scores.
+/// Its four-result slice happens before the alternative-score filter.
+pub fn card_matches(q: &str) -> Vec<(Value, f64)> {
+    let matches = scored_matches(q, 5);
+    let Some((_, top_score)) = matches.first() else {
+        return vec![];
+    };
+    let threshold = (top_score - 0.28).max(0.62);
+    matches
+        .into_iter()
+        .take(4)
+        .enumerate()
+        .filter_map(|(index, (country, score))| {
+            (index == 0 || score >= threshold)
+                .then_some((country, if index == 0 { 1.15 } else { 0.72 }))
+        })
+        .collect()
+}
+
+/// Country detector from renderer.js, distinct from the final card row score.
+pub fn detection_score(q: &str) -> Option<f64> {
+    use unicode_script::{Script, UnicodeScript};
+    static EXPLICIT: OnceLock<regex_lite::Regex> = OnceLock::new();
+    let explicit_pattern = EXPLICIT.get_or_init(|| {
+        regex_lite::Regex::new(r"^(?:\+\d{1,4}|\.[a-z]{2}|[A-Z]{2,3}|\d{3})$").unwrap()
+    });
+    let raw = q.trim_matches(crate::core::js_space);
+    let matches = scored_matches(raw, 4);
+    let (_, score) = matches.first()?;
+    let count = raw.encode_utf16().count();
+    let explicit = explicit_pattern.is_match(raw);
+    let english = !q.is_empty()
+        && q.chars()
+            .all(|ch| ch.is_ascii_alphabetic() || crate::core::js_space(ch));
+    ((*score >= 1. && count >= 2)
+        || (q.chars().any(|ch| ch.script() == Script::Han) && count >= 2 && *score >= 0.8)
+        || (english && count >= 4 && *score >= 0.85)
+        || explicit)
+        .then_some(if explicit { 0.99 } else { 0.86 })
+}
+
+/// Text produced when the user activates an alternate country result.
+pub fn completion(country: &Value, input: &str) -> String {
+    let query = input.trim_matches(crate::core::js_space);
+    if query
+        .chars()
+        .any(|ch| ('\u{3400}'..='\u{9fff}').contains(&ch))
+    {
+        return country["nameZh"]
+            .as_str()
+            .unwrap_or("")
+            .replace('（', "(")
+            .replace('）', ")");
+    }
+    let code_length = query.len();
+    let key = if !query.is_empty() && query.chars().all(|ch| ch.is_ascii_digit()) {
+        "numeric"
+    } else if matches!(code_length, 2 | 3) && query.chars().all(|ch| ch.is_ascii_alphabetic()) {
+        if code_length == 2 { "alpha2" } else { "alpha3" }
+    } else {
+        return ["nameEn", "nameZh", "alpha2"]
+            .iter()
+            .filter_map(|key| country[key].as_str())
+            .find(|value| !value.is_empty())
+            .unwrap_or("")
+            .into();
+    };
+    let value = country[key].as_str().unwrap_or("");
+    if matches!(key, "alpha2" | "alpha3") && query == crate::js_case::lower(query) {
+        crate::js_case::lower(value)
+    } else {
+        value.into()
+    }
 }
 pub fn items(c: &Value) -> Vec<crate::core::ResultItem> {
     use crate::core::ResultItem;

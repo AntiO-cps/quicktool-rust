@@ -1,5 +1,9 @@
 #[path = "attachments.rs"]
 mod attachments;
+#[path = "candidates_probe.rs"]
+mod candidates_probe;
+#[path = "country_card.rs"]
+mod country_card;
 #[path = "expanded_probe.rs"]
 mod expanded_probe;
 #[path = "eyedrop_overlay.rs"]
@@ -8,6 +12,8 @@ mod eyedrop_overlay;
 mod glow;
 #[path = "history_panel.rs"]
 mod history_panel;
+#[path = "host_candidates.rs"]
+mod host_candidates;
 #[path = "image_decode.rs"]
 mod image_decode;
 #[path = "interaction_probe.rs"]
@@ -18,6 +24,8 @@ mod large_input;
 mod motion_probe;
 #[path = "pickers.rs"]
 mod pickers;
+#[path = "search_layout_probe.rs"]
+mod search_layout_probe;
 #[path = "summon_probe.rs"]
 mod summon_probe;
 #[path = "widgets.rs"]
@@ -58,6 +66,11 @@ struct Row {
     tool: String,
     item: ResultItem,
     command: bool,
+    country: Option<(Value, bool)>,
+    launch_app: Option<system::AppEntry>,
+    passive: bool,
+    mode_action: Option<(String, Option<String>)>,
+    open_target: Option<String>,
 }
 #[derive(PartialEq, Clone, Copy)]
 enum Panel {
@@ -66,13 +79,10 @@ enum Panel {
     History,
 }
 fn parse_sub_arg<'a>(id: &str, input: &'a str) -> (Option<&'static str>, &'a str) {
-    let (head, tail) = input.split_once(' ').unwrap_or((input, ""));
-    for (key, _, aliases) in subcommands(id) {
-        if aliases
-            .iter()
-            .any(|a| a.eq_ignore_ascii_case(head.trim_start_matches('/')))
-        {
-            return (Some(key), tail);
+    let (sub, tail) = tools::parse_submode(id, input);
+    if let Some(sub) = sub {
+        if let Some((key, _, _)) = subcommands(id).into_iter().find(|(key, _, _)| *key == sub) {
+            return (Some(key), &input[input.len() - tail.len()..]);
         }
     }
     (None, input)
@@ -149,6 +159,7 @@ fn mode_entry(id: &str) -> bool {
             | "powershell"
             | "terminal"
             | "registry"
+            | "files"
             | "text"
             | "unit"
     )
@@ -319,41 +330,13 @@ fn clip_text(text: &str, limit: usize) -> String {
     format!("{}…", String::from_utf16_lossy(&prefix))
 }
 fn country_candidates(query: &str) -> Vec<Value> {
-    let matches = quicktool_rust::countries::scored_matches(query, 5);
-    let threshold = matches
-        .first()
-        .map(|(_, score)| (score - 0.28).max(0.62))
-        .unwrap_or(1.);
-    matches
+    quicktool_rust::countries::card_matches(query)
         .into_iter()
-        .enumerate()
-        .filter(|(index, (_, score))| *index == 0 || *score >= threshold)
-        .take(4)
-        .map(|(_, (country, _))| country)
+        .map(|(country, _)| country)
         .collect()
 }
 fn country_completion(country: &Value, input: &str) -> String {
-    let query = input.trim();
-    let key = if query
-        .chars()
-        .any(|ch| ('\u{3400}'..='\u{9fff}').contains(&ch))
-    {
-        "nameZh"
-    } else if query.chars().all(|ch| ch.is_ascii_digit()) {
-        "numeric"
-    } else if query.len() == 2 && query.is_ascii() {
-        "alpha2"
-    } else if query.len() == 3 && query.is_ascii() {
-        "alpha3"
-    } else {
-        "nameEn"
-    };
-    let value = country[key].as_str().unwrap_or("");
-    if matches!(key, "alpha2" | "alpha3") && query == query.to_lowercase() {
-        value.to_lowercase()
-    } else {
-        value.replace('（', "(").replace('）', ")")
-    }
+    quicktool_rust::countries::completion(country, input)
 }
 
 fn subcommands(id: &str) -> Vec<(&'static str, &'static str, Vec<&'static str>)> {
@@ -406,6 +389,9 @@ struct IconWorker {
     loaded: std::collections::VecDeque<String>,
 }
 fn shell_target(row: &Row) -> Option<&str> {
+    if let Some(app) = &row.launch_app {
+        return Some(&app.target);
+    }
     (matches!(row.tool.as_str(), "run" | "files")
         || (row.tool == "cd" && row.item.title.starts_with("打开"))
         || (row.tool == "open"
@@ -515,6 +501,14 @@ pub struct QuickTool {
     summon_probe: Option<summon_probe::SummonProbe>,
     expanded_probe: Option<expanded_probe::ExpandedProbe>,
     motion_probe: Option<motion_probe::MotionProbe>,
+    search_layout_probe: Option<search_layout_probe::SearchLayoutProbe>,
+    layout_snapshot: Value,
+    candidates_probe: Option<candidates_probe::CandidatesProbe>,
+    candidate_testing: bool,
+    file_results: Option<(String, Vec<index::FileEntry>)>,
+    scroll_reset: bool,
+    render_context: Option<(String, Option<String>, Option<String>, usize)>,
+    last_scroll_selection: Option<usize>,
     motion: quicktool_rust::launcher_motion::Motion,
     placement: quicktool_rust::launcher_native::LauncherPlacement,
     place_requested: bool,
@@ -541,6 +535,7 @@ pub struct QuickTool {
     apps: Vec<system::AppEntry>,
     apps_requested: bool,
     clipboard_entries: Vec<platform::ClipboardEntry>,
+    clipboard_loaded: bool,
     country_cache: Vec<Value>,
     system_dark: bool,
     theme_polled: Instant,
@@ -723,14 +718,23 @@ impl QuickTool {
         let summon_probe = summon_probe::SummonProbe::from_args();
         let expanded_probe = expanded_probe::ExpandedProbe::from_args();
         let motion_probe = motion_probe::MotionProbe::from_args();
-        let isolated = metrics_path.is_some()
+        let search_layout_probe = search_layout_probe::SearchLayoutProbe::from_args();
+        let candidates_probe = candidates_probe::CandidatesProbe::from_args();
+        let candidate_testing = candidates_probe.is_some();
+        let isolated = candidate_testing
+            || metrics_path.is_some()
             || interaction_probe.is_some()
             || summon_probe.is_some()
             || expanded_probe.is_some()
             || motion_probe.is_some()
+            || search_layout_probe.is_some()
             || std::env::args().any(|a| a == "--picker-screenshot");
         let mut store = Store::open(
-            if summon_probe.is_some() || expanded_probe.is_some() || motion_probe.is_some() {
+            if summon_probe.is_some()
+                || expanded_probe.is_some()
+                || motion_probe.is_some()
+                || search_layout_probe.is_some()
+            {
                 std::env::temp_dir().join(format!("QuickTool-Rust-summon-{}", std::process::id()))
             } else if isolated {
                 std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -746,7 +750,8 @@ impl QuickTool {
                 eprintln!("metrics empty index directory: {error}");
             }
             store.settings["theme"] = serde_json::json!("dark");
-            store.settings["reduceMotion"] = serde_json::json!(motion_probe.is_none());
+            store.settings["reduceMotion"] =
+                serde_json::json!(motion_probe.is_none() && search_layout_probe.is_none());
             store.settings["globalShortcut"] = serde_json::json!("F24");
             store.settings["hideOnBlur"] = serde_json::json!(false);
             store.settings["fileIndexRoots"] = serde_json::json!(empty.to_string_lossy());
@@ -764,7 +769,8 @@ impl QuickTool {
             .skip_while(|a| a != "--screenshot")
             .nth(1)
             .map(std::path::PathBuf::from);
-        let unattended = interaction_probe.is_some()
+        let unattended = candidate_testing
+            || interaction_probe.is_some()
             || screenshot.is_some()
             || metrics_path.is_some()
             || std::env::args().any(|a| {
@@ -846,6 +852,14 @@ impl QuickTool {
             summon_probe,
             expanded_probe,
             motion_probe,
+            search_layout_probe,
+            layout_snapshot: Value::Null,
+            candidates_probe,
+            candidate_testing,
+            file_results: None,
+            scroll_reset: true,
+            render_context: None,
+            last_scroll_selection: None,
             motion: Default::default(),
             placement: Default::default(),
             place_requested: true,
@@ -892,6 +906,7 @@ impl QuickTool {
             apps: vec![],
             apps_requested: false,
             clipboard_entries: vec![],
+            clipboard_loaded: false,
             country_cache: vec![],
             system_dark: system::dark_theme(),
             theme_polled: Instant::now(),
@@ -1132,15 +1147,89 @@ impl QuickTool {
         let previous_pending = std::mem::take(&mut self.decoded_pending);
         let previous_image = self.decoded_image.take();
         let previous_request = self.decoded_request.take();
+        let context = (
+            self.input.clone(),
+            self.mode.clone(),
+            self.submode.clone(),
+            self.tab,
+        );
+        let changed = self.render_context.as_ref() != Some(&context);
+        let query_changed = self
+            .render_context
+            .as_ref()
+            .is_none_or(|old| old.0 != context.0 || old.1 != context.1 || old.2 != context.2);
+        self.render_context = Some(context);
+        let previous_selected = self.selected;
+        if changed {
+            self.scroll_reset = true;
+            self.last_scroll_selection = Some(0);
+        }
+        if query_changed && !self.candidate_testing {
+            self.file_serial += 1;
+            self.files_pending = false;
+            self.file_query = None;
+            self.file_debounce = None;
+        }
         self.rebuild_inner();
-        if self.mode.is_none()
-            && !self.input.starts_with('/')
-            && self
-                .rows
-                .first()
-                .is_some_and(|row| row.tool == "country" && !row.command)
+        self.finalize_candidates();
+        if !changed {
+            self.selected = if previous_selected < self.rows.len() {
+                previous_selected
+            } else {
+                0
+            };
+        }
+        if self
+            .rows
+            .iter()
+            .any(|row| row.tool == "country" && !row.command)
         {
-            self.country_cache = country_candidates(&self.input);
+            let query = if self.mode.as_deref() == Some("country") {
+                self.input.as_str()
+            } else if let Some(command) = self.input.strip_prefix('/') {
+                command
+                    .split_once(quicktool_rust::core::js_space)
+                    .map(|(_, args)| args)
+                    .unwrap_or("")
+            } else {
+                self.input.as_str()
+            };
+            self.country_cache = country_candidates(query);
+            for row in &mut self.rows {
+                if row.tool == "country" && !row.command {
+                    if let Some((index, country)) =
+                        self.country_cache.iter().enumerate().find(|(_, country)| {
+                            country["alpha2"].as_str() == Some(&row.item.value)
+                        })
+                    {
+                        let primary = index == 0;
+                        row.country = Some((country.clone(), primary));
+                        row.score = if primary { 1.15 } else { 0.72 };
+                        row.item.title = if primary {
+                            format!(
+                                "{} · {}",
+                                country["nameZh"].as_str().unwrap_or(""),
+                                country["nameEn"].as_str().unwrap_or("")
+                            )
+                        } else {
+                            format!(
+                                "{} {}",
+                                country["flagEmoji"].as_str().unwrap_or(""),
+                                country["nameZh"].as_str().unwrap_or("")
+                            )
+                        };
+                        if !primary {
+                            row.item.value = format!(
+                                "{} · {}",
+                                country["alpha2"].as_str().unwrap_or(""),
+                                country["alpha3"].as_str().unwrap_or("")
+                            );
+                        }
+                    }
+                }
+            }
+        } else {
+            self.country_cache.clear();
         }
         if self.attachment.is_some() || self.submode.as_deref() == Some("encode") {
             return;
@@ -1152,8 +1241,10 @@ impl QuickTool {
         {
             let (inline_sub, input) = if self.mode.as_deref() == Some("base64") {
                 parse_sub_arg("base64", &self.input)
-            } else if let Some((_, args)) =
-                self.input.strip_prefix('/').and_then(|s| s.split_once(' '))
+            } else if let Some((_, args)) = self
+                .input
+                .strip_prefix('/')
+                .and_then(|s| s.split_once(quicktool_rust::core::js_space))
             {
                 parse_sub_arg("base64", args)
             } else {
@@ -1209,6 +1300,11 @@ impl QuickTool {
                     format!("{} 图片", image.mime),
                 ),
                 command: false,
+                country: None,
+                launch_app: None,
+                passive: false,
+                mode_action: None,
+                open_target: None,
             },
         );
         self.decoded_image = Some(image);
@@ -1217,10 +1313,7 @@ impl QuickTool {
     fn rebuild_inner(&mut self) {
         self.rows.clear();
         self.selected = 0;
-        self.file_serial += 1;
-        self.files_pending = false;
-        self.file_query = None;
-        self.file_debounce = None;
+
         if let Some(attachment) = &self.attachment {
             if (self.mode.is_none() && !self.input.starts_with('/'))
                 || self.mode.as_deref() == Some("base64")
@@ -1235,6 +1328,11 @@ impl QuickTool {
                         tool: "base64".into(),
                         item,
                         command: false,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     })
                     .collect();
                 return;
@@ -1245,6 +1343,11 @@ impl QuickTool {
                     tool: "pin".into(),
                     item: ResultItem::new("钉住图片", &attachment.name),
                     command: false,
+                    country: None,
+                    launch_app: None,
+                    passive: false,
+                    mode_action: None,
+                    open_target: None,
                 }];
                 return;
             }
@@ -1267,6 +1370,11 @@ impl QuickTool {
                             format!("固定为{label}模式"),
                         ),
                         command: true,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     })
                     .collect();
                 let name = tools::commands()
@@ -1279,6 +1387,11 @@ impl QuickTool {
                     tool: id.clone(),
                     item: ResultItem::new(format!("{name} 模式"), "输入内容后立即处理"),
                     command: false,
+                    country: None,
+                    launch_app: None,
+                    passive: false,
+                    mode_action: None,
+                    open_target: None,
                 });
                 return;
             }
@@ -1299,6 +1412,11 @@ impl QuickTool {
                                 format!("固定为{label}模式"),
                             ),
                             command: true,
+                            country: None,
+                            launch_app: None,
+                            passive: false,
+                            mode_action: None,
+                            open_target: None,
                         });
                     }
                 }
@@ -1324,6 +1442,11 @@ impl QuickTool {
                             tool: id.clone(),
                             item,
                             command: false,
+                            country: None,
+                            launch_app: None,
+                            passive: false,
+                            mode_action: None,
+                            open_target: None,
                         })
                         .filter(|row| match self.submode.as_deref() {
                             Some("encode") => row.item.title.contains("编码"),
@@ -1347,12 +1470,21 @@ impl QuickTool {
                             error,
                         ),
                         command: false,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     }];
                 }
             }
             return;
         }
-        if self.input.trim().is_empty() {
+        if self
+            .input
+            .trim_matches(quicktool_rust::core::js_space)
+            .is_empty()
+        {
             let mut recent = self
                 .store
                 .usage
@@ -1369,6 +1501,11 @@ impl QuickTool {
                     tool: c.id.clone(),
                     item: ResultItem::new(&c.name, format!("/{}", c.primary_alias)),
                     command: true,
+                    country: None,
+                    launch_app: None,
+                    passive: false,
+                    mode_action: None,
+                    open_target: None,
                 })
                 .collect();
             if self.rows.is_empty() {
@@ -1380,15 +1517,22 @@ impl QuickTool {
                         tool: command.id.clone(),
                         item: ResultItem::new(&command.name, format!("/{}", command.primary_alias)),
                         command: true,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     })
                     .collect();
             }
             return;
         }
         if let Some(text) = self.input.strip_prefix('/') {
-            if let Some((head, args)) = text.split_once(' ') {
+            if let Some((head, args)) = text.split_once(quicktool_rust::core::js_space) {
                 if let Some(c) = tools::command(head) {
-                    if args.trim().is_empty() && mode_entry(&c.id) {
+                    if args.trim_matches(quicktool_rust::core::js_space).is_empty()
+                        && mode_entry(&c.id)
+                    {
                         self.rows = vec![Row {
                             score: 0.99,
                             tool: c.id.clone(),
@@ -1397,6 +1541,11 @@ impl QuickTool {
                                 "输入内容后立即处理",
                             ),
                             command: true,
+                            country: None,
+                            launch_app: None,
+                            passive: false,
+                            mode_action: None,
+                            open_target: None,
                         }];
                         return;
                     }
@@ -1419,6 +1568,11 @@ impl QuickTool {
                                     tool: c.id.clone(),
                                     item,
                                     command: false,
+                                    country: None,
+                                    launch_app: None,
+                                    passive: false,
+                                    mode_action: None,
+                                    open_target: None,
                                 })
                                 .collect()
                         }
@@ -1428,6 +1582,11 @@ impl QuickTool {
                                 tool: c.id.clone(),
                                 item: ResultItem::new(&c.name, error),
                                 command: false,
+                                country: None,
+                                launch_app: None,
+                                passive: false,
+                                mode_action: None,
+                                open_target: None,
                             }];
                         }
                     }
@@ -1453,6 +1612,11 @@ impl QuickTool {
                             "Enter 固定为 Tag；Esc 退出",
                         ),
                         command: true,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     }];
                     return;
                 }
@@ -1474,6 +1638,11 @@ impl QuickTool {
                         tool: id,
                         item: ResultItem::new(title, value),
                         command: true,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     }];
                     return;
                 }
@@ -1485,6 +1654,11 @@ impl QuickTool {
                             tool: id.clone(),
                             item,
                             command: false,
+                            country: None,
+                            launch_app: None,
+                            passive: false,
+                            mode_action: None,
+                            open_target: None,
                         })
                         .collect(),
                     Err(_) => vec![Row {
@@ -1492,11 +1666,16 @@ impl QuickTool {
                         tool: id,
                         item: ResultItem::new(&command.name, "输入内容后立即处理"),
                         command: false,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     }],
                 };
                 return;
             }
-            let mut suggestions = tools::suggestions(text)
+            let mut suggestions = tools::suggestions_all(text)
                 .into_iter()
                 .map(|(c, score)| (c, score + self.store.usage_boost(&c.id)))
                 .collect::<Vec<_>>();
@@ -1516,11 +1695,16 @@ impl QuickTool {
                         &c.name,
                     ),
                     command: true,
+                    country: None,
+                    launch_app: None,
+                    passive: false,
+                    mode_action: None,
+                    open_target: None,
                 })
                 .collect();
         } else {
             let mut candidates = tools::detect_scored(&self.input);
-            if let Some(score) = candidates
+            if let Some(_score) = candidates
                 .iter()
                 .find(|(id, _, _)| id == "country")
                 .map(|(_, _, score)| *score)
@@ -1534,7 +1718,7 @@ impl QuickTool {
                                 country["nameZh"].as_str().unwrap_or(""),
                                 country["alpha2"].as_str().unwrap_or(""),
                             ),
-                            if index == 0 { score } else { 0.72 },
+                            if index == 0 { 1.15 } else { 0.72 },
                         )
                     },
                 ));
@@ -1545,30 +1729,38 @@ impl QuickTool {
                 .map(|(_, _, score)| *score)
             {
                 if let Ok(items) = self.execute_tool("time", &self.input) {
+                    let time_count = candidates.iter().filter(|(id, _, _)| id == "time").count();
                     candidates.retain(|(id, _, _)| id != "time");
                     candidates.extend(
                         items
                             .into_iter()
+                            .take(time_count)
                             .enumerate()
                             .map(|(i, item)| ("time".into(), item, score - i as f64 * 0.001)),
                     );
                 }
             }
             for (id, _, score) in &mut candidates {
-                *score += self.store.usage_boost(id);
+                if id != "country" {
+                    *score += self.store.usage_boost(id);
+                }
             }
             candidates.sort_by(|a, b| b.2.total_cmp(&a.2));
             self.rows = candidates
                 .into_iter()
-                .take(16)
                 .map(|(tool, item, score)| Row {
                     score,
                     tool,
                     item,
                     command: false,
+                    country: None,
+                    launch_app: None,
+                    passive: false,
+                    mode_action: None,
+                    open_target: None,
                 })
                 .collect();
-            let command_rows = tools::suggestions(&self.input)
+            let command_rows = tools::suggestions_all(&self.input)
                 .into_iter()
                 .filter_map(|(command, score)| {
                     let score = score + self.store.usage_boost(&command.id);
@@ -1583,40 +1775,23 @@ impl QuickTool {
                         tool: command.id.clone(),
                         item: ResultItem::new(&command.name, format!("命令 /{alias}")),
                         command: true,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     })
                 })
                 .collect::<Vec<_>>();
             self.rows.extend(command_rows);
             self.rows.sort_by(|a, b| b.score.total_cmp(&a.score));
-            self.rows.truncate(16);
-            if self.screenshot.is_none()
-                && self.input.chars().any(char::is_alphabetic)
-                && self.input.chars().count() <= 128
-            {
+            if self.screenshot.is_none() {
                 self.request_apps();
-                let mut matches = self
-                    .apps
-                    .iter()
-                    .filter_map(|a| {
-                        let score = quicktool_rust::search::fuzzy(&self.input, &a.name).score;
-                        (score >= 0.58).then_some((a, score))
-                    })
-                    .collect::<Vec<_>>();
-                matches.sort_by(|a, b| b.1.total_cmp(&a.1));
-                let rows = matches
-                    .into_iter()
-                    .take(4)
-                    .map(|(a, score)| Row {
-                        score: 0.64 + score * 0.22,
-                        tool: "run".into(),
-                        item: ResultItem::new(&a.name, &a.target),
-                        command: false,
-                    })
-                    .collect::<Vec<_>>();
-                self.rows.extend(rows);
+                self.rows
+                    .extend(host_candidates::apps(self, &self.input, true));
                 self.rows.sort_by(|a, b| b.score.total_cmp(&a.score));
             }
-            let file_query = self.input.trim();
+            let file_query = self.input.trim_matches(quicktool_rust::core::js_space);
             if self.store.settings["fileSearchGlobal"] == true
                 && self.screenshot.is_none()
                 && (2..=128).contains(&file_query.chars().count())
@@ -1632,6 +1807,173 @@ impl QuickTool {
                 self.request_files(self.input.clone());
             }
         }
+    }
+    fn finalize_candidates(&mut self) {
+        let explicit = self.input.strip_prefix('/').and_then(|raw| {
+            let (head, args) = tools::parse_command_input(raw);
+            tools::command(head).map(|command| (command.id.clone(), args.to_string()))
+        });
+        let active = self
+            .mode
+            .clone()
+            .map(|id| (id, self.input.clone()))
+            .or_else(|| explicit.clone());
+        if let Some((id, argument)) = &active {
+            let name = tools::commands()
+                .iter()
+                .find(|c| c.id == *id)
+                .map(|c| c.name.as_str())
+                .unwrap_or(id);
+            if self.mode.is_some() && argument.is_empty() && id == "files" {
+                self.rows = vec![Row {
+                    score: 0.6,
+                    tool: id.clone(),
+                    item: ResultItem::new(format!("{name} 模式"), "输入内容后立即处理"),
+                    command: false,
+                    country: None,
+                    launch_app: None,
+                    passive: true,
+                    mode_action: None,
+                    open_target: None,
+                }];
+            } else if self.mode.is_none() && argument.is_empty() && mode_entry(id) {
+                self.rows = vec![Row {
+                    score: 1.1,
+                    tool: id.clone(),
+                    item: ResultItem::new(
+                        format!("进入 {name} 模式"),
+                        "Enter 固定为 Tag；Esc 退出",
+                    ),
+                    command: true,
+                    country: None,
+                    launch_app: None,
+                    passive: false,
+                    mode_action: Some((id.clone(), None)),
+                    open_target: None,
+                }];
+            } else if self.mode.is_none() {
+                let (sub, input) = tools::parse_submode(id, argument);
+                if let Some(sub) = sub.filter(|_| input.is_empty()) {
+                    let label = subcommands(id)
+                        .into_iter()
+                        .find(|(key, _, _)| *key == sub)
+                        .map(|(_, label, _)| label)
+                        .unwrap_or("");
+                    self.rows = vec![Row {
+                        score: 1.2,
+                        tool: id.clone(),
+                        item: ResultItem::new(format!("进入 {name} · {label}"), "固定模式"),
+                        command: true,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: Some((id.clone(), Some(sub))),
+                        open_target: None,
+                    }];
+                } else if id == "files" {
+                    self.rows = host_candidates::files(self, argument, false);
+                }
+            } else if id == "files" {
+                self.rows = host_candidates::files(self, argument, false);
+            }
+            if self.mode.is_some()
+                && !argument.is_empty()
+                && argument.starts_with('/')
+                && !argument.contains(' ')
+            {
+                let (sub, remaining) = tools::parse_submode(id, &argument[1..]);
+                if let Some(sub) = sub.filter(|_| remaining.is_empty()) {
+                    self.rows.retain(|row| !row.tool.starts_with('@'));
+                    if let Some((_, label, aliases)) =
+                        subcommands(id).into_iter().find(|(key, _, _)| *key == sub)
+                    {
+                        self.rows.insert(
+                            0,
+                            Row {
+                                score: 1.2,
+                                tool: format!("@{sub}"),
+                                item: ResultItem::new(
+                                    format!("切换到 {label}"),
+                                    format!("/{}", aliases[0]),
+                                ),
+                                command: true,
+                                country: None,
+                                launch_app: None,
+                                passive: false,
+                                mode_action: Some((id.clone(), Some(sub))),
+                                open_target: None,
+                            },
+                        );
+                    }
+                }
+            }
+            let mut rank = 0;
+            for row in &mut self.rows {
+                if let Some(sub) = row.tool.strip_prefix('@') {
+                    if row.mode_action.is_none() {
+                        row.mode_action = Some((id.clone(), Some(sub.into())));
+                    }
+                }
+                if !row.command
+                    && row.item.value != "输入内容后立即处理"
+                    && !row.tool.starts_with("system:")
+                    && !matches!(
+                        row.tool.as_str(),
+                        "country" | "winsettings" | "help" | "clipboard"
+                    )
+                {
+                    row.score = (if self.mode.is_some() {
+                        0.99
+                    } else if argument.is_empty() {
+                        1.0
+                    } else {
+                        1.05
+                    }) - rank as f64 * 0.001;
+                    rank += 1;
+                }
+                if id.starts_with("system:") && row.item.value == "输入目标后运行" {
+                    row.score = 1.;
+                    row.command = true;
+                    row.passive = false;
+                }
+            }
+        } else if !self
+            .input
+            .trim_matches(quicktool_rust::core::js_space)
+            .is_empty()
+            && !self.input.starts_with('/')
+        {
+            self.rows.retain(|row| row.tool != "files" || row.command);
+            self.rows
+                .extend(host_candidates::files(self, &self.input, true));
+        }
+        if self.showing_help() {
+            for (i, row) in self.rows.iter_mut().enumerate() {
+                row.score = 1. - i as f64 * 0.001;
+            }
+            return;
+        }
+        if self.mode.is_none()
+            && self
+                .input
+                .trim_matches(quicktool_rust::core::js_space)
+                .is_empty()
+        {
+            for (i, row) in self.rows.iter_mut().enumerate() {
+                row.score = 0.5 - i as f64 * 0.01;
+            }
+        }
+        let mut seen = std::collections::HashSet::new();
+        self.rows.retain(|row| {
+            seen.insert((
+                row.tool.clone(),
+                row.item.title.clone(),
+                row.item.value.clone(),
+                row.command,
+            ))
+        });
+        self.rows.sort_by(|a, b| b.score.total_cmp(&a.score));
+        self.rows.truncate(16);
     }
     fn execute_tool(&self, id: &str, input: &str) -> Result<Vec<ResultItem>, String> {
         if id == "time" {
@@ -1657,6 +1999,9 @@ impl QuickTool {
         Ok(items)
     }
     fn request_apps(&mut self) {
+        if self.candidate_testing {
+            return;
+        }
         if !self.apps_requested {
             self.apps_requested = true;
             self.system_backend
@@ -1673,15 +2018,27 @@ impl QuickTool {
                 tool: id.into(),
                 item: ResultItem::new(
                     &command.name,
-                    if command.needs_arg && input.trim().is_empty() {
+                    if command.needs_arg
+                        && input
+                            .trim_matches(quicktool_rust::core::js_space)
+                            .is_empty()
+                    {
                         "输入目标后运行".into()
-                    } else if input.trim().is_empty() {
+                    } else if input
+                        .trim_matches(quicktool_rust::core::js_space)
+                        .is_empty()
+                    {
                         command.command.clone()
                     } else {
                         format!("{} {}", command.command, input)
                     },
                 ),
                 command: false,
+                country: None,
+                launch_app: None,
+                passive: false,
+                mode_action: None,
+                open_target: None,
             }];
             return true;
         }
@@ -1724,6 +2081,11 @@ impl QuickTool {
                             ),
                         ),
                         command: true,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     })
                     .collect();
                 true
@@ -1736,6 +2098,11 @@ impl QuickTool {
                         tool: id.into(),
                         item: ResultItem::new(&item.name, &item.command),
                         command: false,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     })
                     .collect();
                 true
@@ -1754,31 +2121,18 @@ impl QuickTool {
                             c["alpha2"].as_str().unwrap_or(""),
                         ),
                         command: false,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     })
                     .collect();
                 true
             }
             "run" => {
                 self.request_apps();
-                let mut apps = self
-                    .apps
-                    .iter()
-                    .filter_map(|app| {
-                        let score = quicktool_rust::search::fuzzy(input, &app.name).score;
-                        (score > 0. || input.is_empty()).then_some((app, score))
-                    })
-                    .collect::<Vec<_>>();
-                apps.sort_by(|a, b| b.1.total_cmp(&a.1));
-                self.rows = apps
-                    .into_iter()
-                    .take(40)
-                    .map(|(a, score)| Row {
-                        score: 0.64 + score * 0.22,
-                        tool: "run".into(),
-                        item: ResultItem::new(&a.name, &a.target),
-                        command: false,
-                    })
-                    .collect();
+                self.rows = host_candidates::apps(self, input, false);
                 true
             }
             "registry" => {
@@ -1789,23 +2143,7 @@ impl QuickTool {
                     self.context
                         .request_repaint_after(Duration::from_millis(120));
                 }
-                self.rows = self
-                    .registry_items
-                    .iter()
-                    .map(|r| Row {
-                        score: 0.99,
-                        tool: "registry".into(),
-                        item: ResultItem::new(
-                            if r.name.is_empty() {
-                                r.path.rsplit('\\').next().unwrap_or(&r.path)
-                            } else {
-                                &r.name
-                            },
-                            &r.path,
-                        ),
-                        command: false,
-                    })
-                    .collect();
+                self.rows = host_candidates::registry(self, input);
                 true
             }
             "cmd" | "powershell" | "terminal" => {
@@ -1819,18 +2157,40 @@ impl QuickTool {
                     tool: id.into(),
                     item: ResultItem::new(
                         if sub == Some("admin") {
-                            format!("以管理员身份在 {id} 运行")
+                            format!(
+                                "以管理员身份在 {} 运行",
+                                tools::commands()
+                                    .iter()
+                                    .find(|c| c.id == id)
+                                    .map(|c| c.name.as_str())
+                                    .unwrap_or(id)
+                            )
                         } else {
-                            format!("在 {id} 运行")
+                            format!(
+                                "在 {} 运行",
+                                tools::commands()
+                                    .iter()
+                                    .find(|c| c.id == id)
+                                    .map(|c| c.name.as_str())
+                                    .unwrap_or(id)
+                            )
                         },
                         command,
                     ),
                     command: false,
+                    country: None,
+                    launch_app: None,
+                    passive: false,
+                    mode_action: None,
+                    open_target: None,
                 }];
                 true
             }
             "open" => {
-                if !input.trim().is_empty() {
+                if !input
+                    .trim_matches(quicktool_rust::core::js_space)
+                    .is_empty()
+                {
                     self.rows = [
                         (if input.starts_with("http://") || input.starts_with("https://") {
                             "在浏览器打开"
@@ -1849,6 +2209,11 @@ impl QuickTool {
                         tool: id.into(),
                         item: ResultItem::new(title, input),
                         command: false,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     })
                     .collect();
                 }
@@ -1895,6 +2260,11 @@ impl QuickTool {
                         tool: id.into(),
                         item: ResultItem::new(title, path.as_ref()),
                         command: false,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
                     })
                     .collect();
                 }
@@ -1913,52 +2283,83 @@ impl QuickTool {
                         },
                     ),
                     command: false,
+                    country: None,
+                    launch_app: None,
+                    passive: false,
+                    mode_action: None,
+                    open_target: None,
                 }];
                 true
             }
             "clipboard" => {
-                match platform::clipboard_inspect() {
-                    Ok(items) => {
-                        self.clipboard_entries = items;
-                        self.clipboard_image = platform::clipboard_image().ok();
-                        if let Some((w, h, bytes)) = &self.clipboard_image {
-                            self.icons.insert(
-                                "clipboard-image".into(),
-                                self.context.load_texture(
-                                    "clipboard-image",
-                                    ColorImage::from_rgba_unmultiplied(
-                                        [*w as usize, *h as usize],
-                                        bytes,
-                                    ),
-                                    TextureOptions::LINEAR,
-                                ),
-                            );
+                if !self.clipboard_loaded && !self.candidate_testing {
+                    match platform::clipboard_inspect() {
+                        Ok(items) => {
+                            self.clipboard_entries = items;
+                            self.clipboard_image = platform::clipboard_image().ok();
                         }
-                        self.rows = self
-                            .clipboard_entries
-                            .iter()
-                            .take(20)
-                            .map(|entry| {
-                                use base64::Engine;
-                                Row {
-                                    score: 0.99,
-                                    tool: "clipboard".into(),
-                                    item: ResultItem::new(
-                                        format!("{} · {}", entry.kind.to_uppercase(), entry.format),
-                                        if !entry.value.is_empty() {
-                                            entry.value.clone()
-                                        } else {
-                                            base64::engine::general_purpose::STANDARD
-                                                .encode(&entry.bytes)
-                                        },
-                                    ),
-                                    command: false,
-                                }
-                            })
-                            .collect();
+                        Err(error) => self.message(error),
                     }
-                    Err(error) => self.message(error),
+                    if let Some((w, h, bytes)) = &self.clipboard_image {
+                        self.icons.insert(
+                            "clipboard-image".into(),
+                            self.context.load_texture(
+                                "clipboard-image",
+                                ColorImage::from_rgba_unmultiplied(
+                                    [*w as usize, *h as usize],
+                                    bytes,
+                                ),
+                                TextureOptions::LINEAR,
+                            ),
+                        );
+                    }
+                    self.clipboard_loaded = true;
                 }
+                self.rows = if self.clipboard_entries.is_empty() {
+                    vec![Row {
+                        score: 1.,
+                        tool: "clipboard".into(),
+                        item: ResultItem::new("读取剪贴板原始数据", "点击或按 Enter 刷新"),
+                        command: false,
+                        country: None,
+                        launch_app: None,
+                        passive: false,
+                        mode_action: None,
+                        open_target: None,
+                    }]
+                } else {
+                    self.clipboard_entries
+                        .iter()
+                        .take(20)
+                        .enumerate()
+                        .map(|(i, entry)| {
+                            use base64::Engine;
+                            let value = if !entry.value.is_empty() {
+                                entry.value.clone()
+                            } else if !entry.preview.is_empty() {
+                                entry.preview.clone()
+                            } else if !entry.bytes.is_empty() {
+                                base64::engine::general_purpose::STANDARD.encode(&entry.bytes)
+                            } else {
+                                format!("{} bytes", entry.byte_length)
+                            };
+                            Row {
+                                score: 1. - i as f64 * 0.001,
+                                tool: "clipboard".into(),
+                                item: ResultItem::new(
+                                    format!("{} · {}", entry.kind.to_uppercase(), entry.format),
+                                    value,
+                                ),
+                                command: false,
+                                country: None,
+                                launch_app: None,
+                                passive: false,
+                                mode_action: None,
+                                open_target: None,
+                            }
+                        })
+                        .collect()
+                };
                 true
             }
             _ => false,
@@ -2039,13 +2440,13 @@ impl QuickTool {
             self.registry_running_query = self.registry_query.clone();
             let input = &self.registry_query;
             let (root, q) = input
-                .split_once(' ')
+                .split_once(quicktool_rust::core::js_space)
                 .filter(|(r, _)| {
                     ["HKCU", "HKLM", "HKCR"].contains(&r.to_ascii_uppercase().as_str())
                 })
                 .map(|(r, q)| (r.to_ascii_uppercase(), q.to_string()))
                 .unwrap_or_else(|| ("all".into(), input.clone()));
-            if !q.trim().is_empty() {
+            if !q.trim_matches(quicktool_rust::core::js_space).is_empty() {
                 self.registry_pending = true;
                 self.registry_serial = self.system_backend.request(system::Request::Registry {
                     query: q,
@@ -2115,7 +2516,28 @@ impl QuickTool {
         (roots, excludes)
     }
     fn request_files(&mut self, query: String) {
-        if query.trim().is_empty() {
+        if self.candidate_testing {
+            return;
+        }
+        let query = query
+            .trim_matches(quicktool_rust::core::js_space)
+            .to_string();
+        if self.files_pending && self.file_query.as_deref() == Some(&query) {
+            return;
+        }
+        if self
+            .file_results
+            .as_ref()
+            .is_some_and(|(cached, _)| cached == &query)
+            && !self.files_pending
+        {
+            self.file_query = Some(query);
+            return;
+        }
+        if query
+            .trim_matches(quicktool_rust::core::js_space)
+            .is_empty()
+        {
             return;
         }
         self.files_pending = true;
@@ -2125,7 +2547,10 @@ impl QuickTool {
             .request_repaint_after(Duration::from_millis(120));
     }
     fn request_files_now(&mut self, query: String) {
-        if query.trim().is_empty() {
+        if query
+            .trim_matches(quicktool_rust::core::js_space)
+            .is_empty()
+        {
             return;
         }
         if self.file_index.is_none() {
@@ -2193,18 +2618,21 @@ impl QuickTool {
                         continue;
                     }
                     self.files_pending = false;
-                    self.rows.retain(|r| r.tool != "files" || r.command);
-                    self.rows.extend(items.iter().map(|e| Row {
-                        score: 0.99,
-                        tool: "files".into(),
-                        item: index::result_item(e),
-                        command: false,
-                    }));
+                    let query = self.file_query.clone().unwrap_or_default();
+                    self.file_results = Some((query, items));
+                    let selected = self.selected;
+                    self.rebuild();
+                    self.selected = if selected < self.rows.len() {
+                        selected
+                    } else {
+                        0
+                    };
                 }
             }
         }
         if refresh {
             if let Some(q) = self.file_query.clone() {
+                self.file_results = None;
                 self.request_files(q);
             }
         }
@@ -2218,10 +2646,28 @@ impl QuickTool {
         let Some(row) = self.rows.get(index).cloned() else {
             return;
         };
-        if !row.command && row.item.value == "输入内容后立即处理" {
+        if row.tool == "clipboard" && row.item.title == "读取剪贴板原始数据" {
+            self.clipboard_loaded = false;
+            self.rebuild();
+            return;
+        }
+        if row.passive || (!row.command && row.item.value == "输入内容后立即处理") {
             return;
         }
         let used_tool = row.tool.clone();
+
+        if let Some((tool, submode)) = &row.mode_action {
+            if tool == "clipboard" {
+                self.clipboard_loaded = false;
+            }
+            self.mode = Some(tool.clone());
+            self.submode = submode.clone();
+            self.input.clear();
+            self.used(tool);
+            self.rebuild();
+            self.focus = true;
+            return;
+        }
         if row.command {
             if row.tool.starts_with("system:") {
                 if let Some(command) = tools::commands()
@@ -2254,6 +2700,9 @@ impl QuickTool {
                 "history" => self.panel = Panel::History,
                 "pinwindow" => self.toggle_pin(ctx),
                 _ => {
+                    if row.tool == "clipboard" {
+                        self.clipboard_loaded = false;
+                    }
                     self.mode = Some(row.tool);
                     self.submode = None;
                     self.input.clear();
@@ -2303,13 +2752,11 @@ impl QuickTool {
                 }
                 return;
             }
-            if row.tool == "country" && index > 0 {
-                if let Some(country) = self.country_cache.get(index) {
-                    self.input = country_completion(country, &self.input);
-                    self.rebuild();
-                    self.focus = true;
-                    return;
-                }
+            if let Some((country, false)) = &row.country {
+                self.input = country_completion(country, &self.input);
+                self.rebuild();
+                self.focus = true;
+                return;
             }
             if row.tool == "pin" {
                 let outcome = if let Some(image) = self.attachment.take() {
@@ -2319,7 +2766,11 @@ impl QuickTool {
                         image.rgba.as_raw().clone(),
                     )
                 } else if row.item.value != "输入文字或粘贴图片后按 Enter"
-                    && !row.item.value.trim().is_empty()
+                    && !row
+                        .item
+                        .value
+                        .trim_matches(quicktool_rust::core::js_space)
+                        .is_empty()
                 {
                     self.pins.create_text(row.item.value.clone());
                     Ok(())
@@ -2341,7 +2792,10 @@ impl QuickTool {
             if row.tool.starts_with("system:") {
                 if row.item.value.is_empty() || row.item.value == "输入目标后运行" {
                     if self.mode.is_none() {
-                        self.input = format!("{} ", self.input.trim_end());
+                        self.input = format!(
+                            "{} ",
+                            self.input.trim_end_matches(quicktool_rust::core::js_space)
+                        );
                         self.rebuild();
                         self.focus = true;
                     }
@@ -2402,15 +2856,15 @@ impl QuickTool {
                         None,
                         self.submode.as_deref() == Some("admin")
                             || (self.mode.is_none()
-                                && self.input.split_once(' ').is_some_and(|(_, args)| {
-                                    parse_sub_arg(&row.tool, args).0 == Some("admin")
-                                })),
+                                && self
+                                    .input
+                                    .split_once(quicktool_rust::core::js_space)
+                                    .is_some_and(|(_, args)| {
+                                        parse_sub_arg(&row.tool, args).0 == Some("admin")
+                                    })),
                     ),
                     "registry" => system::open_registry_at(
-                        self.registry_items
-                            .get(index)
-                            .map(|entry| entry.path.as_str())
-                            .unwrap_or(&row.item.value),
+                        row.open_target.as_deref().unwrap_or(&row.item.value),
                     ),
                     "clipboard" => {
                         if self
@@ -2430,7 +2884,11 @@ impl QuickTool {
                         }
                     }
                     "run" => {
-                        if let Some(app) = self.apps.iter().find(|a| a.target == row.item.value) {
+                        if let Some(app) = row
+                            .launch_app
+                            .as_ref()
+                            .or_else(|| self.apps.iter().find(|a| a.target == row.item.value))
+                        {
                             system::launch_app(app, false)
                         } else {
                             platform::open(&row.item.value, None, None, false)
@@ -2602,6 +3060,8 @@ impl QuickTool {
     }
     fn switch_tab(&mut self, tab: usize) {
         self.tab = tab;
+        self.scroll_reset = true;
+        self.last_scroll_selection = None;
         self.selected = self.visible_indices().first().copied().unwrap_or(0);
         self.focus = true;
     }
@@ -2714,7 +3174,10 @@ impl QuickTool {
     }
     fn tab_completion(&self) -> Option<String> {
         if self.showing_help()
-            || self.input.trim().is_empty()
+            || self
+                .input
+                .trim_matches(quicktool_rust::core::js_space)
+                .is_empty()
             || self.completion_suppressed.as_deref() == Some(&self.input)
         {
             return None;
@@ -2734,7 +3197,9 @@ impl QuickTool {
             .map(|(alias, _)| alias)
             .unwrap_or(&command.primary_alias);
         let full = format!("/{alias} ");
-        (full.trim() != self.input.trim()).then_some(full)
+        (full.trim_matches(quicktool_rust::core::js_space)
+            != self.input.trim_matches(quicktool_rust::core::js_space))
+        .then_some(full)
     }
     fn completion(&self) -> Option<String> {
         if self.completion_suppressed.as_deref() == Some(&self.input)
@@ -2751,7 +3216,7 @@ impl QuickTool {
                 .find(|a| a.starts_with(token) && a.len() > token.len())
                 .map(|a| format!("/{a}"));
         }
-        tools::suggestions(token)
+        tools::suggestions_all(token)
             .into_iter()
             .flat_map(|(c, _)| c.aliases.iter())
             .find(|a| a.starts_with(token) && a.len() > token.len())
@@ -2977,7 +3442,7 @@ impl QuickTool {
                             self.native_date.reset();
                             let raw = if self.input.starts_with('/') {
                                 self.input
-                                    .split_once(' ')
+                                    .split_once(quicktool_rust::core::js_space)
                                     .map(|(_, args)| args)
                                     .unwrap_or(&self.input)
                             } else {
@@ -3157,7 +3622,11 @@ impl QuickTool {
                                 .find(|c| c.id == *id)
                                 .map(|c| format!("{} 模式", c.name))
                                 .unwrap_or_else(|| "工具模式".into())
-                        } else if self.input.trim().is_empty() {
+                        } else if self
+                            .input
+                            .trim_matches(quicktool_rust::core::js_space)
+                            .is_empty()
+                        {
                             "最近使用".into()
                         } else if self.input.starts_with('/') {
                             "命令候选".into()
@@ -3188,20 +3657,14 @@ impl QuickTool {
         );
         ui.spacing_mut().item_spacing.y = 3.;
 
-        if let Some(query) = self.country_query() {
-            let rect = ui.available_rect_before_wrap().shrink2(vec2(7., 0.));
-            ui.scope_builder(UiBuilder::new().max_rect(rect), |ui| {
-                self.country_cards(ui, ctx, &query)
-            });
-            return;
-        }
+        self.layout_snapshot = serde_json::json!({"selectedTop":ui.cursor().top()});
         if self.showing_help() {
             self.help_cards(ui);
             return;
         }
         let raw_date = if self.input.starts_with('/') {
             self.input
-                .split_once(' ')
+                .split_once(quicktool_rust::core::js_space)
                 .map(|(_, args)| args)
                 .unwrap_or(&self.input)
         } else {
@@ -3221,6 +3684,19 @@ impl QuickTool {
         };
         let visible = self.visible_indices();
         let body_top = ui.cursor().top();
+        let mut selected_top = None;
+        let mut row_rects = Vec::new();
+        let reset_scroll = self.scroll_reset;
+        if reset_scroll {
+            eframe::egui::scroll_area::State::default()
+                .store(ctx, ui.make_persistent_id("main-results"));
+            self.result_scroll = 0.;
+            self.scroll_reset = false;
+            self.last_scroll_selection = Some(self.selected);
+        }
+        let reveal_selection = !reset_scroll
+            && self.last_scroll_selection != Some(self.selected)
+            && (self.motion.visual - self.motion.target).abs() < 0.7;
         if self.frames == 8 && std::env::args().any(|a| a == "--layout-debug") {
             eprintln!("layout tabs={tabs_rect:?} context={context_rect:?} body={body_top}");
         }
@@ -3231,13 +3707,8 @@ impl QuickTool {
         ui.visuals_mut().extreme_bg_color = Color32::TRANSPARENT;
         let output = ScrollArea::vertical()
             .max_height(478.)
-            .vertical_scroll_offset(
-                if self.last_height < 150. && self.tab == 0 && !self.input.trim().is_empty() {
-                    37.
-                } else {
-                    self.result_scroll
-                },
-            )
+            .id_salt("main-results")
+            .vertical_scroll_offset(self.result_scroll)
             .scroll_bar_visibility(eframe::egui::scroll_area::ScrollBarVisibility::AlwaysVisible)
             .auto_shrink([false, true])
             .show(ui, |ui| {
@@ -3262,7 +3733,12 @@ impl QuickTool {
                     });
                 }
                 ui.spacing_mut().item_spacing.y = 0.;
-                if self.tab == 0 && !self.input.trim().is_empty() {
+                if self.tab == 0
+                    && !self
+                        .input
+                        .trim_matches(quicktool_rust::core::js_space)
+                        .is_empty()
+                {
                     ui.add_space(9.);
                     ui.allocate_ui_with_layout(
                         vec2(ui.available_width(), 28.),
@@ -3280,15 +3756,18 @@ impl QuickTool {
                 }
                 for (n, &index) in visible.iter().enumerate() {
                     if self.tab == 0
-                        && !self.input.trim().is_empty()
+                        && !self
+                            .input
+                            .trim_matches(quicktool_rust::core::js_space)
+                            .is_empty()
                         && n > 0
                         && (n == 1
-                            || is_launch(&self.rows[visible[n - 1]].tool)
-                                != is_launch(&self.rows[index].tool))
+                            || self.row_is_launch(&self.rows[visible[n - 1]])
+                                != self.row_is_launch(&self.rows[index]))
                     {
                         ui.add_space(11.);
                         ui.horizontal(|ui| {
-                            let launch = is_launch(&self.rows[index].tool);
+                            let launch = self.row_is_launch(&self.rows[index]);
                             self.icon(
                                 ui,
                                 if launch {
@@ -3305,6 +3784,19 @@ impl QuickTool {
                             );
                         });
                         ui.add_space(8.);
+                    }
+                    if let Some((country, true)) = self.rows[index].country.clone() {
+                        let response = country_card::show(self, ui, ctx, &country, index);
+                        if index == self.selected {
+                            selected_top = Some(response.rect.top());
+                            if reveal_selection {
+                                response.scroll_to_me(None);
+                            }
+                        }
+                        if response.clicked() {
+                            self.selected = index;
+                        }
+                        continue;
                     }
                     let mut swatch_rect = None;
                     let row = &self.rows[index];
@@ -3338,8 +3830,23 @@ impl QuickTool {
                                 Frame::new()
                                     .fill(surface(ui, if selected { 0.07 } else { 0.05 }))
                                     .corner_radius(10)
-                                    .inner_margin(8)
+                                    .inner_margin(3)
                                     .show(ui, |ui| {
+                                        // Match the original fixed 34px icon container. Native
+                                        // icons arrive asynchronously and must not resize a row.
+                                        ui.set_min_size(vec2(28., 28.));
+                                        ui.set_max_size(vec2(28., 28.));
+                                        let mut icon_slot = ui.new_child(
+                                            UiBuilder::new()
+                                                .max_rect(Rect::from_min_size(
+                                                    ui.cursor().min,
+                                                    vec2(28., 28.),
+                                                ))
+                                                .layout(Layout::centered_and_justified(
+                                                    Direction::TopDown,
+                                                )),
+                                        );
+                                        let ui = &mut icon_slot;
                                         if let Some(texture) =
                                             shell_target(row).and_then(|target| {
                                                 self.icons.get(&format!("shell:{target}"))
@@ -3516,6 +4023,7 @@ impl QuickTool {
                             });
                         })
                         .response;
+                    row_rects.push((index, r.rect.height(), r.rect.width()));
                     let r = ui.interact(r.rect, ui.id().with(("row", index)), Sense::click());
                     if r.hovered() && ctx.input(|i| i.pointer.delta() != Vec2::ZERO) {
                         self.selected = index;
@@ -3568,7 +4076,10 @@ impl QuickTool {
                         if self.frames == 8 && std::env::args().any(|a| a == "--layout-debug") {
                             eprintln!("selected rect={:?}", r.rect);
                         }
-                        r.scroll_to_me(None);
+                        selected_top = Some(r.rect.top());
+                        if reveal_selection {
+                            r.scroll_to_me(None);
+                        }
                     }
                 }
                 if let Some(color) = color_action {
@@ -3596,297 +4107,12 @@ impl QuickTool {
                     self.activate(ctx, index);
                 }
             });
+        if reveal_selection {
+            self.last_scroll_selection = Some(self.selected);
+        }
         self.result_scroll = output.state.offset.y;
         self.result_height = (body_top + output.content_size.y.min(478.) + 14.).clamp(220., 642.);
-    }
-    fn country_query(&self) -> Option<String> {
-        if self.mode.is_none()
-            && !self.input.starts_with('/')
-            && self
-                .rows
-                .first()
-                .is_some_and(|row| row.tool == "country" && !row.command)
-        {
-            return Some(self.input.clone());
-        }
-        if self.mode.as_deref() == Some("country") {
-            return Some(self.input.clone());
-        }
-        let (head, args) = self.input.strip_prefix('/')?.split_once(' ')?;
-        tools::command(head)
-            .filter(|c| c.id == "country")
-            .map(|_| args.into())
-    }
-    fn country_cards(&mut self, ui: &mut Ui, ctx: &Context, query: &str) {
-        let countries = self.country_cache.clone();
-        let _ = query;
-        if countries.is_empty() {
-            ui.label(RichText::new("输入国家名称、代码或区号").color(weak_color(ui)));
-            return;
-        }
-        let output = ScrollArea::vertical()
-            .max_height(478.)
-            .vertical_scroll_offset(self.result_scroll)
-            .scroll_bar_visibility(eframe::egui::scroll_area::ScrollBarVisibility::AlwaysVisible)
-            .show(ui, |ui| {
-                let global = self.tab == 0 && !self.input.trim().is_empty();
-                if global {
-                    ui.add_space(14.);
-                    ui.horizontal(|ui| {
-                        self.icon(ui, "mdi:star-outline", 12.);
-                        ui.label(RichText::new("最佳匹配").size(10.).color(weak_color(ui)));
-                    });
-                    ui.add_space(5.);
-                }
-                for (index, country) in countries.iter().enumerate() {
-                    if index > 0 {
-                        if global && index == 1 {
-                            ui.add_space(8.);
-                            ui.horizontal(|ui| {
-                                self.icon(ui, "mdi:wrench-outline", 12.);
-                                ui.label(RichText::new("工具").size(10.).color(weak_color(ui)));
-                            });
-                        }
-                        let response = ui
-                            .horizontal(|ui| {
-                                self.icon(ui, "mdi:earth", 28.);
-                                ui.vertical(|ui| {
-                                    ui.label(
-                                        RichText::new(format!(
-                                            "{} {}",
-                                            country["alpha2"].as_str().unwrap_or(""),
-                                            country["nameZh"].as_str().unwrap_or("")
-                                        ))
-                                        .font(
-                                            FontId::new(14.5, FontFamily::Name("UiStrong".into())),
-                                        ),
-                                    );
-                                    ui.label(
-                                        RichText::new(format!(
-                                            "{} · {} · 国家 / 地区代码",
-                                            country["alpha2"].as_str().unwrap_or(""),
-                                            country["alpha3"].as_str().unwrap_or("")
-                                        ))
-                                        .size(11.)
-                                        .color(weak_color(ui)),
-                                    );
-                                });
-                            })
-                            .response;
-                        if ui
-                            .interact(
-                                response.rect,
-                                ui.id().with(("country-secondary", index)),
-                                Sense::click(),
-                            )
-                            .clicked()
-                        {
-                            self.input = country_completion(country, &self.input);
-                            self.focus = true;
-                            self.rebuild();
-                        }
-                        continue;
-                    }
-                    let alpha = country["alpha2"].as_str().unwrap_or("");
-                    let key = format!("flag:{alpha}");
-                    if !self.icons.contains_key(&key) {
-                        let path = quicktool_rust::resources::asset("assets/flags/svg")
-                            .join(format!("{}.svg", alpha.to_lowercase()));
-                        let svg = std::fs::read(&path).unwrap_or_default();
-                        if let Some((w, h, rgba)) = render_svg(&svg, 200.) {
-                            self.icons.insert(
-                                key.clone(),
-                                ctx.load_texture(
-                                    &key,
-                                    ColorImage::from_rgba_unmultiplied(
-                                        [w as usize, h as usize],
-                                        &rgba,
-                                    ),
-                                    TextureOptions::LINEAR,
-                                ),
-                            );
-                        }
-                    }
-                    Frame::new()
-                        .fill(if ui.visuals().dark_mode {
-                            Color32::from_rgb(24, 28, 39)
-                        } else {
-                            Color32::from_rgb(248, 250, 255)
-                        })
-                        .stroke(Stroke::new(
-                            1.,
-                            if index == self.selected {
-                                Color32::from_rgb(43, 48, 65)
-                            } else {
-                                Color32::from_white_alpha(23)
-                            },
-                        ))
-                        .corner_radius(15)
-                        .inner_margin(12)
-                        .show(ui, |ui| {
-                            ui.set_width(ui.available_width());
-                            ui.horizontal(|ui| {
-                                if let Some(texture) = self.icons.get(&key) {
-                                    ui.add(Image::new(texture).fit_to_exact_size(vec2(68., 46.)));
-                                }
-                                ui.add_space(6.);
-                                ui.vertical(|ui| {
-                                    ui.label(
-                                        RichText::new(country["nameZh"].as_str().unwrap_or(""))
-                                            .font(FontId::new(
-                                                16.,
-                                                FontFamily::Name("UiStrong".into()),
-                                            ))
-                                            .strong(),
-                                    );
-                                    ui.label(
-                                        RichText::new(country["nameEn"].as_str().unwrap_or(""))
-                                            .size(11.)
-                                            .color(weak_color(ui)),
-                                    );
-                                });
-                                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                                    Frame::new()
-                                        .fill(selected_surface(ui))
-                                        .stroke(Stroke::new(1., Color32::from_rgb(48, 57, 79)))
-                                        .corner_radius(8)
-                                        .inner_margin(Margin::symmetric(8, 5))
-                                        .show(ui, |ui| {
-                                            ui.label(
-                                                RichText::new(alpha)
-                                                    .font(FontId::new(
-                                                        11.,
-                                                        FontFamily::Name("MonoResult".into()),
-                                                    ))
-                                                    .color(ACCENT),
-                                            );
-                                        });
-                                });
-                            });
-                            ui.add_space(8.);
-                            ui.separator();
-                            let calling = country["callingCodes"]
-                                .as_array()
-                                .map(|xs| {
-                                    xs.iter()
-                                        .filter_map(Value::as_str)
-                                        .map(|x| format!("+{}", x.trim_start_matches('+')))
-                                        .collect::<Vec<_>>()
-                                        .join(" / ")
-                                })
-                                .unwrap_or_default();
-                            let tlds = country["tlds"]
-                                .as_array()
-                                .map(|xs| {
-                                    xs.iter()
-                                        .filter_map(Value::as_str)
-                                        .collect::<Vec<_>>()
-                                        .join(" / ")
-                                })
-                                .unwrap_or_default();
-                            let fields = [
-                                ("ISO 2", alpha),
-                                ("ISO 3", country["alpha3"].as_str().unwrap_or("")),
-                                ("Numeric", country["numeric"].as_str().unwrap_or("")),
-                                ("IOC", country["ioc"].as_str().unwrap_or("")),
-                                ("FIFA", country["fifa"].as_str().unwrap_or("")),
-                                ("ITU", country["itu"].as_str().unwrap_or("")),
-                                ("Calling", &calling),
-                                ("ccTLD", &tlds),
-                            ];
-                            let (allocated, _) = ui.allocate_exact_size(
-                                vec2(ui.available_width(), 159.),
-                                Sense::hover(),
-                            );
-                            let region = allocated.expand2(vec2(12., 0.));
-                            let half = (region.width() - 1.) / 2.;
-                            for (index, (label, value)) in fields.iter().enumerate() {
-                                let min = region.min
-                                    + vec2(
-                                        (index % 2) as f32 * (half + 1.),
-                                        (index / 2) as f32 * 40.,
-                                    );
-                                let rect = Rect::from_min_size(min, vec2(half, 39.));
-                                let response = ui
-                                    .interact(rect, ui.id().with((alpha, label)), Sense::click())
-                                    .native_tooltip("点击复制");
-                                ui.painter().rect_filled(
-                                    rect,
-                                    0.,
-                                    if response.hovered() {
-                                        surface(ui, 0.075)
-                                    } else {
-                                        if ui.visuals().dark_mode {
-                                            Color32::from_rgb(25, 29, 40)
-                                        } else {
-                                            Color32::from_rgb(246, 249, 255)
-                                        }
-                                    },
-                                );
-                                ui.painter().text(
-                                    rect.left_center() + vec2(10., 0.),
-                                    Align2::LEFT_CENTER,
-                                    *label,
-                                    FontId::proportional(9.5),
-                                    weak_color(ui),
-                                );
-                                let value_rect = Rect::from_min_max(
-                                    rect.min + vec2(85., 0.),
-                                    rect.max - vec2(40., 0.),
-                                );
-                                ui.painter().with_clip_rect(value_rect).text(
-                                    value_rect.left_center(),
-                                    Align2::LEFT_CENTER,
-                                    *value,
-                                    FontId::monospace(11.),
-                                    ui.visuals().text_color(),
-                                );
-                                if let Some(texture) = self.icons.get("mdi:content-copy") {
-                                    ui.painter().image(
-                                        texture.id(),
-                                        Rect::from_center_size(
-                                            rect.right_center() - vec2(21., 0.),
-                                            vec2(14., 14.),
-                                        ),
-                                        Rect::from_min_max(Pos2::ZERO, pos2(1., 1.)),
-                                        weak_color(ui),
-                                    );
-                                }
-                                if response.clicked() {
-                                    ctx.copy_text(value.to_string());
-                                    self.message("已复制");
-                                }
-                            }
-                            ui.add_space(1.);
-                            ui.horizontal(|ui| {
-                                for (kind, label, icon) in [
-                                    ("svg", "复制 SVG", "mdi:content-copy"),
-                                    ("png", "复制 PNG", "mdi:content-copy"),
-                                    ("emoji", "复制 Emoji", "mdi:flag-outline"),
-                                ] {
-                                    let button = if let Some(texture) = self.icons.get(icon) {
-                                        Button::image_and_text(
-                                            Image::new(texture)
-                                                .fit_to_exact_size(vec2(14., 14.))
-                                                .tint(weak_color(ui)),
-                                            RichText::new(label).size(10.),
-                                        )
-                                    } else {
-                                        Button::new(RichText::new(label).size(10.))
-                                    };
-                                    if ui.add(button.min_size(vec2(80., 28.))).clicked() {
-                                        match system::copy_flag(alpha, kind) {
-                                            Ok(()) => self.message(format!("{label} 已复制")),
-                                            Err(error) => self.message(error),
-                                        }
-                                    }
-                                }
-                            });
-                        });
-                    ui.add_space(10.);
-                }
-            });
-        self.result_scroll = output.state.offset.y;
+        self.layout_snapshot = serde_json::json!({"bodyTop":body_top,"contentHeight":output.content_size.y,"rowRects":row_rects,"selectedTop":selected_top.unwrap_or(body_top),"clipBottom":ui.clip_rect().bottom()});
     }
     fn help_cards(&mut self, ui: &mut Ui) {
         let groups = [
@@ -4069,9 +4295,24 @@ impl QuickTool {
         self.mode.as_deref() == Some("help")
             || (self.mode.is_none()
                 && self.input.strip_prefix('/').is_some_and(|query| {
-                    tools::command(query.split_once(' ').map(|(head, _)| head).unwrap_or(query))
-                        .is_some_and(|command| command.id == "help")
+                    tools::command(
+                        query
+                            .split_once(quicktool_rust::core::js_space)
+                            .map(|(head, _)| head)
+                            .unwrap_or(query),
+                    )
+                    .is_some_and(|command| command.id == "help")
                 }))
+    }
+    fn row_is_launch(&self, row: &Row) -> bool {
+        if let Some((tool, _)) = &row.mode_action {
+            return is_launch(tool);
+        }
+        is_launch(if row.tool.starts_with('@') {
+            self.mode.as_deref().unwrap_or(&row.tool)
+        } else {
+            &row.tool
+        })
     }
     fn visible_indices(&self) -> Vec<usize> {
         let mut visible = self
@@ -4080,12 +4321,18 @@ impl QuickTool {
             .enumerate()
             .filter(|(_, r)| {
                 self.tab == 0
-                    || (self.tab == 1 && is_launch(&r.tool))
-                    || (self.tab == 2 && !is_launch(&r.tool))
+                    || (self.tab == 1 && self.row_is_launch(r))
+                    || (self.tab == 2 && !self.row_is_launch(r))
             })
             .map(|(i, _)| i)
             .collect::<Vec<_>>();
-        if self.mode.is_none() && !self.input.trim().is_empty() && !self.input.starts_with('/') {
+        if self.mode.is_none()
+            && !self
+                .input
+                .trim_matches(quicktool_rust::core::js_space)
+                .is_empty()
+            && !self.input.starts_with('/')
+        {
             let top = visible
                 .iter()
                 .map(|i| self.rows[*i].score)
@@ -4103,7 +4350,7 @@ impl QuickTool {
         }
         visible.truncate(if self.tab == 0 { 11 } else { 14 });
         if self.tab == 0 && visible.len() > 1 {
-            visible[1..].sort_by_key(|i| !is_launch(&self.rows[*i].tool));
+            visible[1..].sort_by_key(|i| !self.row_is_launch(&self.rows[*i]));
         }
         visible
     }
@@ -4776,6 +5023,7 @@ impl eframe::App for QuickTool {
     fn raw_input_hook(&mut self, _ctx: &Context, raw: &mut RawInput) {
         if raw.viewport_id == ViewportId::ROOT {
             interaction_probe::raw_input(self, raw);
+            search_layout_probe::raw_input(self, raw);
         }
     }
     fn update(&mut self, ctx: &Context, frame: &mut eframe::Frame) {
@@ -4852,8 +5100,12 @@ impl eframe::App for QuickTool {
                 }
             }
         }
-        self.poll_files();
-        self.poll_system();
+        if !self.candidate_testing {
+            self.poll_files();
+        }
+        if !self.candidate_testing {
+            self.poll_system();
+        }
         self.poll_icons();
         if self.files_pending {
             ctx.request_repaint_after(Duration::from_millis(50));
@@ -5023,18 +5275,24 @@ impl eframe::App for QuickTool {
                 pickers::hold_input(ctx);
             }
         }
-        let expanded =
-            !self.input.trim().is_empty() || self.mode.is_some() || self.panel != Panel::None;
+        let expanded = !self
+            .input
+            .trim_matches(quicktool_rust::core::js_space)
+            .is_empty()
+            || self.mode.is_some()
+            || self.panel != Panel::None;
         let bg = if light {
             Color32::from_rgba_unmultiplied(249, 251, 255, (opacity * 255.) as u8)
         } else {
             Color32::from_rgba_unmultiplied(20, 24, 34, (opacity * 255.) as u8)
         };
+        if !expanded {
+            self.layout_snapshot = serde_json::json!({"selectedTop":0.});
+        }
         let requested_height = if !expanded {
             84.
         } else {
             match self.panel {
-                Panel::None if self.country_query().is_some() => 576.,
                 Panel::None if self.showing_help() => 642.,
                 Panel::None => self.result_height,
                 _ => 642.,
@@ -5139,8 +5397,17 @@ impl eframe::App for QuickTool {
             );
             ui.painter()
                 .add(shell_frame.paint(shell - shell_frame.total_margin()));
-            let layout = Rect::from_min_size(shell.min, vec2(shell.width(), height))
-                - shell_frame.total_margin();
+            let layout = Rect::from_min_size(
+                shell.min,
+                vec2(
+                    shell.width(),
+                    if expanded && self.panel == Panel::None {
+                        max_height.min(642.)
+                    } else {
+                        height
+                    },
+                ),
+            ) - shell_frame.total_margin();
             // The launcher shell has fixed viewport bounds, like the
             // original overflow:hidden element. A long row may grow its
             // own layout, but must not expand the outer frame off-screen.
@@ -5201,7 +5468,6 @@ impl eframe::App for QuickTool {
                     }
                 }
                 if self.panel == Panel::None
-                    && self.country_query().is_none()
                     && !self.showing_help()
                     && (self.result_height.min(max_height) - height).abs() > 0.7
                 {
@@ -5333,5 +5599,7 @@ impl eframe::App for QuickTool {
         interaction_probe::tick(self, ctx);
         expanded_probe::tick(self, ctx);
         motion_probe::tick(self, ctx, frame.info().cpu_usage);
+        search_layout_probe::tick(self, ctx);
+        candidates_probe::tick(self, ctx);
     }
 }

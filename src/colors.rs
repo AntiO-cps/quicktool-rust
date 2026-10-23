@@ -454,7 +454,34 @@ pub fn candidates(raw: &str) -> Vec<Color> {
     out
 }
 fn round(n: f64, digits: usize) -> String {
-    let mut s = format!("{n:.digits$}");
+    use num_bigint::BigUint;
+    // Number.toFixed rounds the exact binary value away from zero on a tie.
+    // Rust's formatting rounds ties to even (e.g. 40.625 -> 40.62).
+    if !n.is_finite() {
+        return n.to_string();
+    }
+    let bits = n.abs().to_bits();
+    let exponent = ((bits >> 52) & 0x7ff) as i32;
+    let fraction = bits & ((1u64 << 52) - 1);
+    let (mantissa, shift) = if exponent == 0 {
+        (fraction, -1074)
+    } else {
+        (fraction | (1u64 << 52), exponent - 1023 - 52)
+    };
+    let numerator = BigUint::from(mantissa) * BigUint::from(10u8).pow(digits as u32);
+    let rounded = if shift >= 0 {
+        numerator << shift as usize
+    } else {
+        let denominator = BigUint::from(1u8) << (-shift) as usize;
+        (numerator + (&denominator >> 1usize)) / denominator
+    };
+    let mut s = rounded.to_string();
+    if digits > 0 {
+        if s.len() <= digits {
+            s = format!("{}{}", "0".repeat(digits + 1 - s.len()), s);
+        }
+        s.insert(s.len() - digits, '.');
+    }
     if s.contains('.') {
         while s.ends_with('0') {
             s.pop();
@@ -463,7 +490,10 @@ fn round(n: f64, digits: usize) -> String {
             s.pop();
         }
     }
-    if s == "-0" { "0".into() } else { s }
+    if n.is_sign_negative() && s != "0" {
+        s.insert(0, '-');
+    }
+    s
 }
 pub fn formats(c: Color) -> Vec<ResultItem> {
     let [h, s, l] = hsl(c);

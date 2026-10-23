@@ -9,6 +9,7 @@ pub(super) struct InteractionProbe {
     checks: Vec<Value>,
     started: Instant,
     expected_selection: usize,
+    expected_input: String,
 }
 impl InteractionProbe {
     pub(super) fn from_args() -> Option<Self> {
@@ -22,6 +23,7 @@ impl InteractionProbe {
             checks: vec![],
             started: Instant::now(),
             expected_selection: 0,
+            expected_input: String::new(),
         })
     }
 }
@@ -55,6 +57,9 @@ const LABELS: &[&str] = &[
     "Ctrl+Shift+P works in settings",
     "Escape closes history and focuses search",
     "History hides on blur while settings, recording, pin and popups protect focus",
+    "Lowercase ch ranks Swiss country card first alongside mixed tools",
+    "Run category excludes country cards",
+    "Country alternative activates its own completion metadata",
 ];
 pub(super) fn raw_input(app: &mut QuickTool, input: &mut RawInput) {
     let Some(mut probe) = app.interaction_probe.take() else {
@@ -187,6 +192,35 @@ pub(super) fn raw_input(app: &mut QuickTool, input: &mut RawInput) {
                 Key::Escape
             }
             28 => Key::F20,
+            29 => {
+                app.mode = None;
+                app.panel = Panel::None;
+                app.tab = 0;
+                app.input = "ch".into();
+                app.rebuild();
+                Key::F20
+            }
+            30 => {
+                modifiers = Modifiers::CTRL;
+                Key::Tab
+            }
+            31 => {
+                app.mode = Some("country".into());
+                app.tab = 0;
+                app.input = "congo".into();
+                app.rebuild();
+                if let Some((index, country)) = app.rows.iter().enumerate().find_map(|(i, r)| {
+                    r.country
+                        .as_ref()
+                        .filter(|(_, primary)| !*primary)
+                        .map(|(c, _)| (i, c.clone()))
+                }) {
+                    probe.expected_input = country["nameEn"].as_str().unwrap_or("").into();
+                    let ctx = app.context.clone();
+                    app.activate(&ctx, index);
+                }
+                Key::F20
+            }
             _ => Key::Escape,
         };
         input.modifiers = modifiers;
@@ -283,6 +317,22 @@ pub(super) fn tick(app: &mut QuickTool, ctx: &Context) {
                 app.store.settings["hideOnBlur"] = false.into();
                 history && settings && recording && pin && popup
             }
+            29 => {
+                app.rows.first().is_some_and(|r| {
+                    r.country
+                        .as_ref()
+                        .is_some_and(|(c, primary)| *primary && c["alpha2"] == "CH")
+                        && r.score == 1.15
+                }) && app.visible_indices().iter().any(|&i| app.rows[i].command)
+            }
+            30 => {
+                app.tab == 1
+                    && app
+                        .visible_indices()
+                        .iter()
+                        .all(|&i| app.rows[i].country.is_none() && app.row_is_launch(&app.rows[i]))
+            }
+            31 => !probe.expected_input.is_empty() && app.input == probe.expected_input,
             _ => false,
         };
         probe.checks.push(serde_json::json!({"check":LABELS[probe.step],"passed":pass,"frame":app.frames,"mode":app.mode,"submode":app.submode,"input":app.input,"selected":app.selected,"tab":app.tab,"settingsOpen":app.panel==Panel::Settings,"discardPrompt":app.confirm_discard,"datePicker":app.date_picker,"colorPanel":app.color_picker,"nativeColorPopup":app.native_color.open,"dateValue":app.date_value}));
