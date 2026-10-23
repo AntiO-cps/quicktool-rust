@@ -178,21 +178,47 @@ mod native {
     #[derive(Clone, Debug, PartialEq)]
     struct Snapshot {
         owner: isize,
+        revision: u64,
         x: i32,
         y: i32,
         width: i32,
         height: i32,
+        content_height: Option<i32>,
         visible: bool,
         topmost: bool,
         dark: bool,
         blur: f32,
         radius: f32,
     }
+    impl Snapshot {
+        fn visual_height(&self) -> i32 {
+            self.content_height
+                .unwrap_or(self.height)
+                .clamp(1, self.height)
+        }
+
+        fn geometry_changed(&self, previous: &Self) -> bool {
+            self.owner != previous.owner
+                || self.revision != previous.revision
+                || self.x != previous.x
+                || self.y != previous.y
+                || self.width != previous.width
+                || self.height != previous.height
+        }
+
+        fn composition_changed(&self, previous: &Self) -> bool {
+            self.width != previous.width
+                || self.visual_height() != previous.visual_height()
+                || self.blur != previous.blur
+                || self.radius != previous.radius
+        }
+    }
     pub struct Backdrop {
         native_hwnd: isize,
         thread_id: u32,
         updates: mpsc::Sender<Snapshot>,
         last: Option<Snapshot>,
+        revision: u64,
         join: Option<JoinHandle<()>>,
         pub actual_blur: std::sync::Arc<std::sync::Mutex<f32>>,
         owner: isize,
@@ -321,50 +347,73 @@ mod native {
                 let mut msg: MSG = std::mem::zeroed();
                 PeekMessageW(&mut msg, null_mut(), 0, 0, PM_NOREMOVE);
                 let _ = ready.send(Ok((tid, hwnd as isize)));
+                let mut previous: Option<Snapshot> = None;
                 while GetMessageW(&mut msg, null_mut(), 0, 0) > 0 {
                     if msg.message == WM_APP + 21 {
-                        let Some(s) = rx.try_iter().last() else {
+                        let Some(mut s) = rx.try_iter().last() else {
                             continue;
                         };
-                        let _ = composition.update(s.width, s.height, s.blur, s.radius);
-                        if let Ok(mut value) = actual.lock() {
-                            *value = composition.actual_blur().unwrap_or(-1.0);
+                        if previous.as_ref().is_none_or(|p| s.composition_changed(p)) {
+                            let _ =
+                                composition.update(s.width, s.visual_height(), s.blur, s.radius);
+                            if let Ok(mut value) = actual.lock() {
+                                *value = composition.actual_blur().unwrap_or(-1.0);
+                            }
                         }
-                        if !s.visible
-                            || IsWindow(s.owner as HWND) == 0
-                            || IsWindowVisible(s.owner as HWND) == 0
-                            || s.blur <= 0.0
+                        s.visible = s.visible
+                            && IsWindow(s.owner as HWND) != 0
+                            && IsWindowVisible(s.owner as HWND) != 0
+                            && s.blur > 0.0;
+                        let was_visible = previous.as_ref().is_some_and(|p| p.visible);
+                        if !s.visible {
+                            if was_visible {
+                                ShowWindow(hwnd, SW_HIDE);
+                            }
+                            previous = Some(s);
+                            continue;
+                        }
+                        if previous.as_ref().is_none_or(|p| p.topmost != s.topmost) || !was_visible
                         {
-                            ShowWindow(hwnd, SW_HIDE);
-                            continue;
+                            let band = if s.topmost {
+                                HWND_TOPMOST
+                            } else {
+                                HWND_NOTOPMOST
+                            };
+                            SetWindowPos(
+                                hwnd,
+                                band,
+                                0,
+                                0,
+                                0,
+                                0,
+                                SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE,
+                            );
                         }
-                        let band = if s.topmost {
-                            HWND_TOPMOST
-                        } else {
-                            HWND_NOTOPMOST
-                        };
-                        SetWindowPos(
-                            hwnd,
-                            band,
-                            0,
-                            0,
-                            0,
-                            0,
-                            SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE,
-                        );
-                        material(hwnd, s.dark);
-                        SetWindowPos(
-                            hwnd,
-                            s.owner as HWND,
-                            s.x,
-                            s.y,
-                            s.width,
-                            s.height,
-                            SWP_NOACTIVATE
-                                | SWP_SHOWWINDOW
-                                | SWP_NOSENDCHANGING
-                                | SWP_NOOWNERZORDER,
-                        );
+                        if previous
+                            .as_ref()
+                            .is_none_or(|p| p.dark != s.dark || p.revision != s.revision)
+                            || !was_visible
+                        {
+                            material(hwnd, s.dark);
+                        }
+                        if previous.as_ref().is_none_or(|p| s.geometry_changed(p))
+                            || !was_visible
+                            || previous.as_ref().is_some_and(|p| p.topmost != s.topmost)
+                        {
+                            SetWindowPos(
+                                hwnd,
+                                s.owner as HWND,
+                                s.x,
+                                s.y,
+                                s.width,
+                                s.height,
+                                SWP_NOACTIVATE
+                                    | SWP_SHOWWINDOW
+                                    | SWP_NOSENDCHANGING
+                                    | SWP_NOOWNERZORDER,
+                            );
+                        }
+                        previous = Some(s);
                     } else {
                         TranslateMessage(&msg);
                         DispatchMessageW(&msg);
@@ -385,6 +434,7 @@ mod native {
                 thread_id,
                 updates,
                 last: None,
+                revision: 0,
                 join: Some(join),
                 actual_blur,
                 owner,
@@ -400,6 +450,21 @@ mod native {
             inset: i32,
             radius: f32,
         ) -> Result<(), String> {
+            self.update_clipped(visible, topmost, dark, blur, inset, radius, None)
+        }
+        /// Change the visible compositor height without reallocating the native window.
+        /// `content_height` is measured in physical pixels from the owner's client top.
+        #[allow(clippy::too_many_arguments)]
+        pub fn update_clipped(
+            &mut self,
+            visible: bool,
+            topmost: bool,
+            dark: bool,
+            blur: f32,
+            inset: i32,
+            radius: f32,
+            content_height: Option<i32>,
+        ) -> Result<(), String> {
             unsafe {
                 let owner = self.owner as HWND;
                 if IsWindow(owner) == 0 {
@@ -414,10 +479,13 @@ mod native {
                 let inset = inset.max(0);
                 let snapshot = Snapshot {
                     owner: self.owner,
+                    revision: self.revision,
                     x: point.x + inset,
                     y: point.y + inset,
                     width: (client.right - inset * 2).max(1),
                     height: (client.bottom - inset * 2).max(1),
+                    content_height: content_height
+                        .map(|height| height.saturating_sub(inset.saturating_mul(2)).max(1)),
                     visible: visible && IsWindowVisible(owner) != 0 && IsIconic(owner) == 0,
                     topmost,
                     dark,
@@ -446,6 +514,7 @@ mod native {
             }
         }
         pub fn invalidate(&mut self) {
+            self.revision = self.revision.wrapping_add(1);
             self.last = None;
         }
         pub fn status(&self) -> BackdropStatus {
@@ -476,6 +545,65 @@ mod native {
             if let Some(join) = self.join.take() {
                 let _ = join.join();
             }
+        }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::Snapshot;
+
+        fn allocated() -> Snapshot {
+            Snapshot {
+                owner: 1,
+                revision: 0,
+                x: 100,
+                y: 200,
+                width: 1015,
+                height: 803,
+                content_height: Some(105),
+                visible: true,
+                topmost: false,
+                dark: true,
+                blur: 28.0,
+                radius: 10.0,
+            }
+        }
+
+        #[test]
+        fn animated_content_keeps_native_allocation_stable() {
+            let mut previous = allocated();
+            for height in 106..=803 {
+                let mut next = previous.clone();
+                next.content_height = Some(height);
+                assert!(!next.geometry_changed(&previous));
+                assert!(next.composition_changed(&previous));
+                previous = next;
+            }
+            assert_eq!(previous.visual_height(), previous.height);
+        }
+
+        #[test]
+        fn pin_uses_full_owner_height_and_content_cannot_exceed_allocation() {
+            let mut snapshot = allocated();
+            snapshot.content_height = None;
+            assert_eq!(snapshot.visual_height(), 803);
+            snapshot.content_height = Some(1000);
+            assert_eq!(snapshot.visual_height(), 803);
+            snapshot.content_height = Some(0);
+            assert_eq!(snapshot.visual_height(), 1);
+        }
+
+        #[test]
+        fn visibility_theme_and_z_band_do_not_change_composition() {
+            let previous = allocated();
+            let mut next = previous.clone();
+            next.visible = false;
+            next.dark = false;
+            next.topmost = true;
+            assert!(!next.composition_changed(&previous));
+            assert!(!next.geometry_changed(&previous));
+            next.revision += 1;
+            assert!(next.geometry_changed(&previous));
         }
     }
 }

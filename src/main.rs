@@ -27,6 +27,7 @@ fn main() -> eframe::Result {
         .with_min_inner_size([640., 84.])
         .with_decorations(false)
         .with_transparent(true)
+        .with_visible(false)
         .with_resizable(false);
     if let Some(icon) = icon {
         viewport = viewport.with_icon(icon);
@@ -36,7 +37,7 @@ fn main() -> eframe::Result {
         renderer: eframe::Renderer::Glow,
         vsync: true,
         multisampling: 4,
-        centered: true,
+        centered: false,
         ..Default::default()
     };
     eframe::run_native(

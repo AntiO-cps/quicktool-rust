@@ -1,0 +1,809 @@
+{
+  "installedPayloadFiles": 980,
+  "nativeSummon": {
+    "passed": true,
+    "checks": [
+      {
+        "check": "native tray restores hidden panel without blur cancellation",
+        "round": 1,
+        "passed": true,
+        "hiddenBefore": true,
+        "callbackPosted": true,
+        "visibleAfter": true,
+        "remainsVisible": true
+      },
+      {
+        "check": "native tray restores hidden panel without blur cancellation",
+        "round": 2,
+        "passed": true,
+        "hiddenBefore": true,
+        "callbackPosted": true,
+        "visibleAfter": true,
+        "remainsVisible": true
+      },
+      {
+        "check": "native tray restores hidden panel without blur cancellation",
+        "round": 3,
+        "passed": true,
+        "hiddenBefore": true,
+        "callbackPosted": true,
+        "visibleAfter": true,
+        "remainsVisible": true
+      }
+    ],
+    "elapsedMs": 1893.3202,
+    "method": "Actual QuickTool, native hidden/visible state and own-process tray callback; hideOnBlur enabled; no OS keyboard/mouse input or user data"
+  },
+  "uninstallPayloadRemoval": "PASS",
+  "installer": "QuickTool-Rust-Setup-0.6.0-alpha.36-x64.exe",
+  "registryIntegration": "Disabled for isolated test",
+  "installedBinaryMatchesFinalBuild": true,
+  "nativeUi": {
+    "passed": true,
+    "checks": [
+      {
+        "check": "Tab completes command",
+        "passed": true,
+        "frame": 6,
+        "mode": null,
+        "submode": null,
+        "input": "/base64 ",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Enter enters Base64 mode",
+        "passed": true,
+        "frame": 7,
+        "mode": "base64",
+        "submode": null,
+        "input": "",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Escape clears input before modes",
+        "passed": true,
+        "frame": 8,
+        "mode": "base64",
+        "submode": "encode",
+        "input": "",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Escape removes submode",
+        "passed": true,
+        "frame": 9,
+        "mode": "base64",
+        "submode": null,
+        "input": "",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Escape removes mode",
+        "passed": true,
+        "frame": 10,
+        "mode": null,
+        "submode": null,
+        "input": "",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "ArrowDown selects next visible row",
+        "passed": true,
+        "frame": 11,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 1,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "ArrowUp selects first visible row",
+        "passed": true,
+        "frame": 12,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Ctrl+Tab advances tab",
+        "passed": true,
+        "frame": 13,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 1,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Ctrl+Shift+Tab returns tab",
+        "passed": true,
+        "frame": 14,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Escape prompts for changed settings",
+        "passed": true,
+        "frame": 15,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": true,
+        "discardPrompt": true,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Escape cancels discard prompt",
+        "passed": true,
+        "frame": 16,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": true,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Escape closes unchanged settings",
+        "passed": true,
+        "frame": 17,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Escape closes date picker",
+        "passed": true,
+        "frame": 18,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Escape closes native color popup first",
+        "passed": true,
+        "frame": 19,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": true,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Escape closes color panel",
+        "passed": true,
+        "frame": 20,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2026-10-24 00:04:15"
+      },
+      {
+        "check": "Calendar ArrowRight crosses leap day",
+        "passed": true,
+        "frame": 21,
+        "mode": null,
+        "submode": null,
+        "input": "2024-03-01 23:59",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": true,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 23:59"
+      },
+      {
+        "check": "Calendar Tab focuses hour",
+        "passed": true,
+        "frame": 22,
+        "mode": null,
+        "submode": null,
+        "input": "2024-03-01 23:59",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": true,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 23:59"
+      },
+      {
+        "check": "Calendar hour wraps 23 to 00",
+        "passed": true,
+        "frame": 23,
+        "mode": null,
+        "submode": null,
+        "input": "2024-03-01 00:59",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": true,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 00:59"
+      },
+      {
+        "check": "Calendar Tab focuses minute",
+        "passed": true,
+        "frame": 24,
+        "mode": null,
+        "submode": null,
+        "input": "2024-03-01 00:59",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": true,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 00:59"
+      },
+      {
+        "check": "Calendar minute wraps 59 to 00",
+        "passed": true,
+        "frame": 25,
+        "mode": null,
+        "submode": null,
+        "input": "2024-03-01 00:00",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": true,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 00:00"
+      },
+      {
+        "check": "Escape closes edited calendar",
+        "passed": true,
+        "frame": 26,
+        "mode": null,
+        "submode": null,
+        "input": "2024-03-01 00:00",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 00:00"
+      },
+      {
+        "check": "Backspace suppresses ghost without deleting input",
+        "passed": true,
+        "frame": 27,
+        "mode": null,
+        "submode": null,
+        "input": "/bas",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 00:00"
+      },
+      {
+        "check": "Hiding owner dismisses native popups and preserves color panel state",
+        "passed": true,
+        "frame": 28,
+        "mode": null,
+        "submode": null,
+        "input": "/bas",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": true,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 00:00"
+      },
+      {
+        "check": "Summon closes history and selects all search text",
+        "passed": true,
+        "frame": 29,
+        "mode": null,
+        "submode": null,
+        "input": "保留🙂abc",
+        "selected": 0,
+        "tab": 0,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 00:00"
+      },
+      {
+        "check": "Keyboard category change resets selection and focuses search",
+        "passed": true,
+        "frame": 30,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 2,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 00:00"
+      },
+      {
+        "check": "Summon protects unsaved settings",
+        "passed": true,
+        "frame": 31,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 2,
+        "settingsOpen": true,
+        "discardPrompt": true,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 00:00"
+      },
+      {
+        "check": "Ctrl+Shift+P works in settings",
+        "passed": true,
+        "frame": 32,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 2,
+        "settingsOpen": true,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 00:00"
+      },
+      {
+        "check": "Escape closes history and focuses search",
+        "passed": true,
+        "frame": 33,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 2,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 00:00"
+      },
+      {
+        "check": "History hides on blur while settings, recording, pin and popups protect focus",
+        "passed": true,
+        "frame": 34,
+        "mode": null,
+        "submode": null,
+        "input": "0xFF",
+        "selected": 0,
+        "tab": 2,
+        "settingsOpen": false,
+        "discardPrompt": false,
+        "datePicker": false,
+        "colorPanel": false,
+        "nativeColorPopup": false,
+        "dateValue": "2024-03-01 00:00"
+      }
+    ],
+    "elapsedMs": 1845.4988,
+    "method": "Real eframe frames with RawInput key events injected only into this isolated app; no OS input, clipboard, or external launches. Does not replace manual mouse/keyboard acceptance."
+  },
+  "installExit": 0,
+  "payloadHashes": "PASS",
+  "nativeMotion": {
+    "passed": true,
+    "profile": "release",
+    "version": "0.6.0-alpha.36",
+    "checks": [
+      {
+        "stage": 0,
+        "frames": 76,
+        "nativeResizes": 1,
+        "frameIntervalMs": {
+          "p50": 7.054399999999999,
+          "p95": 14.0918,
+          "max": 45.2096
+        },
+        "cpuUiMs": {
+          "p50": 0.7290999637916684,
+          "p95": 1.8566999351605773
+        },
+        "bounds": [
+          773,
+          304,
+          1015,
+          803
+        ]
+      },
+      {
+        "stage": 1,
+        "frames": 97,
+        "nativeResizes": 1,
+        "frameIntervalMs": {
+          "p50": 6.0257000000000005,
+          "p95": 9.458,
+          "max": 36.427800000000005
+        },
+        "cpuUiMs": {
+          "p50": 0.39659999310970306,
+          "p95": 0.8126999600790441
+        },
+        "bounds": [
+          773,
+          304,
+          1015,
+          105
+        ]
+      },
+      {
+        "stage": 2,
+        "frames": 95,
+        "nativeResizes": 1,
+        "frameIntervalMs": {
+          "p50": 6.1078,
+          "p95": 11.089699999999999,
+          "max": 23.213
+        },
+        "cpuUiMs": {
+          "p50": 0.6325999856926501,
+          "p95": 1.2658999767154455
+        },
+        "bounds": [
+          773,
+          304,
+          1015,
+          803
+        ]
+      },
+      {
+        "stage": 3,
+        "frames": 100,
+        "nativeResizes": 1,
+        "frameIntervalMs": {
+          "p50": 6.0241,
+          "p95": 10.5503,
+          "max": 26.727
+        },
+        "cpuUiMs": {
+          "p50": 0.41939999209716916,
+          "p95": 1.0713000083342195
+        },
+        "bounds": [
+          773,
+          304,
+          1015,
+          105
+        ]
+      },
+      {
+        "stage": 4,
+        "frames": 99,
+        "nativeResizes": 1,
+        "frameIntervalMs": {
+          "p50": 6.0118,
+          "p95": 9.5246,
+          "max": 29.5366
+        },
+        "cpuUiMs": {
+          "p50": 0.7530999719165266,
+          "p95": 1.1929000029340386
+        },
+        "bounds": [
+          773,
+          304,
+          1015,
+          803
+        ]
+      },
+      {
+        "stage": 5,
+        "frames": 101,
+        "nativeResizes": 1,
+        "frameIntervalMs": {
+          "p50": 6.1104,
+          "p95": 8.9286,
+          "max": 26.9269
+        },
+        "cpuUiMs": {
+          "p50": 0.4428999964147806,
+          "p95": 0.8719000034034252
+        },
+        "bounds": [
+          773,
+          304,
+          1015,
+          105
+        ]
+      },
+      {
+        "stage": 6,
+        "frames": 101,
+        "nativeResizes": 1,
+        "frameIntervalMs": {
+          "p50": 5.9906999999999995,
+          "p95": 8.8349,
+          "max": 28.2295
+        },
+        "cpuUiMs": {
+          "p50": 0.6502000032924116,
+          "p95": 1.0760999284684658
+        },
+        "bounds": [
+          773,
+          304,
+          1015,
+          803
+        ]
+      },
+      {
+        "stage": 7,
+        "frames": 103,
+        "nativeResizes": 1,
+        "frameIntervalMs": {
+          "p50": 5.9797,
+          "p95": 8.9984,
+          "max": 18.953500000000002
+        },
+        "cpuUiMs": {
+          "p50": 0.4026999813504517,
+          "p95": 1.0336999548599124
+        },
+        "bounds": [
+          773,
+          304,
+          1015,
+          105
+        ]
+      }
+    ],
+    "method": "Eight alternating real app transitions with normal motion; own native bounds and eframe CPU UI duration, root frame intervals include rendering/event scheduling but not OS display presentation; no OS input or user data"
+  },
+  "bytes": 21615617,
+  "unrelatedFilePreserved": "PASS",
+  "time": "2026-10-24T00:04:26+08:00",
+  "nativeExpanded": {
+    "passed": true,
+    "checks": [
+      {
+        "case": "settings",
+        "passed": true,
+        "client": [
+          1015,
+          803
+        ],
+        "region": [
+          1015,
+          803
+        ],
+        "regionCoversClient": true,
+        "bodyHitIsMainWindow": true,
+        "bodyRgb": [
+          16,
+          20,
+          28
+        ],
+        "candidateRows": 7
+      },
+      {
+        "case": "candidates",
+        "passed": true,
+        "client": [
+          1015,
+          803
+        ],
+        "region": [
+          1015,
+          803
+        ],
+        "regionCoversClient": true,
+        "bodyHitIsMainWindow": true,
+        "bodyRgb": [
+          28,
+          31,
+          41
+        ],
+        "candidateRows": 10
+      },
+      {
+        "case": "history",
+        "passed": true,
+        "client": [
+          1015,
+          803
+        ],
+        "region": [
+          1015,
+          803
+        ],
+        "regionCoversClient": true,
+        "bodyHitIsMainWindow": true,
+        "bodyRgb": [
+          16,
+          20,
+          28
+        ],
+        "candidateRows": 7
+      },
+      {
+        "case": "compact",
+        "passed": true,
+        "client": [
+          1015,
+          105
+        ],
+        "region": [
+          1015,
+          105
+        ],
+        "regionCoversClient": true,
+        "bodyHitIsMainWindow": true,
+        "bodyRgb": null,
+        "candidateRows": 7
+      },
+      {
+        "case": "settings again",
+        "passed": true,
+        "client": [
+          1015,
+          803
+        ],
+        "region": [
+          1015,
+          803
+        ],
+        "regionCoversClient": true,
+        "bodyHitIsMainWindow": true,
+        "bodyRgb": [
+          16,
+          20,
+          28
+        ],
+        "candidateRows": 7
+      },
+      {
+        "case": "candidates again",
+        "passed": true,
+        "client": [
+          1015,
+          803
+        ],
+        "region": [
+          1015,
+          803
+        ],
+        "regionCoversClient": true,
+        "bodyHitIsMainWindow": true,
+        "bodyRgb": [
+          28,
+          31,
+          41
+        ],
+        "candidateRows": 10
+      }
+    ],
+    "method": "Actual production window, normal native styling and backdrop enabled; native clip bounds, body hit and own-window-only body pixel; no screenshot-mode bypass or OS input"
+  },
+  "sha256": "9432849B576874428C4D65A7DA0ED297407B06A9A796F502D49775EF9993E319",
+  "installedExecutableSha256": "FD4A959C23867600824C1905EB4F963E8A1F65E389AB348BA157C5F7D7947F77"
+}

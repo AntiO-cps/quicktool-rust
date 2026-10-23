@@ -16,7 +16,7 @@ cargo run --release
 
 生成可移植目录：`./scripts/Build-Rust.ps1 -Offline`。运行 `dist/QuickTool.exe`，并保留旁边的资源与许可目录。依赖许可清单在 `licenses/rust/INDEX.json`。
 
-安装包位于 `releases/QuickTool-Rust-Setup-0.6.0-alpha.35-x64.exe`，旁边提供 SHA256 校验文件。默认安装到当前用户的 `LocalAppData/Programs/QuickTool Rust`，创建快捷方式及卸载入口；卸载保留设置和历史。
+安装包位于 `releases/QuickTool-Rust-Setup-0.6.0-alpha.36-x64.exe`，旁边提供 SHA256 校验文件。默认安装到当前用户的 `LocalAppData/Programs/QuickTool Rust`，创建快捷方式及卸载入口；卸载保留设置和历史。
 
 使用已有 NSIS 编译器生成安装包：`./scripts/Build-Installer.ps1 -MakeNsis PATH_TO_MAKENSIS -Offline`。已有可移植目录时可添加 `-SkipPortableBuild`；脚本会先核验目录内 SHA256 清单。
 
@@ -58,3 +58,5 @@ alpha.33 修复Windows隐藏窗口无法处理托盘/快捷键唤起，以及唤
 alpha.34 修复Windows WGL错误关闭透明子窗口属性的问题，恢复Glow等子窗口的DWM透明合成。原生回归通过自有绿色背景窗口验证透出颜色，运行 `cargo run --example transparent_child -- REPORT.json` 可复验。
 
 alpha.35 修复窗口展开后设置、候选和历史被初始圆角区域裁切的问题。运行 scripts/Verify-Expanded.ps1 可检查实际原生窗口的区域、命中及内容像素，覆盖收起后再次展开。
+
+alpha.36 对齐主面板固定位置、唤起全选、标签/历史焦点、设置保护及固定快捷键。高度动画改为内部绘制，原生空间只在转换边界调整；Glow以60Hz调度并缓存静态几何。对照和测量边界见 docs/ux-parity-alpha36.md。

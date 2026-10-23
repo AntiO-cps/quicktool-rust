@@ -14,6 +14,8 @@ mod image_decode;
 mod interaction_probe;
 #[path = "large_input.rs"]
 mod large_input;
+#[path = "motion_probe.rs"]
+mod motion_probe;
 #[path = "pickers.rs"]
 mod pickers;
 #[path = "summon_probe.rs"]
@@ -512,6 +514,11 @@ pub struct QuickTool {
     interaction_probe: Option<interaction_probe::InteractionProbe>,
     summon_probe: Option<summon_probe::SummonProbe>,
     expanded_probe: Option<expanded_probe::ExpandedProbe>,
+    motion_probe: Option<motion_probe::MotionProbe>,
+    motion: quicktool_rust::launcher_motion::Motion,
+    placement: quicktool_rust::launcher_native::LauncherPlacement,
+    place_requested: bool,
+    select_search: bool,
     frames: u32,
     hotkey: Option<platform::Hotkey>,
     hotkey_error: Option<String>,
@@ -715,27 +722,31 @@ impl QuickTool {
         let interaction_probe = interaction_probe::InteractionProbe::from_args();
         let summon_probe = summon_probe::SummonProbe::from_args();
         let expanded_probe = expanded_probe::ExpandedProbe::from_args();
+        let motion_probe = motion_probe::MotionProbe::from_args();
         let isolated = metrics_path.is_some()
             || interaction_probe.is_some()
             || summon_probe.is_some()
             || expanded_probe.is_some()
+            || motion_probe.is_some()
             || std::env::args().any(|a| a == "--picker-screenshot");
-        let mut store = Store::open(if summon_probe.is_some() || expanded_probe.is_some() {
-            std::env::temp_dir().join(format!("QuickTool-Rust-summon-{}", std::process::id()))
-        } else if isolated {
-            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-                .join(".qa")
-                .join(format!("metrics-data-{}", std::process::id()))
-        } else {
-            Store::default_root()
-        });
+        let mut store = Store::open(
+            if summon_probe.is_some() || expanded_probe.is_some() || motion_probe.is_some() {
+                std::env::temp_dir().join(format!("QuickTool-Rust-summon-{}", std::process::id()))
+            } else if isolated {
+                std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                    .join(".qa")
+                    .join(format!("metrics-data-{}", std::process::id()))
+            } else {
+                Store::default_root()
+            },
+        );
         if isolated {
             let empty = store.root.join("empty");
             if let Err(error) = std::fs::create_dir_all(&empty) {
                 eprintln!("metrics empty index directory: {error}");
             }
             store.settings["theme"] = serde_json::json!("dark");
-            store.settings["reduceMotion"] = serde_json::json!(true);
+            store.settings["reduceMotion"] = serde_json::json!(motion_probe.is_none());
             store.settings["globalShortcut"] = serde_json::json!("F24");
             store.settings["hideOnBlur"] = serde_json::json!(false);
             store.settings["fileIndexRoots"] = serde_json::json!(empty.to_string_lossy());
@@ -834,6 +845,11 @@ impl QuickTool {
             interaction_probe,
             summon_probe,
             expanded_probe,
+            motion_probe,
+            motion: Default::default(),
+            placement: Default::default(),
+            place_requested: true,
+            select_search: false,
             probe: metrics_path.map(|path| Probe {
                 path,
                 ready_at: None,
@@ -2521,6 +2537,13 @@ impl QuickTool {
     }
     fn show_main(&mut self, ctx: &Context) {
         self.main_visible = true;
+        self.place_requested = true;
+        if self.panel == Panel::Settings {
+            self.close_settings();
+        } else {
+            self.panel = Panel::None;
+        }
+        self.select_search = true;
         // A tray click can arrive with the previous frame's focus-loss event.
         // The pending Focus command takes effect after this frame; do not let
         // hide-on-blur cancel the explicit show in the meantime.
@@ -2577,14 +2600,29 @@ impl QuickTool {
             self.focus = true;
         }
     }
+    fn switch_tab(&mut self, tab: usize) {
+        self.tab = tab;
+        self.selected = self.visible_indices().first().copied().unwrap_or(0);
+        self.focus = true;
+    }
+    fn blur_hides(&self, ctx: &Context) -> bool {
+        !self.pinned
+            && self.panel != Panel::Settings
+            && !self.recording_shortcut
+            && !self.date_picker
+            && !self.color_picker
+            && !self.native_color.open
+            && !widgets::is_open(ctx)
+            && self.store.settings["hideOnBlur"] == true
+    }
     fn keyboard(&mut self, ctx: &Context) {
         if self.eyedrop.active() || self.eyedrop_pending > 0 {
             return;
         }
         if ctx.input_mut(|i| i.consume_key(Modifiers::CTRL | Modifiers::SHIFT, Key::Tab)) {
-            self.tab = (self.tab + 2) % 3;
+            self.switch_tab((self.tab + 2) % 3);
         } else if ctx.input_mut(|i| i.consume_key(Modifiers::CTRL, Key::Tab)) {
-            self.tab = (self.tab + 1) % 3;
+            self.switch_tab((self.tab + 1) % 3);
         }
         let visible = self.visible_indices();
         if !visible.contains(&self.selected) {
@@ -2603,6 +2641,7 @@ impl QuickTool {
                 self.close_settings()
             } else if self.panel == Panel::History {
                 self.panel = Panel::None;
+                self.focus = true;
             } else if self.mode.is_some() && !self.input.is_empty() {
                 self.input.clear();
                 self.rebuild();
@@ -2619,13 +2658,15 @@ impl QuickTool {
         if self.date_picker || self.color_picker || self.native_color.open {
             return;
         }
+        if !self.recording_shortcut
+            && ctx.input_mut(|i| i.consume_key(Modifiers::CTRL | Modifiers::SHIFT, Key::P))
+        {
+            self.toggle_pin(ctx);
+        }
         if self.panel == Panel::None {
             if ctx.input(|i| i.modifiers.ctrl && i.key_pressed(Key::V)) && clipboard_has_image() {
                 self.load_attachment(attachments::Attachment::from_clipboard);
                 ctx.input_mut(|i| i.events.retain(|e| !matches!(e, Event::Paste(_))));
-            }
-            if ctx.input_mut(|i| i.consume_key(Modifiers::CTRL | Modifiers::SHIFT, Key::P)) {
-                self.toggle_pin(ctx);
             }
             if ctx.input_mut(|i| i.consume_key(Modifiers::NONE, Key::ArrowDown))
                 && !self.rows.is_empty()
@@ -2906,6 +2947,10 @@ impl QuickTool {
                                     .is_some()));
                         let reserve = if show_tab { 32. } else { 0. } + if date { 30. } else { 0. };
                         let w = (ui.available_width() - reserve).max(25.);
+                        if self.select_search {
+                            self.large_input.action(&mut self.input, ctx, "all");
+                            self.select_search = false;
+                        }
                         let r = self.large_input.show(ui, &mut self.input, vec2(w, 32.));
                         if let Some(full) = completion {
                             let prefix = ui
@@ -3059,8 +3104,7 @@ impl QuickTool {
                 tint,
             );
             if response.clicked() {
-                self.tab = i;
-                self.selected = self.visible_indices().first().copied().unwrap_or(0);
+                self.switch_tab(i);
             }
         }
         let hint = pos2(tabs_rect.right() - 7., tabs_rect.top() + 16.);
@@ -4836,12 +4880,10 @@ impl eframe::App for QuickTool {
         let focused = ctx.input(|i| i.viewport().focused.unwrap_or(false));
         if self.was_focused
             && !focused
-            && !self.pinned
-            && self.panel == Panel::None
+            && self.blur_hides(ctx)
             && self.screenshot.is_none()
             && self.probe.is_none()
             && self.interaction_probe.is_none()
-            && self.store.settings["hideOnBlur"] == true
         {
             self.main_visible = false;
             if let Some(glass) = &mut self.backdrop {
@@ -4850,14 +4892,6 @@ impl eframe::App for QuickTool {
             ctx.send_viewport_cmd(ViewportCommand::Visible(false));
         }
         self.was_focused = focused;
-        if ctx.input(|i| {
-            i.pointer.button_down(PointerButton::Primary)
-                && i.pointer.delta() != Vec2::ZERO
-                && i.pointer.press_origin().is_some_and(|p| p.y < 12.)
-        }) {
-            ctx.send_viewport_cmd(ViewportCommand::StartDrag);
-        }
-
         let visual = if self.panel == Panel::Settings {
             self.draft.clone()
         } else {
@@ -4930,22 +4964,6 @@ impl eframe::App for QuickTool {
                 }
             }
         }
-        let backdrop_error = self.backdrop.as_mut().and_then(|glass| {
-            glass
-                .update(
-                    self.main_visible,
-                    self.pinned || visual["summonAlwaysOnTop"] == true,
-                    !light,
-                    blur as f32,
-                    0,
-                    8. * ctx.pixels_per_point(),
-                )
-                .err()
-        });
-        if let Some(error) = backdrop_error {
-            self.backdrop = None;
-            self.message(format!("背景模糊已停止：{error}"));
-        }
         #[cfg(not(windows))]
         let _ = frame;
         let mut visuals = if light {
@@ -5012,7 +5030,71 @@ impl eframe::App for QuickTool {
         } else {
             Color32::from_rgba_unmultiplied(20, 24, 34, (opacity * 255.) as u8)
         };
-        let mut height = 84.;
+        let requested_height = if !expanded {
+            84.
+        } else {
+            match self.panel {
+                Panel::None if self.country_query().is_some() => 576.,
+                Panel::None if self.showing_help() => 642.,
+                Panel::None => self.result_height,
+                _ => 642.,
+            }
+        };
+        let mut max_height = 642.;
+        if self.glow.owner != 0 {
+            match self.placement.update(
+                self.glow.owner,
+                self.place_requested,
+                self.motion.allocated,
+            ) {
+                Ok(bounds) => {
+                    max_height = bounds[2];
+                    self.place_requested = false;
+                }
+                Err(error) => {
+                    self.message(format!("窗口定位失败：{error}"));
+                }
+            }
+        }
+        let height = requested_height.min(max_height).max(84.);
+        if self.motion.step(
+            ctx.input(|i| i.time),
+            height,
+            visual["reduceMotion"] == true || self.screenshot.is_some(),
+        ) {
+            ctx.request_repaint_after(Duration::from_secs_f64(1. / 60.));
+        }
+        if self.glow.owner != 0 {
+            let _ = self
+                .placement
+                .update(self.glow.owner, false, self.motion.allocated);
+        } else if (self.motion.allocated - ctx.screen_rect().height()).abs() > 0.7 {
+            ctx.send_viewport_cmd(ViewportCommand::InnerSize(vec2(
+                812.,
+                self.motion.allocated,
+            )));
+        }
+        if self.frames == 1 && self.main_visible {
+            ctx.send_viewport_cmd(ViewportCommand::Visible(true));
+        }
+        self.last_height = self.motion.visual;
+        let backdrop_error = self.backdrop.as_mut().and_then(|glass| {
+            glass
+                .update_clipped(
+                    self.main_visible,
+                    effective_topmost,
+                    !light,
+                    blur as f32,
+                    0,
+                    8. * ctx.pixels_per_point(),
+                    Some((self.motion.visual * ctx.pixels_per_point()).round() as i32),
+                )
+                .err()
+        });
+        if let Some(error) = backdrop_error {
+            self.backdrop = None;
+            self.message(format!("背景模糊已停止：{error}"));
+        }
         ctx.style_mut(|style| {
             style.spacing.item_spacing = vec2(8., 5.);
             style.spacing.scroll.floating = false;
@@ -5026,120 +5108,113 @@ impl eframe::App for QuickTool {
                 0.14
             };
         });
-        CentralPanel::default()
-            .frame(
-                Frame::new()
-                    .fill(bg)
-                    .corner_radius(8)
-                    .stroke(Stroke::new(
-                        1.,
-                        if light {
-                            Color32::from_rgb(201, 210, 225)
-                        } else {
-                            Color32::from_rgb(45, 51, 65)
-                        },
-                    ))
-                    .inner_margin(if self.panel == Panel::None {
-                        Margin {
-                            left: 14,
-                            right: 14,
-                            top: 16,
-                            bottom: 10,
-                        }
-                    } else if self.panel == Panel::History {
-                        // CSS inset:10px excludes the outer shell's stroke.
-                        Margin::same(9)
-                    } else {
-                        Margin::same(10)
-                    }),
-            )
-            .show(ctx, |ui| {
-                // The launcher shell has fixed viewport bounds, like the
-                // original overflow:hidden element. A long row may grow its
-                // own layout, but must not expand the outer frame off-screen.
-                let mut content = ui.new_child(UiBuilder::new().max_rect(ui.max_rect()));
-                let ui = &mut content;
-                if self.panel == Panel::None {
-                    self.topbar(ui, ctx);
+        let shell_frame = Frame::new()
+            .fill(bg)
+            .corner_radius(8)
+            .stroke(Stroke::new(
+                1.,
+                if light {
+                    Color32::from_rgb(201, 210, 225)
+                } else {
+                    Color32::from_rgb(45, 51, 65)
+                },
+            ))
+            .inner_margin(if self.panel == Panel::None {
+                Margin {
+                    left: 14,
+                    right: 14,
+                    top: 16,
+                    bottom: 10,
                 }
-                if expanded {
-                    if self.panel == Panel::None {
-                        ui.add_space(12.);
-                    }
-                    match self.panel {
-                        Panel::None => {
-                            let rect = ui.available_rect_before_wrap().expand2(vec2(7., 0.));
-                            ui.scope_builder(UiBuilder::new().max_rect(rect), |ui| {
-                                self.results(ui, ctx)
-                            });
-                        }
-                        Panel::Settings => {
-                            Frame::new()
-                                .fill(if light {
-                                    Color32::from_rgb(246, 248, 253)
-                                } else {
-                                    Color32::from_rgb(16, 20, 28)
-                                })
-                                .stroke(Stroke::new(
-                                    1.,
-                                    if light {
-                                        Color32::from_gray(215)
-                                    } else {
-                                        Color32::from_rgb(40, 45, 56)
-                                    },
-                                ))
-                                .corner_radius(16)
-                                .inner_margin(Margin::symmetric(18, 14))
-                                .show(ui, |ui| self.settings(ui));
-                        }
-                        Panel::History => {
-                            Frame::new()
-                                .fill(if light {
-                                    Color32::from_rgb(246, 248, 253)
-                                } else {
-                                    Color32::from_rgb(16, 20, 28)
-                                })
-                                .stroke(Stroke::new(
-                                    ctx.pixels_per_point().floor() / ctx.pixels_per_point(),
-                                    if light {
-                                        Color32::from_gray(215)
-                                    } else {
-                                        Color32::from_rgb(40, 45, 56)
-                                    },
-                                ))
-                                .corner_radius(15)
-                                .inner_margin(0)
-                                .show(ui, |ui| self.history(ui, ctx));
-                        }
-                    }
-                    height = match self.panel {
-                        Panel::None if self.country_query().is_some() => 576.,
-                        Panel::None if self.showing_help() => 642.,
-                        Panel::None => self.result_height,
-                        Panel::Settings => 642.,
-                        Panel::History => 642.,
-                    };
-                }
+            } else if self.panel == Panel::History {
+                // CSS inset:10px excludes the outer shell's stroke.
+                Margin::same(9)
+            } else {
+                Margin::same(10)
             });
+        CentralPanel::default().frame(Frame::NONE).show(ctx, |ui| {
+            let shell = Rect::from_min_size(
+                ui.max_rect().min,
+                vec2(ui.max_rect().width(), self.motion.visual),
+            );
+            ui.painter()
+                .add(shell_frame.paint(shell - shell_frame.total_margin()));
+            let layout = Rect::from_min_size(shell.min, vec2(shell.width(), height))
+                - shell_frame.total_margin();
+            // The launcher shell has fixed viewport bounds, like the
+            // original overflow:hidden element. A long row may grow its
+            // own layout, but must not expand the outer frame off-screen.
+            let mut content = ui.new_child(UiBuilder::new().max_rect(layout));
+            content.set_clip_rect(content.clip_rect().intersect(shell));
+            let ui = &mut content;
+            if self.panel == Panel::None {
+                self.topbar(ui, ctx);
+            }
+            if expanded {
+                if self.panel == Panel::None {
+                    ui.add_space(12.);
+                }
+                match self.panel {
+                    Panel::None => {
+                        let rect = ui.available_rect_before_wrap().expand2(vec2(7., 0.));
+                        ui.scope_builder(UiBuilder::new().max_rect(rect), |ui| {
+                            self.results(ui, ctx)
+                        });
+                    }
+                    Panel::Settings => {
+                        Frame::new()
+                            .fill(if light {
+                                Color32::from_rgb(246, 248, 253)
+                            } else {
+                                Color32::from_rgb(16, 20, 28)
+                            })
+                            .stroke(Stroke::new(
+                                1.,
+                                if light {
+                                    Color32::from_gray(215)
+                                } else {
+                                    Color32::from_rgb(40, 45, 56)
+                                },
+                            ))
+                            .corner_radius(16)
+                            .inner_margin(Margin::symmetric(18, 14))
+                            .show(ui, |ui| self.settings(ui));
+                    }
+                    Panel::History => {
+                        Frame::new()
+                            .fill(if light {
+                                Color32::from_rgb(246, 248, 253)
+                            } else {
+                                Color32::from_rgb(16, 20, 28)
+                            })
+                            .stroke(Stroke::new(
+                                ctx.pixels_per_point().floor() / ctx.pixels_per_point(),
+                                if light {
+                                    Color32::from_gray(215)
+                                } else {
+                                    Color32::from_rgb(40, 45, 56)
+                                },
+                            ))
+                            .corner_radius(15)
+                            .inner_margin(0)
+                            .show(ui, |ui| self.history(ui, ctx));
+                    }
+                }
+                if self.panel == Panel::None
+                    && self.country_query().is_none()
+                    && !self.showing_help()
+                    && (self.result_height.min(max_height) - height).abs() > 0.7
+                {
+                    ctx.request_repaint();
+                }
+            }
+        });
         if self.main_visible {
             widgets::show(ctx, self.glow.owner, effective_topmost);
         } else {
             widgets::close(ctx);
         }
         widgets::show_tooltip(ctx, self.glow.owner, effective_topmost, self.main_visible);
-        let animated = ctx.animate_value_with_time(
-            Id::new("main-height"),
-            height,
-            if visual["reduceMotion"] == true || self.screenshot.is_some() {
-                0.
-            } else {
-                0.14
-            },
-        );
-        if (animated - self.last_height).abs() > 0.7 {
-            ctx.send_viewport_cmd(ViewportCommand::InnerSize(vec2(812., animated)));
-            self.last_height = animated;
-        }
         let glow = visual["glowStrength"].as_f64().unwrap_or(0.55) as f32;
         if self.confirm_discard {
             Window::new("放弃设置修改？")
@@ -5196,6 +5271,7 @@ impl eframe::App for QuickTool {
             light,
             glow,
             visual["reduceMotion"] == true,
+            vec2(ctx.screen_rect().width(), self.motion.visual),
         );
         if let Some(error) = self.glow.error.take() {
             self.message(format!("边缘 Glow 不可用：{error}"));
@@ -5256,5 +5332,6 @@ impl eframe::App for QuickTool {
         }
         interaction_probe::tick(self, ctx);
         expanded_probe::tick(self, ctx);
+        motion_probe::tick(self, ctx, frame.info().cpu_usage);
     }
 }

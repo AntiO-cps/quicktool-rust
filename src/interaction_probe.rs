@@ -49,6 +49,12 @@ const LABELS: &[&str] = &[
     "Escape closes edited calendar",
     "Backspace suppresses ghost without deleting input",
     "Hiding owner dismisses native popups and preserves color panel state",
+    "Summon closes history and selects all search text",
+    "Keyboard category change resets selection and focuses search",
+    "Summon protects unsaved settings",
+    "Ctrl+Shift+P works in settings",
+    "Escape closes history and focuses search",
+    "History hides on blur while settings, recording, pin and popups protect focus",
 ];
 pub(super) fn raw_input(app: &mut QuickTool, input: &mut RawInput) {
     let Some(mut probe) = app.interaction_probe.take() else {
@@ -145,6 +151,42 @@ pub(super) fn raw_input(app: &mut QuickTool, input: &mut RawInput) {
                 app.main_visible = false;
                 Key::Escape
             }
+            23 => {
+                app.color_picker = false;
+                app.panel = Panel::History;
+                app.input = "保留🙂abc".into();
+                app.rebuild();
+                let ctx = app.context.clone();
+                app.show_main(&ctx);
+                Key::F20
+            }
+            24 => {
+                app.input = "0xFF".into();
+                app.rebuild();
+                app.tab = 0;
+                app.selected = *app.visible_indices().last().unwrap();
+                modifiers = Modifiers::CTRL | Modifiers::SHIFT;
+                Key::Tab
+            }
+            25 => {
+                app.panel = Panel::Settings;
+                app.draft = app.store.settings.clone();
+                app.draft["glowStrength"] = serde_json::json!(0.123);
+                let ctx = app.context.clone();
+                app.show_main(&ctx);
+                Key::F20
+            }
+            26 => {
+                app.confirm_discard = false;
+                app.pinned = false;
+                modifiers = Modifiers::CTRL | Modifiers::SHIFT;
+                Key::P
+            }
+            27 => {
+                app.panel = Panel::History;
+                Key::Escape
+            }
+            28 => Key::F20,
             _ => Key::Escape,
         };
         input.modifiers = modifiers;
@@ -195,9 +237,53 @@ pub(super) fn tick(app: &mut QuickTool, ctx: &Context) {
             19 => app.date_picker && app.date_value == "2024-03-01 00:00",
             20 => !app.date_picker,
             21 => app.input == "/bas" && app.completion().is_none(),
-            _ => {
+            22 => {
                 !app.main_visible && !app.date_picker && !app.native_color.open && app.color_picker
             }
+            23 => {
+                let range = TextEdit::load_state(ctx, Id::new("quicktool-search"))
+                    .and_then(|s| s.cursor.char_range());
+                app.panel == Panel::None
+                    && app.main_visible
+                    && range.is_some_and(|r| {
+                        r.sorted()[0].index == 0 && r.sorted()[1].index == app.input.chars().count()
+                    })
+            }
+            24 => {
+                app.tab == 2
+                    && app.selected == app.visible_indices().first().copied().unwrap_or(0)
+                    && ctx.memory(|m| m.has_focus(Id::new("quicktool-search")))
+            }
+            25 => {
+                app.panel == Panel::Settings
+                    && app.confirm_discard
+                    && app.draft["glowStrength"] == 0.123
+            }
+            26 => app.pinned && app.panel == Panel::Settings,
+            27 => {
+                app.panel == Panel::None && ctx.memory(|m| m.has_focus(Id::new("quicktool-search")))
+            }
+            28 => {
+                app.pinned = false;
+                app.panel = Panel::History;
+                app.store.settings["hideOnBlur"] = true.into();
+                let history = app.blur_hides(ctx);
+                app.panel = Panel::Settings;
+                let settings = !app.blur_hides(ctx);
+                app.panel = Panel::None;
+                app.recording_shortcut = true;
+                let recording = !app.blur_hides(ctx);
+                app.recording_shortcut = false;
+                app.pinned = true;
+                let pin = !app.blur_hides(ctx);
+                app.pinned = false;
+                app.date_picker = true;
+                let popup = !app.blur_hides(ctx);
+                app.date_picker = false;
+                app.store.settings["hideOnBlur"] = false.into();
+                history && settings && recording && pin && popup
+            }
+            _ => false,
         };
         probe.checks.push(serde_json::json!({"check":LABELS[probe.step],"passed":pass,"frame":app.frames,"mode":app.mode,"submode":app.submode,"input":app.input,"selected":app.selected,"tab":app.tab,"settingsOpen":app.panel==Panel::Settings,"discardPrompt":app.confirm_discard,"datePicker":app.date_picker,"colorPanel":app.color_picker,"nativeColorPopup":app.native_color.open,"dateValue":app.date_value}));
         probe.step += 1;
