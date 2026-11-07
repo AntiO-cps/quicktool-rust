@@ -1,0 +1,7 @@
+{
+  "id": "unit",
+  "name": "单位换算",
+  "version": "0.6.0",
+  "commands": ["unit"],
+  "dataFiles": ["units.json"]
+}

@@ -1,0 +1,7 @@
+{
+  "id": "base",
+  "name": "进制转换",
+  "version": "0.6.0",
+  "commands": ["base"],
+  "dataFiles": []
+}

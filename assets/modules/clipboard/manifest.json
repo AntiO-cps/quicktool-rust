@@ -1,0 +1,7 @@
+{
+  "id": "clipboard",
+  "name": "剪贴板",
+  "version": "0.6.0",
+  "commands": ["clipboard"],
+  "dataFiles": []
+}

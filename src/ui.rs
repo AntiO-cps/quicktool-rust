@@ -32,7 +32,7 @@ mod summon_probe;
 mod widgets;
 use eframe::egui::{epaint::Shadow, *};
 use quicktool_rust::{
-    core::ResultItem, index, pins::PinManager, platform, storage::Store, system, tools,
+    core::ResultItem, index, modules, pins::PinManager, platform, storage::Store, system, tools,
 };
 use serde_json::Value;
 use std::{
@@ -162,7 +162,7 @@ fn mode_entry(id: &str) -> bool {
             | "files"
             | "text"
             | "unit"
-    )
+    ) && modules::is_enabled(id)
 }
 fn help_group_index(id: &str) -> usize {
     match id {
@@ -209,6 +209,25 @@ fn groups_contains(id: &str) -> bool {
             | "settings"
     )
 }
+fn disabled_module_row(id: &str) -> Row {
+    let name = modules::module_of(id)
+        .map(|info| info.name.as_str())
+        .unwrap_or(id);
+    Row {
+        score: 1.,
+        tool: id.to_string(),
+        item: ResultItem::new(
+            format!("{name} 模块未安装"),
+            "在设置 → 模块管理中安装后可用",
+        ),
+        command: false,
+        country: None,
+        launch_app: None,
+        passive: false,
+        mode_action: None,
+        open_target: None,
+    }
+}
 fn render_svg(bytes: &[u8], width: f32) -> Option<(u32, u32, Vec<u8>)> {
     let tree = resvg::usvg::Tree::from_data(bytes, &Default::default()).ok()?;
     let scale = width / tree.size().width();
@@ -243,21 +262,21 @@ fn now_date() -> String {
     )
 }
 fn setting_row(ui: &mut Ui, title: &str, description: &str, control: impl FnOnce(&mut Ui)) {
-    ui.add_space(6.);
+    let top = ui.cursor().top();
     ui.horizontal(|ui| {
         ui.vertical(|ui| {
             ui.set_width((ui.available_width() - 240.).max(120.));
-            ui.label(
-                RichText::new(title)
-                    .font(FontId::new(12.5, FontFamily::Name("UiSetting".into())))
-                    .strong(),
-            );
+            ui.label(setting_title(title, 12.5).strong().color(setting_text(ui)));
+            ui.add_space(4.);
             ui.label(RichText::new(description).size(10.5).color(weak_color(ui)));
         });
         ui.with_layout(Layout::right_to_left(Align::Center), control);
     });
-    ui.add_space(5.);
-    ui.separator();
+    let used = ui.cursor().top() - top;
+    // .setting-row { min-height:62px; padding:10px 4px; border-bottom:1px }
+    ui.add_space((62. - used).max(0.) + 10.);
+    draw_bottom_line(ui, false, row_line(ui));
+    ui.add_space(10.);
 }
 fn select_setting(ui: &mut Ui, draft: &mut Value, key: &str, options: &[(&str, &str)]) {
     widgets::select(ui, draft, key, options);
@@ -328,6 +347,191 @@ fn clip_text(text: &str, limit: usize) -> String {
     }
     prefix.truncate(limit.saturating_sub(1));
     format!("{}…", String::from_utf16_lossy(&prefix))
+}
+// Settings design system; values mirror the original styles.css variables.
+fn accent_color(ui: &Ui) -> Color32 {
+    if ui.visuals().dark_mode {
+        Color32::from_rgb(155, 188, 255)
+    } else {
+        Color32::from_rgb(111, 120, 221)
+    }
+}
+fn setting_text(ui: &Ui) -> Color32 {
+    if ui.visuals().dark_mode {
+        Color32::from_rgb(245, 247, 251)
+    } else {
+        Color32::from_rgb(30, 37, 50)
+    }
+}
+fn setting_text_2(ui: &Ui) -> Color32 {
+    if ui.visuals().dark_mode {
+        Color32::from_rgba_unmultiplied(235, 239, 247, 178)
+    } else {
+        Color32::from_rgba_unmultiplied(35, 45, 62, 184)
+    }
+}
+fn panel_line(ui: &Ui) -> Color32 {
+    if ui.visuals().dark_mode {
+        Color32::from_rgba_unmultiplied(255, 255, 255, 15)
+    } else {
+        Color32::from_rgba_unmultiplied(57, 72, 105, 26)
+    }
+}
+fn row_line(ui: &Ui) -> Color32 {
+    if ui.visuals().dark_mode {
+        Color32::from_rgba_unmultiplied(255, 255, 255, 14)
+    } else {
+        Color32::from_rgba_unmultiplied(57, 72, 105, 22)
+    }
+}
+fn border_color(ui: &Ui) -> Color32 {
+    if ui.visuals().dark_mode {
+        Color32::from_rgba_unmultiplied(255, 255, 255, 24)
+    } else {
+        Color32::from_rgba_unmultiplied(57, 72, 105, 31)
+    }
+}
+fn field_bg(ui: &Ui) -> Color32 {
+    if ui.visuals().dark_mode {
+        Color32::from_rgba_unmultiplied(255, 255, 255, 11)
+    } else {
+        Color32::from_rgba_unmultiplied(246, 249, 255, 190)
+    }
+}
+fn surface_soft_bg(ui: &Ui) -> Color32 {
+    if ui.visuals().dark_mode {
+        Color32::from_rgba_unmultiplied(255, 255, 255, 14)
+    } else {
+        Color32::from_rgba_unmultiplied(55, 73, 111, 14)
+    }
+}
+fn hover_bg(ui: &Ui) -> Color32 {
+    if ui.visuals().dark_mode {
+        Color32::from_rgba_unmultiplied(255, 255, 255, 19)
+    } else {
+        Color32::from_rgba_unmultiplied(69, 91, 134, 19)
+    }
+}
+fn setting_title(text: impl Into<String>, size: f32) -> RichText {
+    RichText::new(text).font(FontId::new(size, FontFamily::Name("UiSetting".into())))
+}
+fn draw_bottom_line(ui: &Ui, full_width: bool, color: Color32) {
+    let y = ui.cursor().top() - 0.5;
+    let left = if full_width {
+        ui.max_rect().left()
+    } else {
+        ui.cursor().left()
+    };
+    ui.painter().line_segment(
+        [pos2(left, y), pos2(ui.max_rect().right(), y)],
+        Stroke::new(1., color),
+    );
+}
+fn accent_checkbox(ui: &mut Ui, checked: &mut bool) -> Response {
+    let (rect, mut response) = ui.allocate_exact_size(vec2(16., 16.), Sense::click());
+    if response.clicked() {
+        *checked = !*checked;
+        response.mark_changed();
+    }
+    let painter = ui.painter();
+    if *checked {
+        painter.rect_filled(rect, CornerRadius::same(4), accent_color(ui));
+        let center = rect.center();
+        let check = Stroke::new(1.8, Color32::WHITE);
+        painter.line_segment([center + vec2(-3.4, 0.4), center + vec2(-1.1, 2.8)], check);
+        painter.line_segment([center + vec2(-1.1, 2.8), center + vec2(3.8, -3.0)], check);
+    } else {
+        painter.rect_stroke(
+            rect,
+            CornerRadius::same(4),
+            Stroke::new(1., border_color(ui)),
+            StrokeKind::Inside,
+        );
+    }
+    response
+}
+fn soft_button(ui: &mut Ui, label: &str) -> Response {
+    let font = FontId::new(11., FontFamily::Proportional);
+    let color = setting_text_2(ui);
+    let galley = ui.painter().layout_no_wrap(label.into(), font, color);
+    let size = vec2(galley.size().x + 20., 34.);
+    let (rect, response) = ui.allocate_exact_size(size, Sense::click());
+    let fill = if response.hovered() {
+        hover_bg(ui)
+    } else {
+        Color32::TRANSPARENT
+    };
+    ui.painter().rect(
+        rect,
+        CornerRadius::same(10),
+        fill,
+        Stroke::NONE,
+        StrokeKind::Inside,
+    );
+    ui.painter().galley(
+        rect.left_top() + vec2(10., (rect.height() - galley.size().y) / 2.),
+        galley,
+        color,
+    );
+    response
+}
+fn primary_button(ui: &mut Ui, label: &str) -> Response {
+    let dark = ui.visuals().dark_mode;
+    let text_color = if dark {
+        Color32::from_rgb(238, 244, 255)
+    } else {
+        Color32::from_rgb(29, 36, 49)
+    };
+    let font = FontId::new(11.5, FontFamily::Proportional);
+    let galley = ui.painter().layout_no_wrap(label.into(), font, text_color);
+    let size = vec2(galley.size().x + 28., 34.);
+    let (rect, response) = ui.allocate_exact_size(size, Sense::click());
+    let (fill, stroke) = if response.hovered() {
+        (
+            if dark {
+                Color32::from_rgba_unmultiplied(155, 188, 255, 56)
+            } else {
+                Color32::from_rgba_unmultiplied(120, 150, 255, 76)
+            },
+            Stroke::new(
+                1.,
+                if dark {
+                    Color32::from_rgba_unmultiplied(155, 188, 255, 74)
+                } else {
+                    Color32::from_rgba_unmultiplied(70, 95, 180, 82)
+                },
+            ),
+        )
+    } else {
+        (
+            if dark {
+                Color32::from_rgba_unmultiplied(155, 188, 255, 38)
+            } else {
+                Color32::from_rgba_unmultiplied(120, 150, 255, 51)
+            },
+            Stroke::new(
+                1.,
+                if dark {
+                    Color32::from_rgba_unmultiplied(155, 188, 255, 56)
+                } else {
+                    Color32::from_rgba_unmultiplied(70, 95, 180, 82)
+                },
+            ),
+        )
+    };
+    ui.painter().rect(
+        rect,
+        CornerRadius::same(10),
+        fill,
+        stroke,
+        StrokeKind::Inside,
+    );
+    ui.painter().galley(
+        rect.left_top() + vec2(14., (rect.height() - galley.size().y) / 2.),
+        galley,
+        text_color,
+    );
+    response
 }
 fn country_candidates(query: &str) -> Vec<Value> {
     quicktool_rust::countries::card_matches(query)
@@ -472,6 +676,7 @@ pub struct QuickTool {
     panel: Panel,
     draft: Value,
     confirm_discard: bool,
+    modules_page: bool,
     focus: bool,
     icons: HashMap<String, TextureHandle>,
     shell_icons: Option<IconWorker>,
@@ -824,6 +1029,7 @@ impl QuickTool {
             panel: Panel::None,
             draft,
             confirm_discard: false,
+            modules_page: false,
             focus: true,
             icons,
             shell_icons: None,
@@ -931,6 +1137,10 @@ impl QuickTool {
         if let Some(panel) = std::env::args().skip_while(|a| a != "--panel").nth(1) {
             app.panel = match panel.as_str() {
                 "settings" => Panel::Settings,
+                "modules" => {
+                    app.modules_page = true;
+                    Panel::Settings
+                }
                 "history" => Panel::History,
                 "color-picker" | "color-native" => {
                     app.native_color.open = panel == "color-native";
@@ -986,6 +1196,7 @@ impl QuickTool {
             app.pins
                 .request_screenshot(std::path::Path::new(&path), true);
         }
+        modules::refresh();
         app.rebuild();
         if !app.store.load_errors.is_empty() {
             app.message(app.store.load_errors.join("；"));
@@ -1088,6 +1299,68 @@ impl QuickTool {
                 }),
         )
         .native_tooltip(label)
+    }
+    fn icon_button_compact(&self, ui: &mut Ui, key: &str, label: &str) -> Response {
+        let button = if let Some(t) = self.icons.get(key) {
+            Button::image(
+                Image::new(t)
+                    .fit_to_exact_size(vec2(17., 17.))
+                    .tint(setting_text_2(ui)),
+            )
+        } else {
+            Button::new(label)
+        };
+        ui.add(
+            button
+                .min_size(vec2(34., 34.))
+                .corner_radius(10)
+                .fill(Color32::TRANSPARENT),
+        )
+        .native_tooltip(label)
+    }
+    // Original .panel-head: icon tile, strong title, weak subtitle, right actions.
+    fn panel_head(
+        &mut self,
+        ui: &mut Ui,
+        icon: &str,
+        title: &str,
+        subtitle: &str,
+        actions: impl FnOnce(&mut Self, &mut Ui),
+    ) {
+        let top = ui.cursor().top();
+        ui.horizontal(|ui| {
+            ui.add_space(14.);
+            let (rect, _) = ui.allocate_exact_size(vec2(34., 34.), Sense::hover());
+            ui.painter().rect(
+                rect,
+                CornerRadius::same(10),
+                surface_soft_bg(ui),
+                Stroke::NONE,
+                StrokeKind::Inside,
+            );
+            if let Some(texture) = self.icons.get(icon) {
+                ui.painter().image(
+                    texture.id(),
+                    rect.shrink(7.5),
+                    Rect::from_min_max(pos2(0., 0.), pos2(1., 1.)),
+                    setting_text_2(ui),
+                );
+            }
+            ui.add_space(10.);
+            ui.vertical(|ui| {
+                ui.label(setting_title(title, 13.5).strong().color(setting_text(ui)));
+                ui.add_space(2.);
+                ui.label(RichText::new(subtitle).size(10.5).color(weak_color(ui)));
+            });
+            ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                ui.add_space(12.);
+                actions(self, ui);
+            });
+        });
+        let used = ui.cursor().top() - top;
+        // .panel-head { min-height:66px; border-bottom:1px }
+        ui.add_space((66. - used).max(0.) + 10.);
+        draw_bottom_line(ui, true, panel_line(ui));
     }
     fn set_attachment(&mut self, attachment: attachments::Attachment) {
         let prepared = Some(attachment.results());
@@ -1495,6 +1768,7 @@ impl QuickTool {
             self.rows = recent
                 .into_iter()
                 .filter_map(|(id, _)| tools::commands().iter().find(|c| c.id == *id))
+                .filter(|c| modules::is_enabled(&c.id))
                 .take(7)
                 .map(|c| Row {
                     score: 0.99,
@@ -1511,6 +1785,7 @@ impl QuickTool {
             if self.rows.is_empty() {
                 self.rows = tools::commands()
                     .iter()
+                    .filter(|command| modules::is_enabled(&command.id))
                     .take(7)
                     .map(|command| Row {
                         score: 0.5,
@@ -1550,8 +1825,12 @@ impl QuickTool {
                         return;
                     }
                     if c.id == "files" {
-                        let query = args.to_string();
-                        self.request_files(query);
+                        if modules::is_enabled("files") {
+                            let query = args.to_string();
+                            self.request_files(query);
+                        } else {
+                            self.rows = vec![disabled_module_row("files")];
+                        }
                         return;
                     }
                     let id = c.id.clone();
@@ -1600,7 +1879,11 @@ impl QuickTool {
             if let Some(command) = tools::command(text) {
                 let id = command.id.clone();
                 if id.starts_with("system:") {
-                    self.system_rows(&id, "");
+                    // Missing module data leaves no system command to show; a
+                    // blank result list must not be the answer.
+                    if !self.system_rows(&id, "") {
+                        self.rows = vec![disabled_module_row(&id)];
+                    }
                     return;
                 }
                 if mode_entry(&id) {
@@ -1784,6 +2067,16 @@ impl QuickTool {
                 })
                 .collect::<Vec<_>>();
             self.rows.extend(command_rows);
+            // An exact command query whose module is uninstalled must still
+            // outrank unrelated matches, mirroring the original ranking where
+            // every command is installed.
+            if let Some(command) = tools::disabled_exact(&self.input) {
+                let mut hint = disabled_module_row(&command.id);
+                hint.score = tools::best_alias(command, &self.input)
+                    .map(|(_, score)| score - 0.06)
+                    .unwrap_or(0.94);
+                self.rows.push(hint);
+            }
             self.rows.sort_by(|a, b| b.score.total_cmp(&a.score));
             if self.screenshot.is_none() {
                 self.request_apps();
@@ -1793,6 +2086,7 @@ impl QuickTool {
             }
             let file_query = self.input.trim_matches(quicktool_rust::core::js_space);
             if self.store.settings["fileSearchGlobal"] == true
+                && modules::is_enabled("files")
                 && self.screenshot.is_none()
                 && (2..=128).contains(&file_query.chars().count())
                 && quicktool_rust::dates::parse(
@@ -1871,10 +2165,18 @@ impl QuickTool {
                         open_target: None,
                     }];
                 } else if id == "files" {
-                    self.rows = host_candidates::files(self, argument, false);
+                    if modules::is_enabled("files") {
+                        self.rows = host_candidates::files(self, argument, false);
+                    } else {
+                        self.rows = vec![disabled_module_row("files")];
+                    }
                 }
             } else if id == "files" {
-                self.rows = host_candidates::files(self, argument, false);
+                if modules::is_enabled("files") {
+                    self.rows = host_candidates::files(self, argument, false);
+                } else {
+                    self.rows = vec![disabled_module_row("files")];
+                }
             }
             if self.mode.is_some()
                 && !argument.is_empty()
@@ -1944,8 +2246,10 @@ impl QuickTool {
             && !self.input.starts_with('/')
         {
             self.rows.retain(|row| row.tool != "files" || row.command);
-            self.rows
-                .extend(host_candidates::files(self, &self.input, true));
+            if modules::is_enabled("files") {
+                self.rows
+                    .extend(host_candidates::files(self, &self.input, true));
+            }
         }
         if self.showing_help() {
             for (i, row) in self.rows.iter_mut().enumerate() {
@@ -1977,6 +2281,9 @@ impl QuickTool {
     }
     fn execute_tool(&self, id: &str, input: &str) -> Result<Vec<ResultItem>, String> {
         if id == "time" {
+            if !modules::is_enabled("time") {
+                return Err("时间日期模块未安装，可在设置 → 模块管理中安装".into());
+            }
             return quicktool_rust::dates::results(
                 input,
                 self.store.settings["dateOrder"].as_str().unwrap_or("YMD"),
@@ -2047,6 +2354,7 @@ impl QuickTool {
                 let mut commands = tools::commands()
                     .iter()
                     .filter(|command| command.id != "help")
+                    .filter(|command| modules::is_enabled(&command.id))
                     .filter_map(|command| {
                         let score = if input.is_empty() {
                             0.5
@@ -2136,6 +2444,10 @@ impl QuickTool {
                 true
             }
             "registry" => {
+                if !modules::is_enabled("registry") {
+                    self.rows = vec![disabled_module_row(id)];
+                    return true;
+                }
                 if self.registry_query != input {
                     self.registry_query = input.into();
                     self.registry_items.clear();
@@ -2654,6 +2966,20 @@ impl QuickTool {
         if row.passive || (!row.command && row.item.value == "输入内容后立即处理") {
             return;
         }
+        // Result rows of an uninstalled module cannot run; guide to module
+        // management instead of executing half-alive actions. Inside a mode the
+        // rows already carry the module error, so only gate panel-free results.
+        if self.mode.is_none() {
+            if let Some(info) = modules::module_of(&row.tool) {
+                if !modules::is_enabled(&row.tool) {
+                    self.draft = self.store.settings.clone();
+                    self.modules_page = true;
+                    self.panel = Panel::Settings;
+                    self.message(format!("请先在模块管理中安装「{}」", info.name));
+                    return;
+                }
+            }
+        }
         let used_tool = row.tool.clone();
 
         if let Some((tool, submode)) = &row.mode_action {
@@ -2693,10 +3019,7 @@ impl QuickTool {
                 return;
             }
             match row.tool.as_str() {
-                "settings" => {
-                    self.panel = Panel::Settings;
-                    self.draft = self.store.settings.clone();
-                }
+                "settings" => self.open_settings(),
                 "history" => self.panel = Panel::History,
                 "pinwindow" => self.toggle_pin(ctx),
                 _ => {
@@ -3047,6 +3370,11 @@ impl QuickTool {
             self.message(format!("恢复快捷键失败：{error}"));
         }
     }
+    fn open_settings(&mut self) {
+        self.draft = self.store.settings.clone();
+        self.modules_page = false;
+        self.panel = Panel::Settings;
+    }
     fn close_settings(&mut self) {
         if self.recording_shortcut {
             self.restore_shortcut();
@@ -3054,6 +3382,7 @@ impl QuickTool {
         if self.draft != self.store.settings {
             self.confirm_discard = true
         } else {
+            self.modules_page = false;
             self.panel = Panel::None;
             self.focus = true;
         }
@@ -3098,7 +3427,12 @@ impl QuickTool {
             } else if self.confirm_discard {
                 self.confirm_discard = false;
             } else if self.panel == Panel::Settings {
-                self.close_settings()
+                // The module page is a drill-down layer; Esc walks back first.
+                if self.modules_page {
+                    self.modules_page = false;
+                } else {
+                    self.close_settings()
+                }
             } else if self.panel == Panel::History {
                 self.panel = Panel::None;
                 self.focus = true;
@@ -3514,8 +3848,7 @@ impl QuickTool {
                 .icon_button(ui, "mdi:cog-outline", "设置", false)
                 .clicked()
             {
-                self.draft = self.store.settings.clone();
-                self.panel = Panel::Settings;
+                self.open_settings();
             }
         });
     }
@@ -4355,64 +4688,120 @@ impl QuickTool {
         visible
     }
     fn settings(&mut self, ui: &mut Ui) {
-        ui.spacing_mut().interact_size.y = 30.;
-        ui.horizontal(|ui| {
-            self.icon(ui, "mdi:cog-outline", 24.);
-            ui.vertical(|ui| {
-                ui.label(
-                    RichText::new("设置")
-                        .font(FontId::new(14., FontFamily::Name("UiStrong".into())))
-                        .strong(),
-                );
-                ui.label(
-                    RichText::new("实时预览；保存后生效，取消恢复原设置")
-                        .size(10.)
-                        .color(weak_color(ui)),
-                );
-            });
-            ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                if self
-                    .icon_button(ui, "mdi:close", "关闭设置", false)
+        if self.modules_page {
+            self.modules_settings(ui);
+            return;
+        }
+        self.panel_head(
+            ui,
+            "mdi:cog-outline",
+            "设置",
+            "实时预览；保存后生效，取消恢复原设置",
+            |app, ui| {
+                if app
+                    .icon_button_compact(ui, "mdi:close", "关闭设置")
                     .clicked()
                 {
-                    self.close_settings();
+                    app.close_settings();
                 }
-            });
-        });
-        ui.separator();
-        let available = (ui.available_height() - 66.).max(280.);
+            },
+        );
+        let available = (ui.available_height() - 78.).max(280.);
         ScrollArea::vertical()
             .max_height(available)
             .auto_shrink([false, false])
             .show(ui, |ui| {
-                ui.add_space(8.);
-                setting_row(
-                    ui,
-                    "全局快捷键",
-                    "点击右侧，然后直接按下希望使用的快捷键组合",
-                    |ui| {
-                        let label = if self.recording_shortcut {
-                            "请按下快捷键…".to_string()
-                        } else {
-                            self.draft["globalShortcut"]
-                                .as_str()
-                                .unwrap_or("Alt+Space")
-                                .replace('+', " + ")
-                        };
-                        let recorder = ui
-                            .add_sized([220., 38.], Button::new(RichText::new(label).monospace()));
-                        self.recording_rect = Some(recorder.rect);
-                        if recorder.clicked() {
-                            self.hotkey = None;
-                            self.registered_shortcut.clear();
-                            self.recording_shortcut = true;
-                            self.shortcut_error = None;
+                Frame::new()
+                    .inner_margin(Margin {
+                        left: 14,
+                        right: 14,
+                        top: 10,
+                        bottom: 8,
+                    })
+                    .show(ui, |ui| {
+                        setting_row(
+                            ui,
+                            "模块管理",
+                            "安装或卸载功能模块；卸载保留钉贴与历史等用户数据",
+                            |ui| {
+                                if soft_button(ui, "管理").clicked() {
+                                    self.modules_page = true;
+                                }
+                            },
+                        );
+                        setting_row(
+                            ui,
+                            "全局快捷键",
+                            "点击右侧，然后直接按下希望使用的快捷键组合",
+                            |ui| {
+                                let label = if self.recording_shortcut {
+                                    "请按下快捷键…".to_string()
+                                } else {
+                                    self.draft["globalShortcut"]
+                                        .as_str()
+                                        .unwrap_or("Alt+Space")
+                                        .replace('+', " + ")
+                                };
+                                let (rect, response) =
+                                    ui.allocate_exact_size(vec2(220., 40.), Sense::click());
+                                let dark = ui.visuals().dark_mode;
+                                let (fill, stroke) = if self.recording_shortcut {
+                                    (
+                                        if dark {
+                                            Color32::from_rgba_unmultiplied(120, 160, 240, 24)
+                                        } else {
+                                            Color32::from_rgba_unmultiplied(105, 125, 232, 24)
+                                        },
+                                        Stroke::new(1., accent_color(ui)),
+                                    )
+                                } else if response.hovered() {
+                                    (hover_bg(ui), Stroke::new(1., border_color(ui)))
+                                } else {
+                                    (field_bg(ui), Stroke::new(1., border_color(ui)))
+                                };
+                                ui.painter().rect(
+                                    rect,
+                                    CornerRadius::same(10),
+                                    fill,
+                                    stroke,
+                                    StrokeKind::Inside,
+                                );
+                                if let Some(texture) = self.icons.get("mdi:keyboard-outline") {
+                                    ui.painter().image(
+                                        texture.id(),
+                                        Rect::from_min_size(
+                                            rect.left_top() + vec2(10., 11.5),
+                                            vec2(17., 17.),
+                                        ),
+                                        Rect::from_min_max(pos2(0., 0.), pos2(1., 1.)),
+                                        accent_color(ui),
+                                    );
+                                }
+                                let galley = ui.painter().layout_no_wrap(
+                                    label,
+                                    FontId::monospace(11.5),
+                                    setting_text(ui),
+                                );
+                                ui.painter().galley(
+                                    pos2(
+                                        rect.left() + 37.,
+                                        rect.center().y - galley.size().y / 2.,
+                                    ),
+                                    galley,
+                                    setting_text(ui),
+                                );
+                                self.recording_rect = Some(rect);
+                                if response.clicked() {
+                                    self.hotkey = None;
+                                    self.registered_shortcut.clear();
+                                    self.recording_shortcut = true;
+                                    self.shortcut_error = None;
+                                }
+                            },
+                        );
+                        if let Some(error) = &self.shortcut_error {
+                            ui.colored_label(Color32::LIGHT_RED, error);
                         }
-                    },
-                );
-                if let Some(error) = &self.shortcut_error {
-                    ui.colored_label(Color32::LIGHT_RED, error);
-                }
                 setting_row(
                     ui,
                     "主题",
@@ -4436,7 +4825,7 @@ impl QuickTool {
                 ] {
                     setting_row(ui, label, desc, |ui| {
                         let mut v = self.draft[key].as_bool().unwrap_or(true);
-                        if ui.checkbox(&mut v, "").changed() {
+                        if accent_checkbox(ui, &mut v).changed() {
                             self.draft[key] = v.into();
                         }
                     });
@@ -4447,13 +4836,21 @@ impl QuickTool {
                     "收藏项目不计入该限制",
                     |ui| {
                         let mut v = self.draft["historyLimit"].as_u64().unwrap_or(500);
-                        if ui
-                            .add_sized(
-                                [90., 34.],
-                                DragValue::new(&mut v).range(50..=5000).speed(50),
-                            )
-                            .changed()
-                        {
+                        let changed = Frame::new()
+                            .fill(field_bg(ui))
+                            .stroke(Stroke::new(1., border_color(ui)))
+                            .corner_radius(9)
+                            .inner_margin(Margin::symmetric(8, 0))
+                            .show(ui, |ui| {
+                                ui.set_min_size(vec2(74., 32.));
+                                ui.add_sized(
+                                    [74., 32.],
+                                    DragValue::new(&mut v).range(50..=5000).speed(50),
+                                )
+                            })
+                            .inner
+                            .changed();
+                        if changed {
                             self.draft["historyLimit"] = v.into();
                         }
                     },
@@ -4464,7 +4861,7 @@ impl QuickTool {
                     "普通输入同时查询文件名；无需安装 Everything",
                     |ui| {
                         let mut v = self.draft["fileSearchGlobal"].as_bool().unwrap_or(true);
-                        if ui.checkbox(&mut v, "").changed() {
+                        if accent_checkbox(ui, &mut v).changed() {
                             self.draft["fileSearchGlobal"] = v.into();
                         }
                     },
@@ -4498,61 +4895,74 @@ impl QuickTool {
                         "每行一个目录名；跳过链接，避免循环扫描。",
                     ),
                 ] {
-                    ui.add_space(10.);
-                    ui.label(
-                        RichText::new(label)
-                            .font(FontId::new(12., FontFamily::Name("UiStrong".into())))
-                            .strong(),
-                    );
-                    ui.label(RichText::new(desc).size(10.).color(weak_color(ui)));
-                    let mut value = self.draft[key].as_str().unwrap_or("").to_string();
-                    if ui
-                        .add(
-                            TextEdit::multiline(&mut value)
-                                .desired_width(f32::INFINITY)
-                                .desired_rows(3)
-                                .font(FontId::monospace(12.)),
-                        )
-                        .changed()
-                    {
-                        self.draft[key] = value.into();
-                    }
-                    ui.separator();
+                    setting_row(ui, label, desc, |ui| {
+                        let mut value = self.draft[key].as_str().unwrap_or("").to_string();
+                        let changed = Frame::new()
+                            .fill(field_bg(ui))
+                            .stroke(Stroke::new(1., border_color(ui)))
+                            .corner_radius(10)
+                            .inner_margin(Margin::symmetric(10, 9))
+                            .show(ui, |ui| {
+                                ui.add(
+                                    TextEdit::multiline(&mut value)
+                                        .desired_width(f32::INFINITY)
+                                        .desired_rows(3)
+                                        .frame(false)
+                                        .font(FontId::monospace(11.)),
+                                )
+                                .changed()
+                            })
+                            .inner;
+                        if changed {
+                            self.draft[key] = value.into();
+                        }
+                    });
                 }
-                ui.horizontal(|ui| {
-                    ui.label(format!(
-                        "索引 {} 项{}",
-                        self.file_status.count,
-                        if self.file_status.building {
-                            " · 建立中"
-                        } else {
-                            ""
-                        }
-                    ));
-                    if ui
-                        .button(if self.file_status.paused {
-                            "继续"
-                        } else {
-                            "暂停"
-                        })
-                        .clicked()
-                    {
-                        if let Some(index) = &self.file_index {
-                            let _ = index
-                                .requests
-                                .send(index::Request::Pause(!self.file_status.paused));
-                        }
-                    }
-                    if ui.button("重建").clicked() {
-                        if let Some(index) = &self.file_index {
-                            let (roots, excludes) = self.index_config();
-                            let _ = index
-                                .requests
-                                .send(index::Request::Configure { roots, excludes });
-                        }
-                    }
-                });
-                ui.separator();
+                {
+                    let top = ui.cursor().top();
+                    ui.horizontal(|ui| {
+                        ui.label(
+                            RichText::new(format!(
+                                "索引 {} 项{}",
+                                self.file_status.count,
+                                if self.file_status.building {
+                                    " · 建立中"
+                                } else {
+                                    ""
+                                }
+                            ))
+                            .size(11.5)
+                            .color(setting_text_2(ui)),
+                        );
+                        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                            if soft_button(ui, "重建").clicked() {
+                                if let Some(index) = &self.file_index {
+                                    let (roots, excludes) = self.index_config();
+                                    let _ = index
+                                        .requests
+                                        .send(index::Request::Configure { roots, excludes });
+                                }
+                            }
+                            if soft_button(ui, if self.file_status.paused {
+                                "继续"
+                            } else {
+                                "暂停"
+                            })
+                            .clicked()
+                            {
+                                if let Some(index) = &self.file_index {
+                                    let _ = index
+                                        .requests
+                                        .send(index::Request::Pause(!self.file_status.paused));
+                                }
+                            }
+                        });
+                    });
+                    let used = ui.cursor().top() - top;
+                    ui.add_space((62. - used).max(0.) + 10.);
+                    draw_bottom_line(ui, false, row_line(ui));
+                    ui.add_space(10.);
+                }
                 setting_row(
                     ui,
                     "日期识别首选顺序",
@@ -4571,35 +4981,41 @@ impl QuickTool {
                         );
                     },
                 );
-                ui.add_space(10.);
-                ui.label(RichText::new("自定义时间格式").strong());
-                ui.label(
-                    RichText::new(
-                        "每行“名称=格式”；支持 YYYY MM DD HH mm ss SSS X x W，UTC: 前缀使用 UTC",
-                    )
-                    .size(10.)
-                    .color(weak_color(ui)),
+                setting_row(
+                    ui,
+                    "自定义时间格式",
+                    "每行“名称=格式”；支持 YYYY MM DD HH mm ss SSS X x W，UTC: 前缀使用 UTC",
+                    |ui| {
+                        let mut value = self.draft["timeCustomFormats"]
+                            .as_str()
+                            .unwrap_or("")
+                            .to_string();
+                        let changed = Frame::new()
+                            .fill(field_bg(ui))
+                            .stroke(Stroke::new(1., border_color(ui)))
+                            .corner_radius(10)
+                            .inner_margin(Margin::symmetric(10, 9))
+                            .show(ui, |ui| {
+                                ui.add(
+                                    TextEdit::multiline(&mut value)
+                                        .desired_width(f32::INFINITY)
+                                        .desired_rows(4)
+                                        .frame(false)
+                                        .font(FontId::monospace(11.)),
+                                )
+                                .changed()
+                            })
+                            .inner;
+                        if changed {
+                            self.draft["timeCustomFormats"] = value.into();
+                        }
+                    },
                 );
-                let mut value = self.draft["timeCustomFormats"]
-                    .as_str()
-                    .unwrap_or("")
-                    .to_string();
-                if ui
-                    .add(
-                        TextEdit::multiline(&mut value)
-                            .desired_width(f32::INFINITY)
-                            .desired_rows(4)
-                            .font(FontId::monospace(12.)),
-                    )
-                    .changed()
-                {
-                    self.draft["timeCustomFormats"] = value.into();
-                }
-                ui.separator();
                 setting_row(ui, "玻璃透明度", "向右更透明", |ui| {
                     let mut v = 1. - self.draft["glassOpacity"].as_f64().unwrap_or(0.78);
+                    ui.visuals_mut().selection.bg_fill = accent_color(ui);
                     if ui
-                        .add(Slider::new(&mut v, 0.0..=1.).show_value(false))
+                        .add_sized([150., 20.], Slider::new(&mut v, 0.0..=1.).show_value(false))
                         .changed()
                     {
                         self.draft["glassOpacity"] = (1. - v).into();
@@ -4611,15 +5027,16 @@ impl QuickTool {
                     "实时显示窗口后方内容；模糊半径由 Windows 控制",
                     |ui| {
                         let mut v = self.draft["blurStrength"].as_f64().unwrap_or(28.) > 0.;
-                        if ui.checkbox(&mut v, "").changed() {
+                        if accent_checkbox(ui, &mut v).changed() {
                             self.draft["blurStrength"] = if v { 28.into() } else { 0.into() };
                         }
                     },
                 );
                 setting_row(ui, "边缘 Glow", "调整流动边缘光强度", |ui| {
                     let mut v = self.draft["glowStrength"].as_f64().unwrap_or(0.55);
+                    ui.visuals_mut().selection.bg_fill = accent_color(ui);
                     if ui
-                        .add(Slider::new(&mut v, 0.0..=1.).show_value(false))
+                        .add_sized([150., 20.], Slider::new(&mut v, 0.0..=1.).show_value(false))
                         .changed()
                     {
                         self.draft["glowStrength"] = v.into();
@@ -4631,32 +5048,175 @@ impl QuickTool {
                     "关闭流动边缘光和大部分位移动画",
                     |ui| {
                         let mut v = self.draft["reduceMotion"].as_bool().unwrap_or(false);
-                        if ui.checkbox(&mut v, "").changed() {
+                        if accent_checkbox(ui, &mut v).changed() {
                             self.draft["reduceMotion"] = v.into();
                         }
                     },
                 );
+                    });
             });
-        ui.label(
-            RichText::new("界面使用 MiSans Global、Jura 与 JetBrains Mono 字体")
-                .size(10.)
-                .color(weak_color(ui)),
+        ui.horizontal(|ui| {
+            ui.add_space(14.);
+            ui.label(
+                RichText::new("界面使用 MiSans Global、Jura 与 JetBrains Mono 字体")
+                    .size(10.)
+                    .color(weak_color(ui)),
+            );
+        });
+        let footer = ui.available_rect_before_wrap();
+        ui.painter().line_segment(
+            [
+                pos2(footer.left(), footer.top() + 0.5),
+                pos2(footer.right(), footer.top() + 0.5),
+            ],
+            Stroke::new(1., panel_line(ui)),
         );
-        ui.separator();
         ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if ui
-                .add_enabled(
-                    self.draft != self.store.settings && !self.recording_shortcut,
-                    Button::new("保存设置").min_size(vec2(85., 34.)),
-                )
-                .clicked()
-            {
+            ui.add_space(14.);
+            if primary_button(ui, "保存设置").clicked() && !self.recording_shortcut {
                 self.save_settings();
             }
-            if ui.add_sized([50., 34.], Button::new("取消")).clicked() {
+            ui.add_space(10.);
+            if soft_button(ui, "取消").clicked() {
                 self.close_settings();
             }
         });
+    }
+    fn modules_settings(&mut self, ui: &mut Ui) {
+        self.panel_head(
+            ui,
+            "mdi:view-grid-outline",
+            "模块管理",
+            "安装或卸载功能模块，即时生效；卸载不删除钉贴与历史等用户数据",
+            |app, ui| {
+                if soft_button(ui, "返回设置").clicked() {
+                    app.modules_page = false;
+                }
+                if app
+                    .icon_button_compact(ui, "mdi:close", "关闭设置")
+                    .clicked()
+                {
+                    app.close_settings();
+                }
+            },
+        );
+        let available = ui.available_height().max(280.);
+        ScrollArea::vertical()
+            .max_height(available)
+            .auto_shrink([false, false])
+            .show(ui, |ui| {
+                Frame::new()
+                    .inner_margin(Margin {
+                        left: 14,
+                        right: 14,
+                        top: 10,
+                        bottom: 8,
+                    })
+                    .show(ui, |ui| {
+                        for info in modules::catalog() {
+                            let installed = modules::is_installed(&info.id);
+                            let size_label = if info.size_bytes > 0 {
+                                let mb = info.size_bytes as f64 / 1048576.;
+                                if mb >= 1. {
+                                    format!("约 {:.1} MB · {} 个命令", mb, info.commands.len())
+                                } else {
+                                    format!(
+                                        "约 {:.0} KB · {} 个命令",
+                                        info.size_bytes as f64 / 1024.,
+                                        info.commands.len()
+                                    )
+                                }
+                            } else {
+                                format!("{} 个命令", info.commands.len())
+                            };
+                            let top = ui.cursor().top();
+                            ui.horizontal(|ui| {
+                                let (icon_rect, _) =
+                                    ui.allocate_exact_size(vec2(22., 22.), Sense::hover());
+                                if let Some(texture) = self.icons.get(&info.icon) {
+                                    ui.painter().image(
+                                        texture.id(),
+                                        icon_rect,
+                                        Rect::from_min_max(pos2(0., 0.), pos2(1., 1.)),
+                                        setting_text_2(ui),
+                                    );
+                                }
+                                ui.add_space(8.);
+                                ui.vertical(|ui| {
+                                    ui.set_width((ui.available_width() - 160.).max(120.));
+                                    ui.label(
+                                        setting_title(&info.name, 12.5)
+                                            .strong()
+                                            .color(setting_text(ui)),
+                                    );
+                                    ui.add_space(4.);
+                                    ui.horizontal(|ui| {
+                                        ui.spacing_mut().item_spacing.x = 0.;
+                                        ui.label(
+                                            RichText::new(if installed {
+                                                "已安装"
+                                            } else {
+                                                "未安装"
+                                            })
+                                            .size(10.5)
+                                            .color(
+                                                if installed {
+                                                    if ui.visuals().dark_mode {
+                                                        Color32::from_rgb(120, 200, 140)
+                                                    } else {
+                                                        Color32::from_rgb(61, 138, 85)
+                                                    }
+                                                } else {
+                                                    weak_color(ui)
+                                                },
+                                            ),
+                                        );
+                                        ui.label(
+                                            RichText::new(format!(
+                                                " · {} · {}",
+                                                info.description, size_label
+                                            ))
+                                            .size(10.5)
+                                            .color(weak_color(ui)),
+                                        );
+                                    });
+                                });
+                                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+                                    let action = if installed { "卸载" } else { "安装" };
+                                    if soft_button(ui, action).clicked() {
+                                        self.toggle_module(&info.id, installed);
+                                    }
+                                });
+                            });
+                            let used = ui.cursor().top() - top;
+                            ui.add_space((62. - used).max(0.) + 10.);
+                            draw_bottom_line(ui, false, row_line(ui));
+                            ui.add_space(10.);
+                        }
+                    });
+            });
+    }
+    fn toggle_module(&mut self, id: &str, installed: bool) {
+        let name = modules::info(id)
+            .map(|info| info.name.clone())
+            .unwrap_or_else(|| id.to_string());
+        let outcome = if installed {
+            if let Some(mode) = self.mode.as_ref() {
+                if modules::module_of(mode).map(|info| info.id.as_str()) == Some(id) {
+                    self.mode = None;
+                    self.submode = None;
+                }
+            }
+            modules::uninstall(id).map(|_| format!("已卸载 {name} 模块"))
+        } else {
+            modules::install(id).map(|_| format!("已安装 {name} 模块"))
+        };
+        match outcome {
+            Ok(text) => self.message(text),
+            Err(error) => self.message(error),
+        }
+        self.rebuild();
+        self.focus = true;
     }
     fn save_settings(&mut self) {
         if let Some(path) = self.draft["fileIndexRoots"]
@@ -5444,7 +6004,7 @@ impl eframe::App for QuickTool {
                                 },
                             ))
                             .corner_radius(16)
-                            .inner_margin(Margin::symmetric(18, 14))
+                            .inner_margin(0)
                             .show(ui, |ui| self.settings(ui));
                     }
                     Panel::History => {
@@ -5497,6 +6057,7 @@ impl eframe::App for QuickTool {
                             self.restore_shortcut();
                             self.draft = self.store.settings.clone();
                             self.confirm_discard = false;
+                            self.modules_page = false;
                             self.panel = Panel::None;
                             self.focus = true;
                         }

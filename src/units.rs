@@ -1,5 +1,5 @@
 use crate::core::{ResultItem, normalize_search};
-use std::sync::OnceLock;
+use crate::modules;
 #[derive(Clone)]
 struct Unit {
     cat: String,
@@ -7,55 +7,60 @@ struct Unit {
     factor: f64,
     aliases: Vec<String>,
 }
-fn units() -> &'static Vec<Unit> {
-    static UNITS: OnceLock<Vec<Unit>> = OnceLock::new();
-    UNITS.get_or_init(|| {
-        let data: serde_json::Value =
-            serde_json::from_str(include_str!("../assets/units.json")).unwrap();
-        let mut out = Vec::new();
-        // Preserve the original insertion order for automatic conversion candidates.
-        for cat in [
-            "length",
-            "mass",
-            "duration",
-            "area",
-            "volume",
-            "speed",
-            "pressure",
-            "energy",
-            "power",
-            "information",
-            "angle",
-            "acceleration",
-        ] {
-            for row in data[cat].as_array().unwrap() {
-                out.push(Unit {
-                    cat: cat.into(),
-                    label: row[0].as_str().unwrap().into(),
-                    factor: row[1].as_f64().unwrap(),
-                    aliases: row[2]
-                        .as_array()
-                        .unwrap()
-                        .iter()
-                        .map(|s| normalize_search(s.as_str().unwrap()))
-                        .collect(),
-                });
-            }
-        }
-        for (label, aliases) in [
-            ("°C", vec!["c", "°c", "celsius", "摄氏", "摄氏度"]),
-            ("°F", vec!["f", "°f", "fahrenheit", "华氏", "华氏度"]),
-            ("K", vec!["k", "kelvin", "开尔文"]),
-        ] {
-            out.push(Unit {
-                cat: "temperature".into(),
-                label: label.into(),
-                factor: 1.,
-                aliases: aliases.into_iter().map(normalize_search).collect(),
-            });
-        }
-        out
-    })
+fn units() -> &'static [Unit] {
+    static CACHE: modules::LeakedCache<[Unit]> = modules::LeakedCache::new();
+    CACHE
+        .get_or_load(|| {
+            modules::read_module_file("unit", "units.json")
+                .ok()
+                .and_then(|bytes| serde_json::from_slice::<serde_json::Value>(&bytes).ok())
+                .map(|data| {
+                    let mut out = Vec::new();
+                    // Preserve the original insertion order for automatic conversion candidates.
+                    for cat in [
+                        "length",
+                        "mass",
+                        "duration",
+                        "area",
+                        "volume",
+                        "speed",
+                        "pressure",
+                        "energy",
+                        "power",
+                        "information",
+                        "angle",
+                        "acceleration",
+                    ] {
+                        for row in data[cat].as_array().unwrap() {
+                            out.push(Unit {
+                                cat: cat.into(),
+                                label: row[0].as_str().unwrap().into(),
+                                factor: row[1].as_f64().unwrap(),
+                                aliases: row[2]
+                                    .as_array()
+                                    .unwrap()
+                                    .iter()
+                                    .map(|s| normalize_search(s.as_str().unwrap()))
+                                    .collect(),
+                            });
+                        }
+                    }
+                    for (label, aliases) in [
+                        ("°C", vec!["c", "°c", "celsius", "摄氏", "摄氏度"]),
+                        ("°F", vec!["f", "°f", "fahrenheit", "华氏", "华氏度"]),
+                        ("K", vec!["k", "kelvin", "开尔文"]),
+                    ] {
+                        out.push(Unit {
+                            cat: "temperature".into(),
+                            label: label.into(),
+                            factor: 1.,
+                            aliases: aliases.into_iter().map(normalize_search).collect(),
+                        });
+                    }
+                    &*Box::leak(out.into_boxed_slice())
+                })
+        })
+        .unwrap_or(&[])
 }
 fn lookup(s: &str) -> Option<&'static Unit> {
     let n = normalize_search(s);

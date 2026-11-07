@@ -609,3 +609,43 @@ mod native {
 }
 #[cfg(windows)]
 pub use native::{Backdrop, BackdropStatus};
+/// Non-Windows placeholder: the API surface used by the launcher shell, with no
+/// native acrylic window. Update calls succeed so callers keep their flow.
+#[cfg(not(windows))]
+#[derive(Debug)]
+pub struct Backdrop;
+#[cfg(not(windows))]
+impl Backdrop {
+    pub fn new(_owner: isize) -> Result<Self, String> {
+        Ok(Self)
+    }
+    pub fn update(
+        &mut self,
+        _visible: bool,
+        _topmost: bool,
+        _dark: bool,
+        _blur: f32,
+        _inset: i32,
+        _radius: f32,
+    ) -> Result<(), String> {
+        Ok(())
+    }
+    pub fn update_clipped(
+        &mut self,
+        _visible: bool,
+        _topmost: bool,
+        _dark: bool,
+        _blur: f32,
+        _inset: i32,
+        _radius: f32,
+        _content_height: Option<i32>,
+    ) -> Result<(), String> {
+        Ok(())
+    }
+    #[allow(dead_code)]
+    pub fn invalidate(&mut self) {}
+    #[allow(dead_code)]
+    pub fn status(&self) -> () {
+        ()
+    }
+}

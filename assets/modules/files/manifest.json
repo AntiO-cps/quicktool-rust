@@ -1,0 +1,7 @@
+{
+  "id": "files",
+  "name": "文件搜索",
+  "version": "0.6.0",
+  "commands": ["files"],
+  "dataFiles": []
+}

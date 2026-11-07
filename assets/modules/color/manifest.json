@@ -1,0 +1,7 @@
+{
+  "id": "color",
+  "name": "颜色转换",
+  "version": "0.6.0",
+  "commands": ["color"],
+  "dataFiles": []
+}

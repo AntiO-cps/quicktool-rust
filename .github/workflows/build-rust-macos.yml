@@ -1,0 +1,40 @@
+name: Build Rust macOS (Apple Silicon)
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'rust-v*'
+
+jobs:
+  macos-aarch64:
+    runs-on: macos-14
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Test (platform-independent suites)
+        run: cargo test --lib
+      - name: Build and package DMG
+        run: bash scripts/Build-Rust-macOS.sh
+      - name: Verify DMG payload
+        run: |
+          version=$(sed -n 's/^version = "\(.*\)"$/\1/p' Cargo.toml | head -1)
+          dmg="releases/QuickTool-Rust-$version-macos-aarch64.dmg"
+          test -f "$dmg"
+          shasum -a 256 -c "$dmg.sha256"
+          hdiutil attach "$dmg" -mountpoint /tmp/qt-verify -nobrowse -readonly
+          test -d /tmp/qt-verify/QuickTool.app/Contents/MacOS/assets/modules/pin
+          test -f /tmp/qt-verify/QuickTool.app/Contents/Resources/quicktool.icns
+          test -x /tmp/qt-verify/QuickTool.app/Contents/MacOS/QuickTool
+          codesign -dv /tmp/qt-verify/QuickTool.app
+          hdiutil detach /tmp/qt-verify
+      - uses: actions/upload-artifact@v4
+        with:
+          name: QuickTool-Rust-macos-aarch64
+          path: |
+            releases/QuickTool-Rust-*-macos-aarch64.dmg
+            releases/QuickTool-Rust-*-macos-aarch64.dmg.sha256
+          if-no-files-found: error

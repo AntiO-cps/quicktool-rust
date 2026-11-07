@@ -15,13 +15,24 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Cargo metadata failed' }
     $executable = Join-Path $metadata.target_directory 'release/quicktool-rust.exe'
     if (!(Test-Path -LiteralPath $executable)) { throw "Missing executable: $executable" }
+    # Regenerate the portable tree from scratch so removed payload (e.g. the
+    # former standalone flags) cannot leak into the installer.
+    if (Test-Path -LiteralPath $output) { Remove-Item -LiteralPath $output -Recurse -Force }
     New-Item -ItemType Directory -Path $output -Force | Out-Null
     Copy-Item -LiteralPath $executable -Destination (Join-Path $output 'QuickTool.exe') -Force
     $assetOutput = Join-Path $output 'assets/assets'
     New-Item -ItemType Directory -Path $assetOutput -Force | Out-Null
-    Copy-Item -LiteralPath (Join-Path $project 'assets/assets/flags') -Destination $assetOutput -Recurse -Force
+    # Flags ship inside the country module package; no standalone copy.
     Copy-Item -LiteralPath (Join-Path $project 'assets/licenses') -Destination (Join-Path $output 'assets') -Recurse -Force
     Copy-Item -LiteralPath (Join-Path $project 'assets/assets/quicktool.ico') -Destination $assetOutput -Force
+    # Stage the optional-module package store. The installer core section always
+    # extracts it; component sections copy the selected packages into
+    # assets/modules, and the app can install/uninstall them later in settings.
+    $packageOutput = Join-Path $output 'assets/packages'
+    New-Item -ItemType Directory -Path $packageOutput -Force | Out-Null
+    foreach ($module in (Get-ChildItem -LiteralPath (Join-Path $project 'assets/modules') -Directory)) {
+        Copy-Item -LiteralPath $module.FullName -Destination (Join-Path $packageOutput $module.Name) -Recurse -Force
+    }
     Copy-Item -LiteralPath (Join-Path $project 'docs') -Destination $output -Recurse -Force
     # Keep the notices of the actual Windows dependency graph beside the binary.
     $licenseMetadata = & cargo metadata --offline --locked --format-version 1 --filter-platform x86_64-pc-windows-msvc | ConvertFrom-Json

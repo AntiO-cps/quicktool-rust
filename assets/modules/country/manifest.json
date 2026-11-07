@@ -1,0 +1,7 @@
+{
+  "id": "country",
+  "name": "国家地区",
+  "version": "0.6.0",
+  "commands": ["country"],
+  "dataFiles": ["countries.json","flags"]
+}

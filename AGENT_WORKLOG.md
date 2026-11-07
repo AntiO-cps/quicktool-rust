@@ -295,3 +295,105 @@
 - 未完成：无（本次搜索修复范围）；整体Rust迁移仍在进行中。
 - 未验证：完整物理输入、多屏DPI及全部功能的人工一致性。
 - 风险：物理输入、多显示器/驱动、真实剪贴板及搜索提供方环境仍有验收边界。
+
+## alpha.38 — 功能模块化：可选安装模块体系
+
+### 目标
+将全部功能工具从单一二进制拆为可独立安装的可选模块：安装包组件选择页逐项勾选，设置面板随时安装/卸载，离线可用。
+
+### 修改
+- `assets/module-catalog.json`、`assets/modules/<id>/manifest.json`：13个可选模块（计算器、时间日期、颜色转换、单位换算、进制转换、JSON、文本与编码、字符参考、国家地区、钉贴、剪贴板、文件搜索、系统工具）+ 10个核心命令的目录与清单；模块已安装等价于 `assets/modules/<id>/manifest.json` 存在。
+- `src/modules.rs`：新增模块注册/路径解析（exe目录优先、`QUICKTOOL_RUST_ASSETS_DIR` 测试隔离）、`LeakedCache` 版本化数据缓存（模块集变化自动失效）、install/uninstall（复制自 `assets/packages/<id>`、卸载保留用户数据）、`is_enabled` 门控（首次 refresh 前全量可用以兼容既有测试）。
+- `src/tools.rs`：建议与 help 按 installed 过滤、execute 前置"模块未安装"守卫、system-commands/windows-settings 从模块目录磁盘加载（不再内嵌）。
+- `src/unicode.rs`、`src/countries.rs`、`src/units.rs`：6.9MB Unicode 索引、国家数据、单位表去内嵌改为按代际泄漏的磁盘懒加载；Unicode 缺失时 ASCII 类别降级保持文字编辑行为；旗帜路径改走模块目录（`country_card.rs`、`system.rs`）。
+- `src/ui.rs`：启动时 `modules::refresh()`；空态最近/默认行、`/`建议、检测、help、进入模式、files/registry 分支、全局文件搜索全部按模块门控；设置面板顶部新增"模块管理"区（13模块状态、体积、命令数、即时安装/卸载按钮，卸载先退出活动模式）。
+- `scripts/installer.nsi`：新增 MUI 组件选择页，核心 Section（RO）+ 13 模块 Section 收进 `SectionGroup /e`（组节点全选/全不选），选中时 `CreateDirectory`+`CopyFiles` 从 packages 复制到 modules；卸载增加 `RMDir /r assets\modules`；完成页运行勾选默认开启；UTF-8 BOM。
+- `scripts/Build-Rust.ps1`：staging 改为生成 `dist/assets/packages/<id>/`（不再单独复制旗帜）；输出目录先清空重建防陈旧文件泄漏。
+- `tests/modules_gating.rs`：隔离包存储下门控、安装、卸载、数据缓存失效端到端回归。
+- `README.md`、`CHANGELOG.md`、`Cargo.toml`：可选模块机制说明与 alpha.38 版本。
+
+### 验证
+- `PASS` `cargo test -j 2 --all-targets`：32套件全部通过（含新增模块目录完整性、manifest一致性、门控生命周期测试）；发现并修复 LeakedCache 初始版本号导致首次加载永远跳过的缺陷（大输入编辑oracle回归捕获）。
+- `PASS` `cargo clippy -j 2 --all-targets -- -D warnings`、`cargo fmt --check`。
+- `PASS` Release 构建：QuickTool.exe 65MB → 58.1MB（Unicode 索引去内嵌）。
+- `PASS` `Build-Installer.ps1`：产出 alpha.38 安装包 + SHA256 sidecar（50B4A502AD153320195092B8A130DD05CE78EA737153C7F2C81868C7BF04E6CB）；payload 核验通过。
+- `PASS` NSIS CopyFiles 递归复制语义独立实测：manifest + 249 svg + 249 png250 完整复制。
+- `PASS` 隔离静默安装（/S /NOINTEGRATION）：exit 0、1006 文件、exe 与版本号正常、13 包落盘、`assets/modules` 不存在（仅核心默认勾选符合设计）。
+- `NOT_RUN` 图形化组件页人工勾选交互、全选树节点点击（静默路径已覆盖布局与复制语义）。
+
+### 结论
+- 已完成：模块化拆分、安装包组件树、设置内模块管理、数据去内嵌与自动回归、alpha.38 安装包及隔离安装复验。
+- 未完成：无（本次模块化范围）；整体Rust迁移仍在进行中。
+- 未验证：图形组件页人工交互、卸载流程复验（沿用既有卸载清单 + 新增 modules 目录清除）。
+- 风险：模块数据按代际泄漏，反复装卸大模块会累积少量内存；安装后手动删除 packages 目录将无法离线重装对应模块。
+
+## alpha.39 — 修复模块门控与原版UX的冲突（pin→PING回归）
+
+### 目标
+排查Rust版与原版Electron的UX/操作差异：默认安装下裸输入 `pin`/`ping` 时命令整体消失，PATH索引中的PING应用成为首选并直接进入运行应用行为。对照原版候选管线后修复门控一致性，恢复原版开箱体验。
+
+### 根因
+- alpha.38 安装器模块分区默认不勾选（`Section /o`），默认安装仅核心；`tools::suggestions_all` 等建议路径按 `modules::is_enabled` 过滤，`pin`（钉贴模块）与 `system:ping`（系统工具模块）从候选中消失。
+- 裸输入落入应用匹配分支：`host_candidates::apps` 对PATH应用 PING.EXE 给出 0.86 分（类别"运行"），Enter 即启动 ping.exe；原版在同等输入下首选为命令行（0.94）。
+- 附带缺陷：`/ping` 在系统工具模块缺失时 `system_rows` 返回 false 但调用方仍 return，结果列表完全空白。
+
+### 修改
+- `scripts/installer.nsi`：13个模块分区去掉 `/o`，默认全部勾选（与原版所有命令开箱即用一致），用户仍可逐项取消。
+- `src/tools.rs`：新增 `disabled_exact`——id或别名精确命中且模块未安装的命令，供调用方显示安装提示，避免精确命令查询落入无关应用匹配。
+- `src/ui.rs`：按原版 styles.css 忠实重做设置页设计系统——panel-head（34×34 圆角图标盒、13.5/10.5 标题节奏、66px 头部与全宽底线）、setting-row（62px 行高、10px 内距、rgba .055 分隔线）、快捷键录制器（220×40 场框 + accent 键盘图标 + 等宽字）、accent 复选框（16×16）、圆角 DragValue 场框、mono 文本域场框、soft/primary 按钮（34px 高、accent 底色主按钮）、页脚底线与按钮布局；深浅两主题均按 CSS 变量取色。
+- `src/ui.rs`：设置"模块管理"改为独立展开页并沿用同一设计语言（设置首行"管理" soft 入口、子页 panel-head + 模块行状态色 + soft 安装/卸载、页头返回与 Esc 逐层退出、激活未安装模块结果行直达该页、`--panel modules` 验证入口）。
+- `src/ui.rs`：裸输入建议路径插入"模块未安装"提示行（分数=原精确命令行 0.94，保持与原版排序一致）；`activate` 对未安装模块的结果行统一打开设置→模块管理并提示（仅限非模式上下文）；`/ping` 无参数且系统命令数据缺失时显示模块提示行而非空白。
+- `scripts/export-candidates-oracle.cjs`：国家数据路径改为模块化后的 `assets/modules/country/countries.json`；新增裸输入 `pin`/`ping`/`pinw` 携带 PING 应用夹具的 9 组跨标签用例（oracle 197→206组）。
+- `tests/modules_gating.rs`：补充 `disabled_exact` 精确/部分/核心/空输入断言及安装后回退断言。
+- `README.md`、`CHANGELOG.md`、`Cargo.toml`：alpha.39 版本与默认全选、未安装回退说明。
+- `docs/candidates-alpha39-verification.json`：206组实际候选对照报告（全通过）。
+
+### 验证
+- `PASS` 修改前确认：原版 oracle 中裸输入 "pin" 的可视行为为 [钉住主窗口/命令 /pinapp, Ping 网络测试, PING 应用, 钉住内容]；Rust 默认安装（隔离模块目录模拟）修复前首选为应用行。
+- `PASS` `cargo test -j 2 --all-targets`：168通过、5项既有环境忽略、0失败。
+- `PASS` `cargo clippy -j 2 --all-targets -- -D warnings`、`cargo fmt --check`。
+- `PASS` `--verify-candidates`：206/206组实际管线与原版oracle一致（含新增9组pin/ping/PING夹具）。
+- `PASS` `--verify-ui`：32项应用内部交互回归通过。
+- `PASS` `Verify-Expanded.ps1`：原生展开/收起回归通过。
+- `PASS` 设置主页与模块管理子页渲染截图核对（`--panel settings/modules --screenshot`），与原版 .qa/original-settings.png 逐项对照（图标盒、行节奏、控件样式、页脚）；浅色主题复验。
+- `PASS` 隔离模块目录（无 modules）端到端复现：裸 "ping" 实际行为为首行"系统工具 模块未安装"提示（0.94）+ PING 应用（0.86），裸 "pin" 保留钉贴提示行于原版分数位，部分查询 "pinw" 保持隐藏。
+- `PASS` Release 构建与 NSIS 重新打包：alpha.39，21753941 字节，SHA256 A2AC389F77C7DB7E9DB769C0E873A7C14BAFE51E2B10CEDF27E4136C74D072A8（含设置页设计重做）。
+- `PASS` 隔离静默安装（/S /NOINTEGRATION）：exit 0、13 个模块全部默认安装；安装后 QuickTool.exe 与 release 二进制哈希一致。
+- `PASS` 安装后成品二进制：206/206 候选对照通过；`--panel settings/modules` 截图确认忠实还原的设置设计与模块子页。
+- `PASS` 安装后成品二进制：206/206 候选对照通过；`--panel modules` 截图确认模块管理独立展开页渲染正常。
+- `PASS` 隔离静默卸载：exit 0，安装目录清空。
+- `NOT_RUN` NSIS 图形组件页人工勾选交互（静默路径已覆盖分区语义与文件落盘）。
+
+### 结论
+- 已完成：模块默认安装状态、未安装命令精确匹配回退、激活引导、`/ping` 空白修复、候选差分扩展与全部自动回归。
+- 未完成：整体Rust迁移仍在进行中；后续出包需重新运行 Build-Installer.ps1（版本号已同步 alpha.39）。
+- 未验证：物理输入与图形组件页人工交互（沿用既有边界）。
+- 风险：已安装 alpha.38 默认核心的用户升级时，组件页默认全选会补装全部模块（符合本次修复意图）；卸载过的模块升级后会被重新勾选安装。
+
+## alpha.39 — 一致性量化报告与 macOS（M 系列）交付
+
+### 目标
+继续对照原版直至可量化 ≥99% 相似度；构建实际可用的 Windows 与 macOS 安装包。
+
+### 修改
+- `src/platform.rs`：非 Windows 平台补 `save_file_dialog`（rfd 原生保存对话框，仅非 Windows 目标编译，Windows 二进制不受影响）。
+- `src/backdrop.rs`：新增非 Windows `Backdrop` 占位实现（update/update_clipped 返回成功，保持调用方流程）。
+- `Cargo.toml`：新增 `[target.'cfg(not(windows))'.dependencies] rfd = "0.15"`。
+- `assets/assets/quicktool.icns`：由 quicktool.ico 的 PNG 条目（ic07 128 / ic08 256）生成。
+- `scripts/Build-Rust-macOS.sh`、`scripts/macos/Info.plist.in`：macOS 原生构建 + QuickTool.app（全 13 模块、许可、docs、ad-hoc 签名）+ DMG + SHA256。
+- `../.github/workflows/build-rust-macos.yml`：macos-14 runner 上测试（lib）、构建 DMG、挂载校验模块/图标/签名并上传构件。
+- `docs/parity-report-alpha39.md`：一致性指标、22 个 oracle 套件 22,764 条用例全部通过的量化结果、运行时探针与剩余差异边界。
+- `README.md`、`../CHANGELOG.md`：macOS 交付与一致性报告说明。
+
+### 验证
+- `PASS` `cargo zigbuild --target aarch64-apple-darwin`（zig 0.13 + cargo-zigbuild 0.24）：全部依赖（含 bundled SQLite C 交叉编译至 arm64-macos 目标文件）与全部 Rust 源类型编译通过；最终链接需要 macOS SDK（Apple 许可仅随 macOS 提供），由真实 Mac 或 CI runner 完成。
+- `PASS` Windows 侧回归不受影响：`cargo check --all-targets`、`cargo test -j 2 --all-targets` 168 通过 0 失败、clippy/fmt 此前已过。
+- `PASS` 一致性量化：22,764/22,764 差分用例（22 套件）+ 206/206 候选 + 32/32 交互 + 6/6 展开，全部与原版 oracle 一致（`docs/parity-report-alpha39.md`）。
+- `PASS` `bash -n scripts/Build-Rust-macOS.sh` 语法与 CI workflow 结构核验；icns 魔数/尺寸校验。
+- `PASS` 最终 Windows 安装包重建：alpha.39，21767811 字节，SHA256 AB2EFF4232E7201D4353EA646427EA4DA905F40AFF367533AB68671359938978；隔离静默安装 exit 0、13 模块默认全装、安装后 exe 与 release 一致、206/206 候选、模块子页截图、卸载 exit 0。
+- `NOT_RUN` macOS DMG 在真实 M 系列 Mac / CI runner 上的构建与人工验收（本机为 Windows，Apple SDK 链接受许可限制；CI 已就绪，推送后运行 workflow 即可产出）。
+
+### 结论
+- 已完成：一致性量化（覆盖维度 100%，剩余边界显式列出）、macOS 代码级支持与打包/CI 基础设施、最终 Windows 安装包。
+- 未完成：macOS 真机人工验收；整体迁移完全一致性仍是长期目标。
+- 风险：macOS 上 Windows 专属功能为降级提示而非等价实现；DMG 未经真机验证。

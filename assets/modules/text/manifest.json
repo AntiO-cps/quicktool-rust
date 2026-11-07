@@ -1,0 +1,7 @@
+{
+  "id": "text",
+  "name": "文本与编码",
+  "version": "0.6.0",
+  "commands": ["case","base64","url","escape","width","text","uuid","random"],
+  "dataFiles": []
+}

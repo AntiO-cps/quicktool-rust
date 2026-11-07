@@ -1,0 +1,139 @@
+{
+  "core": [
+    "help",
+    "settings",
+    "history",
+    "pinwindow",
+    "run",
+    "open",
+    "cd",
+    "cmd",
+    "powershell",
+    "terminal"
+  ],
+  "modules": [
+    {
+      "id": "calculator",
+      "name": "计算器",
+      "description": "表达式、函数与常量求值",
+      "icon": "mdi:calculator-variant",
+      "commands": ["calculator"],
+      "sizeBytes": 0
+    },
+    {
+      "id": "time",
+      "name": "时间日期",
+      "description": "日期、Unix 时间戳与其他时间格式互转",
+      "icon": "mdi:calendar-clock",
+      "commands": ["time"],
+      "sizeBytes": 0
+    },
+    {
+      "id": "color",
+      "name": "颜色转换",
+      "description": "颜色预览、取色与多种色值格式互转",
+      "icon": "mdi:format-color-fill",
+      "commands": ["color"],
+      "sizeBytes": 0
+    },
+    {
+      "id": "unit",
+      "name": "单位换算",
+      "description": "长度、质量、面积等常用单位换算",
+      "icon": "mdi:ruler-square",
+      "commands": ["unit"],
+      "dataFiles": ["units.json"],
+      "sizeBytes": 8671
+    },
+    {
+      "id": "base",
+      "name": "进制转换",
+      "description": "二、八、十、十六进制互转",
+      "icon": "mdi:numeric-2-box-multiple-outline",
+      "commands": ["base"],
+      "sizeBytes": 0
+    },
+    {
+      "id": "json",
+      "name": "JSON 工具",
+      "description": "JSON 格式化、压缩与检查",
+      "icon": "mdi:code-json",
+      "commands": ["json"],
+      "sizeBytes": 0
+    },
+    {
+      "id": "text",
+      "name": "文本与编码",
+      "description": "大小写、Base64、URL、转义、全半角、文本处理、UUID 与随机串",
+      "icon": "mdi:text-box-outline",
+      "commands": ["case", "base64", "url", "escape", "width", "text", "uuid", "random"],
+      "sizeBytes": 0
+    },
+    {
+      "id": "unicode",
+      "name": "字符参考",
+      "description": "Unicode 字符、数学符号、希腊字母、注音与 Emoji 查询",
+      "icon": "mdi:unicode",
+      "commands": ["char", "mathchar", "greek", "bopomofo", "emoji"],
+      "dataFiles": ["unicode-index.bin", "unicode-aliases.json"],
+      "sizeBytes": 7189523
+    },
+    {
+      "id": "country",
+      "name": "国家地区",
+      "description": "国家/地区代码、区号查询与国旗",
+      "icon": "mdi:earth",
+      "commands": ["country"],
+      "dataFiles": ["countries.json", "flags"],
+      "sizeBytes": 4402241
+    },
+    {
+      "id": "pin",
+      "name": "钉贴",
+      "description": "把文字、图片和文件钉在桌面上",
+      "icon": "mdi:pin",
+      "commands": ["pin"],
+      "sizeBytes": 0
+    },
+    {
+      "id": "clipboard",
+      "name": "剪贴板",
+      "description": "查看剪贴板原始数据与格式",
+      "icon": "mdi:clipboard-text-outline",
+      "commands": ["clipboard"],
+      "sizeBytes": 0
+    },
+    {
+      "id": "files",
+      "name": "文件搜索",
+      "description": "本地文件与目录名索引搜索",
+      "icon": "mdi:file-search-outline",
+      "commands": ["files"],
+      "sizeBytes": 0
+    },
+    {
+      "id": "system",
+      "name": "系统工具",
+      "description": "系统命令、Windows 设置搜索与注册表查询",
+      "icon": "mdi:console",
+      "commands": [
+        "registry",
+        "winsettings",
+        "system:ipconfig",
+        "system:ping",
+        "system:nslookup",
+        "system:tracert",
+        "system:netstat",
+        "system:regedit",
+        "system:taskmgr",
+        "system:services",
+        "system:devmgmt",
+        "system:diskmgmt",
+        "system:eventvwr",
+        "system:control"
+      ],
+      "dataFiles": ["system-commands.json", "windows-settings.json"],
+      "sizeBytes": 8495
+    }
+  ]
+}

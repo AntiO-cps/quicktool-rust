@@ -10,9 +10,11 @@ pub(super) fn show(
     let alpha = country["alpha2"].as_str().unwrap_or("");
     let key = format!("flag:{alpha}");
     if !app.icons.contains_key(&key) {
-        let path = quicktool_rust::resources::asset("assets/flags/svg")
-            .join(format!("{}.svg", alpha.to_lowercase()));
-        let svg = std::fs::read(&path).unwrap_or_default();
+        let path = quicktool_rust::modules::module_path("country", "flags/svg")
+            .map(|base| base.join(format!("{}.svg", alpha.to_lowercase())));
+        let svg = path
+            .and_then(|path| std::fs::read(path).ok())
+            .unwrap_or_default();
         if let Some((w, h, rgba)) = render_svg(&svg, 200.) {
             app.icons.insert(
                 key.clone(),

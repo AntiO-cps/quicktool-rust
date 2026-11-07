@@ -1,0 +1,7 @@
+{
+  "id": "pin",
+  "name": "钉贴",
+  "version": "0.6.0",
+  "commands": ["pin"],
+  "dataFiles": []
+}

@@ -1,4 +1,5 @@
 use crate::core::normalize_search;
+use crate::modules;
 use serde_json::Value;
 use std::{cmp::Ordering, sync::OnceLock};
 
@@ -6,51 +7,57 @@ struct Entry {
     country: Value,
     fields: Vec<String>,
 }
-fn data() -> &'static Vec<Entry> {
-    static DATA: OnceLock<Vec<Entry>> = OnceLock::new();
-    DATA.get_or_init(|| {
-        let data: Value =
-            serde_json::from_str(include_str!("../assets/data/countries.json")).unwrap();
-        data["countries"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .map(|country| {
-                let mut fields: Vec<_> = [
-                    "nameZh",
-                    "officialNameZh",
-                    "nameEn",
-                    "officialNameEn",
-                    "alpha2",
-                    "alpha3",
-                    "numeric",
-                    "ioc",
-                    "fifa",
-                    "itu",
-                ]
-                .iter()
-                .filter_map(|k| country[k].as_str().map(normalize_search))
-                .collect();
-                for k in ["callingCodes", "tlds", "aliases"] {
-                    for v in country[k].as_array().into_iter().flatten() {
-                        if let Some(s) = v.as_str() {
-                            fields.push(normalize_search(s));
-                            if k == "callingCodes" {
-                                fields.push(normalize_search(&format!(
-                                    "+{}",
-                                    s.trim_start_matches('+')
-                                )));
+fn data() -> &'static [Entry] {
+    static CACHE: modules::LeakedCache<[Entry]> = modules::LeakedCache::new();
+    CACHE
+        .get_or_load(|| {
+            modules::read_module_file("country", "countries.json")
+                .ok()
+                .and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok())
+                .map(|data| {
+                    let entries: Vec<Entry> = data["countries"]
+                        .as_array()
+                        .unwrap()
+                        .iter()
+                        .map(|country| {
+                            let mut fields: Vec<_> = [
+                                "nameZh",
+                                "officialNameZh",
+                                "nameEn",
+                                "officialNameEn",
+                                "alpha2",
+                                "alpha3",
+                                "numeric",
+                                "ioc",
+                                "fifa",
+                                "itu",
+                            ]
+                            .iter()
+                            .filter_map(|k| country[k].as_str().map(normalize_search))
+                            .collect();
+                            for k in ["callingCodes", "tlds", "aliases"] {
+                                for v in country[k].as_array().into_iter().flatten() {
+                                    if let Some(s) = v.as_str() {
+                                        fields.push(normalize_search(s));
+                                        if k == "callingCodes" {
+                                            fields.push(normalize_search(&format!(
+                                                "+{}",
+                                                s.trim_start_matches('+')
+                                            )));
+                                        }
+                                    }
+                                }
                             }
-                        }
-                    }
-                }
-                Entry {
-                    country: country.clone(),
-                    fields,
-                }
-            })
-            .collect()
-    })
+                            Entry {
+                                country: country.clone(),
+                                fields,
+                            }
+                        })
+                        .collect();
+                    &*Box::leak(entries.into_boxed_slice())
+                })
+        })
+        .unwrap_or(&[])
 }
 pub fn scored_matches(q: &str, limit: usize) -> Vec<(Value, f64)> {
     let q = normalize_search(q.trim_matches(crate::core::js_space));

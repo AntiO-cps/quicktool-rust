@@ -11,6 +11,7 @@ pub mod import_legacy;
 pub mod index;
 pub mod js_case;
 pub mod json;
+pub mod modules;
 pub mod numbers;
 pub mod pin_storage;
 pub mod pins;

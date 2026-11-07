@@ -1,0 +1,7 @@
+{
+  "id": "json",
+  "name": "JSON 工具",
+  "version": "0.6.0",
+  "commands": ["json"],
+  "dataFiles": []
+}

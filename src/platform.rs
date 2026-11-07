@@ -590,6 +590,21 @@ pub fn copy_image(_: u32, _: u32, _: &[u8]) -> Result<(), String> {
 pub fn clipboard_image() -> Result<(u32, u32, Vec<u8>), String> {
     Err("此功能需要 Windows".into())
 }
+/// Native save dialog on macOS/Linux; mirrors the Windows export flow.
+#[cfg(not(windows))]
+pub fn save_file_dialog(extension: &str) -> Result<Option<PathBuf>, String> {
+    if extension.is_empty()
+        || extension.len() > 16
+        || !extension.chars().all(|c| c.is_ascii_alphanumeric())
+    {
+        return Err("扩展名无效".into());
+    }
+    let path = rfd::FileDialog::new()
+        .add_filter(&extension.to_uppercase(), &[extension])
+        .set_file_name(&format!("QuickTool.{extension}"))
+        .save_file();
+    Ok(path)
+}
 
 #[cfg(windows)]
 mod native_extra {

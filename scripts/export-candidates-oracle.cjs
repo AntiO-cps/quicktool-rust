@@ -35,7 +35,7 @@ const context = vm.createContext({
   navigator: { language: 'en-US' }, atob, btoa,
   crypto: { randomUUID: () => '00000000-0000-4000-8000-000000000000', getRandomValues: a => a.fill(1) },
   settings: { dateOrder: 'YMD', timeCustomFormats: '', fileSearchGlobal: true },
-  countries: Core.countryIndex(require('../assets/data/countries.json')),
+  countries: Core.countryIndex(require('../assets/modules/country/countries.json')),
   cssColors: require('../assets/data/css-colors.json'),
   unicodeMeta: require('../assets/data/unicode-meta.json'), unicodeSearchIndex: null,
   mode: { toolId: null, args: [] }, usage: {}, activeResultTab: 'all',
@@ -94,6 +94,10 @@ function createOracle() {
   add('Search', { mode: 'run', apps: manyApps });
   add('unmatched', { mode: 'run', apps: manyApps });
   add('', { mode: 'run', apps: manyApps });
+  // Bare queries where a PATH app (PING.EXE) competes with pin/ping commands;
+  // guards the regression of an exact command query ranking below app matches.
+  const pinApps = [{ name: 'PING', source: 'PATH', target: 'C:\\Windows\\System32\\PING.EXE' }];
+  for (const input of ['pin', 'ping', 'pinw']) for (const tab of ['all', 'run', 'tools']) add(input, { apps: pinApps, tab });
   const items = Array.from({ length: 8 }, (_, i) => ({ name: `ch${i}.txt`, path: `C:\\fixture\\ch${i}.txt`, provider: 'fixture' }));
   for (const query of ['ch', 'older query']) for (const tab of ['all', 'run', 'tools']) add('ch', { tab, apps, files: { query, items } });
   add('ch', { settings: { fileSearchGlobal: false }, files: { query: 'ch', items } });

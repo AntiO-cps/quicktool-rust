@@ -1,4 +1,4 @@
-use crate::{calculator, core::*, search, units};
+use crate::{calculator, core::*, modules, search, units};
 
 use serde::Deserialize;
 use serde_json::Value;
@@ -22,11 +22,18 @@ pub struct SystemCommand {
     #[serde(default)]
     pub needs_arg: bool,
 }
-pub fn system_commands() -> &'static Vec<SystemCommand> {
-    static DATA: OnceLock<Vec<SystemCommand>> = OnceLock::new();
-    DATA.get_or_init(|| {
-        serde_json::from_str(include_str!("../assets/system-commands.json")).unwrap()
+fn system_command_data() -> &'static [SystemCommand] {
+    static DATA: modules::LeakedCache<[SystemCommand]> = modules::LeakedCache::new();
+    DATA.get_or_load(|| {
+        modules::read_module_file("system", "system-commands.json")
+            .ok()
+            .and_then(|bytes| serde_json::from_slice(&bytes).ok())
+            .map(|data: Vec<SystemCommand>| &*Box::leak(data.into_boxed_slice()))
     })
+    .unwrap_or(&[])
+}
+pub fn system_commands() -> &'static [SystemCommand] {
+    system_command_data()
 }
 #[derive(Clone, Debug, Deserialize)]
 pub struct WindowsSetting {
@@ -34,11 +41,18 @@ pub struct WindowsSetting {
     pub command: String,
     pub aliases: Vec<String>,
 }
+fn windows_setting_data() -> &'static [WindowsSetting] {
+    static DATA: modules::LeakedCache<[WindowsSetting]> = modules::LeakedCache::new();
+    DATA.get_or_load(|| {
+        modules::read_module_file("system", "windows-settings.json")
+            .ok()
+            .and_then(|bytes| serde_json::from_slice(&bytes).ok())
+            .map(|data: Vec<WindowsSetting>| &*Box::leak(data.into_boxed_slice()))
+    })
+    .unwrap_or(&[])
+}
 pub fn windows_settings_search(q: &str, limit: usize) -> Vec<(&'static WindowsSetting, f64)> {
-    static DATA: OnceLock<Vec<WindowsSetting>> = OnceLock::new();
-    let data = DATA.get_or_init(|| {
-        serde_json::from_str(include_str!("../assets/windows-settings.json")).unwrap()
-    });
+    let data = windows_setting_data();
     let q = q.trim();
     let mut matches = data
         .iter()
@@ -71,6 +85,13 @@ pub fn command(input: &str) -> Option<&'static Command> {
         .iter()
         .find(|c| c.id == n || c.aliases.iter().any(|a| normalize_search(a) == n))
 }
+/// Command whose id or an alias exactly matches the query while its module is
+/// not installed. The caller surfaces an install hint so an exact command
+/// query never falls through to unrelated app matches.
+pub fn disabled_exact(input: &str) -> Option<&'static Command> {
+    let command = command(input)?;
+    (!modules::is_enabled(&command.id)).then_some(command)
+}
 pub fn suggestions(input: &str) -> Vec<(&'static Command, f64)> {
     suggestions_all(input).into_iter().take(16).collect()
 }
@@ -79,6 +100,7 @@ pub fn suggestions_all(input: &str) -> Vec<(&'static Command, f64)> {
     let input = input.strip_prefix('/').unwrap_or(input);
     let mut results: Vec<_> = commands()
         .iter()
+        .filter(|c| modules::is_enabled(&c.id))
         .filter_map(|c| {
             let score = best_alias(c, input).map_or(0., |(_, score)| score);
             (score > 0.).then_some((c, score))
@@ -154,6 +176,14 @@ pub fn best_alias<'a>(command: &'a Command, input: &str) -> Option<(&'a str, f64
     best
 }
 pub fn execute(id: &str, q: &str) -> Result<Vec<ResultItem>, String> {
+    if let Some(info) = modules::module_of(id) {
+        if !modules::is_enabled(id) {
+            return Err(format!(
+                "{}模块未安装，可在设置 → 模块管理中安装",
+                info.name
+            ));
+        }
+    }
     Ok(match id {
         "time" => crate::dates::results(
             q,
@@ -213,6 +243,7 @@ pub fn execute(id: &str, q: &str) -> Result<Vec<ResultItem>, String> {
         "char" | "mathchar" | "greek" | "bopomofo" | "emoji" => crate::unicode::results(q, id)?,
         "help" => commands()
             .iter()
+            .filter(|c| c.id == "help" || modules::is_enabled(&c.id))
             .filter(|c| {
                 q.is_empty()
                     || search::fuzzy(q, &c.name).success
@@ -280,7 +311,11 @@ pub fn detect_scored(q: &str) -> Vec<(String, ResultItem, f64)> {
     if q.encode_utf16().count() < 500 && crate::js_case::upper(q) != crate::js_case::lower(q) {
         add("case", 0.28, usize::MAX)
     }
-    if raw.len() >= 8 && has(5) && crate::text::base64_decode(q).is_some_and(|s| !s.is_empty()) {
+    if modules::is_enabled("base64")
+        && raw.len() >= 8
+        && has(5)
+        && crate::text::base64_decode(q).is_some_and(|s| !s.is_empty())
+    {
         let item = execute("base64", q).unwrap().remove(1);
         out.push(("base64".into(), item, 0.72));
     }
@@ -330,8 +365,10 @@ pub fn detect_scored(q: &str) -> Vec<(String, ResultItem, f64)> {
     {
         add("width", 0.92)
     }
-    if let Some(score) = crate::countries::detection_score(q) {
-        add("country", score)
+    if modules::is_enabled("country") {
+        if let Some(score) = crate::countries::detection_score(q) {
+            add("country", score)
+        }
     }
     if q.contains('\n') {
         add("text", 0.36)

@@ -366,10 +366,12 @@ pub fn copy_flag(code: &str, format: &str) -> Result<(), String> {
         "png" => "png",
         _ => return Err("旗帜格式无效".into()),
     };
-    let base = crate::resources::asset("assets/flags");
-    let path = base
-        .join(if ext == "png" { "png250" } else { "svg" })
-        .join(format!("{code}.{ext}"));
+    let path = crate::modules::module_path("country", "flags")
+        .map(|base| {
+            base.join(if ext == "png" { "png250" } else { "svg" })
+                .join(format!("{code}.{ext}"))
+        })
+        .ok_or("旗帜数据不存在")?;
     let bytes = std::fs::read(path).map_err(|e| e.to_string())?;
     #[cfg(windows)]
     if ext == "svg" {

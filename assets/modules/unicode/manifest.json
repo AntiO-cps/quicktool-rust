@@ -1,0 +1,7 @@
+{
+  "id": "unicode",
+  "name": "字符参考",
+  "version": "0.6.0",
+  "commands": ["char","mathchar","greek","bopomofo","emoji"],
+  "dataFiles": ["unicode-index.bin","unicode-aliases.json"]
+}

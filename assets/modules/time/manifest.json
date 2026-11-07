@@ -1,0 +1,7 @@
+{
+  "id": "time",
+  "name": "时间日期",
+  "version": "0.6.0",
+  "commands": ["time"],
+  "dataFiles": []
+}

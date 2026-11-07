@@ -1,45 +1,73 @@
 use crate::{
     core::{ResultItem, code_points, unicode_escape},
     countries::locale_compare,
+    modules,
 };
 use serde_json::Value;
-use std::sync::OnceLock;
-// Read-only generated data: no first-query JSON parsing or per-character heap
-// allocations. Rows retain the original JavaScript enumeration for name search.
-const INDEX_BYTES: &[u8] = include_bytes!("../assets/unicode-index.bin");
-fn word(offset: usize) -> usize {
-    u32::from_le_bytes(INDEX_BYTES[offset..offset + 4].try_into().unwrap()) as usize
+// Read-only generated data, loaded from the optional `unicode` module. Rows
+// retain the original JavaScript enumeration for name search.
+fn index_bytes() -> Option<&'static [u8]> {
+    static CACHE: modules::LeakedCache<[u8]> = modules::LeakedCache::new();
+    CACHE.get_or_load(|| {
+        modules::read_module_file("unicode", "unicode-index.bin")
+            .ok()
+            .map(|bytes| &*Box::leak(bytes.into_boxed_slice()))
+    })
+}
+fn word(bytes: &[u8], offset: usize) -> usize {
+    u32::from_le_bytes(bytes[offset..offset + 4].try_into().unwrap()) as usize
 }
 struct Row {
     name: &'static str,
     category: &'static str,
     cp: u32,
 }
-fn row(index: usize) -> Row {
+fn row(bytes: &'static [u8], index: usize) -> Row {
     let at = 16 + index * 16;
-    let start = word(12) + word(at + 4);
-    let length = word(at + 8);
+    let start = word(bytes, 12) + word(bytes, at + 4);
+    let length = word(bytes, at + 8);
     Row {
-        cp: word(at) as u32,
-        name: std::str::from_utf8(&INDEX_BYTES[start..start + length]).unwrap(),
-        category: std::str::from_utf8(&INDEX_BYTES[at + 12..at + 14]).unwrap(),
+        cp: word(bytes, at) as u32,
+        name: std::str::from_utf8(&bytes[start..start + length]).unwrap(),
+        category: std::str::from_utf8(&bytes[at + 12..at + 14]).unwrap(),
     }
 }
 fn index() -> impl Iterator<Item = Row> {
-    (0..word(4)).map(row)
+    index_bytes()
+        .map(|bytes| (0..word(bytes, 4)).map(move |i| row(bytes, i)))
+        .into_iter()
+        .flatten()
+}
+/// Coarse categories for the ASCII range so text editing keeps working when the
+/// optional unicode module is not installed.
+fn ascii_category(cp: u32) -> Option<&'static str> {
+    let ch = u8::try_from(cp).ok()?;
+    Some(match ch {
+        b'0'..=b'9' => "Nd",
+        b'A'..=b'Z' => "Lu",
+        b'a'..=b'z' => "Ll",
+        b' ' => "Zs",
+        b'(' | b'[' | b'{' => "Ps",
+        b')' | b']' | b'}' => "Pe",
+        _ if ch.is_ascii_punctuation() => "Po",
+        _ => return None,
+    })
 }
 /// Original Unicode name and general category without loading the JSON dataset.
 pub fn character_metadata(cp: u32) -> Option<(&'static str, &'static str)> {
-    let base = word(8);
-    let (mut low, mut high) = (0, word(4));
+    let Some(bytes) = index_bytes() else {
+        return ascii_category(cp).map(|category| ("", category));
+    };
+    let base = word(bytes, 8);
+    let (mut low, mut high) = (0, word(bytes, 4));
     while low < high {
         let middle = low + (high - low) / 2;
         let at = base + middle * 8;
-        match (word(at) as u32).cmp(&cp) {
+        match (word(bytes, at) as u32).cmp(&cp) {
             std::cmp::Ordering::Less => low = middle + 1,
             std::cmp::Ordering::Greater => high = middle,
             std::cmp::Ordering::Equal => {
-                let result = row(word(at + 4));
+                let result = row(bytes, word(bytes, at + 4));
                 return Some((result.name, result.category));
             }
         }
@@ -80,10 +108,15 @@ fn filter(row: &Row, kind: &str) -> bool {
     }
 }
 fn aliases() -> &'static Value {
-    static DATA: OnceLock<Value> = OnceLock::new();
-    DATA.get_or_init(|| {
-        serde_json::from_str(include_str!("../assets/unicode-aliases.json")).unwrap()
-    })
+    static CACHE: modules::LeakedCache<Value> = modules::LeakedCache::new();
+    CACHE
+        .get_or_load(|| {
+            modules::read_module_file("unicode", "unicode-aliases.json")
+                .ok()
+                .and_then(|bytes| serde_json::from_slice(&bytes).ok())
+                .map(|data: Value| &*Box::leak(Box::new(data)))
+        })
+        .unwrap_or(&Value::Null)
 }
 pub fn name_search(q: &str, kind: &str) -> Vec<ResultItem> {
     let raw = q.trim();

@@ -23913,6 +23913,1085 @@
       ]
     },
     {
+      "input": "pin",
+      "apps": [
+        {
+          "name": "PING",
+          "source": "PATH",
+          "target": "C:\\Windows\\System32\\PING.EXE"
+        }
+      ],
+      "tab": "all",
+      "raw": [
+        {
+          "tool": "pinwindow",
+          "title": "钉住主窗口",
+          "value": "命令 /pinapp",
+          "score": 0.94,
+          "category": "tools",
+          "commandSuggestion": "/pinapp ",
+          "matchedAlias": "pinapp"
+        },
+        {
+          "tool": "pin",
+          "title": "钉住内容",
+          "value": "命令 /pin",
+          "score": 0.94,
+          "category": "tools",
+          "commandSuggestion": "/pin ",
+          "matchedAlias": "pin"
+        },
+        {
+          "tool": "system:ping",
+          "title": "Ping 网络测试",
+          "value": "命令 /ping",
+          "score": 0.94,
+          "category": "run",
+          "commandSuggestion": "/ping ",
+          "matchedAlias": "ping"
+        },
+        {
+          "tool": "run",
+          "title": "PING",
+          "value": "启动 · PATH",
+          "score": 0.86,
+          "category": "run",
+          "appAction": "PING"
+        },
+        {
+          "tool": "char",
+          "title": "Unicode / 字符",
+          "value": "命令 /codepoint",
+          "score": 0.6910000000000001,
+          "category": "tools",
+          "commandSuggestion": "/codepoint ",
+          "matchedAlias": "codepoint"
+        },
+        {
+          "tool": "case",
+          "title": "全大写",
+          "value": "PIN",
+          "score": 0.28,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "全小写",
+          "value": "pin",
+          "score": 0.279,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "首字母大写",
+          "value": "Pin",
+          "score": 0.278,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "Sentence case",
+          "value": "Pin",
+          "score": 0.277,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "大小写反转",
+          "value": "PIN",
+          "score": 0.276,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "camelCase",
+          "value": "pin",
+          "score": 0.275,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "PascalCase",
+          "value": "Pin",
+          "score": 0.274,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "snake_case",
+          "value": "pin",
+          "score": 0.273,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "kebab-case",
+          "value": "pin",
+          "score": 0.272,
+          "category": "tools"
+        }
+      ],
+      "visible": [
+        {
+          "tool": "pinwindow",
+          "title": "钉住主窗口",
+          "value": "命令 /pinapp",
+          "score": 0.94,
+          "category": "tools",
+          "commandSuggestion": "/pinapp ",
+          "matchedAlias": "pinapp"
+        },
+        {
+          "tool": "system:ping",
+          "title": "Ping 网络测试",
+          "value": "命令 /ping",
+          "score": 0.94,
+          "category": "run",
+          "commandSuggestion": "/ping ",
+          "matchedAlias": "ping"
+        },
+        {
+          "tool": "run",
+          "title": "PING",
+          "value": "启动 · PATH",
+          "score": 0.86,
+          "category": "run",
+          "appAction": "PING"
+        },
+        {
+          "tool": "pin",
+          "title": "钉住内容",
+          "value": "命令 /pin",
+          "score": 0.94,
+          "category": "tools",
+          "commandSuggestion": "/pin ",
+          "matchedAlias": "pin"
+        },
+        {
+          "tool": "char",
+          "title": "Unicode / 字符",
+          "value": "命令 /codepoint",
+          "score": 0.6910000000000001,
+          "category": "tools",
+          "commandSuggestion": "/codepoint ",
+          "matchedAlias": "codepoint"
+        }
+      ]
+    },
+    {
+      "input": "pin",
+      "apps": [
+        {
+          "name": "PING",
+          "source": "PATH",
+          "target": "C:\\Windows\\System32\\PING.EXE"
+        }
+      ],
+      "tab": "run",
+      "raw": [
+        {
+          "tool": "pinwindow",
+          "title": "钉住主窗口",
+          "value": "命令 /pinapp",
+          "score": 0.94,
+          "category": "tools",
+          "commandSuggestion": "/pinapp ",
+          "matchedAlias": "pinapp"
+        },
+        {
+          "tool": "pin",
+          "title": "钉住内容",
+          "value": "命令 /pin",
+          "score": 0.94,
+          "category": "tools",
+          "commandSuggestion": "/pin ",
+          "matchedAlias": "pin"
+        },
+        {
+          "tool": "system:ping",
+          "title": "Ping 网络测试",
+          "value": "命令 /ping",
+          "score": 0.94,
+          "category": "run",
+          "commandSuggestion": "/ping ",
+          "matchedAlias": "ping"
+        },
+        {
+          "tool": "run",
+          "title": "PING",
+          "value": "启动 · PATH",
+          "score": 0.86,
+          "category": "run",
+          "appAction": "PING"
+        },
+        {
+          "tool": "char",
+          "title": "Unicode / 字符",
+          "value": "命令 /codepoint",
+          "score": 0.6910000000000001,
+          "category": "tools",
+          "commandSuggestion": "/codepoint ",
+          "matchedAlias": "codepoint"
+        },
+        {
+          "tool": "case",
+          "title": "全大写",
+          "value": "PIN",
+          "score": 0.28,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "全小写",
+          "value": "pin",
+          "score": 0.279,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "首字母大写",
+          "value": "Pin",
+          "score": 0.278,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "Sentence case",
+          "value": "Pin",
+          "score": 0.277,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "大小写反转",
+          "value": "PIN",
+          "score": 0.276,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "camelCase",
+          "value": "pin",
+          "score": 0.275,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "PascalCase",
+          "value": "Pin",
+          "score": 0.274,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "snake_case",
+          "value": "pin",
+          "score": 0.273,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "kebab-case",
+          "value": "pin",
+          "score": 0.272,
+          "category": "tools"
+        }
+      ],
+      "visible": [
+        {
+          "tool": "system:ping",
+          "title": "Ping 网络测试",
+          "value": "命令 /ping",
+          "score": 0.94,
+          "category": "run",
+          "commandSuggestion": "/ping ",
+          "matchedAlias": "ping"
+        },
+        {
+          "tool": "run",
+          "title": "PING",
+          "value": "启动 · PATH",
+          "score": 0.86,
+          "category": "run",
+          "appAction": "PING"
+        }
+      ]
+    },
+    {
+      "input": "pin",
+      "apps": [
+        {
+          "name": "PING",
+          "source": "PATH",
+          "target": "C:\\Windows\\System32\\PING.EXE"
+        }
+      ],
+      "tab": "tools",
+      "raw": [
+        {
+          "tool": "pinwindow",
+          "title": "钉住主窗口",
+          "value": "命令 /pinapp",
+          "score": 0.94,
+          "category": "tools",
+          "commandSuggestion": "/pinapp ",
+          "matchedAlias": "pinapp"
+        },
+        {
+          "tool": "pin",
+          "title": "钉住内容",
+          "value": "命令 /pin",
+          "score": 0.94,
+          "category": "tools",
+          "commandSuggestion": "/pin ",
+          "matchedAlias": "pin"
+        },
+        {
+          "tool": "system:ping",
+          "title": "Ping 网络测试",
+          "value": "命令 /ping",
+          "score": 0.94,
+          "category": "run",
+          "commandSuggestion": "/ping ",
+          "matchedAlias": "ping"
+        },
+        {
+          "tool": "run",
+          "title": "PING",
+          "value": "启动 · PATH",
+          "score": 0.86,
+          "category": "run",
+          "appAction": "PING"
+        },
+        {
+          "tool": "char",
+          "title": "Unicode / 字符",
+          "value": "命令 /codepoint",
+          "score": 0.6910000000000001,
+          "category": "tools",
+          "commandSuggestion": "/codepoint ",
+          "matchedAlias": "codepoint"
+        },
+        {
+          "tool": "case",
+          "title": "全大写",
+          "value": "PIN",
+          "score": 0.28,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "全小写",
+          "value": "pin",
+          "score": 0.279,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "首字母大写",
+          "value": "Pin",
+          "score": 0.278,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "Sentence case",
+          "value": "Pin",
+          "score": 0.277,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "大小写反转",
+          "value": "PIN",
+          "score": 0.276,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "camelCase",
+          "value": "pin",
+          "score": 0.275,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "PascalCase",
+          "value": "Pin",
+          "score": 0.274,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "snake_case",
+          "value": "pin",
+          "score": 0.273,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "kebab-case",
+          "value": "pin",
+          "score": 0.272,
+          "category": "tools"
+        }
+      ],
+      "visible": [
+        {
+          "tool": "pinwindow",
+          "title": "钉住主窗口",
+          "value": "命令 /pinapp",
+          "score": 0.94,
+          "category": "tools",
+          "commandSuggestion": "/pinapp ",
+          "matchedAlias": "pinapp"
+        },
+        {
+          "tool": "pin",
+          "title": "钉住内容",
+          "value": "命令 /pin",
+          "score": 0.94,
+          "category": "tools",
+          "commandSuggestion": "/pin ",
+          "matchedAlias": "pin"
+        },
+        {
+          "tool": "char",
+          "title": "Unicode / 字符",
+          "value": "命令 /codepoint",
+          "score": 0.6910000000000001,
+          "category": "tools",
+          "commandSuggestion": "/codepoint ",
+          "matchedAlias": "codepoint"
+        }
+      ]
+    },
+    {
+      "input": "ping",
+      "apps": [
+        {
+          "name": "PING",
+          "source": "PATH",
+          "target": "C:\\Windows\\System32\\PING.EXE"
+        }
+      ],
+      "tab": "all",
+      "raw": [
+        {
+          "tool": "system:ping",
+          "title": "Ping 网络测试",
+          "value": "命令 /ping",
+          "score": 0.94,
+          "category": "run",
+          "commandSuggestion": "/ping ",
+          "matchedAlias": "ping"
+        },
+        {
+          "tool": "run",
+          "title": "PING",
+          "value": "启动 · PATH",
+          "score": 0.86,
+          "category": "run",
+          "appAction": "PING"
+        },
+        {
+          "tool": "case",
+          "title": "全大写",
+          "value": "PING",
+          "score": 0.28,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "全小写",
+          "value": "ping",
+          "score": 0.279,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "首字母大写",
+          "value": "Ping",
+          "score": 0.278,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "Sentence case",
+          "value": "Ping",
+          "score": 0.277,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "大小写反转",
+          "value": "PING",
+          "score": 0.276,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "camelCase",
+          "value": "ping",
+          "score": 0.275,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "PascalCase",
+          "value": "Ping",
+          "score": 0.274,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "snake_case",
+          "value": "ping",
+          "score": 0.273,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "kebab-case",
+          "value": "ping",
+          "score": 0.272,
+          "category": "tools"
+        }
+      ],
+      "visible": [
+        {
+          "tool": "system:ping",
+          "title": "Ping 网络测试",
+          "value": "命令 /ping",
+          "score": 0.94,
+          "category": "run",
+          "commandSuggestion": "/ping ",
+          "matchedAlias": "ping"
+        },
+        {
+          "tool": "run",
+          "title": "PING",
+          "value": "启动 · PATH",
+          "score": 0.86,
+          "category": "run",
+          "appAction": "PING"
+        }
+      ]
+    },
+    {
+      "input": "ping",
+      "apps": [
+        {
+          "name": "PING",
+          "source": "PATH",
+          "target": "C:\\Windows\\System32\\PING.EXE"
+        }
+      ],
+      "tab": "run",
+      "raw": [
+        {
+          "tool": "system:ping",
+          "title": "Ping 网络测试",
+          "value": "命令 /ping",
+          "score": 0.94,
+          "category": "run",
+          "commandSuggestion": "/ping ",
+          "matchedAlias": "ping"
+        },
+        {
+          "tool": "run",
+          "title": "PING",
+          "value": "启动 · PATH",
+          "score": 0.86,
+          "category": "run",
+          "appAction": "PING"
+        },
+        {
+          "tool": "case",
+          "title": "全大写",
+          "value": "PING",
+          "score": 0.28,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "全小写",
+          "value": "ping",
+          "score": 0.279,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "首字母大写",
+          "value": "Ping",
+          "score": 0.278,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "Sentence case",
+          "value": "Ping",
+          "score": 0.277,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "大小写反转",
+          "value": "PING",
+          "score": 0.276,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "camelCase",
+          "value": "ping",
+          "score": 0.275,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "PascalCase",
+          "value": "Ping",
+          "score": 0.274,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "snake_case",
+          "value": "ping",
+          "score": 0.273,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "kebab-case",
+          "value": "ping",
+          "score": 0.272,
+          "category": "tools"
+        }
+      ],
+      "visible": [
+        {
+          "tool": "system:ping",
+          "title": "Ping 网络测试",
+          "value": "命令 /ping",
+          "score": 0.94,
+          "category": "run",
+          "commandSuggestion": "/ping ",
+          "matchedAlias": "ping"
+        },
+        {
+          "tool": "run",
+          "title": "PING",
+          "value": "启动 · PATH",
+          "score": 0.86,
+          "category": "run",
+          "appAction": "PING"
+        }
+      ]
+    },
+    {
+      "input": "ping",
+      "apps": [
+        {
+          "name": "PING",
+          "source": "PATH",
+          "target": "C:\\Windows\\System32\\PING.EXE"
+        }
+      ],
+      "tab": "tools",
+      "raw": [
+        {
+          "tool": "system:ping",
+          "title": "Ping 网络测试",
+          "value": "命令 /ping",
+          "score": 0.94,
+          "category": "run",
+          "commandSuggestion": "/ping ",
+          "matchedAlias": "ping"
+        },
+        {
+          "tool": "run",
+          "title": "PING",
+          "value": "启动 · PATH",
+          "score": 0.86,
+          "category": "run",
+          "appAction": "PING"
+        },
+        {
+          "tool": "case",
+          "title": "全大写",
+          "value": "PING",
+          "score": 0.28,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "全小写",
+          "value": "ping",
+          "score": 0.279,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "首字母大写",
+          "value": "Ping",
+          "score": 0.278,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "Sentence case",
+          "value": "Ping",
+          "score": 0.277,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "大小写反转",
+          "value": "PING",
+          "score": 0.276,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "camelCase",
+          "value": "ping",
+          "score": 0.275,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "PascalCase",
+          "value": "Ping",
+          "score": 0.274,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "snake_case",
+          "value": "ping",
+          "score": 0.273,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "kebab-case",
+          "value": "ping",
+          "score": 0.272,
+          "category": "tools"
+        }
+      ],
+      "visible": [
+        {
+          "tool": "case",
+          "title": "全大写",
+          "value": "PING",
+          "score": 0.28,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "全小写",
+          "value": "ping",
+          "score": 0.279,
+          "category": "tools"
+        }
+      ]
+    },
+    {
+      "input": "pinw",
+      "apps": [
+        {
+          "name": "PING",
+          "source": "PATH",
+          "target": "C:\\Windows\\System32\\PING.EXE"
+        }
+      ],
+      "tab": "all",
+      "raw": [
+        {
+          "tool": "pinwindow",
+          "title": "钉住主窗口",
+          "value": "命令 /pinwindow",
+          "score": 0.933,
+          "category": "tools",
+          "commandSuggestion": "/pinwindow ",
+          "matchedAlias": "pinwindow"
+        },
+        {
+          "tool": "case",
+          "title": "全大写",
+          "value": "PINW",
+          "score": 0.28,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "全小写",
+          "value": "pinw",
+          "score": 0.279,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "首字母大写",
+          "value": "Pinw",
+          "score": 0.278,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "Sentence case",
+          "value": "Pinw",
+          "score": 0.277,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "大小写反转",
+          "value": "PINW",
+          "score": 0.276,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "camelCase",
+          "value": "pinw",
+          "score": 0.275,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "PascalCase",
+          "value": "Pinw",
+          "score": 0.274,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "snake_case",
+          "value": "pinw",
+          "score": 0.273,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "kebab-case",
+          "value": "pinw",
+          "score": 0.272,
+          "category": "tools"
+        }
+      ],
+      "visible": [
+        {
+          "tool": "pinwindow",
+          "title": "钉住主窗口",
+          "value": "命令 /pinwindow",
+          "score": 0.933,
+          "category": "tools",
+          "commandSuggestion": "/pinwindow ",
+          "matchedAlias": "pinwindow"
+        },
+        {
+          "tool": "case",
+          "title": "全大写",
+          "value": "PINW",
+          "score": 0.28,
+          "category": "tools"
+        }
+      ]
+    },
+    {
+      "input": "pinw",
+      "apps": [
+        {
+          "name": "PING",
+          "source": "PATH",
+          "target": "C:\\Windows\\System32\\PING.EXE"
+        }
+      ],
+      "tab": "run",
+      "raw": [
+        {
+          "tool": "pinwindow",
+          "title": "钉住主窗口",
+          "value": "命令 /pinwindow",
+          "score": 0.933,
+          "category": "tools",
+          "commandSuggestion": "/pinwindow ",
+          "matchedAlias": "pinwindow"
+        },
+        {
+          "tool": "case",
+          "title": "全大写",
+          "value": "PINW",
+          "score": 0.28,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "全小写",
+          "value": "pinw",
+          "score": 0.279,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "首字母大写",
+          "value": "Pinw",
+          "score": 0.278,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "Sentence case",
+          "value": "Pinw",
+          "score": 0.277,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "大小写反转",
+          "value": "PINW",
+          "score": 0.276,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "camelCase",
+          "value": "pinw",
+          "score": 0.275,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "PascalCase",
+          "value": "Pinw",
+          "score": 0.274,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "snake_case",
+          "value": "pinw",
+          "score": 0.273,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "kebab-case",
+          "value": "pinw",
+          "score": 0.272,
+          "category": "tools"
+        }
+      ],
+      "visible": []
+    },
+    {
+      "input": "pinw",
+      "apps": [
+        {
+          "name": "PING",
+          "source": "PATH",
+          "target": "C:\\Windows\\System32\\PING.EXE"
+        }
+      ],
+      "tab": "tools",
+      "raw": [
+        {
+          "tool": "pinwindow",
+          "title": "钉住主窗口",
+          "value": "命令 /pinwindow",
+          "score": 0.933,
+          "category": "tools",
+          "commandSuggestion": "/pinwindow ",
+          "matchedAlias": "pinwindow"
+        },
+        {
+          "tool": "case",
+          "title": "全大写",
+          "value": "PINW",
+          "score": 0.28,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "全小写",
+          "value": "pinw",
+          "score": 0.279,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "首字母大写",
+          "value": "Pinw",
+          "score": 0.278,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "Sentence case",
+          "value": "Pinw",
+          "score": 0.277,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "大小写反转",
+          "value": "PINW",
+          "score": 0.276,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "camelCase",
+          "value": "pinw",
+          "score": 0.275,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "PascalCase",
+          "value": "Pinw",
+          "score": 0.274,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "snake_case",
+          "value": "pinw",
+          "score": 0.273,
+          "category": "tools"
+        },
+        {
+          "tool": "case",
+          "title": "kebab-case",
+          "value": "pinw",
+          "score": 0.272,
+          "category": "tools"
+        }
+      ],
+      "visible": [
+        {
+          "tool": "pinwindow",
+          "title": "钉住主窗口",
+          "value": "命令 /pinwindow",
+          "score": 0.933,
+          "category": "tools",
+          "commandSuggestion": "/pinwindow ",
+          "matchedAlias": "pinwindow"
+        },
+        {
+          "tool": "case",
+          "title": "全大写",
+          "value": "PINW",
+          "score": 0.28,
+          "category": "tools"
+        }
+      ]
+    },
+    {
       "input": "ch",
       "tab": "all",
       "apps": [

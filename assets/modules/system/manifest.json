@@ -1,0 +1,7 @@
+{
+  "id": "system",
+  "name": "系统工具",
+  "version": "0.6.0",
+  "commands": ["registry","winsettings","system:ipconfig","system:ping","system:nslookup","system:tracert","system:netstat","system:regedit","system:taskmgr","system:services","system:devmgmt","system:diskmgmt","system:eventvwr","system:control"],
+  "dataFiles": ["system-commands.json","windows-settings.json"]
+}
