@@ -59,7 +59,9 @@ vs `--panel settings/modules --screenshot`）。历史面板与结果区沿用 a
 2. 多显示器 / DPI 切换、物理键鼠输入、真实剪贴板与系统级拖拽未做人工全量验收。
 3. macOS 平台为本次新增：功能等价迁移（工具、搜索、候选、模块），Windows 专属
    集成（DWM Acrylic、注册表搜索、Everything、PATH 启动、托盘 Win32）在 macOS
-   以优雅降级呈现并在面板中提示；尚未在真实 M 系列 Mac 上人工验收。
+   以优雅降级呈现并在面板中提示。macos-latest（M 系列）runner 实际构建并发布
+   DMG（Release rust-v0.6.0-alpha.39），CI 内完成 cargo test --lib、挂载、
+   模块/图标/可执行位与 ad-hoc 签名校验；真机人工验收待用户在 M 系列 Mac 完成。
 
 ## macOS 交付
 

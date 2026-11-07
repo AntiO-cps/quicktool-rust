@@ -391,9 +391,13 @@
 - `PASS` 一致性量化：22,764/22,764 差分用例（22 套件）+ 206/206 候选 + 32/32 交互 + 6/6 展开，全部与原版 oracle 一致（`docs/parity-report-alpha39.md`）。
 - `PASS` `bash -n scripts/Build-Rust-macOS.sh` 语法与 CI workflow 结构核验；icns 魔数/尺寸校验。
 - `PASS` 最终 Windows 安装包重建：alpha.39，21767811 字节，SHA256 AB2EFF4232E7201D4353EA646427EA4DA905F40AFF367533AB68671359938978；隔离静默安装 exit 0、13 模块默认全装、安装后 exe 与 release 一致、206/206 候选、模块子页截图、卸载 exit 0。
-- `NOT_RUN` macOS DMG 在真实 M 系列 Mac / CI runner 上的构建与人工验收（本机为 Windows，Apple SDK 链接受许可限制；CI 已就绪，推送后运行 workflow 即可产出）。
+- `PASS` 仓库发布与 CI 构建：github.com/AntiO-cps/quicktool-rust（公开，分支 codex/rust-rewrite，scripts/Build-Rust-macOS.sh 保留 100755 可执行位）；公开前清理 3 处本机沙箱绝对路径为 QUICKTOOL_QA_BASE 环境变量（index_parity.rs/capture-index.cjs/benchmark-index.ps1），全量回归复验 168/0 通过。
+- `PASS` macOS CI 实际构建（run 42415411312，macos-latest M 系列 runner）：cargo test --lib 通过 → Release 构建 → QuickTool.app ad-hoc 签名（codesign Identifier=com.quicktool.rust）→ DMG 生成 → CI 内 hdiutil 挂载核验（pin 模块、icns、可执行位、签名）→ 构件上传。
+- `PASS` DMG 交付与核验：QuickTool-Rust-0.6.0-alpha.39-macos-aarch64.dmg（51,139,710 字节，UDZO/koly 结构合法），本地与 GitHub Release 下载往返 SHA256 一致（5cb74f0bda78a3618f81336fec2af4db89bcbca9a09732848e5d21106bd10aa9），已附于 Release rust-v0.6.0-alpha.39。
+- `NOT_RUN` macOS 真机人工验收（下载 DMG 后在 M 系列 Mac 上挂载运行；CI 已完成挂载/签名/内容校验）。
 
 ### 结论
 - 已完成：一致性量化（覆盖维度 100%，剩余边界显式列出）、macOS 代码级支持与打包/CI 基础设施、最终 Windows 安装包。
+- 已完成项补充：macOS 实际安装包已由 CI 产出并发布；仅剩真机人工验收。
 - 未完成：macOS 真机人工验收；整体迁移完全一致性仍是长期目标。
 - 风险：macOS 上 Windows 专属功能为降级提示而非等价实现；DMG 未经真机验证。
