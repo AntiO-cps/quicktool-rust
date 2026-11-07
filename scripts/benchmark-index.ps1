@@ -1,7 +1,8 @@
 param([ValidatePattern('^[a-z0-9-]+$')][string]$Label='before',[switch]$UseSnapshot)
 $ErrorActionPreference='Stop'
 $taskProject=(Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-$taskDeps='C:/Users/AntiO/.codex/visualizations/2026/10/19/01a154e8-f9c1-7e42-a649-266e9cecb914/quicktool-rust-target/release/deps'
+# Benchmark artifact directory; override with QUICKTOOL_QA_BASE for isolated runs.
+$taskDeps=if($env:QUICKTOOL_QA_BASE){Join-Path $env:QUICKTOOL_QA_BASE 'quicktool-rust-target/release/deps'}else{(Join-Path $taskProject 'target/release/deps')}
 $taskQa=Join-Path $taskProject '.qa'
 $taskSource=Get-Content (Join-Path $taskProject 'tests/index_parity.rs') -Raw
 $taskSource=$taskSource.Replace('//!','//').Replace('include_str!("index-oracle.json")','include_str!("../tests/index-oracle.json")').Replace('use quicktool_rust::index;','')
@@ -25,7 +26,7 @@ if(Test-Path (Join-Path $taskProject 'src/index_categories.rs')) {Copy-Item -Lit
 $env:CARGO_MANIFEST_DIR=$taskProject
 $taskOutput=Join-Path $taskQa "index-$Label-release.exe"
 $taskRustArgs=@('--edition=2024','--crate-name','index_release_audit',$taskDriver,'-C','opt-level=3','-C','panic=abort','-C','debug-assertions=off','-C','lto=thin','-C','codegen-units=1','-C','embed-bitcode=yes','-L',('dependency='+$taskDeps),'-o',$taskOutput)
-foreach($taskNative in Get-ChildItem 'C:/Users/AntiO/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f' -Directory -Filter 'windows_x86_64_msvc-*') {$taskRustArgs+=@('-L',('native='+$taskNative.FullName+'/lib'))}
+foreach($taskNative in Get-ChildItem (Join-Path :USERPROFILE '.cargo/registry/src') -Directory -Filter 'index.crates.io-*' | ForEach-Object { Get-ChildItem D:DocumentsChatGPTquicktoolust-rewrite.FullName -Directory -Filter 'windows_x86_64_msvc-*' }) {$taskRustArgs+=@('-L',('native='+$taskNative.FullName+'/lib'))}
 foreach($taskCrate in @('rusqlite','serde','serde_json','unicode_normalization','getrandom','notify','walkdir','icu_properties','icu_collator','icu_locale')) { $taskLibrary=Get-ChildItem $taskDeps -Filter ('lib'+$taskCrate+'-*.rlib') | Sort-Object LastWriteTime -Descending | Select-Object -First 1; if(-not $taskLibrary){throw "missing cached release dependency $taskCrate"}; $taskRustArgs+=@('--extern',($taskCrate+'='+$taskLibrary.FullName)) }
 & rustc @taskRustArgs
 if($LASTEXITCODE -ne 0){throw 'isolated release benchmark compile failed'}

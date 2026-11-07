@@ -128,12 +128,17 @@ fn queries_match_original_worker_oracle() {
     );
 }
 
+fn quicktool_qa_base() -> PathBuf {
+    // QA scratch base; override with QUICKTOOL_QA_BASE, defaults to the system temp dir.
+    std::env::var_os("QUICKTOOL_QA_BASE")
+        .map(PathBuf::from)
+        .unwrap_or_else(std::env::temp_dir)
+}
+
 struct SyntheticRoot(PathBuf);
 impl SyntheticRoot {
     fn new() -> Self {
-        let base = Path::new(
-            "C:/Users/AntiO/.codex/visualizations/2026/10/19/01a154e8-f9c1-7e42-a649-266e9cecb914",
-        );
+        let base = quicktool_qa_base();
         let mut random = [0u8; 8];
         getrandom::fill(&mut random).unwrap();
         let path = base.join(format!(
@@ -147,7 +152,7 @@ impl SyntheticRoot {
 impl Drop for SyntheticRoot {
     fn drop(&mut self) {
         if let Ok(path) = self.0.canonicalize() {
-            let base=Path::new("C:/Users/AntiO/.codex/visualizations/2026/10/19/01a154e8-f9c1-7e42-a649-266e9cecb914").canonicalize().unwrap();
+            let base = quicktool_qa_base().canonicalize().unwrap();
             assert!(
                 path.starts_with(base)
                     && path

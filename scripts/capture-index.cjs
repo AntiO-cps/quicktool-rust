@@ -3,7 +3,7 @@ const {Worker}=require('node:worker_threads');
 const {DatabaseSync}=require('node:sqlite');
 const fs=require('node:fs'),path=require('node:path'),os=require('node:os');
 if(!process.versions.electron&&!process.argv.includes('--allow-system-node'))throw Error('Use the original Electron runtime with ELECTRON_RUN_AS_NODE=1');
-const base=path.resolve('C:/Users/AntiO/.codex/visualizations/2026/10/19/01a154e8-f9c1-7e42-a649-266e9cecb914');
+const base=path.resolve(process.env.QUICKTOOL_QA_BASE||process.cwd());
 const option=(name,fallback)=>{const i=process.argv.indexOf(name);return i<0?fallback:process.argv[i+1]};
 const bulk=Number(option('--count','520'));
 const output=path.resolve(option('--output','tests/index-oracle.json'));
