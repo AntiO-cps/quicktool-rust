@@ -24,7 +24,7 @@ jobs:
           version=$(sed -n 's/^version = "\(.*\)"$/\1/p' Cargo.toml | head -1)
           dmg="releases/QuickTool-Rust-$version-macos-aarch64.dmg"
           test -f "$dmg"
-          shasum -a 256 -c "$dmg.sha256"
+          (cd releases && shasum -a 256 -c "QuickTool-Rust-$version-macos-aarch64.dmg.sha256")
           hdiutil attach "$dmg" -mountpoint /tmp/qt-verify -nobrowse -readonly
           test -d /tmp/qt-verify/QuickTool.app/Contents/MacOS/assets/modules/pin
           test -f /tmp/qt-verify/QuickTool.app/Contents/Resources/quicktool.icns
