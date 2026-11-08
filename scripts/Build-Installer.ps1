@@ -44,6 +44,7 @@ $installer = Join-Path $output "QuickTool-Rust-Setup-$version-x64.exe"
 & $MakeNsis '/V2' "/DPAYLOAD=$payload" "/DOUTPUT=$installer" "/DVERSION=$version" "/DUNINSTALL_FILES=$uninstall" (Join-Path $PSScriptRoot 'installer.nsi')
 if ($LASTEXITCODE -ne 0) { throw 'NSIS build failed' }
 $hash = (Get-FileHash -LiteralPath $installer -Algorithm SHA256).Hash
-"$hash  $([IO.Path]::GetFileName($installer))" | Set-Content -LiteralPath ($installer + '.sha256') -Encoding ascii
+$sidecar = $hash + '  ' + [IO.Path]::GetFileName($installer) + "`n"
+[IO.File]::WriteAllText($installer + '.sha256', $sidecar, [Text.UTF8Encoding]::new($false))
 Write-Output "Installer: $installer"
 Write-Output "SHA256: $hash"
