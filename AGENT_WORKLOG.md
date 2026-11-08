@@ -427,3 +427,24 @@
 - `PASS` 全量回归：cargo test 168/0、clippy -D warnings、fmt、候选差分 206/206、原生展开 6/6。
 - `PASS` Windows 安装包重建与隔离静默安装复验（见下）。
 - `NOT_RUN` 真实 IME 人工验收（需用户以中文输入法实测 Enter 提交；探针已覆盖事件序列等价物）。
+
+## alpha.41 — 窗口聚焦守护与 IME 组合期失焦保护
+
+### 目标
+用户报告：窗口可视时输入不进输入框（"总会失焦"）；期望窗口可视时输入自动聚焦搜索框，失焦即关窗，双平台同步。
+
+### 修改
+- `src/ui.rs`：
+  - 焦点守护：主面板可见且非设置面板、无选择器/原生取色/菜单/快捷键录制占用焦点时，每帧把焦点归还搜索框（request_focus 下一帧生效），键入始终落在输入框。
+  - IME 过滤器精细化：持久 `ime_composing` 状态——Preedit 置位、Commit/Disabled 复位；Windows 的 Enabled（WM_IME_STARTCOMPOSITION）置位、macOS 的 Enabled（IME 切换）不置位；仅组合进行中或含 Preedit/Commit 的帧才丢弃无修饰键 Key/Text，修复 Enabled 帧打字被误吞。
+  - `blur_hides` 增加 `!ime_composing` 守卫：组合进行中（候选窗交互造成的短暂失焦）不隐藏窗口；失焦块改为 transition+延迟机制——组合中失焦先延迟（deferred_blur_hide），组合结束且仍失焦时执行隐藏；非组合失焦保持立即隐藏；重新获得焦点清除延迟。
+- `src/interaction_probe.rs`：新增 3 组回归（组合定位焦点、Enabled 帧按平台语义、组合中 blur_hides=false/复位后=true），探针 39 项。
+- `scripts/Build-Rust-macOS.sh`：SHA256 sidecar 输出裸文件名。
+- `Cargo.toml`/`README.md`/`../CHANGELOG.md`：alpha.41。
+
+### 验证
+- `PASS` 交互探针 39/39（含 IME 六场景与组合中失焦守卫）。
+- `PASS` 全量回归：cargo test 168/0、clippy -D warnings、fmt、候选差分 206/206、原生展开 6/6。
+- `PASS` Windows 安装包 alpha.41 重建与隔离静默安装复验（见下）。
+- `PASS` macOS CI（macos-latest）构建 alpha.41 DMG、挂载与 ad-hoc 签名校验、Release 双平台发布与往返 SHA256 校验（见下）。
+- `NOT_RUN` 真实 IME + 真实鼠标失焦的人工验收（需用户实测：中文输入中点击候选词/点击窗口外）。

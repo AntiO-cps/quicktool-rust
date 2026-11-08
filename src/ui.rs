@@ -723,6 +723,9 @@ pub struct QuickTool {
     hotkey_error: Option<String>,
     registered_shortcut: String,
     was_focused: bool,
+    ime_composing: bool,
+    ime_activity: Option<Instant>,
+    deferred_blur_hide: bool,
     tray: Option<quicktool_rust::tray::Tray>,
     window_style: Option<(bool, u32, u32, [i32; 2])>,
     backdrop: Option<quicktool_rust::backdrop::Backdrop>,
@@ -916,11 +919,13 @@ impl QuickTool {
     /// browser reports `key: "Process"` and swallows the committing Enter, so
     /// Enter-to-commit converts the pinyin without running the selected
     /// command. egui-winit forwards those keys verbatim, so drop unmodified
-    /// key presses and text from any frame that carries IME traffic (Enter
-    /// commit, Esc cancel, arrows and Backspace inside the composition).
-    /// Clipboard/undo shortcuts keep working through their modifier guard,
-    /// mirroring the browser-side accelerators, and frames without IME events
-    /// keep every key so a real Enter after the commit still executes.
+    /// key presses and text while a composition is in flight (from the first
+    /// Preedit through the Commit that lands the text). Enabled alone means
+    /// "composition may start" on Windows but only "IME toggled" on macOS, so
+    /// it records activity without suppressing keys — typing into a field
+    /// whose IME was just enabled must keep working. Clipboard/undo shortcuts
+    /// keep working through their modifier guard, and frames without IME
+    /// events keep every key so a real Enter after the commit still executes.
     fn filter_ime_composition_events(&mut self, raw: &mut RawInput) {
         if !raw
             .events
@@ -929,16 +934,40 @@ impl QuickTool {
         {
             return;
         }
+        let mut composing = self.ime_composing;
+        let composition_frame = raw.events.iter().any(|event| {
+            matches!(
+                event,
+                Event::Ime(ImeEvent::Preedit(_) | ImeEvent::Commit(_))
+            )
+        });
         raw.events.retain(|event| match event {
-            Event::Ime(_) => true,
+            Event::Ime(ime) => {
+                self.ime_activity = Some(Instant::now());
+                match ime {
+                    ImeEvent::Preedit(_) => composing = true,
+                    ImeEvent::Commit(_) | ImeEvent::Disabled => composing = false,
+                    #[cfg(windows)]
+                    ImeEvent::Enabled => composing = true,
+                    #[cfg(not(windows))]
+                    ImeEvent::Enabled => {}
+                }
+                true
+            }
             Event::Key {
                 pressed: true,
                 modifiers,
                 ..
-            } => modifiers.ctrl || modifiers.mac_cmd || modifiers.command,
-            Event::Text(_) => false,
+            } => {
+                !(composing || composition_frame)
+                    || modifiers.ctrl
+                    || modifiers.mac_cmd
+                    || modifiers.command
+            }
+            Event::Text(_) => !(composing || composition_frame),
             _ => true,
         });
+        self.ime_composing = composing;
     }
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
         font_setup(&cc.egui_ctx);
@@ -1113,6 +1142,9 @@ impl QuickTool {
             hotkey_error,
             registered_shortcut,
             was_focused: false,
+            ime_composing: false,
+            ime_activity: None,
+            deferred_blur_hide: false,
             tray: if !unattended {
                 let c = cc.egui_ctx.clone();
                 quicktool_rust::tray::Tray::new(move || c.request_repaint_of(ViewportId::ROOT)).ok()
@@ -3430,6 +3462,9 @@ impl QuickTool {
             && !self.color_picker
             && !self.native_color.open
             && !widgets::is_open(ctx)
+            // IME candidate-window interaction briefly deactivates the window
+            // while a composition is open; that is not a real dismiss.
+            && !self.ime_composing
             && self.store.settings["hideOnBlur"] == true
     }
     fn keyboard(&mut self, ctx: &Context) {
@@ -5721,18 +5756,55 @@ impl eframe::App for QuickTool {
             self.message(error);
         }
         let focused = ctx.input(|i| i.viewport().focused.unwrap_or(false));
-        if self.was_focused
-            && !focused
-            && self.blur_hides(ctx)
+        let blur_transition = self.was_focused && !focused;
+        if focused {
+            self.deferred_blur_hide = false;
+        }
+        if !focused
+            && self.main_visible
+            && (blur_transition || self.deferred_blur_hide)
             && self.screenshot.is_none()
             && self.probe.is_none()
             && self.interaction_probe.is_none()
         {
-            self.main_visible = false;
-            if let Some(glass) = &mut self.backdrop {
-                let _ = glass.update(false, self.pinned, true, 0., 0, 0.);
+            // IME candidate-window interaction can briefly deactivate the
+            // window while a composition is open (or just landed); defer the
+            // hide across those frames instead of closing mid-typing.
+            let composing_recent = self.ime_composing
+                || self
+                    .ime_activity
+                    .is_some_and(|at| at.elapsed() < Duration::from_millis(300));
+            if composing_recent {
+                self.deferred_blur_hide = true;
+            } else if self.blur_hides(ctx) {
+                self.main_visible = false;
+                if let Some(glass) = &mut self.backdrop {
+                    let _ = glass.update(false, self.pinned, true, 0., 0, 0.);
+                }
+                ctx.send_viewport_cmd(ViewportCommand::Visible(false));
+                self.deferred_blur_hide = false;
+            } else {
+                self.deferred_blur_hide = false;
             }
-            ctx.send_viewport_cmd(ViewportCommand::Visible(false));
+        }
+        if blur_transition {
+            // A deactivated window cannot keep an open composition alive.
+            self.ime_composing = false;
+        }
+        // While the launcher is visible, typed input must always land in the
+        // search field: re-focus it whenever nothing else intentionally owns
+        // focus (settings textareas, pickers, menus and recording excluded).
+        if self.main_visible
+            && self.panel != Panel::Settings
+            && !self.date_picker
+            && !self.color_picker
+            && !self.native_color.open
+            && !self.recording_shortcut
+            && !widgets::is_open(ctx)
+            && self.screenshot.is_none()
+            && !ctx.memory(|m| m.has_focus(Id::new("quicktool-search")))
+        {
+            self.focus = true;
         }
         self.was_focused = focused;
         let visual = if self.panel == Panel::Settings {

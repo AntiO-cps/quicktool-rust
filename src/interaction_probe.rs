@@ -64,6 +64,9 @@ const LABELS: &[&str] = &[
     "IME preedit frame keeps composition out of the input",
     "IME commit frame applies text and ignores the leaked Enter",
     "Real Enter after IME commit executes",
+    "IME-enabled frame still focuses the search field",
+    "IME-enabled frame follows platform composition semantics",
+    "Blur while composing does not hide the window",
 ];
 pub(super) fn raw_input(app: &mut QuickTool, input: &mut RawInput) {
     let Some(mut probe) = app.interaction_probe.take() else {
@@ -262,6 +265,26 @@ pub(super) fn raw_input(app: &mut QuickTool, input: &mut RawInput) {
                 Key::Enter
             }
             35 => Key::Enter,
+            36 => {
+                app.panel = Panel::None;
+                app.mode = None;
+                app.submode = None;
+                app.input = String::new();
+                app.tab = 0;
+                app.rebuild();
+                app.focus = true;
+                Key::F20
+            }
+            37 => {
+                app.panel = Panel::None;
+                app.mode = None;
+                app.submode = None;
+                app.tab = 0;
+                ime.push(Event::Ime(ImeEvent::Enabled));
+                ime.push(Event::Text("x".into()));
+                Key::F20
+            }
+            38 => Key::F20,
             _ => Key::Escape,
         };
         for event in ime {
@@ -381,6 +404,31 @@ pub(super) fn tick(app: &mut QuickTool, ctx: &Context) {
             33 => app.input.is_empty() && app.mode.is_none(),
             34 => app.input == "case" && app.mode.is_none() && !app.input.contains('\n'),
             35 => app.mode.as_deref() == Some("case") && app.input.is_empty(),
+            36 => ctx.memory(|m| m.has_focus(Id::new("quicktool-search"))),
+            37 => {
+                #[cfg(windows)]
+                {
+                    // Windows Enabled = WM_IME_STARTCOMPOSITION: composition
+                    // has begun, so typed input belongs to the IME.
+                    app.input.is_empty() && app.mode.is_none()
+                }
+                #[cfg(not(windows))]
+                {
+                    // macOS Enabled only reports the IME toggled on; typing lands.
+                    app.input == "x" && app.mode.is_none()
+                }
+            }
+            38 => {
+                app.main_visible = true;
+                app.pinned = false;
+                app.panel = Panel::None;
+                app.store.settings["hideOnBlur"] = true.into();
+                app.ime_composing = true;
+                let during = app.blur_hides(ctx);
+                app.ime_composing = false;
+                let after = app.blur_hides(ctx);
+                !during && after
+            }
             _ => false,
         };
         probe.checks.push(serde_json::json!({"check":LABELS[probe.step],"passed":pass,"frame":app.frames,"mode":app.mode,"submode":app.submode,"input":app.input,"selected":app.selected,"tab":app.tab,"settingsOpen":app.panel==Panel::Settings,"discardPrompt":app.confirm_discard,"datePicker":app.date_picker,"colorPanel":app.color_picker,"nativeColorPopup":app.native_color.open,"dateValue":app.date_value}));

@@ -28,7 +28,7 @@ SHA256。CI 由 `.github/workflows/build-rust-macos.yml`（macos-14）自动构�
 `cargo zigbuild --target aarch64-apple-darwin` 已验证全部 Rust 源与 bundled SQLite
 C 依赖编译通过。与原版一致性数据见 [一致性报告](docs/parity-report-alpha39.md)。
 
-安装包位于 `releases/QuickTool-Rust-Setup-0.6.0-alpha.40-x64.exe`，旁边提供 SHA256 校验文件。默认安装到当前用户的 `LocalAppData/Programs/QuickTool Rust`，创建快捷方式及卸载入口；卸载保留设置和历史。
+安装包位于 `releases/QuickTool-Rust-Setup-0.6.0-alpha.41-x64.exe`，旁边提供 SHA256 校验文件。默认安装到当前用户的 `LocalAppData/Programs/QuickTool Rust`，创建快捷方式及卸载入口；卸载保留设置和历史。
 
 使用已有 NSIS 编译器生成安装包：`./scripts/Build-Installer.ps1 -MakeNsis PATH_TO_MAKENSIS -Offline`。已有可移植目录时可添加 `-SkipPortableBuild`；脚本会先核验目录内 SHA256 清单。
 
@@ -85,6 +85,8 @@ alpha.36 对齐主面板固定位置、唤起全选、标签/历史焦点、设�
 alpha.37 修复输入后图标加载改变行高、重复自动滚动及旧查询文件结果混入的问题；恢复`ch`瑞士卡片、混合候选和原版排序规则。197组实际候选对照、14组输入及9组连续输入通过。实现差异、测量与未验证边界见[搜索对照报告](docs/search-parity-alpha37.md)。
 
 alpha.38 引入可选模块体系：13 个功能模块可独立装卸（安装包组件页 + 设置内模块管理），Unicode 索引、国家数据、单位表与系统命令清单改为磁盘按需加载，二进制体积相应减小。模块门控与安装/卸载生命周期由 `tests/modules_gating.rs` 覆盖。
+
+alpha.41 修复窗口焦点与 IME 组合的失焦关闭：窗口可视且非设置/弹窗/菜单/录制状态时，每帧自动将焦点归还搜索框（输入始终落在输入框）；IME 组合进行中的失焦（候选窗交互）不再隐藏窗口（组合结束且仍失焦时延迟关闭），非组合失焦照常立即关闭；IME 过滤器区分组合进行中与仅 Enabled 帧（Windows Enabled=组合开始、macOS Enabled=IME 切换）， Enabled 帧的打字不再被误吞；交互探针扩至 39 项。
 
 alpha.40 修复 IME 组合期间按键误触发命令的问题：egui-winit 原样转发组合期间的按键，Enter 提交候选词被当作执行命令；现按原版浏览器语义（组合中 key=Process）在含 IME 事件的帧内丢弃无修饰键的 Key 按下与 Text 事件（所有 viewport：主面板、大输入、Pin、选择器、菜单），Ctrl/Cmd 快捷键保留，组合结束后的真实 Enter 照常执行；交互探针新增 4 组 IME 回归（36/36）。
 
