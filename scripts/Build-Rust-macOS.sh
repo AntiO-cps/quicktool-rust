@@ -69,7 +69,7 @@ rm -f "$dmg"
 hdiutil create -volname "QuickTool Rust" -srcfolder "$staging" -ov -format UDZO "$dmg"
 hdiutil verify "$dmg" >/dev/null
 
-shasum -a 256 "$dmg" > "$dmg.sha256"
+(cd "$(dirname "$dmg")" && shasum -a 256 "$(basename "$dmg")") > "$dmg.sha256"
 cp "$dmg" "$dmg.sha256" "$project/releases/" 2>/dev/null || {
   mkdir -p "$project/releases"; cp "$dmg" "$dmg.sha256" "$project/releases/";
 }
