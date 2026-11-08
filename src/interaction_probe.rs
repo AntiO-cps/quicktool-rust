@@ -60,6 +60,10 @@ const LABELS: &[&str] = &[
     "Lowercase ch ranks Swiss country card first alongside mixed tools",
     "Run category excludes country cards",
     "Country alternative activates its own completion metadata",
+    "IME composition targets the focused search field",
+    "IME preedit frame keeps composition out of the input",
+    "IME commit frame applies text and ignores the leaked Enter",
+    "Real Enter after IME commit executes",
 ];
 pub(super) fn raw_input(app: &mut QuickTool, input: &mut RawInput) {
     let Some(mut probe) = app.interaction_probe.take() else {
@@ -67,6 +71,7 @@ pub(super) fn raw_input(app: &mut QuickTool, input: &mut RawInput) {
     };
     if app.frames >= 5 && probe.step < LABELS.len() && !probe.armed {
         let mut modifiers = Modifiers::NONE;
+        let mut ime: Vec<Event> = Vec::new();
         let key = match probe.step {
             0 => {
                 app.panel = Panel::None;
@@ -221,8 +226,47 @@ pub(super) fn raw_input(app: &mut QuickTool, input: &mut RawInput) {
                 }
                 Key::F20
             }
+            32 => {
+                app.panel = Panel::None;
+                app.mode = None;
+                app.submode = None;
+                app.input = String::new();
+                app.tab = 0;
+                app.rebuild();
+                app.focus = true;
+                Key::F20
+            }
+            33 => {
+                app.panel = Panel::None;
+                app.mode = None;
+                app.submode = None;
+                app.input = String::new();
+                app.tab = 0;
+                app.rebuild();
+                ime.push(Event::Ime(ImeEvent::Enabled));
+                ime.push(Event::Ime(ImeEvent::Preedit("case".into())));
+                Key::Enter
+            }
+            34 => {
+                app.panel = Panel::None;
+                app.mode = None;
+                app.submode = None;
+                app.input = String::new();
+                app.completion_suppressed = None;
+                app.tab = 0;
+                app.rebuild();
+                ime.push(Event::Ime(ImeEvent::Enabled));
+                ime.push(Event::Ime(ImeEvent::Preedit("cas".into())));
+                ime.push(Event::Ime(ImeEvent::Commit("case".into())));
+                ime.push(Event::Ime(ImeEvent::Disabled));
+                Key::Enter
+            }
+            35 => Key::Enter,
             _ => Key::Escape,
         };
+        for event in ime {
+            input.events.push(event);
+        }
         input.modifiers = modifiers;
         input.events.push(Event::Key {
             key,
@@ -333,6 +377,10 @@ pub(super) fn tick(app: &mut QuickTool, ctx: &Context) {
                         .all(|&i| app.rows[i].country.is_none() && app.row_is_launch(&app.rows[i]))
             }
             31 => !probe.expected_input.is_empty() && app.input == probe.expected_input,
+            32 => ctx.memory(|m| m.has_focus(Id::new("quicktool-search"))),
+            33 => app.input.is_empty() && app.mode.is_none(),
+            34 => app.input == "case" && app.mode.is_none() && !app.input.contains('\n'),
+            35 => app.mode.as_deref() == Some("case") && app.input.is_empty(),
             _ => false,
         };
         probe.checks.push(serde_json::json!({"check":LABELS[probe.step],"passed":pass,"frame":app.frames,"mode":app.mode,"submode":app.submode,"input":app.input,"selected":app.selected,"tab":app.tab,"settingsOpen":app.panel==Panel::Settings,"discardPrompt":app.confirm_discard,"datePicker":app.date_picker,"colorPanel":app.color_picker,"nativeColorPopup":app.native_color.open,"dateValue":app.date_value}));

@@ -912,6 +912,34 @@ fn icon_textures(ctx: &Context) -> HashMap<String, TextureHandle> {
     map
 }
 impl QuickTool {
+    /// The original app never sees command keys during IME composition: the
+    /// browser reports `key: "Process"` and swallows the committing Enter, so
+    /// Enter-to-commit converts the pinyin without running the selected
+    /// command. egui-winit forwards those keys verbatim, so drop unmodified
+    /// key presses and text from any frame that carries IME traffic (Enter
+    /// commit, Esc cancel, arrows and Backspace inside the composition).
+    /// Clipboard/undo shortcuts keep working through their modifier guard,
+    /// mirroring the browser-side accelerators, and frames without IME events
+    /// keep every key so a real Enter after the commit still executes.
+    fn filter_ime_composition_events(&mut self, raw: &mut RawInput) {
+        if !raw
+            .events
+            .iter()
+            .any(|event| matches!(event, Event::Ime(_)))
+        {
+            return;
+        }
+        raw.events.retain(|event| match event {
+            Event::Ime(_) => true,
+            Event::Key {
+                pressed: true,
+                modifiers,
+                ..
+            } => modifiers.ctrl || modifiers.mac_cmd || modifiers.command,
+            Event::Text(_) => false,
+            _ => true,
+        });
+    }
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
         font_setup(&cc.egui_ctx);
         let icons = icon_textures(&cc.egui_ctx);
@@ -5585,6 +5613,9 @@ impl eframe::App for QuickTool {
             interaction_probe::raw_input(self, raw);
             search_layout_probe::raw_input(self, raw);
         }
+        // Runs after the probes so their injected scenarios pass through the
+        // production filter exactly like real OS frames.
+        self.filter_ime_composition_events(raw);
     }
     fn update(&mut self, ctx: &Context, frame: &mut eframe::Frame) {
         if self.screenshot.is_some() {

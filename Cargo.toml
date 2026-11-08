@@ -1,7 +1,7 @@
 [package]
 name = "quicktool-rust"
 default-run = "quicktool-rust"
-version = "0.6.0-alpha.39"
+version = "0.6.0-alpha.40"
 edition = "2024"
 rust-version = "1.85"
 description = "Native Rust rewrite of QuickTool"

@@ -401,3 +401,29 @@
 - 已完成项补充：macOS 实际安装包已由 CI 产出并发布；仅剩真机人工验收。
 - 未完成：macOS 真机人工验收；整体迁移完全一致性仍是长期目标。
 - 风险：macOS 上 Windows 专属功能为降级提示而非等价实现；DMG 未经真机验证。
+
+## alpha.40 — IME 组合期间按键误触发修复
+
+### 目标
+用户报告：输入法组合中按 Enter 提交候选词时，被应用误当作执行当前候选的回车（原版 Electron 无此问题）。彻查同类按键问题并重新出包。
+
+### 根因
+原版运行于浏览器：组合期间 keydown 的 key 为 "Process"（isComposing），页面处理器不视为 Enter。egui-winit 0.31 对 IME 组合期间的 `KeyboardInput` 无任何过滤、原样转发（lib.rs on_keyboard_input 无 is_composing 检查），泄漏的 Enter 到达应用的 keyboard() 即触发 activate(当前选中项)。
+
+### 修改
+- `src/ui.rs`：新增 `filter_ime_composition_events`，在 raw_input_hook 对**每个 viewport** 的 RawInput 过滤——凡帧内含 IME 事件（Enabled/Preedit/Commit/Disabled），丢弃无修饰键（无 Ctrl/Mac Cmd）的 Key 按下与全部 Text 事件；含 Ime 的帧意味着组合收尾（Windows 上 Commit 前后伴随 Enable/Disabled），组合中泄漏的 Enter/Esc/方向键/Backspace 全部按原版语义忽略；过滤在探针注入之后执行，使注入场景走生产管线。
+- `src/interaction_probe.rs`：新增 4 组回归——IME 组合定位焦点搜索框、预编辑帧不落文本且忽略 Enter、提交帧应用文本（Ime Commit 替换预编辑）并吞掉泄漏 Enter、提交后真实 Enter 正常执行命令；探针扩展至 36 项。
+- `Cargo.toml`/`README.md`/`../CHANGELOG.md`：alpha.40 版本与说明。
+
+### 同类问题彻查
+- 搜索框（large_input 自定义编辑器）：已有 Preedit/Commit/Disabled 处理与组合中编辑键屏蔽；泄漏 Key/Text 由新过滤器在 raw 层拦截。
+- Pin 文本（egui TextEdit）：egui 核心 IME 处理 + Pin 级按键（撤销/Esc/重置）被过滤器覆盖。
+- 日期/颜色选择器（子 viewport 事件转发 + 自身按键）、主题下拉、右键菜单（任意按键关闭）：全部经 raw 层过滤。
+- 快捷键录制：组合帧的按键按原版语义不参与录制。
+- 全局热键（OS RegisterHotKey）：不受 IME 影响。
+
+### 验证
+- `PASS` 交互探针 36/36：含新 IME 四场景（组合定位、预编辑不落文本、提交落文本+吞 Enter、真实 Enter 执行）。
+- `PASS` 全量回归：cargo test 168/0、clippy -D warnings、fmt、候选差分 206/206、原生展开 6/6。
+- `PASS` Windows 安装包重建与隔离静默安装复验（见下）。
+- `NOT_RUN` 真实 IME 人工验收（需用户以中文输入法实测 Enter 提交；探针已覆盖事件序列等价物）。
